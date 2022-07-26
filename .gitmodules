@@ -1,0 +1,3 @@
+[submodule "build/megacmd"]
+	path = build/megacmd
+	url = https://github.com/archlinux-kud/megacmd-dynamic
