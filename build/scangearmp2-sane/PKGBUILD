@@ -1,0 +1,35 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+# Contributor: Paul van der Linden <mail@paultjuh.org>
+
+pkgname=scangearmp2-sane
+_pkgver=4.30.0-gtk3+subnet
+pkgver=${_pkgver/-/.}
+pkgrel=1
+pkgdesc="Canon ScanGear MP v2 scanner utility and sane backend"
+arch=('x86_64')
+url="https://github.com/Ordissimo/scangearmp2"
+license=('GPL' 'custom:canon')
+depends=('gtk3')
+makedepends=('cmake' 'libjpeg' 'sane' 'intltool' 'git')
+provides=('scangearmp2')
+conflicts=('scangearmp2')
+source=("git+$url.git#tag=$_pkgver")
+sha256sums=('SKIP')
+
+prepare() {
+    cd scangearmp2
+    git cherry-pick --no-commit 26e5955fa45e10c838318b974a5c2684af60cceb
+}
+
+build() {
+    cd "scangearmp2"
+
+    cmake -Bbuild -DCMAKE_INSTALL_PREFIX="/"
+    make -C build
+}
+
+package() {
+    make -C scangearmp2/build DESTDIR="$pkgdir" install
+    install -d "$pkgdir/usr/share/licenses"
+    mv "$pkgdir/usr/share/scangearmp2/doc" "$pkgdir/usr/share/licenses/$pkgname"
+}

@@ -1,0 +1,26 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+# Contributor: Jan0660 <jan0660@tutanota.com>
+
+pkgname=oh-my-posh
+pkgver=8.22.1
+pkgrel=1
+pkgdesc="A prompt theme engine for any shell."
+arch=('x86_64')
+url="https://ohmyposh.dev"
+license=('custom:MIT')
+makedepends=('git' 'go')
+source=("git+https://github.com/JanDeDobbeleer/oh-my-posh.git#tag=v$pkgver")
+sha256sums=('SKIP')
+
+build() {
+  cd "$srcdir/oh-my-posh/src"
+
+  go build
+}
+
+package() {
+  cd "$srcdir/oh-my-posh"
+
+  install -m755 -Dt "$pkgdir/usr/bin" src/oh-my-posh
+  install -m644 -Dt "$pkgdir/usr/share/licenses/$pkgname" COPYING
+}
