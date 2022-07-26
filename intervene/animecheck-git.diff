@@ -1,0 +1,20 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 60c1f4f..fa8c12f 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -6,7 +6,7 @@ pkgrel=1
+ pkgdesc="Commandline CRC32, MD5 and eD2k-based hashing script also capable of reading and creating SFV and MD5 checksum files and generating eD2k links."
+ arch=('any')
+ url="https://github.com/OmegaPhil/animecheck"
+-license=('GPL')
++license=('GPL3')
+ makedepends=('git')
+ depends=('python')
+ source=('git+https://github.com/OmegaPhil/animecheck.git')
+@@ -20,5 +20,5 @@ pkgver() {
+ package() {
+    cd "$srcdir/animecheck"
+    mkdir -p $pkgdir/usr/bin
+-   install -m 0755 animecheck.py $pkgdir/usr/bin/
++   install -m 0755 animecheck.py $pkgdir/usr/bin/animecheck
+ }

@@ -1,0 +1,24 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 46a95d9..67a17cb 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -8,7 +8,7 @@ epoch=
+ pkgdesc="SmoothVideo Project 4 (SVP4)"
+ arch=('x86_64')
+ url="https://www.svp-team.com/wiki/SVP:Linux"
+-license=('custom')
++license=('custom:svp-team')
+ groups=()
+ depends=(libmediainfo qt5-svg qt5-script qt5-declarative vapoursynth libusb xdg-utils lsof)
+ makedepends=(p7zip)
+@@ -18,8 +18,8 @@ optdepends=(
+ 	'ocl-icd: for GPU acceleration'
+ )
+ provides=('svp')
+-conflicts=()
+-replaces=()
++conflicts=('svp')
++replaces=('svp')
+ backup=()
+ options=(!strip)
+ install=${pkgname}.install

@@ -1,0 +1,31 @@
+diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
+index 9fa1bf4..95dfd7a 100644
+--- a/trunk/PKGBUILD
++++ b/trunk/PKGBUILD
+@@ -1,9 +1,17 @@
+ # Maintainer: Brad Fanella <cesura@archlinux.org>
+ # Contributor: Martin Wimpress <code@flexion.org>
+ 
++# Copied from /etc/makepkg.conf; override modified config with defaults
++DLAGENTS=('file::/usr/bin/curl -qgC - -o %o %u'
++          'ftp::/usr/bin/curl -qgfC - --ftp-pasv --retry 3 --retry-delay 3 -o %o %u'
++          'http::/usr/bin/curl -qgb "" -fLC - --retry 3 --retry-delay 3 -o %o %u'
++          'https::/usr/bin/curl -qgb "" -fLC - --retry 3 --retry-delay 3 -o %o %u'
++          'rsync::/usr/bin/rsync --no-motd -z %u %o'
++          'scp::/usr/bin/scp -C %u %o')
++
+ pkgname=mate-panel
+ pkgver=1.26.2
+-pkgrel=1
++pkgrel=1.1
+ pkgdesc="The MATE Panel"
+ url="https://mate-desktop.org"
+ arch=('x86_64')
+@@ -15,6 +23,7 @@ groups=('mate')
+ conflicts=('mate-panel-gtk3')
+ replaces=('mate-panel-gtk3')
+ sha256sums=('aec4f98c89c59e76cc0656ed0482f1d82912f4decc660f21c8d004e493e05410')
++options=('lto')
+ 
+ build() {
+     	cd "${pkgname}-${pkgver}" 

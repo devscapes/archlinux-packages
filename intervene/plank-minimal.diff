@@ -1,0 +1,46 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 4b2e6f8..5f350c4 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -4,8 +4,8 @@
+ _pkgname=plank
+ _pkgver=0.11.89
+ pkgname=${_pkgname}-minimal
+-pkgver=0.11.89+27c7863
+-pkgrel=2
++pkgver=0.11.89
++pkgrel=3
+ pkgdesc='Elegant, simple, clean dock (minimal build)'
+ arch=('x86_64')
+ url='https://launchpad.net/plank'
+@@ -15,6 +15,7 @@ depends=('atk' 'bamf' 'cairo' 'gdk-pixbuf2' 'glib2' 'glibc'
+ makedepends=('gnome-common' 'gnome-menus' 'git' 'intltool' 'vala')
+ provides=("${_pkgname}")
+ conflicts=("${_pkgname}")
++options=('lto')
+ 
+ source=("git+https://github.com/ricotz/plank.git#tag=${_pkgver}"
+         'disable-docklets.patch')
+@@ -23,11 +24,12 @@ sha256sums=('SKIP'
+ 
+ pkgver() {
+   cd "${srcdir}/${_pkgname}"
+-  printf "%s+%s" "${_pkgver}" "$(git rev-parse --short HEAD)"
++  git describe --tags
+ }
+ 
+ prepare() {
+   cd ${_pkgname}
++  git cherry-pick -n 5967798a47ba8835ae100c01a8d647d2f9a2412f
+   sed 's/0.19.6/0.20/' -i configure.ac
+ 
+   # Do not build extra docklets
+@@ -41,7 +43,7 @@ build() {
+     --sysconfdir='/etc' \
+     --disable-apport \
+     --disable-debug
+-  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
++  sed -i -e 's/ -shared / -Wl,-O3,--as-needed\0/g' libtool
+   make
+ }
+ 

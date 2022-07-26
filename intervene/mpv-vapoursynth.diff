@@ -1,0 +1,70 @@
+diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
+index c8a0591..586dbf4 100644
+--- a/trunk/PKGBUILD
++++ b/trunk/PKGBUILD
+@@ -2,12 +2,13 @@
+ # Contributor: Bartłomiej Piotrowski <bpiotrowski@archlinux.org>
+ # Contributor: Eivind Uggedal <eivind@uggedal.com>
+ 
+-pkgname=mpv
++_pkgname=mpv
++pkgname=$_pkgname-vapoursynth
+ epoch=1
+ _tag='df6d84c1cf4bbc2b998f4d320542c78df674512d' # git rev-parse v${pkgver}
+ pkgver=0.34.1
+ pkgrel=4
+-pkgdesc='a free, open source, and cross-platform media player'
++pkgdesc='a free, open source, and cross-platform media player (with Vapoursynth libs)'
+ arch=('x86_64')
+ # We link against libraries that are licensed GPLv3 explicitly, so our
+ # package is GPLv3 only as well. (Is this still correct?)
+@@ -23,19 +24,20 @@ depends=('alsa-lib' 'libasound.so' 'desktop-file-utils' 'ffmpeg' 'libavcodec.so'
+          'libxext' 'libxinerama' 'libxkbcommon' 'libxkbcommon.so' 'libxrandr' 'libxss'
+          'libxv' 'luajit' 'mesa' 'mujs' 'rubberband' 'librubberband.so' 'shaderc'
+          'libshaderc_shared.so' 'uchardet' 'vulkan-icd-loader' 'wayland' 'xdg-utils'
+-         'zlib')
++         'zlib' 'vapoursynth')
+ makedepends=('git' 'python-docutils' 'ladspa' 'wayland-protocols'
+              'ffnvcodec-headers' 'vulkan-headers' 'waf')
+ optdepends=('yt-dlp: for video-sharing websites playback'
+             'youtube-dl: for video-sharing websites playback')
+-provides=('libmpv.so')
++provides=('libmpv.so' 'mpv')
++conflicts=('mpv')
+ options=('!emptydirs')
+ validpgpkeys=('145077D82501AA20152CACCE8D769208D5E31419') # sfan5 <sfan5@live.de>
+ source=("git+https://github.com/mpv-player/mpv.git#tag=${_tag}?signed")
+ sha256sums=('SKIP')
+ 
+ prepare() {
+-  cd ${pkgname}
++  cd ${_pkgname}
+ 
+   git cherry-pick -n \
+     '79bfcc672343ddbc348e040ad899d61a0bafc050' \
+@@ -43,7 +45,7 @@ prepare() {
+ }
+ 
+ build() {
+-  cd ${pkgname}
++  cd ${_pkgname}
+ 
+   waf configure --prefix=/usr \
+     --confdir=/etc/mpv \
+@@ -53,13 +55,14 @@ build() {
+     --enable-libarchive \
+     --enable-libmpv-shared \
+     --disable-build-date \
+-    --disable-caca
++    --disable-caca \
++    --enable-vapoursynth
+ 
+   waf build
+ }
+ 
+ package() {
+-  cd ${pkgname}
++  cd ${_pkgname}
+ 
+   waf install --destdir="$pkgdir"
+ 

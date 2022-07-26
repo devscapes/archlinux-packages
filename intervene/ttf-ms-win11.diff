@@ -1,0 +1,13 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 886042d..418a6b4 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -47,7 +47,7 @@ pkgver=10.0.22000.194
+ pkgrel=1
+ arch=(any)
+ url='http://www.microsoft.com/typography/fonts/product.aspx?PID=164'
+-license=(custom)
++license=('custom:Windows')
+ provides=(ttf-font)
+ conflicts=(ttf-vista-fonts)
+ 
