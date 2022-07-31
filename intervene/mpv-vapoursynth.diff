@@ -1,5 +1,5 @@
 diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
-index c8a0591..586dbf4 100644
+index 2a68220..298429b 100644
 --- a/trunk/PKGBUILD
 +++ b/trunk/PKGBUILD
 @@ -2,12 +2,13 @@
@@ -12,7 +12,7 @@ index c8a0591..586dbf4 100644
  epoch=1
  _tag='df6d84c1cf4bbc2b998f4d320542c78df674512d' # git rev-parse v${pkgver}
  pkgver=0.34.1
- pkgrel=4
+ pkgrel=5
 -pkgdesc='a free, open source, and cross-platform media player'
 +pkgdesc='a free, open source, and cross-platform media player (with Vapoursynth libs)'
  arch=('x86_64')

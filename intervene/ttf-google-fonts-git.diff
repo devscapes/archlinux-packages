@@ -1,0 +1,190 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index d29a401..4f1d774 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -9,7 +9,7 @@
+ # Contributor: Alexander De Sousa <archaur.xandy21@spamgourmet.com>
+ 
+ pkgname=ttf-google-fonts-git
+-pkgver=r2002.37e0f8a4
++pkgver=r3873.5d93bf97c
+ pkgrel=1
+ epoch=1
+ pkgdesc="TrueType fonts from the Google Fonts project (git version)"
+@@ -17,69 +17,60 @@ arch=('any')
+ url="https://github.com/google/fonts"
+ license=('custom:SIL Open Font License' 'custom:Ubuntu Font License v1.0')
+ 
+-depends=('noto-fonts'
+-         'noto-fonts-extra'
+-         'ttf-fira-sans'
+-         'ttf-fira-mono'
+-         'ttf-ubuntu-font-family'
+-         'ttf-croscore'
+-         'ttf-roboto'
+-         'ttf-inconsolata'
+-         'cantarell-fonts'
+-         'ttf-merriweather'
+-         'ttf-merriweather-sans'
+-         'ttf-opensans'
+-         'ttf-oswald'
+-         'ttf-quintessential'
+-         'ttf-signika')
++depends=(
++    'adobe-source-code-pro-fonts'
++    'adobe-source-sans-fonts'
++    'adobe-source-serif-fonts'
++    'cantarell-fonts'
++    'noto-fonts'
++    'noto-fonts-extra'
++    'ttf-anonymous-pro'
++    'ttf-caladea'
++    'ttf-croscore'
++    'ttf-fira-mono'
++    'ttf-fira-sans'
++    'ttf-inconsolata'
++    'ttf-lato'
++    'ttf-merriweather'
++    'ttf-merriweather-sans'
++    'ttf-opensans'
++    'ttf-oswald'
++    'ttf-quintessential'
++    'ttf-roboto'
++    'ttf-roboto-mono'
++    'ttf-ubuntu-font-family'
++)
+ makedepends=('git' 'fontconfig')
+-conflicts=('adobe-source-code-pro-fonts'
+-           'adobe-source-sans-pro-fonts'
+-           'jsmath-fonts'
+-           'lohit-fonts'
+-           'ttf-andika'
+-           'ttf-anonymous-pro'
+-           'ttf-arabeyes-fonts'
+-           'ttf-caladea'
+-           'ttf-cardo'
+-           'ttf-comfortaa'
+-           'ttf-google-fonts-typewolf'
+-           'ttf-lato'
+-           'ttf-lora-cyrillic'
+-           'ttf-lekton'
+-           'ttf-medievalsharp'
+-           'ttf-nova'
+-           'ttf-oxygen'
+-           'ttf-oxygen-git'
+-           'ttf-pt-fonts'
+-           'ttf-roboto-mono'
+-           'ttf-source-code-pro-ibx'
+-           'ttf-source-sans-pro-ibx'
+-           'ttf-vollkorn-ibx')
+-provides=('adobe-source-code-pro-fonts'
+-          'adobe-source-sans-pro-fonts'
+-          'jsmath-fonts'
+-          'lohit-fonts'
+-          'ttf-andika'
+-          'ttf-anonymous-pro'
+-          'ttf-caladea'
+-          'ttf-cardo'
+-          'ttf-comfortaa'
+-          'ttf-lato'
+-          'ttf-lora-cyrillic'
+-          'ttf-lekton'
+-          'ttf-medievalsharp'
+-          'ttf-nova'
+-          'ttf-oxygen'
+-          'ttf-oxygen-git'
+-          'ttf-pt-fonts'
+-          'ttf-roboto-mono'
+-          'ttf-source-code-pro-ibx'
+-          'ttf-source-sans-pro-ibx'
+-          'ttf-vollkorn-ibx')
++gfonts_pkgs=(
++   'jsmath-fonts'
++   'lohit-fonts'
++   'lora-font-git'
++   'ttf-andika'
++   'ttf-arabeyes-fonts'
++   'ttf-cardo'
++   'ttf-comfortaa'
++   'ttf-commissioner-variable'
++   'ttf-google-fonts-typewolf'
++   'ttf-lora-cyrillic'
++   'ttf-lekton'
++   'ttf-medievalsharp'
++   'ttf-nova'
++   'ttf-oxygen'
++   'ttf-oxygen-git'
++   'ttf-pt-fonts'
++   'ttf-signika'
++   'ttf-volkorn'
++   'ttf-work-sans-variable'
++   #'ttf-yrsa'
++   'ttf-zilla-slab'
++)
++conflicts=("${gfonts_pkgs[@]}")
++provides=("${gfonts_pkgs[@]}")
+ source=(git+"${url}".git)
+ sha512sums=('SKIP')
+ 
++PKGEXT='.pkg.tar'
++
+ pkgver() {
+   cd fonts
+ 
+@@ -87,21 +78,48 @@ pkgver() {
+ }
+ 
+ prepare() {
+-  cd fonts
+-
+   # NOTE: Adobe Blank is not meant to be installed.
+   # See: https://github.com/google/fonts/issues/2106#issuecomment-520067314
+   rm --recursive "${srcdir}/fonts/ofl/adobeblank"
++
++  cd fonts/ofl
++  local files
++  # NOTE: These are the font families that already exist in the [extra] and [community] repos.
++  ## Noto font families
++  files=($(find -maxdepth 1 -name 'noto*'))
++  for i in "${files[@]}"; do
++    [[ $i =~ thailooped ]] && continue
++    rm -r $i
++  done
++  ## Adobe Source (Code Pro | Sans | Serif) font families
++  find -maxdepth 1 -name 'source*' -exec rm -r {} \;
++
++  ## Ubuntu font family
++  rm -r "${srcdir}/fonts/ufl"
+ }
+ 
+ package() {
+   # NOTE: These are the font families that already exist in the [extra] and [community] repos.
+-  declare -A omitted_font_families=([cantarell]=1 [noto-sans-tamil]=1 [noto-serif]=1
+-                                    [noto-sans]=1 [fira-sans]=1 [fira-mono]=1
+-                                    [ubuntu]=1 [ubuntu-mono]=1 [tinos]=1 [arimo]=1
+-                                    [cousine]=1 [roboto]=1 [roboto-condensed]=1
+-                                    [inconsolata]=1 [merriweather]=1 [merriweather-sans]=1
+-                                    [open-sans]=1 [oswald]=1 [quintessential]=1)
++  declare -A omitted_font_families=(
++    [anonymous-pro]=1
++    [arimo]=1
++    [caladea]=1
++    [cantarell]=1
++    [cousine]=1
++    [fira-mono]=1
++    [fira-sans]=1
++    [inconsolata]=1
++    [lato]=1
++    [merriweather]=1
++    [merriweather-sans]=1
++    [open-sans]=1
++    [oswald]=1
++    [quintessential]=1
++    [roboto]=1
++    [roboto-condensed]=1
++    [roboto-mono]=1
++    [tinos]=1
++  )
+ 
+ 
+   while IFS= read -rd '' file; do
