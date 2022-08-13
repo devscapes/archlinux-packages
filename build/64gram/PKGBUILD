@@ -4,9 +4,9 @@
 
 # Maintainer: Albert I <kras@raphielgang.org>
 
-_tdesktop_ver=4.0.1
+_tdesktop_ver=4.0.4
 pkgname=64gram
-pkgver=1.0.39
+pkgver=1.0.41.beta
 pkgrel=1
 pkgdesc='Provide Windows 64bit build with enhancements. Linux/MacOS build is a PLUS!'
 arch=('x86_64')
@@ -23,13 +23,13 @@ optdepends=('webkit2gtk: embedded browser features'
 provides=("telegram-desktop=$_tdesktop_ver")
 replaces=('tdesktop-x64' '64gram-desktop')
 conflicts=('telegram-desktop' 'forkgram')
-source=("https://github.com/TDesktop-x64/tdesktop/releases/download/v${pkgver}/64Gram-${pkgver}-full.tar.gz"
+source=("https://github.com/TDesktop-x64/tdesktop/releases/download/v${pkgver/.beta/}/64Gram-${pkgver}-full.tar.gz"
         'fix-tgcalls-cstdint.patch')
-b2sums=('7138f2aca2e78964582d0f5d2082038480395eada8f31b2019212df405c2c25429353e61dcfc83c94f72fa74a103bca3e6501ff4ad5de9b0cd4896215b5c29d1'
+b2sums=('7f0f4fecd834aaa419d193a7e1ef4573920f8d07aa123dbb8de29579b2cf935d0c8af8a84c762ed9eed1cf6da5048003b0e4399cbf8f6bb7648a01c75c36af27'
         'e447ff7fb3f764318e9bde1538e85f9dd6f9eddaa3cc0fb5d6e0025d8f0f463d03ecee361938fe82ddc495ba0adf46c0ed836afa7180a96dcba18674fc806492')
 
 prepare() {
-    cd "64Gram-$pkgver-full"
+    cd "64Gram-${pkgver/.beta/}-full"
 
     rm -rf Telegram/ThirdParty/libtgvoip/webrtc_dsp/absl
 
@@ -39,10 +39,7 @@ prepare() {
 }
 
 build() {
-    cd "64Gram-$pkgver-full"
-
-    # Fix https://bugs.archlinux.org/task/73220
-    export CXXFLAGS+=" -Wp,-U_GLIBCXX_ASSERTIONS"
+    cd "64Gram-${pkgver/.beta/}-full"
 
     export PKG_CONFIG_PATH='/usr/lib/ffmpeg4.4/pkgconfig'
     # Turns out we're allowed to use the official API key that telegram uses for their snap builds:
@@ -55,18 +52,11 @@ build() {
         -DCMAKE_BUILD_TYPE=Release \
         -DTDESKTOP_API_ID=611335 \
         -DTDESKTOP_API_HASH=d524b414d21f4d37f08684c1df41ac9c
-    sed -i "s|/usr/lib/libav|/usr/lib/ffmpeg4.4/libav|g" build/build.ninja
-    sed -i "s|/usr/lib/libsw|/usr/lib/ffmpeg4.4/libsw|g" build/build.ninja
-    sed -i "s|-lavcodec|/usr/lib/ffmpeg4.4/libavcodec.so|g" build/build.ninja
-    sed -i "s|-lavformat|/usr/lib/ffmpeg4.4/libavformat.so|g" build/build.ninja
-    sed -i "s|-lavutil|/usr/lib/ffmpeg4.4/libavutil.so|g" build/build.ninja
-    sed -i "s|-lswscale|/usr/lib/ffmpeg4.4/libswscale.so|g" build/build.ninja
-    sed -i "s|-lswresample|/usr/lib/ffmpeg4.4/libswresample.so|g" build/build.ninja
     ninja -C build
 }
 
 package() {
-    cd "64Gram-$pkgver-full"
+    cd "64Gram-${pkgver/.beta/}-full"
     DESTDIR="$pkgdir" ninja -C build install
     # They botched the release and put a lot of stuff here.
     rm -rf "$pkgdir/build"
