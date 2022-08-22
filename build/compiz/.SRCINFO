@@ -1,6 +1,6 @@
 pkgbase = compiz
 	pkgdesc = Composite manager for Aiglx and Xgl, with plugins and CCSM
-	pkgver = 0.9.14.1+22.04.20211217
+	pkgver = 0.9.14.2
 	pkgrel = 1
 	epoch = 1
 	url = https://launchpad.net/compiz
@@ -25,13 +25,13 @@ pkgbase = compiz
 	depends = metacity
 	depends = glu
 	optdepends = xorg-xprop: grab various window properties for use in window matching rules
-	provides = compiz-core=0.9.14.1
-	provides = compiz-bcop=0.9.14.1
-	provides = ccsm=0.9.14.1
-	provides = compiz-plugins-main=0.9.14.1
-	provides = compiz-plugins-extra=0.9.14.1
-	provides = compizconfig-python=0.9.14.1
-	provides = libcompizconfig=0.9.14.1
+	provides = compiz-core=0.9.14.2
+	provides = compiz-bcop=0.9.14.2
+	provides = ccsm=0.9.14.2
+	provides = compiz-plugins-main=0.9.14.2
+	provides = compiz-plugins-extra=0.9.14.2
+	provides = compizconfig-python=0.9.14.2
+	provides = libcompizconfig=0.9.14.2
 	conflicts = compiz-core
 	conflicts = compiz-gtk
 	conflicts = compiz-bcop
@@ -43,7 +43,7 @@ pkgbase = compiz
 	conflicts = libcompizconfig
 	conflicts = simple-ccsm
 	options = lto
-	source = git+https://git.launchpad.net/compiz#commit=8b3fdfd7c56f09835d7e6cf6852c46b408eee606
+	source = git+https://git.launchpad.net/compiz#commit=0c09cfca25cd19af50f6918528849172ef53120f
 	source = focus-prevention-disable.patch
 	source = gtk-extents.patch
 	source = reverse-unity-config.patch

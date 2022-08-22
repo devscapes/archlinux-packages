@@ -4,9 +4,9 @@
 
 # Maintainer: Albert I <kras@raphielgang.org>
 
-_tdesktop_ver=4.0.4
+_tdesktop_ver=4.1.1
 pkgname=64gram
-pkgver=1.0.43.beta
+pkgver=1.0.44
 pkgrel=1
 pkgdesc='Provide Windows 64bit build with enhancements. Linux/MacOS build is a PLUS!'
 arch=('x86_64')
@@ -23,13 +23,13 @@ optdepends=('webkit2gtk: embedded browser features'
 provides=("telegram-desktop=$_tdesktop_ver")
 replaces=('tdesktop-x64' '64gram-desktop')
 conflicts=('telegram-desktop' 'forkgram')
-source=("https://github.com/TDesktop-x64/tdesktop/releases/download/v${pkgver/.beta/}/64Gram-${pkgver/.beta/}-full.tar.gz"
+source=("https://github.com/TDesktop-x64/tdesktop/releases/download/v$pkgver/64Gram-$pkgver-full.tar.gz"
         'fix-tgcalls-cstdint.patch')
-b2sums=('e6229404a12b1abf4c65f358e3f1e5944a088a026a68cbbbb72ab533b524af969865f91d6230f24c0733814ca15fb67ead7e52aa0c20d60e5807ad81cae43b6a'
+b2sums=('804d1e01f7376f688706dce35f050b5f532a51b0c3e8d255be750da21d456af96bfaef581bc31bc4ee415b3d0e41798f36580a8f8f77cb3eb0c09b0b2f54e2be'
         'e447ff7fb3f764318e9bde1538e85f9dd6f9eddaa3cc0fb5d6e0025d8f0f463d03ecee361938fe82ddc495ba0adf46c0ed836afa7180a96dcba18674fc806492')
 
 prepare() {
-    cd "64Gram-${pkgver/.beta/}-full"
+    cd "64Gram-$pkgver-full"
 
     rm -rf Telegram/ThirdParty/libtgvoip/webrtc_dsp/absl
 
@@ -39,7 +39,7 @@ prepare() {
 }
 
 build() {
-    cd "64Gram-${pkgver/.beta/}-full"
+    cd "64Gram-$pkgver-full"
 
     export PKG_CONFIG_PATH='/usr/lib/ffmpeg4.4/pkgconfig'
     # Turns out we're allowed to use the official API key that telegram uses for their snap builds:
@@ -56,7 +56,7 @@ build() {
 }
 
 package() {
-    cd "64Gram-${pkgver/.beta/}-full"
+    cd "64Gram-$pkgver-full"
     DESTDIR="$pkgdir" ninja -C build install
     # They botched the release and put a lot of stuff here.
     rm -rf "$pkgdir/build"

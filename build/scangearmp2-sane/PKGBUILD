@@ -2,8 +2,7 @@
 # Contributor: Paul van der Linden <mail@paultjuh.org>
 
 pkgname=scangearmp2-sane
-_pkgver=4.30.0-gtk3+subnet
-pkgver=${_pkgver/-/.}
+pkgver=4.40.0
 pkgrel=1
 pkgdesc="Canon ScanGear MP v2 scanner utility and sane backend"
 arch=('x86_64')
@@ -13,13 +12,8 @@ depends=('gtk3')
 makedepends=('cmake' 'libjpeg' 'sane' 'intltool' 'git')
 provides=('scangearmp2')
 conflicts=('scangearmp2')
-source=("git+$url.git#tag=$_pkgver")
+source=("git+$url.git#tag=$pkgver")
 sha256sums=('SKIP')
-
-prepare() {
-    cd scangearmp2
-    git cherry-pick --no-commit 26e5955fa45e10c838318b974a5c2684af60cceb
-}
 
 build() {
     cd "scangearmp2"

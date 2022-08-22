@@ -1,0 +1,13 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index ba4f755..60e1092 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -12,7 +12,7 @@ pkgrel=1
+ pkgdesc='BellSoft builds of OpenJDK are fully certified and 100% open source Java Development Kits (JDKs) for all Java development and production workloads. Full version includes OpenJFX.'
+ arch=(aarch64 armv7h armv8h x86_64)
+ url='https://bell-sw.com/'
+-license=('custom')
++license=('custom:GPL-2.0 with Classpath Exception' 'custom:liberica')
+ depends=('java-environment-common=3' 'java-runtime-common>=3' 'ca-certificates-utils')
+ optdepends=(ffmpeg freetype2 gtk2 gtk3 libnet)
+ provides=(

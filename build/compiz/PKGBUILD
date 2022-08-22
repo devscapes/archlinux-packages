@@ -5,7 +5,7 @@
 # Contributor: Nathan Hulse <nat.hulse@gmail.com>
 
 pkgname=compiz
-pkgver=0.9.14.1+22.04.20211217
+pkgver=0.9.14.2
 pkgrel=1
 epoch=1
 pkgdesc="Composite manager for Aiglx and Xgl, with plugins and CCSM"
@@ -19,7 +19,7 @@ optdepends=(
 )
 conflicts=('compiz-core' 'compiz-gtk' 'compiz-bcop' 'ccsm' 'compiz-fusion-plugins-main' 'compiz-fusion-plugins-extra' 'compiz-fusion-plugins-experimental' 'compizconfig-python' 'libcompizconfig' 'simple-ccsm')
 provides=("compiz-core=${pkgver:0:8}" "compiz-bcop=${pkgver:0:8}" "ccsm=${pkgver:0:8}" "compiz-plugins-main=${pkgver:0:8}" "compiz-plugins-extra=${pkgver:0:8}" "compizconfig-python=${pkgver:0:8}" "libcompizconfig=${pkgver:0:8}")
-source=("git+https://git.launchpad.net/${pkgname}#commit=8b3fdfd7c56f09835d7e6cf6852c46b408eee606" # 1:0.9.14.1+22.04.20211217-0ubuntu1
+source=("git+https://git.launchpad.net/${pkgname}#commit=0c09cfca25cd19af50f6918528849172ef53120f" # release-0.9.14.2
         "focus-prevention-disable.patch"
         "gtk-extents.patch"
         "reverse-unity-config.patch"
@@ -33,9 +33,9 @@ sha256sums=('SKIP'
             '4ab3277da201314b3f65e30128bc30704ddee584fdbbfc8d0d83c7e0de91fa9a')
 options=('lto')
 
-pkgver() {
-    git -C "${pkgname}" describe --tags | sed 's/.%//;s/-0ubuntu1//'
-}
+#pkgver() {
+#    git -C "${pkgname}" describe --tags | sed 's/.%//;s/-0ubuntu1//'
+#}
 
 prepare() {
   cd "${pkgname}"
