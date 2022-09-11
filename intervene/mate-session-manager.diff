@@ -1,19 +1,9 @@
 diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
-index 8b38650..44e6b78 100644
+index 8b38650..1388e23 100644
 --- a/trunk/PKGBUILD
 +++ b/trunk/PKGBUILD
-@@ -1,9 +1,17 @@
- # Maintainer: Brad Fanella <cesura@archlinux.org>
- # Contributor: Martin Wimpress <code@flexion.org>
+@@ -3,7 +3,7 @@
  
-+# Copied from /etc/makepkg.conf; override modified config with defaults
-+DLAGENTS=('file::/usr/bin/curl -qgC - -o %o %u'
-+          'ftp::/usr/bin/curl -qgfC - --ftp-pasv --retry 3 --retry-delay 3 -o %o %u'
-+          'http::/usr/bin/curl -qgb "" -fLC - --retry 3 --retry-delay 3 -o %o %u'
-+          'https::/usr/bin/curl -qgb "" -fLC - --retry 3 --retry-delay 3 -o %o %u'
-+          'rsync::/usr/bin/rsync --no-motd -z %u %o'
-+          'scp::/usr/bin/scp -C %u %o')
-+
  pkgname=mate-session-manager
  pkgver=1.26.0
 -pkgrel=1
@@ -21,7 +11,7 @@ index 8b38650..44e6b78 100644
  pkgdesc="The MATE Session Handler"
  url="https://mate-desktop.org"
  arch=('x86_64')
-@@ -17,6 +25,7 @@ conflicts=('mate-session-manager-gtk3')
+@@ -17,6 +17,7 @@ conflicts=('mate-session-manager-gtk3')
  replaces=('mate-session-manager-gtk3')
  source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
  sha256sums=('5915a2f6583c0e5e58afb3abae3f4adbbe6a003c174a5b6e3d204b4e398a1816')
