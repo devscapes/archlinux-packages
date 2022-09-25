@@ -1,6 +1,6 @@
 pkgbase = 64gram
 	pkgdesc = Provide Windows 64bit build with enhancements. Linux/MacOS build is a PLUS!
-	pkgver = 1.0.45.beta
+	pkgver = 1.0.47.beta
 	pkgrel = 1
 	url = https://64gr.am
 	arch = x86_64
@@ -40,14 +40,16 @@ pkgbase = 64gram
 	depends = libdispatch
 	optdepends = webkit2gtk: embedded browser features
 	optdepends = xdg-desktop-portal: desktop integration
-	provides = telegram-desktop=4.1.1
+	provides = telegram-desktop=4.2.0
 	conflicts = telegram-desktop
 	conflicts = forkgram
 	replaces = tdesktop-x64
 	replaces = 64gram-desktop
-	source = https://github.com/TDesktop-x64/tdesktop/releases/download/v1.0.45/64Gram-1.0.45.beta-full.tar.gz
-	source = fix-tgcalls-cstdint.patch
-	b2sums = e90da8391e95993ef44f1012d498c983f2429d39e088a1f81bea197c3ac350fae570c60c5b683cfabb4094422d5c18d587946d0bec0e4a8c26cb33353ec5467a
-	b2sums = e447ff7fb3f764318e9bde1538e85f9dd6f9eddaa3cc0fb5d6e0025d8f0f463d03ecee361938fe82ddc495ba0adf46c0ed836afa7180a96dcba18674fc806492
+	source = https://github.com/TDesktop-x64/tdesktop/releases/download/v1.0.47/64Gram-1.0.47.beta-full.tar.gz
+	source = https://invent.kde.org/frameworks/kcoreaddons/-/archive/v5.98.0/kcoreaddons-v5.98.0.tar.gz
+	source = bundle-kcoreaddons.patch::https://github.com/desktop-app/cmake_helpers/compare/b9f1b60...ilya-fedin:cmake_helpers:6bcdd3fa3618038b1824a2f772543d9db48e8b27.patch
+	b2sums = 823133eaf77333a8fd4f1b6a37dc3faf0016f37c7516661cf9a9eb5c635c3a3308ca79d9fe3dd74dc43a2b6400aafeae732d76ebc483eb4b92fd69adcff9e394
+	b2sums = 4c6f315274c3675d1ad3f64c5656f7f3d9b09eed0d22c05246530449d5366e255c6910bbf4e261a4a12da366a0ad6a7f20d0fa1778d8a4d432623d900b89f3cd
+	b2sums = b1525568cf07159d7130d6c61863e9afd8660707a55e3af0c6f869faeb307a27ebb0ce59d9fa8c6122b0bf21719752db1ade1be032d915e932907de5517f5c75
 
 pkgname = 64gram
