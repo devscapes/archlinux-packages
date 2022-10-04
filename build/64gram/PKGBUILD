@@ -4,10 +4,9 @@
 
 # Maintainer: Albert I <kras@raphielgang.org>
 
-_tdesktop_ver=4.2.0
-_kcoreaddons_ver="5.98.0"
+_tdesktop_ver=4.2.4
 pkgname=64gram
-pkgver=1.0.47.beta
+pkgver=1.0.48
 pkgrel=1
 pkgdesc='Provide Windows 64bit build with enhancements. Linux/MacOS build is a PLUS!'
 arch=('x86_64')
@@ -17,44 +16,18 @@ depends=('hunspell' 'ffmpeg4.4' 'hicolor-icon-theme' 'lz4' 'minizip' 'openal' 't
          'qt6-imageformats' 'qt6-svg' 'qt6-wayland' 'qt6-5compat' 'xxhash' 'glibmm'
          'rnnoise' 'pipewire' 'libxtst' 'libxrandr' 'jemalloc' 'abseil-cpp' 'libdispatch')
 makedepends=('cmake' 'git' 'ninja' 'python' 'range-v3' 'tl-expected' 'microsoft-gsl' 'meson'
-             'extra-cmake-modules' 'wayland-protocols' 'plasma-wayland-protocols' 'libtg_owt'
-             'dos2unix') # well, screw you people who do stuffs on Windows
+             'extra-cmake-modules' 'wayland-protocols' 'plasma-wayland-protocols' 'libtg_owt')
 optdepends=('webkit2gtk: embedded browser features'
             'xdg-desktop-portal: desktop integration')
 provides=("telegram-desktop=$_tdesktop_ver")
 replaces=('tdesktop-x64' '64gram-desktop')
 conflicts=('telegram-desktop' 'forkgram')
-source=("https://github.com/TDesktop-x64/tdesktop/releases/download/v${pkgver/.beta}/64Gram-$pkgver-full.tar.gz"
-        "https://invent.kde.org/frameworks/kcoreaddons/-/archive/v$_kcoreaddons_ver/kcoreaddons-v$_kcoreaddons_ver.tar.gz"
-        "bundle-kcoreaddons.patch::https://github.com/desktop-app/cmake_helpers/compare/b9f1b60...ilya-fedin:cmake_helpers:6bcdd3fa3618038b1824a2f772543d9db48e8b27.patch")
-b2sums=('823133eaf77333a8fd4f1b6a37dc3faf0016f37c7516661cf9a9eb5c635c3a3308ca79d9fe3dd74dc43a2b6400aafeae732d76ebc483eb4b92fd69adcff9e394'
-        '4c6f315274c3675d1ad3f64c5656f7f3d9b09eed0d22c05246530449d5366e255c6910bbf4e261a4a12da366a0ad6a7f20d0fa1778d8a4d432623d900b89f3cd'
-        'b1525568cf07159d7130d6c61863e9afd8660707a55e3af0c6f869faeb307a27ebb0ce59d9fa8c6122b0bf21719752db1ade1be032d915e932907de5517f5c75')
+source=("https://github.com/TDesktop-x64/tdesktop/releases/download/v${pkgver/.beta}/64Gram-$pkgver-full.tar.gz")
+b2sums=('5ffc5c10002e9cf5d233df7d815e346607616b428f4c0d2189c08e1a5e3412663fe76a477cdf890a64a42de958e8424d5f633cf3f63a48fa3dd114f52cc19b64')
 
 prepare() {
     cd "64Gram-${pkgver/.beta}-full"
-    mv "$srcdir/kcoreaddons-v$_kcoreaddons_ver" Telegram/ThirdParty/kcoreaddons
-
     rm -rf Telegram/ThirdParty/libtgvoip/webrtc_dsp/absl
-
-    # Convert line endings: CRLF -> LF before patching
-    dos2unix_file='
-        cmake/external/CMakeLists.txt
-        cmake/external/kcoreaddons/CMakeLists.txt
-        cmake/external/kcoreaddons/KUrlMimeData
-        cmake/external/qt/CMakeLists.txt
-        cmake/external/qt/package.cmake
-        cmake/external/qt/qt_static_plugins/CMakeLists.txt
-        cmake/external/qt/qt_static_plugins/qt_static_plugins.cpp
-        cmake/options_linux.cmake
-    '
-    dos2unix $dos2unix_file
-
-    # Using ilya-fedin/cmake_helpers bundled-kcoreaddons branch for now: https://github.com/telegramdesktop/tdesktop/issues/25073
-    patch -Np1 -i "$srcdir"/bundle-kcoreaddons.patch -d cmake
-
-    # Upstream suggested sed headers: https://github.com/telegramdesktop/tdesktop/issues/25073#issuecomment-1253908867
-    find . -type f \( -iname '*.h' -or -iname '*.cpp' \) -print0 | xargs -0 sed -i 's/<KUrlMimeData>/<kurlmimedata.h>/g;s/<KShell>/<kshell.h>/g;s/<KSandbox>/<ksandbox.h>/g'
 }
 
 build() {
