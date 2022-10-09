@@ -2,7 +2,7 @@
 # Contributor: Jan0660 <jan0660@tutanota.com>
 
 pkgname=oh-my-posh
-pkgver=11.3.0
+pkgver=12.0.1
 pkgrel=1
 pkgdesc="A prompt theme engine for any shell."
 arch=('x86_64')
