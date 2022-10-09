@@ -23,6 +23,8 @@ Note that some interventions are merely about prepending `custom:` before SPDX i
 | |-- pkgname.diff
 | \-- (all other PKGBUILD diffs)
 |
+|-- .gitignore
+|
 \-- .gitmodules # (out of tree repositories)
 ```
 
