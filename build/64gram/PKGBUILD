@@ -6,7 +6,7 @@
 
 _tdesktop_ver=4.2.4
 pkgname=64gram
-pkgver=1.0.49
+pkgver=1.0.50
 pkgrel=1
 pkgdesc='Provide Windows 64bit build with enhancements. Linux/MacOS build is a PLUS!'
 arch=('x86_64')
@@ -23,7 +23,7 @@ provides=("telegram-desktop=$_tdesktop_ver")
 replaces=('tdesktop-x64' '64gram-desktop')
 conflicts=('telegram-desktop' 'forkgram')
 source=("https://github.com/TDesktop-x64/tdesktop/releases/download/v${pkgver/.beta}/64Gram-$pkgver-full.tar.gz")
-b2sums=('33c359f8ac5e940d9d3ed915da6d74fbe00cb53a71bd78562e8ddeb7a717468b5111b89322de581ecd5116be9ff07c054f873648d5902e9020cc711aea5b8faf')
+b2sums=('505e5c88a7f6a0746e8915b34943c0dcbef05069c337efa6ed1000e6df48cb596cb5d1feb7e576b232a09500904e07ed1da2e40c49528af2ed0e4f00f621b352')
 
 prepare() {
     cd "64Gram-${pkgver/.beta}-full"
