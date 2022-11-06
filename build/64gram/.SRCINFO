@@ -1,7 +1,7 @@
 pkgbase = 64gram
 	pkgdesc = Provide Windows 64bit build with enhancements. Linux/MacOS build is a PLUS!
 	pkgver = 1.0.50
-	pkgrel = 1
+	pkgrel = 2
 	url = https://64gr.am
 	arch = x86_64
 	license = GPL3
