@@ -1,0 +1,16 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 4668975..1bdefac 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -4,9 +4,9 @@ _gitname=inputs
+ pkgver=0.5.0
+ pkgrel=1
+ pkgdesc="Cross-platform Python support for keyboards, mice and gamepads"
+-arch=('i686' 'x86_64' 'armv7h')
++arch=('any')
+ url="https://github.com/zeth/inputs"
+-licens="BSD 3"
++license=('custom:BSD-3-Clause')
+ depends=('python' 'python-setuptools')
+ makedepends=('git')
+ 
