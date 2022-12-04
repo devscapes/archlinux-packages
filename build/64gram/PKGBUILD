@@ -4,9 +4,9 @@
 
 # Maintainer: Albert I <kras@raphielgang.org>
 
-_tdesktop_ver=4.3.3
+_tdesktop_ver=4.3.4
 pkgname=64gram
-pkgver=1.0.56.beta
+pkgver=1.0.57
 _pkgver=${pkgver/.beta}
 pkgrel=1
 pkgdesc='Provide Windows 64bit build with enhancements. Linux/MacOS build is a PLUS!'
@@ -16,7 +16,7 @@ license=('GPL3')
 depends=('hunspell' 'ffmpeg4.4' 'hicolor-icon-theme' 'lz4' 'minizip' 'openal' 'ttf-opensans'
          'qt6-imageformats' 'qt6-svg' 'qt6-wayland' 'qt6-5compat' 'xxhash' 'glibmm-2.68'
          'rnnoise' 'pipewire' 'libxtst' 'libxrandr' 'jemalloc' 'abseil-cpp' 'libdispatch'
-         'openssl-1.1')
+         'openssl-1.1' 'protobuf')
 makedepends=('cmake' 'git' 'ninja' 'python' 'range-v3' 'tl-expected' 'microsoft-gsl' 'meson'
              'extra-cmake-modules' 'wayland-protocols' 'plasma-wayland-protocols' 'libtg_owt')
 optdepends=('webkit2gtk: embedded browser features'
@@ -25,7 +25,7 @@ provides=("telegram-desktop=$_tdesktop_ver")
 replaces=('tdesktop-x64' '64gram-desktop')
 conflicts=('telegram-desktop' 'forkgram')
 source=("https://github.com/TDesktop-x64/tdesktop/releases/download/v${_pkgver}/64Gram-${_pkgver}-full.tar.gz")
-b2sums=('2602f55fe2c59f4ea1d3d6bd2c00ca4f4ce8103f84c1f46384c8ca11c53353aa7e65b4cca92aeba1ec593b605c71772f03e63bf29c65b80d49021021c05c4101')
+b2sums=('b777301f87101c6b421f494bbe365e078d312f697fb56dc574d09742e4cd2171c9fb3534ad8478602d0cb6ef33921376b4dd9c242dbe3382897b6bef32fa44db')
 
 prepare() {
     cd "64Gram-${_pkgver}-full"
