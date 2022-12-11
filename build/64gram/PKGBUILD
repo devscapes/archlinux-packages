@@ -4,16 +4,16 @@
 
 # Maintainer: Albert I <kras@raphielgang.org>
 
-_tdesktop_ver=4.3.4
+_tdesktop_ver=4.4.1
 pkgname=64gram
-pkgver=1.0.57
+pkgver=1.0.58
 _pkgver=${pkgver/.beta}
 pkgrel=1
 pkgdesc='Provide Windows 64bit build with enhancements. Linux/MacOS build is a PLUS!'
 arch=('x86_64')
 url="https://64gr.am"
 license=('GPL3')
-depends=('hunspell' 'ffmpeg4.4' 'hicolor-icon-theme' 'lz4' 'minizip' 'openal' 'ttf-opensans'
+depends=('hunspell' 'ffmpeg' 'hicolor-icon-theme' 'lz4' 'minizip' 'openal' 'ttf-opensans'
          'qt6-imageformats' 'qt6-svg' 'qt6-wayland' 'qt6-5compat' 'xxhash' 'glibmm-2.68'
          'rnnoise' 'pipewire' 'libxtst' 'libxrandr' 'jemalloc' 'abseil-cpp' 'libdispatch'
          'openssl-1.1' 'protobuf')
@@ -25,7 +25,7 @@ provides=("telegram-desktop=$_tdesktop_ver")
 replaces=('tdesktop-x64' '64gram-desktop')
 conflicts=('telegram-desktop' 'forkgram')
 source=("https://github.com/TDesktop-x64/tdesktop/releases/download/v${_pkgver}/64Gram-${_pkgver}-full.tar.gz")
-b2sums=('b777301f87101c6b421f494bbe365e078d312f697fb56dc574d09742e4cd2171c9fb3534ad8478602d0cb6ef33921376b4dd9c242dbe3382897b6bef32fa44db')
+b2sums=('7bf4efede5e4960bc218c3e708213a6a02fa0ba24f180ecb87fa9f49f855419924d002c3e00804e2e74754e80559d282f0529f8baf04374360d5bc3650412332')
 
 prepare() {
     cd "64Gram-${_pkgver}-full"
@@ -35,7 +35,7 @@ prepare() {
 build() {
     cd "64Gram-${_pkgver}-full"
 
-    export PKG_CONFIG_PATH='/usr/lib/ffmpeg4.4/pkgconfig:/usr/lib/openssl-1.1/pkgconfig'
+    export PKG_CONFIG_PATH='/usr/lib/openssl-1.1/pkgconfig'
     # Turns out we're allowed to use the official API key that telegram uses for their snap builds:
     # https://github.com/telegramdesktop/tdesktop/blob/8fab9167beb2407c1153930ed03a4badd0c2b59f/snap/snapcraft.yaml#L87-L88
     # Thanks @primeos!

@@ -1,6 +1,6 @@
 pkgbase = 64gram
 	pkgdesc = Provide Windows 64bit build with enhancements. Linux/MacOS build is a PLUS!
-	pkgver = 1.0.57
+	pkgver = 1.0.58
 	pkgrel = 1
 	url = https://64gr.am
 	arch = x86_64
@@ -18,7 +18,7 @@ pkgbase = 64gram
 	makedepends = plasma-wayland-protocols
 	makedepends = libtg_owt
 	depends = hunspell
-	depends = ffmpeg4.4
+	depends = ffmpeg
 	depends = hicolor-icon-theme
 	depends = lz4
 	depends = minizip
@@ -41,12 +41,12 @@ pkgbase = 64gram
 	depends = protobuf
 	optdepends = webkit2gtk: embedded browser features
 	optdepends = xdg-desktop-portal: desktop integration
-	provides = telegram-desktop=4.3.4
+	provides = telegram-desktop=4.4.1
 	conflicts = telegram-desktop
 	conflicts = forkgram
 	replaces = tdesktop-x64
 	replaces = 64gram-desktop
-	source = https://github.com/TDesktop-x64/tdesktop/releases/download/v1.0.57/64Gram-1.0.57-full.tar.gz
-	b2sums = b777301f87101c6b421f494bbe365e078d312f697fb56dc574d09742e4cd2171c9fb3534ad8478602d0cb6ef33921376b4dd9c242dbe3382897b6bef32fa44db
+	source = https://github.com/TDesktop-x64/tdesktop/releases/download/v1.0.58/64Gram-1.0.58-full.tar.gz
+	b2sums = 7bf4efede5e4960bc218c3e708213a6a02fa0ba24f180ecb87fa9f49f855419924d002c3e00804e2e74754e80559d282f0529f8baf04374360d5bc3650412332
 
 pkgname = 64gram

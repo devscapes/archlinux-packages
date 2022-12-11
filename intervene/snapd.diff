@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 579be0c..4253bd8 100644
+index b404ae6..a89b6a9 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -13,7 +13,7 @@ pkgrel=1
