@@ -2,7 +2,7 @@
 # Contributor: Jan0660 <jan0660@tutanota.com>
 
 pkgname=oh-my-posh
-pkgver=12.34.5
+pkgver=12.36.0
 pkgrel=1
 pkgdesc="A prompt theme engine for any shell."
 arch=('x86_64')
@@ -33,7 +33,7 @@ package() {
   cd "$srcdir/oh-my-posh"
 
   # install binary
-  install -m755 -Dt "$pkgdir/usr/bin" src/oh-my-posh
+  install -Dm755 src/src "$pkgdir/usr/bin/oh-my-posh"
 
   # install default themes
   install -d "$pkgdir/usr/share/oh-my-posh"

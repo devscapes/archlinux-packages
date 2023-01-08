@@ -1,5 +1,5 @@
 diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
-index 14f9358..da75150 100644
+index 14f9358..532c145 100644
 --- a/trunk/PKGBUILD
 +++ b/trunk/PKGBUILD
 @@ -2,12 +2,13 @@
@@ -14,7 +14,7 @@ index 14f9358..da75150 100644
  pkgver=0.35.0
 -pkgrel=3
 -pkgdesc='a free, open source, and cross-platform media player'
-+pkgrel=1
++pkgrel=2
 +pkgdesc='a free, open source, and cross-platform media player (with Vapoursynth libs)'
  arch=('x86_64')
  # We link against libraries that are licensed GPLv3 explicitly, so our
