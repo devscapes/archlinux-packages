@@ -1,5 +1,5 @@
 diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
-index 14f9358..532c145 100644
+index ff75dde..1816c1f 100644
 --- a/trunk/PKGBUILD
 +++ b/trunk/PKGBUILD
 @@ -2,12 +2,13 @@
@@ -8,55 +8,53 @@ index 14f9358..532c145 100644
  
 -pkgname=mpv
 +_pkgname=mpv
-+pkgname=$_pkgname-vapoursynth
++pkgname=${_pkgname}-vapoursynth
  epoch=1
- _tag='33f10b1aee5fef45960728fe8595d1603c8a9a85' # git rev-parse v${pkgver}
- pkgver=0.35.0
--pkgrel=3
+ _tag='5ae02ccad10542a74b397e39800ec01def0db4e1' # git rev-parse v${pkgver}
+ pkgver=0.35.1
+ pkgrel=1
 -pkgdesc='a free, open source, and cross-platform media player'
-+pkgrel=2
 +pkgdesc='a free, open source, and cross-platform media player (with Vapoursynth libs)'
  arch=('x86_64')
  # We link against libraries that are licensed GPLv3 explicitly, so our
  # package is GPLv3 only as well. (Is this still correct?)
-@@ -23,19 +24,20 @@ depends=('alsa-lib' 'libasound.so' 'desktop-file-utils' 'ffmpeg' 'libavcodec.so'
+@@ -22,12 +23,13 @@ depends=('alsa-lib' 'libasound.so' 'desktop-file-utils' 'ffmpeg' 'libavcodec.so'
+          'libva' 'libva.so' 'libva-drm.so' 'libva-wayland.so' 'libva-x11.so' 'libvdpau' 'libx11'
           'libxext' 'libxinerama' 'libxkbcommon' 'libxkbcommon.so' 'libxpresent' 'libxrandr' 'libxss'
           'libxv' 'luajit' 'mesa' 'mujs' 'pipewire' 'rubberband' 'librubberband.so' 'shaderc'
-          'libshaderc_shared.so' 'uchardet' 'vulkan-icd-loader' 'wayland' 'xdg-utils'
--         'zlib')
-+         'zlib' 'vapoursynth')
- makedepends=('git' 'python-docutils' 'ladspa' 'wayland-protocols'
-              'ffnvcodec-headers' 'vulkan-headers' 'waf')
+-         'libshaderc_shared.so' 'uchardet' 'vulkan-icd-loader' 'wayland' 'zlib')
++         'libshaderc_shared.so' 'uchardet' 'vulkan-icd-loader' 'wayland' 'zlib' 'vapoursynth')
+ makedepends=('git' 'meson' 'python-docutils' 'ladspa' 'wayland-protocols'
+              'ffnvcodec-headers' 'vulkan-headers')
  optdepends=('yt-dlp: for video-sharing websites playback'
              'youtube-dl: for video-sharing websites playback')
 -provides=('libmpv.so')
 +provides=('libmpv.so' 'mpv')
 +conflicts=('mpv')
- options=('debug' '!emptydirs')
+ options=('!emptydirs')
  validpgpkeys=('145077D82501AA20152CACCE8D769208D5E31419') # sfan5 <sfan5@live.de>
  source=("git+https://github.com/mpv-player/mpv.git#tag=${_tag}?signed")
- sha256sums=('SKIP')
+@@ -45,9 +47,10 @@ build() {
+     -Ddvbin=enabled
+     -Ddvdnav=enabled
+     -Dlibarchive=enabled
++    -Dvapoursynth=enabled
+   )
  
- build() {
--  cd ${pkgname}
-+  cd ${_pkgname}
+-  arch-meson "${pkgname}" build "${_meson_options[@]}"
++  arch-meson "${_pkgname}" build "${_meson_options[@]}"
  
-   waf configure --prefix=/usr \
-     --confdir=/etc/mpv \
-@@ -45,13 +47,14 @@ build() {
-     --enable-libarchive \
-     --enable-libmpv-shared \
-     --disable-build-date \
--    --disable-caca
-+    --disable-caca \
-+    --enable-vapoursynth
- 
-   waf build
+   meson compile -C build
  }
+@@ -62,9 +65,9 @@ package() {
+   # delete private entries only required for static linking 
+   sed -i -e '/Requires.private/d' -e '/Libs.private/d' "${pkgdir}"/usr/lib/pkgconfig/mpv.pc
  
- package() {
--  cd ${pkgname}
-+  cd ${_pkgname}
+-  install -m0644 "${pkgname}"/DOCS/{encoding.rst,tech-overview.txt} \
++  install -m0644 "${_pkgname}"/DOCS/{encoding.rst,tech-overview.txt} \
+     "${pkgdir}"/usr/share/doc/mpv
  
-   waf install --destdir="$pkgdir"
- 
+-  install -m0644 "${pkgname}"/TOOLS/lua/* \
++  install -m0644 "${_pkgname}"/TOOLS/lua/* \
+     -D -t "${pkgdir}"/usr/share/mpv/scripts
+ }
