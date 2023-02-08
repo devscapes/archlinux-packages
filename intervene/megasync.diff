@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index bf0b20a..0c44b56 100644
+index bf0b20a..099a107 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -6,7 +6,7 @@
@@ -7,7 +7,7 @@ index bf0b20a..0c44b56 100644
  
  pkgname=megasync
 -pkgver=4.7.3.0
-+pkgver=4.8.1.0
++pkgver=4.8.7.0
  pkgrel=1
  pkgdesc="Easy automated syncing between your computers and your MEGA cloud drive"
  arch=('i686' 'x86_64')
