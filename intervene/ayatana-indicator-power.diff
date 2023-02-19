@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index c5e4f39..8f10c0a 100644
+index 85d7d07..35c8659 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -7,7 +7,7 @@ pkgdesc="Ayatana Indicator showing power state"
@@ -10,4 +10,4 @@ index c5e4f39..8f10c0a 100644
 +makedepends=("cmake-extras" "gettext" "intltool")
  depends=("glib2" "systemd" "libayatana-common>=0.9.5" "libnotify")
  source=("${pkgname}-${pkgver}.tar.gz::https://github.com/AyatanaIndicators/${pkgname}/archive/${pkgver}.tar.gz")
- md5sums=("480b03d514136f635e0534f613b5b5d3")
+ md5sums=("a5204cba16e480baba878e2430fba433")
