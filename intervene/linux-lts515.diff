@@ -1,0 +1,22 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 58577b8..c0d26ee 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -78,7 +78,6 @@ _package() {
+   optdepends=('wireless-regdb: to set the correct wireless channels of your country'
+               'linux-firmware: firmware images needed for some devices')
+   provides=(VIRTUALBOX-GUEST-MODULES WIREGUARD-MODULE KSMBD-MODULE)
+-  replaces=(wireguard-lts)
+ 
+   cd $_srcname
+   local kernver="$(<version)"
+@@ -139,6 +138,9 @@ _package-headers() {
+   # https://bugs.archlinux.org/task/71392
+   install -Dt "$builddir/drivers/iio/common/hid-sensors" -m644 drivers/iio/common/hid-sensors/*.h
+ 
++  # This is a bad idea for shipping, but required in conjunction with kernel lockdown
++  install -Dt "$builddir/certs" -m644 certs/signing_key.{pem,x509} || true
++
+   echo "Installing KConfig files..."
+   find . -name 'Kconfig*' -exec install -Dm644 {} "$builddir/{}" \;
+ 
