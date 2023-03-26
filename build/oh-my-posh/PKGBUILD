@@ -2,12 +2,12 @@
 # Contributor: Jan0660 <jan0660@tutanota.com>
 
 pkgname=oh-my-posh
-pkgver=14.8.0
+pkgver=14.19.1
 pkgrel=1
 pkgdesc="A prompt theme engine for any shell."
 arch=('x86_64')
 url="https://ohmyposh.dev"
-license=('custom:MIT')
+license=('MIT')
 depends=('glibc')
 makedepends=('git' 'go')
 source=("git+https://github.com/JanDeDobbeleer/oh-my-posh.git#tag=v$pkgver")

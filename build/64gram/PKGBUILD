@@ -4,12 +4,12 @@
 
 # Maintainer: Albert I <kras@raphielgang.org>
 
-_tdesktop_ver=4.6.3
+_tdesktop_ver=4.6.12
 pkgname=64gram
-pkgver=1.0.70
+pkgver=1.0.81
 _pkgver=${pkgver/.beta}
 pkgrel=1
-pkgdesc='Provide Windows 64bit build with enhancements. Linux/MacOS build is a PLUS!'
+pkgdesc='Provide Windows 64bit build with some enhancements.'
 arch=('x86_64')
 url="https://64gr.am"
 license=('GPL3')
@@ -25,7 +25,7 @@ provides=("telegram-desktop=$_tdesktop_ver")
 replaces=('tdesktop-x64' '64gram-desktop')
 conflicts=('telegram-desktop' 'forkgram')
 source=("https://github.com/TDesktop-x64/tdesktop/releases/download/v${_pkgver}/64Gram-${_pkgver}-full.tar.gz")
-b2sums=('d9010919a3c13edf9136b0dd17a05995347ac5fc7e4548823f15e2f38307153805b766a2c202db72ffa2b8671d261d79cf3289028f610d1afa68e6051a995e18')
+b2sums=('00174aa26b17bb004320f11170b4d0125bf9b9d8c9847b917cb10d6df116e50884269f27268c8d63c8adc2bd79aae20eefda104debcb992e31c3daeb82aae943')
 
 build() {
     CXXFLAGS+=' -ffat-lto-objects'

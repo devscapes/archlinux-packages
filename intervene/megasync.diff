@@ -1,22 +1,25 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index bf0b20a..099a107 100644
+index 49bb1e1..f6b1061 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -6,7 +6,7 @@
  # Contributor: Hexchain Tong <i at hexchain dot org>
  
  pkgname=megasync
--pkgver=4.7.3.0
-+pkgver=4.8.7.0
+-pkgver=4.9.0.0
++pkgver=4.9.1.0
  pkgrel=1
  pkgdesc="Easy automated syncing between your computers and your MEGA cloud drive"
  arch=('i686' 'x86_64')
-@@ -16,7 +16,7 @@ depends=('c-ares' 'crypto++' 'libsodium' 'hicolor-icon-theme' 'libuv'
+@@ -16,9 +16,9 @@ depends=('c-ares' 'crypto++' 'libsodium' 'hicolor-icon-theme' 'libuv'
           'qt5-svg' 'qt5-x11extras' 'libmediainfo' 'libraw' 'qt5-base'
           'ffmpeg' 'libpdfium' 'freeimage' 'libudev.so')
  makedepends=('qt5-tools' 'swig' 'doxygen' 'lsb-release' 'git')
 -_extname="_Linux"
 +_extname="_Win"
  source=("git+https://github.com/meganz/MEGAsync.git#tag=v${pkgver}${_extname}"
-         "meganz-sdk::git+https://github.com/meganz/sdk.git"
+-        "meganz-sdk::git+https://github.com/meganz/sdk.git"
++        "meganz-sdk::git+https://github.com/meganz/sdk.git#tag=v4.16.0c"
          "pdfium.patch"
+         "ffmpeg.patch")
+ sha256sums=('SKIP'

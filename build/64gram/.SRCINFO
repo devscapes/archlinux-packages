@@ -1,6 +1,6 @@
 pkgbase = 64gram
-	pkgdesc = Provide Windows 64bit build with enhancements. Linux/MacOS build is a PLUS!
-	pkgver = 1.0.70
+	pkgdesc = Provide Windows 64bit build with some enhancements.
+	pkgver = 1.0.81
 	pkgrel = 1
 	url = https://64gr.am
 	arch = x86_64
@@ -41,12 +41,12 @@ pkgbase = 64gram
 	depends = protobuf
 	optdepends = webkit2gtk: embedded browser features
 	optdepends = xdg-desktop-portal: desktop integration
-	provides = telegram-desktop=4.6.3
+	provides = telegram-desktop=4.6.12
 	conflicts = telegram-desktop
 	conflicts = forkgram
 	replaces = tdesktop-x64
 	replaces = 64gram-desktop
-	source = https://github.com/TDesktop-x64/tdesktop/releases/download/v1.0.70/64Gram-1.0.70-full.tar.gz
-	b2sums = d9010919a3c13edf9136b0dd17a05995347ac5fc7e4548823f15e2f38307153805b766a2c202db72ffa2b8671d261d79cf3289028f610d1afa68e6051a995e18
+	source = https://github.com/TDesktop-x64/tdesktop/releases/download/v1.0.81/64Gram-1.0.81-full.tar.gz
+	b2sums = 77a2a5b7d0a46d21a426df86fba2f079addca66d0049e69129ad12a67d5682dd375fd7933e4cdc0f73d8f75b6d48c36a1ce34f0190b3d65ef9a2b178e48eb6c7
 
 pkgname = 64gram

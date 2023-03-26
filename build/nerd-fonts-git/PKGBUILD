@@ -1,66 +1,89 @@
-# Maintainer: Frederic Bezies <fredbezies at gmail dot com>
-# Contributor: Morten Linderud <morten@linderud.pw> 
+# Maintainer: Albert I <kras@raphielgang.org>
+# Contributor: Frederic Bezies <fredbezies at gmail dot com>
+# Contributor: Morten Linderud <morten@linderud.pw>
+
 pkgname=nerd-fonts-git
-pkgver=2.3.3.r73.g5d57dbe9a
+pkgver=2.3.3.r127.g95de53343
 pkgrel=1
 epoch=1
-pkgdesc="Iconic font aggregator, collection, and patcher: 34 patched fonts (77k variations). Includes popular glyph collections such as Font Awesome & fonts such as Hack"
+pkgdesc="Iconic font aggregator, collection, and patcher (git version, super package)"
 _gitname=nerd-fonts
 arch=('any')
 url='https://github.com/ryanoasis/nerd-fonts'
 license=('MIT')
-conflicts=('nerd-fonts' 'ttf-iosevka-nerd')
+options=('!debug' '!strip')
 makedepends=('git' 'fontconfig' 'xorg-mkfontscale' 'xorg-bdftopcf' 'xorg-font-util')
+# Patched Nerd Fonts available in the [community] repo
+nerd_community_pkgs=(
+    # OTF packages
+    'otf-aurulent-nerd' 'otf-cascadia-code-nerd' 'otf-codenewroman-nerd' 'otf-droid-nerd'
+    'otf-firamono-nerd' 'otf-hasklig-nerd' 'otf-hermit-nerd' 'otf-opendyslexic-nerd'
+    'otf-overpass-nerd'
+    # TTF packages
+    'ttf-3270-nerd' 'ttf-agave-nerd' 'ttf-anonymouspro-nerd' 'ttf-arimo-nerd'
+    'ttf-bigblueterminal-nerd' 'ttf-bitstream-vera-mono-nerd' 'ttf-cousine-nerd'
+    'ttf-daddytime-mono-nerd' 'ttf-dejavu-nerd' 'ttf-fantasque-nerd' 'ttf-firacode-nerd'
+    'ttf-go-nerd' 'ttf-hack-nerd' 'ttf-heavydata-nerd' 'ttf-iawriter-nerd' 'ttf-ibmplex-mono-nerd'
+    'ttf-inconsolata-go-nerd' 'ttf-inconsolata-lgc-nerd' 'ttf-inconsolata-nerd' 'ttf-iosevka-nerd'
+    'ttf-jetbrains-mono-nerd' 'ttf-lekton-nerd' 'ttf-liberation-mono-nerd' 'ttf-lilex-nerd'
+    'ttf-meslo-nerd' 'ttf-monofur-nerd' 'ttf-monoid-nerd' 'ttf-mononoki-nerd' 'ttf-mplus-nerd'
+    'ttf-noto-nerd' 'ttf-profont-nerd' 'ttf-proggyclean-nerd' 'ttf-roboto-mono-nerd'
+    'ttf-sharetech-mono-nerd' 'ttf-sourcecodepro-nerd' 'ttf-space-mono-nerd' 'ttf-terminus-nerd'
+    'ttf-tinos-nerd' 'ttf-ubuntu-mono-nerd' 'ttf-ubuntu-nerd' 'ttf-victor-mono-nerd'
+)
+# Other Nerd Fonts packages available in AUR
+# for provides=() and conflicts=(), all except few packages that don't make sense
+nerd_aur_provides_pkgs=(
+    'nerd-fonts-complete-mono-glyphs' 'nerd-fonts-complete-starship' 'nerd-fonts-gabmus'
+    'ttf-blex-nerd-font-git' 'ttf-nerd-fonts-hack-complete-git'
+)
+# for replaces and conflicts=(), counterparts on [community] repo exist
+nerd_aur_replaces_pkgs=(
+    'nerd-fonts-noto-sans-regular-complete' 'nerd-fonts-profont' 'ttf-literation'
+)
+# 3rd party repos still shipping nerd-fonts- prefixed packages are the worst
+# for replace=() and conflicts=(), as what {o,t}tf-*-nerd packages in [community] repo do
+nerd_3p_repo_pkgs=(
+    'nerd-fonts-3270' 'nerd-fonts-agave' 'nerd-fonts-anonymous-pro' 'nerd-fonts-arimo'
+    'nerd-fonts-aurulent-sans-mono' 'nerd-fonts-bigblue-terminal'
+    'nerd-fonts-bitstream-vera-sans-mono' 'nerd-fonts-cascadia-code' 'nerd-fonts-code-new-roman'
+    'nerd-fonts-complete' 'nerd-fonts-cousine' 'nerd-fonts-daddytimemono'
+    'nerd-fonts-dejavu-sans-mono' 'nerd-fonts-droid-sans-mono' 'nerd-fonts-fantasque-sans-mono'
+    'nerd-fonts-fira' 'nerd-fonts-fira-code' 'nerd-fonts-go' 'nerd-fonts-gohu' 'nerd-fonts-hack'
+    'nerd-fonts-hasklig' 'nerd-fonts-heavy-data' 'nerd-fonts-hermit' 'nerd-fonts-ia-writer'
+    'nerd-fonts-ibm-plex-mono' 'nerd-fonts-inconsolata' 'nerd-fonts-inconsolata-go'
+    'nerd-fonts-inconsolata-lgc' 'nerd-fonts-iosevka' 'nerd-fonts-jetbrains-mono'
+    'nerd-fonts-lekton' 'nerd-fonts-liberation' 'nerd-fonts-meslo-lg' 'nerd-fonts-monofur'
+    'nerd-fonts-monoid' 'nerd-fonts-mononoki' 'nerd-fonts-mplus' 'nerd-fonts-noto'
+    'nerd-fonts-opendyslexic' 'nerd-fonts-overpass' 'nerd-fonts-profont' 'nerd-fonts-proggycleantt'
+    'nerd-fonts-robotomono' 'nerd-fonts-share-tech-mono' 'nerd-fonts-source-code-pro'
+    'nerd-fonts-space-mono' 'nerd-fonts-terminus' 'nerd-fonts-tinos' 'nerd-fonts-ubuntu'
+    'nerd-fonts-ubuntu-mono' 'nerd-fonts-victor-mono'
+)
+provides=(
+    'ttf-font-nerd' # spaceship
+    "${nerd_community_pkgs[@]}"
+    "${nerd_aur_provides_pkgs[@]}"
+)
+replaces=(
+    "${nerd_aur_replaces_pkgs[@]}"
+    "${nerd_3p_repo_pkgs[@]}"
+)
 conflicts=(
-    'nerd-fonts'
-    'nerd-fonts-complete'
-    'nerd-fonts-complete-mono-glyphs'
-    'nerd-fonts-anonymous-pro'
-    'nerd-fonts-arimo'
-    'nerd-fonts-bitstream-vera-mono'
-    'nerd-fonts-cascadia-code'
-    'nerd-fonts-dejavu-complete'
-    'nerd-fonts-droid-sans-mono'
-    'nerd-fonts-fantasque-sans-mono'
-    'nerd-fonts-fira-code'
-    'nerd-fonts-fira-mono'
-    'nerd-fonts-go-mono'
-    'nerd-fonts-hack'
-    'nerd-fonts-hermit'
-    'nerd-fonts-ibm-plex-mono'
-    'nerd-fonts-inconsolata'
-    'nerd-fonts-inconsolata-go'
-    'nerd-fonts-iosevka'
-    'nerd-fonts-liberation-mono'
-    'nerd-fonts-noto'
-    'nerd-fonts-noto-sans-mono'
-    'nerd-fonts-noto-sans-regular-complete'
-    'nerd-fonts-meslo'
-    'nerd-fonts-monoid'
-    'nerd-fonts-mononoki'
-    'nerd-fonts-mplus'
-    'nerd-fonts-profont'
-    'nerd-fonts-roboto-mono'
-    'nerd-fonts-source-code-pro'
-    'nerd-fonts-terminus'
-    'nerd-fonts-ubuntu-mono'
-    'nerd-fonts-victor-mono'
-    'otf-nerd-fonts-fira-code'
-    'ttf-nerd-fonts-hack-complete-git'
-    'ttf-iosevka-nerd')
-provides=('nerd-fonts')
+    "${nerd_community_pkgs[@]}"
+    "${nerd_aur_provides_pkgs[@]}"
+    "${nerd_aur_replaces_pkgs[@]}"
+    "${nerd_3p_repo_pkgs[@]}"
+)
 source=('git+https://github.com/ryanoasis/nerd-fonts.git')
 sha256sums=('SKIP')
 
 pkgver() {
-  cd "$_gitname"
-  #printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
-  git describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g' | cut -c2-47
+  git -C "$_gitname" describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g' | cut -c2-47
 }
 
 package() {
-
- # Prepare destination directories
+  # Prepare destination directories
   libdir="${pkgdir}/usr/lib/${pkgname}"
   otfdir="${pkgdir}/usr/share/fonts/${pkgname}/OTF"
   ttfdir="${pkgdir}/usr/share/fonts/${pkgname}/TTF"
@@ -70,11 +93,20 @@ package() {
   install -dm755 "${ttfdir}"
 
   # Install fonts
-  find "${srcdir}/${_gitname}/patched-fonts" -iname "*.ttf" -execdir install -m644 {} "${ttfdir}/{}" \;
-  find "${srcdir}/${_gitname}/patched-fonts" -iname "*.otf" -execdir install -m644 {} "${otfdir}/{}" \;
+  # Intervention: Avoid installing Windows-compatibile fonts for obvious reasons, and symbols-only
+  # fonts for compatibility reasons because don't want to replace official packages in any capacity
+  find "${srcdir}/${_gitname}/patched-fonts" \
+    -not \( -path "${srcdir}/${_gitname}/patched-fonts/NerdFontsSymbolsOnly" -prune \) \
+    -not \( -iname "*Windows Compatible*" -prune \) -iname "*.ttf" \
+    -execdir install -m644 {} "${ttfdir}/{}" \;
+  find "${srcdir}/${_gitname}/patched-fonts" \
+    -not \( -path "${srcdir}/${_gitname}/patched-fonts/NerdFontsSymbolsOnly" -prune \) \
+    -not \( -iname "*Windows Compatible*" -prune \) -iname "*.otf" \
+    -execdir install -m644 {} "${otfdir}/{}" \;
 
   # Install scripts
-  find "${srcdir}/${_gitname}/bin/scripts/lib" -iname "*.sh" -execdir install -m644 {} "${libdir}/{}" \;
+  find "${srcdir}/${_gitname}/bin/scripts/lib" -iname "*.sh" \
+    -execdir install -m644 {} "${libdir}/{}" \;
 
   # Install license
   install -dm755 "${pkgdir}/usr/share/licenses/${pkgname}"
