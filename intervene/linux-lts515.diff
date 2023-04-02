@@ -145,19 +145,10 @@ index 0000000..0d0a8c0
 + 	BUILD_BUG_ON(sizeof(boot_params) != 4096);
 + 	memcpy(&boot_params.hdr, &hdr, sizeof(hdr));
 diff --git a/PKGBUILD b/PKGBUILD
-index 1262fd0..7a67654 100644
+index c594169..3d39e2d 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -2,7 +2,7 @@
- # Contributor: Andreas Radke <andyrtr@archlinux.org>
- 
- pkgbase=linux-lts515
--pkgver=5.15.102
-+pkgver=5.15.104
- pkgrel=1
- pkgdesc='LTS Linux 5.15.x'
- url="https://www.kernel.org/"
-@@ -22,20 +22,22 @@ source=(
+@@ -22,6 +22,7 @@ source=(
    0003-iommu-intel-do-deep-dma-unmapping-to-avoid-kernel-fl.patch
    0004-Bluetooth-btintel-Fix-bdaddress-comparison-with-garb.patch
    0005-lg-laptop-Recognize-more-models.patch
@@ -165,14 +156,12 @@ index 1262fd0..7a67654 100644
  )
  validpgpkeys=(
    'ABAF11C65A2970B130ABE3C479BE3E4300411886'  # Linus Torvalds
-   '647F28654894E3BD457199BE38DBBDC86092693E'  # Greg Kroah-Hartman
- )
+@@ -30,12 +31,13 @@ validpgpkeys=(
  # https://www.kernel.org/pub/linux/kernel/v5.x/sha256sums.asc
--sha256sums=('441cddfb970b97759eebdb9b142673662ce0770500e3ae8bcd4b90af369b01e6'
-+sha256sums=('71c532ce09992e470f3259ffeb38d2b5bba990c243a559e4726a57412bd36b54'
+ sha256sums=('01b537650332d2852722a626169cf7e5e798d11f9b578171b477868555f5e44f'
              'SKIP'
--            '38ed5b8cda737ff414cfb1ee03ae1e1740709496a431f0f20d2688536a04356f'
-+            '79710e1fedd71e9ef018a125f76f60020a1d192b150f7f3703a73a10dbe3f564'
+-            '7b80ea3c8cd2cd4bbb079b565770eaac31c13c64fe3ce519c3ed2aa6c85af547'
++            '06974a3e04481612424e113be0bf27fa7b9addec626fc0a8aa86d0c2910aff86'
              '3b5cfc9ca9cf778ea2c4b619b933cda26519969df2d764b5a687f63cf59974cd'
              'c175fbb141c3cec013c799f694d88310375ac5456042f6a4a1adc7667836d786'
              '8357f000b2b622e73dcfd41c2bad42b5e99fffe8f7ee64f774aa771f86cef43c'
@@ -203,17 +192,22 @@ index 1262fd0..7a67654 100644
    find . -name 'Kconfig*' -exec install -Dm644 {} "$builddir/{}" \;
  
 diff --git a/config b/config
-index cb6b774..425ade4 100644
+index ef339a4..7606dc4 100644
 --- a/config
 +++ b/config
-@@ -1,6 +1,6 @@
- #
- # Automatically generated file; DO NOT EDIT.
--# Linux/x86 5.15.102 Kernel Configuration
-+# Linux/x86 5.15.104 Kernel Configuration
- #
- CONFIG_CC_VERSION_TEXT="gcc (GCC) 12.2.1 20230201"
- CONFIG_CC_IS_GCC=y
+@@ -872,9 +872,9 @@ CONFIG_MODULE_SIG_ALL=y
+ # CONFIG_MODULE_SIG_SHA1 is not set
+ # CONFIG_MODULE_SIG_SHA224 is not set
+ # CONFIG_MODULE_SIG_SHA256 is not set
+-# CONFIG_MODULE_SIG_SHA384 is not set
+-CONFIG_MODULE_SIG_SHA512=y
+-CONFIG_MODULE_SIG_HASH="sha512"
++CONFIG_MODULE_SIG_SHA384=y
++# CONFIG_MODULE_SIG_SHA512 is not set
++CONFIG_MODULE_SIG_HASH="sha384"
+ # CONFIG_MODULE_COMPRESS_NONE is not set
+ # CONFIG_MODULE_COMPRESS_GZIP is not set
+ # CONFIG_MODULE_COMPRESS_XZ is not set
 @@ -10375,8 +10375,8 @@ CONFIG_DEBUG_INFO=y
  # CONFIG_DEBUG_INFO_COMPRESSED is not set
  # CONFIG_DEBUG_INFO_SPLIT is not set
