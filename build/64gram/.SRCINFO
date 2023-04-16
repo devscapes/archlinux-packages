@@ -1,7 +1,7 @@
 pkgbase = 64gram
 	pkgdesc = Provide Windows 64bit build with some enhancements.
 	pkgver = 1.0.81
-	pkgrel = 1
+	pkgrel = 2
 	url = https://64gr.am
 	arch = x86_64
 	license = GPL3
@@ -47,6 +47,6 @@ pkgbase = 64gram
 	replaces = tdesktop-x64
 	replaces = 64gram-desktop
 	source = https://github.com/TDesktop-x64/tdesktop/releases/download/v1.0.81/64Gram-1.0.81-full.tar.gz
-	b2sums = 77a2a5b7d0a46d21a426df86fba2f079addca66d0049e69129ad12a67d5682dd375fd7933e4cdc0f73d8f75b6d48c36a1ce34f0190b3d65ef9a2b178e48eb6c7
+	b2sums = 00174aa26b17bb004320f11170b4d0125bf9b9d8c9847b917cb10d6df116e50884269f27268c8d63c8adc2bd79aae20eefda104debcb992e31c3daeb82aae943
 
 pkgname = 64gram

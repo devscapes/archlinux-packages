@@ -1,0 +1,56 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index b890cd6..18f943a 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -8,7 +8,7 @@
+ _pkgbase=r8168
+ pkgname=${_pkgbase}-dkms
+ pkgver=8.051.02
+-pkgrel=2
++pkgrel=3
+ pkgdesc="A kernel module for Realtek 8168 network cards (DKMS version)"
+ url="https://github.com/mtorromeo/r8168"
+ license=("GPL")
+@@ -18,10 +18,10 @@ makedepends=('git')
+ conflicts=("${_pkgbase}")
+ provides=("${_pkgbase}")
+ source=("r8168-dkms::git+https://github.com/mtorromeo/r8168.git"
+-        "${pkgname}-6.1.patch::https://github.com/mtorromeo/r8168/pull/47.patch"
++        "${pkgname}-6.1.patch"
+         "dkms.conf")
+ sha256sums=('SKIP'
+-            'b7ef09e7496715b7576b7a3bff5a96e0e07c0bb02cd5bb5805415be20b883f60'
++            'b6f350cb52ac1e200fb9559e25be465d663defb7fe909afbac7fc919abc30816'
+             'd37b8acbd4fe06f81538581712a04751a96fc37bad3a4bd3ae8329f8744c49b3')
+ install=r8168-dkms.install
+ 
+@@ -39,7 +39,4 @@ package() {
+ 
+ 	cd "${pkgname}"
+ 	cp -dr --no-preserve='ownership' src "${pkgdir}/usr/src/${_pkgbase}-${pkgver}/src"
+-
+-	echo "blacklist r8169" | \
+-		install -Dm644 /dev/stdin "$pkgdir/usr/lib/modprobe.d/$pkgname.conf"
+ }
+diff --git a/r8168-dkms-6.1.patch b/r8168-dkms-6.1.patch
+new file mode 100644
+index 0000000..24cbc65
+--- /dev/null
++++ b/r8168-dkms-6.1.patch
+@@ -0,0 +1,16 @@
++diff --git a/src/r8168.h b/src/r8168.h
++index 511c648..d0573eb 100755
++--- a/src/r8168.h
+++++ b/src/r8168.h
++@@ -566,7 +566,11 @@ typedef int *napi_budget;
++ typedef struct napi_struct *napi_ptr;
++ typedef int napi_budget;
++ 
+++#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 1, 0)
++ #define RTL_NAPI_CONFIG(ndev, priv, function, weight)   netif_napi_add(ndev, &priv->napi, function, weight)
+++#else
+++#define RTL_NAPI_CONFIG(ndev, priv, function, weight)   netif_napi_add_weight(ndev, &priv->napi, function, weight)
+++#endif
++ #define RTL_NAPI_QUOTA(budget, ndev)            min(budget, budget)
++ #define RTL_GET_PRIV(stuct_ptr, priv_struct)        container_of(stuct_ptr, priv_struct, stuct_ptr)
++ #define RTL_GET_NETDEV(priv_ptr)            struct net_device *dev = priv_ptr->dev;

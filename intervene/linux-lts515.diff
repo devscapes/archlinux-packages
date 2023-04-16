@@ -145,7 +145,7 @@ index 0000000..0d0a8c0
 + 	BUILD_BUG_ON(sizeof(boot_params) != 4096);
 + 	memcpy(&boot_params.hdr, &hdr, sizeof(hdr));
 diff --git a/PKGBUILD b/PKGBUILD
-index 2c4fbcb..8a1c64b 100644
+index 84e9825..0b889b6 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -22,6 +22,7 @@ source=(
@@ -158,10 +158,10 @@ index 2c4fbcb..8a1c64b 100644
    'ABAF11C65A2970B130ABE3C479BE3E4300411886'  # Linus Torvalds
 @@ -30,12 +31,13 @@ validpgpkeys=(
  # https://www.kernel.org/pub/linux/kernel/v5.x/sha256sums.asc
- sha256sums=('84e6934f828033570966e2a56fe8b72dc6e1409be296c66f4bf3c8ca6e3c8fe4'
+ sha256sums=('19370e769045681f52cceedb14ecda97e89b1b058133a0c8ad45d35ffbc5afa8'
              'SKIP'
--            '7b80ea3c8cd2cd4bbb079b565770eaac31c13c64fe3ce519c3ed2aa6c85af547'
-+            '2957b7c91aef5fd0c31093121620d9e2857de69c0527be97c39f6a9ee909e513'
+-            '53c67354cf91a7dafb964485a5496b208dffdc55436828e7b155b3f6f2e651b6'
++            'be1d1bb40ef00011043aa8fceee14dca9237bb0175bc80dd0160bf9cfb427aea'
              '3b5cfc9ca9cf778ea2c4b619b933cda26519969df2d764b5a687f63cf59974cd'
              'c175fbb141c3cec013c799f694d88310375ac5456042f6a4a1adc7667836d786'
              '8357f000b2b622e73dcfd41c2bad42b5e99fffe8f7ee64f774aa771f86cef43c'
@@ -200,17 +200,9 @@ index 2c4fbcb..8a1c64b 100644
    find . -name 'Kconfig*' -exec install -Dm644 {} "$builddir/{}" \;
  
 diff --git a/config b/config
-index ef339a4..5f5f516 100644
+index b8495e0..e21d387 100644
 --- a/config
 +++ b/config
-@@ -1,6 +1,6 @@
- #
- # Automatically generated file; DO NOT EDIT.
--# Linux/x86 5.15.105 Kernel Configuration
-+# Linux/x86 5.15.106 Kernel Configuration
- #
- CONFIG_CC_VERSION_TEXT="gcc (GCC) 12.2.1 20230201"
- CONFIG_CC_IS_GCC=y
 @@ -872,9 +872,9 @@ CONFIG_MODULE_SIG_ALL=y
  # CONFIG_MODULE_SIG_SHA1 is not set
  # CONFIG_MODULE_SIG_SHA224 is not set
