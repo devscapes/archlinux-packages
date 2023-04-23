@@ -1,23 +1,52 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 3553c22..fa3e173 100644
+index 3553c22..a7b2b11 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -1,6 +1,6 @@
+@@ -1,17 +1,17 @@
  # Maintainer: Emanuel Couto <unit73e@gmail.com>
  pkgname=cnijfilter2
 -pkgver=6.40
-+pkgver=6.50
++pkgver=6.60
  pkgrel=1
  pkgdesc="Canon IJ Printer Driver for Linux"
  arch=('i686' 'x86_64')
-@@ -10,8 +10,8 @@ depends=('cups' 'libxml2' 'ghostscript')
+ url="https://www.canon.com.au/home-printers"
+ license=('GPL' 'custom:canon')
+-depends=('cups' 'libxml2' 'ghostscript')
++depends=('cups' 'libxml2' 'ghostscript' 'libusb-1.0.so')
  makedepends=('automake' 'autoconf')
  provides=('tocanonij' 'tocnpwg' 'cnijlgmon3')
  conflicts=('cnijfilter' 'cnijfilter-mg3600')
 -source=("https://gdlp01.c-wss.com/gds/1/0100011381/01/$pkgname-source-$pkgver-1.tar.gz")
 -md5sums=('1c942b1200f420d4b64b734b75b85956')
-+source=("https://gdlp01.c-wss.com/gds/9/0100011639/01/$pkgname-source-$pkgver-1.tar.gz")
-+b2sums=('2329388686b14430b84d928fb5197cbc58c2a44c25f0edc4c95d8be8d72d313a4c9a7daf09dba1f2bdc73d424a96a7aa3934d83235440bbe1e6edaf95bc5cf31')
++source=("https://gdlp01.c-wss.com/gds/3/0100011753/01/$pkgname-source-$pkgver-1.tar.gz")
++b2sums=('0207784251e70c5850da74eb76a4de16d4dc5760e91ce17fc86ee9c61cfac27c041ea3f434ecad846ee3cc93649ac627d41eaaa55d3baf2e148ad36d8e142b87')
  
  prepare() {
  	cd "$pkgname-source-$pkgver-1"
+@@ -24,14 +24,14 @@ build() {
+ 	pushd cmdtocanonij2
+ 	./autogen.sh --prefix=/usr \
+ 		     --datadir=/usr/share \
+-		     LDFLAGS="-L../../com/libs_bin_$CARCH"
++		     LDFLAGS="${LDFLAGS} -L../../com/libs_bin_$CARCH"
+ 	make
+ 	popd
+ 
+ 	pushd cmdtocanonij3
+ 	./autogen.sh --prefix=/usr \
+ 		--datadir=/usr/share \
+-		LDFLAGS="-L../../com/libs_bin_$CARCH"
++		LDFLAGS="${LDFLAGS} -L../../com/libs_bin_$CARCH"
+ 	make
+ 	popd
+ 
+@@ -46,7 +46,7 @@ build() {
+ 		     --enable-libpath=/usr/lib/bjlib2 \
+ 		     --enable-progpath=/usr/bin \
+ 		     --datadir=/usr/share \
+-		     LDFLAGS="-L../../com/libs_bin_$CARCH"
++		     LDFLAGS="${LDFLAGS} -L../../com/libs_bin_$CARCH"
+ 	make #CFLAGS="${CFLAGS} -fcommon"
+ 	popd
+ 
