@@ -1,6 +1,6 @@
 pkgbase = nerd-fonts-git
 	pkgdesc = Iconic font aggregator, collection, and patcher (git version, super package)
-	pkgver = 2.3.3.r147.gdeecea3db
+	pkgver = 2.3.3.r225.gf4ca28cd7
 	pkgrel = 1
 	epoch = 1
 	url = https://github.com/ryanoasis/nerd-fonts
