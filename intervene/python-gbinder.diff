@@ -1,0 +1,39 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 37ca344..4bcad43 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -2,13 +2,13 @@
+ 
+ pkgname=python-gbinder
+ pkgver=1.1.1
+-pkgrel=2
++pkgrel=3
+ pkgdesc="Python bindings for libgbinder"
+ arch=('x86_64' 'i686' 'armv7h' 'aarch64')
+ url="https://github.com/erfanoabdi/gbinder-python"
+-license=('GPL')
++license=('GPL3')
+ depends=('libgbinder')
+-makedepends=('git' 'python-setuptools' 'cython')
++makedepends=('git' 'python-build' 'python-installer' 'python-wheel' 'python-setuptools' 'cython')
+ _commit="423dc366561c82515f4f2f46017535e7d81ce5b1"
+ source=(${pkgname}::git+https://github.com/erfanoabdi/gbinder-python.git#commit=${_commit})
+ sha512sums=('SKIP')
+@@ -20,14 +20,15 @@ pkgver() {
+ 
+ prepare() {
+   cd ${pkgname}
++  sed 's/USE_CYTHON = False/USE_CYTHON = True/' -i setup.py
+ }
+ 
+ build() {
+   cd ${pkgname}
+-  python3 setup.py build --cython
++  python -m build -w -n
+ }
+ 
+ package() {
+   cd ${pkgname}
+-  python3 setup.py install --prefix=/usr --root="$pkgdir"
++  python -m installer -p /usr -d "$pkgdir" dist/*.whl
+ }

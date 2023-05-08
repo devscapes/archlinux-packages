@@ -1,0 +1,51 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 1b8164b..0cd5ee4 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -2,34 +2,37 @@
+ _pkgbase=lkrg
+ pkgname=lkrg-dkms
+ pkgver=0.9.6
+-pkgrel=1
++pkgrel=2
+ pkgdesc='Linux Kernel Runtime Guard (DKMS)'
+ arch=('any')
+ url='https://lkrg.org/'
+ license=('GPL2')
+-source=("${url}/download/${_pkgbase}-${pkgver}.tar.gz"
+-        "${url}/download/${_pkgbase}-${pkgver}.tar.gz.sign"
++_commit=2481b3e2dd04eac945c31f99058b0aeee73c3a71 # 0.9.6
++source=("git+https://github.com/lkrg-org/${_pkgbase}.git#commit=${_commit}"
+         'dkms.conf')
+-sha512sums=('08c109ffbe7f15ff60ed1958640f43194b96b16c75bd91c1e209e2f93a2b97f60f0b9ed00ccc13effbbf06092fc3c432dfb55f94b9e181a6cd2b30a1ea8ee653'
+-            'SKIP'
++sha512sums=('SKIP'
+             '8101dd415ed08edd455989a9b10a3c925b171d3375a6d6872f55805d9aeb355a4ac216cce11afc1b84eeb49de0771932005d74130ffd6f5cdea9fa53fb4f9506')
+ validpgpkeys=('297AD21CF86C948081520C1805C027FD4BDC136E')
+ depends=('dkms')
++makedepends=('git')
+ 
+ prepare() {
++  # Add /usr/bin/modprobe to usermodehelper whitelist
++  git -C "${_pkgbase}" cherry-pick --no-commit ef52dec6e11054da5cacda657e42fa73f733f440
++
+   # Set version
+-  cp dkms.conf "${_pkgbase}-${pkgver}"
++  cp dkms.conf "${_pkgbase}"
+   sed -e "s/@PKGVER@/${pkgver}/" \
+-      -i "${_pkgbase}-${pkgver}/dkms.conf"
++      -i "${_pkgbase}/dkms.conf"
+ }
+ 
+ package() {
+   # Copy sources (including Makefile)
+   mkdir -p "${pkgdir}/usr/src/${_pkgbase}-${pkgver}/"
+-  cp -r "${_pkgbase}-${pkgver}"/* "${pkgdir}/usr/src/${_pkgbase}-${pkgver}/"
++  cp -r "${_pkgbase}"/* "${pkgdir}/usr/src/${_pkgbase}-${pkgver}/"
+   find "${pkgdir}/usr/src/${_pkgbase}-${pkgver}/" -type f -exec chmod 644 {} \;
+   find "${pkgdir}/usr/src/${_pkgbase}-${pkgver}/" -type d -exec chmod 755 {} \;
+ 
+   # Copy OUR dkms.conf
+-  install -Dm644 "${_pkgbase}-${pkgver}/dkms.conf" "${pkgdir}/usr/src/${_pkgbase}-${pkgver}/dkms.conf"
++  install -Dm644 "${_pkgbase}/dkms.conf" "${pkgdir}/usr/src/${_pkgbase}-${pkgver}/dkms.conf"
+ }
