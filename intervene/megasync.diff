@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 49bb1e1..fb7cf92 100644
+index 49bb1e1..4dd0fbc 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -6,7 +6,7 @@
@@ -7,7 +7,7 @@ index 49bb1e1..fb7cf92 100644
  
  pkgname=megasync
 -pkgver=4.9.0.0
-+pkgver=4.9.3.0
++pkgver=4.9.4.0
  pkgrel=1
  pkgdesc="Easy automated syncing between your computers and your MEGA cloud drive"
  arch=('i686' 'x86_64')
@@ -19,7 +19,7 @@ index 49bb1e1..fb7cf92 100644
 +_extname="_Win"
  source=("git+https://github.com/meganz/MEGAsync.git#tag=v${pkgver}${_extname}"
 -        "meganz-sdk::git+https://github.com/meganz/sdk.git"
-+        "meganz-sdk::git+https://github.com/meganz/sdk.git#tag=v4.17.1c"
++        "meganz-sdk::git+https://github.com/meganz/sdk.git#tag=v4.17.1d"
          "pdfium.patch"
          "ffmpeg.patch")
  sha256sums=('SKIP'
