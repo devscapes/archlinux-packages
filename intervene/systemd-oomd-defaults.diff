@@ -1,0 +1,15 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 2727aa4..72da1af 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -1,8 +1,8 @@
+ # Maintainer: MoetaYuko <loli at yuko.moe>
+ 
+ pkgname=systemd-oomd-defaults
+-_commit='1ffb1df909e233f16c5c65db5823ceb86f4880ab'
+-pkgver=251.5
++_commit='3d02d53d87d4d7949a0908d598c48fe255970bd7'
++pkgver=253.4
+ pkgrel=1
+ pkgdesc="Configuration files for systemd-oomd"
+ url="https://src.fedoraproject.org/rpms/systemd"

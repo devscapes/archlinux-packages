@@ -1,0 +1,40 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 5bc1874..8537b26 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -5,29 +5,29 @@
+ _pkgname=vdf
+ pkgname=python-vdf
+ pkgver=3.4
+-pkgrel=2
++pkgrel=3
+ pkgdesc="Library for working with Valve's VDF text format"
+ arch=('any')
+ url='https://github.com/ValvePython/vdf'
+ license=('MIT')
+ depends=(python)
+-makedepends=(python-setuptools)
+-checkdepends=(python python-nose python-coverage python-mock)
++makedepends=(python-build python-installer python-setuptools python-wheel)
++checkdepends=(python python-nose python-coverage python-mock python-tests)
+ source=("$pkgname-$pkgver.tar.gz::https://github.com/ValvePython/vdf/archive/v$pkgver.tar.gz")
+ sha256sums=('c9fb42b6de9daf475cd229377d0c32d6e87c0f21e874a35e0e679eb201723a67')
+ 
+ build() {
+   cd "$_pkgname-$pkgver"
+-  python setup.py build
++  python -m build -w -n
+ }
+ 
+ check() {
+   cd "$_pkgname-$pkgver"
+-  python setup.py test
++  python -m test --testdir tests
+ }
+ 
+ package() {
+   cd "$_pkgname-$pkgver"
+-  python setup.py install --optimize=1 --root="${pkgdir}/"
++  python -m installer -d "${pkgdir}/" dist/*.whl
+   install -D -m644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+ }

@@ -1,0 +1,64 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 929ca17..c9e97ab 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -8,18 +8,21 @@ arch=('x86_64')
+ url='https://bitbucket.org/multicoreware/x265_git'
+ license=('GPL')
+ depends=('gcc-libs')
+-makedepends=('git' 'cmake' 'nasm')
++makedepends=('git' 'cmake' 'nasm' 'ninja')
+ provides=('x265' 'libx265.so')
+ conflicts=('x265')
+-source=('git+https://bitbucket.org/multicoreware/x265_git.git')
++source=('git+https://bitbucket.org/multicoreware/x265_git')
+ sha256sums=('SKIP')
++buildflags=('lto')
+ 
+ pkgver() {
+     git -C x265_git describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g;s/^v//'
+ }
+ 
+ build() {
+-    cmake -S x265_git/source -B build-12 \
++    export CXXFLAGS+=" -mavx2 -msse2avx"
++
++    cmake -S x265_git/source -B build-12 -G Ninja \
+         -DCMAKE_INSTALL_PREFIX='/usr' \
+         -DHIGH_BIT_DEPTH='ON' \
+         -DMAIN12='ON' \
+@@ -27,18 +30,18 @@ build() {
+         -DENABLE_CLI='OFF' \
+         -DENABLE_SHARED='OFF' \
+         -Wno-dev
+-    make -C build-12
++    ninja -C build-12
+     
+-    cmake -S x265_git/source -B build-10 \
++    cmake -S x265_git/source -B build-10 -G Ninja \
+         -DCMAKE_INSTALL_PREFIX='/usr' \
+         -DHIGH_BIT_DEPTH='ON' \
+         -DEXPORT_C_API='OFF' \
+         -DENABLE_CLI='OFF' \
+         -DENABLE_SHARED='OFF' \
+         -Wno-dev
+-    make -C build-10
++    ninja -C build-10
+     
+-    cmake -S x265_git/source -B build \
++    cmake -S x265_git/source -B build -G Ninja \
+         -DCMAKE_INSTALL_PREFIX:PATH='/usr' \
+         -DENABLE_SHARED='ON' \
+         -DENABLE_HDR10_PLUS='ON' \
+@@ -49,9 +52,9 @@ build() {
+         -Wno-dev
+     ln -s ../build-10/libx265.a build/libx265_main10.a
+     ln -s ../build-12/libx265.a build/libx265_main12.a
+-    make -C build
++    ninja -C build
+ }
+ 
+ package() {
+-    make -C build DESTDIR="$pkgdir" install
++    DESTDIR="$pkgdir" ninja -C build install
+ }

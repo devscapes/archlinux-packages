@@ -1,0 +1,13 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index b43729a..241a0a8 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -38,6 +38,8 @@ pkgver() {
+ }
+ 
+ build() {
++    export CFLAGS+=" -mavx2 -msse2avx"
++
+     printf '%s\n' '  -> Building for 8-bit...'
+     cd x264/build-8bit
+     ../configure \

@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 1cc46ea..ef87712 100644
+index 1cc46ea..43361b6 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -5,23 +5,23 @@ pkgbase=python-polib
@@ -7,14 +7,14 @@ index 1cc46ea..ef87712 100644
  _pkgname=polib
  pkgver=1.2.0
 -pkgrel=1
-+pkgrel=2
++pkgrel=3
  pkgdesc='A library to manipulate gettext files'
  url='https://pypi.python.org/pypi/polib'
  arch=('any')
  license=('MIT')
  depends=('python')
 -makedepends=('python-setuptools')
-+makedepends=('python-build' 'python-installer' 'python-wheel' 'python-setuptools')
++makedepends=('python-build' 'python-installer' 'python-setuptools' 'python-wheel')
  source=("${pkgbase}-${pkgver}.tar.gz::https://pypi.io/packages/source/p/${_pkgname}/${_pkgname}-${pkgver}.tar.gz")
  sha256sums=('f3ef94aefed6e183e342a8a269ae1fc4742ba193186ad76f175938621dbfc26b')
  
@@ -27,6 +27,6 @@ index 1cc46ea..ef87712 100644
  package() {
    cd "${srcdir}/${_pkgname}-${pkgver}"
 -  python setup.py install --root="${pkgdir}" --skip-build --optimize=1
-+  python -m installer -d "${pkgdir}" --compile-bytecode 1 dist/*.whl
++  python -m installer -d "${pkgdir}" dist/*.whl
    install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
  }
