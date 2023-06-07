@@ -1,17 +1,23 @@
-diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
-index 6d20db6..5ec1008 100644
---- a/trunk/PKGBUILD
-+++ b/trunk/PKGBUILD
-@@ -3,7 +3,7 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 6d20db6..5d79c44 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -3,19 +3,20 @@
  
  pkgname=mate-notification-daemon
  pkgver=1.26.0
 -pkgrel=2
-+pkgrel=2.1
++pkgrel=2.2
  provides=('notification-daemon')
  pkgdesc="Notification daemon for MATE"
  url="https://mate-desktop.org"
-@@ -16,6 +16,7 @@ conflicts=('mate-notification-daemon-gtk3')
+ arch=('x86_64')
+ license=('GPL')
+-groups=('mate')
++groups=('mate' 'extra-rebuild')
+ depends=('libcanberra' 'libwnck3' 'libnotify' 'gettext' 'mate-panel')
+ makedepends=('python')
+ conflicts=('mate-notification-daemon-gtk3')
  replaces=('mate-notification-daemon-gtk3')
  source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
  sha256sums=('b23c6581f8f5916d6a16584edd91c2e4b6d0db7dd8e1eec5dd360acf2834b9ba')
@@ -19,3 +25,12 @@ index 6d20db6..5ec1008 100644
  
  build() {
      	cd "${pkgname}-${pkgver}"
+@@ -24,7 +25,7 @@ build() {
+         	--libexecdir=/usr/lib/${pkgname}
+ 
+     	#https://bugzilla.gnome.org/show_bug.cgi?id=656231
+-    	sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
++	sed -i -e 's/ -shared / -Wl,-O3,--as-needed\0/g' libtool
+ 
+     	make
+ }

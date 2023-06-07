@@ -31,4 +31,4 @@ Note that some interventions are merely about prepending `custom:` before SPDX i
 
 ## Update frequency
 
-Once a week on Sunday, Central Indonesian Time (WITA), except on some special occasions where I might update it on Monday or even Tuesday the very next week when it would be getting too late to commit changes. Note that in Indonesia, a week starts on Monday rather than Sunday.
+This repository will be updated once a week, preferably during weekends in Central Indonesian Time (WITA), except in worst-case scenarios where it might not get updated until late Tuesday. Don't blame me in case such scenario happens.

@@ -1,0 +1,107 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index d562c91..974aa86 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -16,7 +16,7 @@
+ 
+ 
+ pkgname=('llvm-git' 'llvm-libs-git' 'llvm-ocaml-git')
+-pkgver=17.0.0_r460054.60766678c7cd
++pkgver=17.0.0_r463189.7a258706e3d1
+ pkgrel=1
+ arch=('x86_64')
+ url="https://llvm.org/"
+@@ -26,14 +26,16 @@ makedepends=('git' 'cmake' 'ninja' 'libffi' 'libedit' 'ncurses' 'libxml2'
+              'python-sphinx' 'python-recommonmark' 'swig' 'python' 'python-six' 'lua53'
+              'ocl-icd' 'opencl-headers' 'z3' 'jsoncpp' 'ocaml-stdlib-shims')
+ checkdepends=("python-psutil")
+-source=("llvm-project::git+https://github.com/llvm/llvm-project.git"
++# pin commit that passes Debian expensive CI checks - Sat, 20 May 2023 21:30:02 +0300
++source=("llvm-project::git+https://github.com/llvm/llvm-project.git#commit=7a258706e3d194ea9cec364c8e535446646fbcf1"
+         "llvm-config.h")
+ 
+ md5sums=('SKIP'
+          '295c343dcd457dc534662f011d7cff1a')
+ sha512sums=('SKIP'
+             '75e743dea28b280943b3cc7f8bbb871b57d110a7f2b9da2e6845c1c36bf170dd883fca54e463f5f49e0c3effe07fbd0db0f8cf5a12a2469d3f792af21a73fcdd')
+-options=('staticlibs')
++# https://gitlab.archlinux.org/archlinux/packaging/packages/llvm/-/blob/4440053c6a7ca40e36b4703c86b3d2fc84aa3f55/PKGBUILD#L13
++options=('staticlibs' '!lto')
+ 
+ # NINJAFLAGS is an env var used to pass commandline options to ninja
+ # NOTE: It's your responbility to validate the value of $NINJAFLAGS. If unsure, don't set it.
+@@ -60,13 +62,22 @@ pkgver() {
+ }
+ 
+ build() {
++    local stage2_options=(
++        "-DCMAKE_AR=/usr/bin/llvm-ar"
++        "-DCMAKE_C_COMPILER=clang"
++        "-DCMAKE_CXX_COMPILER=clang++"
++        "-DCMAKE_RANLIB=/usr/bin/llvm-ranlib"
++        "-DLLVM_USE_LINKER=lld"
++    )
+     
+     export CFLAGS+=" ${CPPFLAGS}"
+     export CXXFLAGS+=" ${CPPFLAGS}"
++    # https://aur.archlinux.org/packages/llvm-git#comment-915561
+     cmake \
+         -B _build \
+         -S "$srcdir"/llvm-project/llvm  \
+         -G Ninja \
++        ${STAGE2_BUILD:+"${stage2_options[@]}"} \
+         -D CMAKE_BUILD_TYPE=Release \
+         -D CMAKE_INSTALL_PREFIX=/usr \
+         -D LLVM_BINUTILS_INCDIR=/usr/include \
+@@ -84,9 +95,8 @@ build() {
+         -D LLVM_ENABLE_SPHINX=ON \
+         -D SPHINX_OUTPUT_HTML:BOOL=OFF \
+         -D SPHINX_WARNINGS_AS_ERRORS=OFF \
+-        -D POLLY_ENABLE_GPGPU_CODEGEN=ON \
+-        -D LLDB_USE_SYSTEM_SIX=1 \
+         -D LLVM_ENABLE_PROJECTS="polly;lldb;lld;compiler-rt;clang-tools-extra;clang" \
++        -D LLVM_ENABLE_DUMP=ON \
+         -D LLVM_LIT_ARGS="-sv --ignore-fail" \
+         -Wno-dev
+ 
+@@ -95,6 +105,9 @@ build() {
+ }
+ 
+ check() {
++    # https://gitlab.archlinux.org/archlinux/packaging/packages/llvm/-/blob/4440053c6a7ca40e36b4703c86b3d2fc84aa3f55/PKGBUILD#L100
++    export LD_LIBRARY_PATH=$PWD/_build/lib
++
+     ninja -C _build $NINJAFLAGS check-llvm
+     ninja -C _build $NINJAFLAGS check-clang
+     ninja -C _build $NINJAFLAGS check-clang-tools
+@@ -107,8 +120,9 @@ package_llvm-git() {
+     pkgdesc="LLVM development version. includes clang and many other tools"
+     depends=("llvm-libs-git=$pkgver-$pkgrel" 'perl')
+     optdepends=('python: for scripts')
++    # workaround some awkward stuffs from attempting to build LLVM components with itself
+     provides=(aur-llvm-git compiler-rt-git clang-git lldb-git lld-git polly-git
+-              llvm compiler-rt clang lldb polly lld )
++              llvm compiler-rt clang lldb polly lld clang-minimal-git llvm-minimal-git)
+     # A package always provides itself, so there's no need to provide llvm-git
+     conflicts=('llvm' 'compiler-rt' 'clang' 'lldb' 'polly' 'lld')
+     
+@@ -151,7 +165,8 @@ package_llvm-git() {
+     _py=$([[ "$(python -V)" =~ Python[[:space:]]*([0-9]+.[0-9]+) ]] && echo ${BASH_REMATCH[1]})
+     cd llvm-project
+     # Install Python bindings and optimize them
+-    cp -a llvm/bindings/python/llvm  "$pkgdir"/usr/lib/python$_py/site-packages/
++    # https://aur.archlinux.org/packages/llvm-git#comment-916561
++    #cp -a llvm/bindings/python/llvm  "$pkgdir"/usr/lib/python$_py/site-packages/
+     cp -a clang/bindings/python/clang  "$pkgdir"/usr/lib/python$_py/site-packages/
+     _python_optimize "$pkgdir"/usr/lib/python$_py/site-packages
+ 
+@@ -170,7 +185,8 @@ package_llvm-git() {
+ package_llvm-libs-git() {
+     pkgdesc="runtime libraries for llvm-git"
+     depends=('gcc-libs' 'zlib' 'libffi' 'libedit' 'ncurses' 'libxml2' 'z3' 'lua53')
+-    provides=(aur-llvm-libs-git llvm-libs)
++    # workaround some awkward stuffs from attempting to build LLVM components with itself
++    provides=(aur-llvm-libs-git llvm-libs clang-libs-minimal-git llvm-libs-minimal-git)
+     conflicts=('llvm-libs')
+ 
+     install -d "$pkgdir"/usr/lib

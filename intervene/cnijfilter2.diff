@@ -1,13 +1,14 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 3fd5444..a7b2b11 100644
+index 3fd5444..9c88026 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -1,17 +1,17 @@
  # Maintainer: Emanuel Couto <unit73e@gmail.com>
  pkgname=cnijfilter2
 -pkgver=6.50
+-pkgrel=1
 +pkgver=6.60
- pkgrel=1
++pkgrel=2
  pkgdesc="Canon IJ Printer Driver for Linux"
  arch=('i686' 'x86_64')
  url="https://www.canon.com.au/home-printers"

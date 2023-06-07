@@ -1,0 +1,13 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index b3deefa..8a018b5 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -9,7 +9,7 @@ pkgdesc='API and commands for processing SPIR-V modules'
+ url='https://github.com/KhronosGroup/SPIRV-Tools'
+ arch=('i686' 'x86_64')
+ license=('custom')
+-groups=('vulkan-devel')
++groups=('vulkan-devel' 'mesa-minimal')
+ source=('git+https://github.com/KhronosGroup/SPIRV-Tools'
+               'git+https://github.com/google/googletest.git'
+               'git+https://github.com/google/effcee.git'

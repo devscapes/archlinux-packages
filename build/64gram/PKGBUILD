@@ -8,7 +8,7 @@ _tdesktop_ver=4.8.1
 pkgname=64gram
 pkgver=1.0.83
 _pkgver=${pkgver/.beta}
-pkgrel=1
+pkgrel=2
 pkgdesc='Provide Windows 64bit build with some enhancements.'
 arch=('x86_64')
 url="https://64gr.am"
@@ -16,7 +16,7 @@ license=('GPL3')
 depends=('hunspell' 'ffmpeg' 'hicolor-icon-theme' 'lz4' 'minizip' 'openal' 'ttf-opensans'
          'qt6-imageformats' 'qt6-svg' 'qt6-wayland' 'qt6-5compat' 'xxhash' 'glibmm-2.68'
          'rnnoise' 'pipewire' 'libxtst' 'libxrandr' 'jemalloc' 'abseil-cpp' 'libdispatch'
-         'openssl-1.1' 'protobuf')
+         'openssl' 'protobuf')
 makedepends=('cmake' 'git' 'ninja' 'python' 'range-v3' 'tl-expected' 'microsoft-gsl' 'meson'
              'extra-cmake-modules' 'wayland-protocols' 'plasma-wayland-protocols' 'libtg_owt')
 optdepends=('webkit2gtk: embedded browser features'
@@ -30,7 +30,6 @@ b2sums=('eb47386b63d573472e2f4e85fe276c8fb9e5fa5d3931023d59f178797b20674787913c6
 build() {
     CXXFLAGS+=' -ffat-lto-objects'
 
-    export PKG_CONFIG_PATH='/usr/lib/openssl-1.1/pkgconfig'
     # Turns out we're allowed to use the official API key that telegram uses for their snap builds:
     # https://github.com/telegramdesktop/tdesktop/blob/8fab9167beb2407c1153930ed03a4badd0c2b59f/snap/snapcraft.yaml#L87-L88
     # Thanks @primeos!

@@ -1,17 +1,22 @@
-diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
-index e0c1f80..35fc12d 100644
---- a/trunk/PKGBUILD
-+++ b/trunk/PKGBUILD
-@@ -6,7 +6,7 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index e0c1f80..b47027e 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -6,11 +6,12 @@
  
  pkgname=ffmpeg4.4
  pkgver=4.4.3
 -pkgrel=2
-+pkgrel=2.1
++pkgrel=2.2
  pkgdesc='Complete solution to record, convert and stream audio and video'
  arch=(x86_64)
  url=https://ffmpeg.org/
-@@ -107,6 +107,7 @@ pkgver() {
+ license=(GPL3)
++groups=('extra-rebuild')
+ depends=(
+   alsa-lib
+   aom
+@@ -107,6 +108,7 @@ pkgver() {
  prepare() {
    cd ffmpeg
    git cherry-pick -n 988f2e9eb063db7c1a678729f58aab6eba59a55b # fix nvenc on older gpus

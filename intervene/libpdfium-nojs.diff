@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index d4fc3f6..a5c7649 100644
+index d4fc3f6..9d4bf43 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -7,21 +7,24 @@ pkgdesc="Open-source PDF rendering engine."
@@ -19,7 +19,7 @@ index d4fc3f6..a5c7649 100644
 -    "git+https://chromium.googlesource.com/chromium/src/third_party/abseil-cpp"
 +source=("pdfium::git+https://pdfium.googlesource.com/pdfium"
 +    "chromium-build::git+https://chromium.googlesource.com/chromium/src/build.git"
-+    "abseil-cpp::git+https://chromium.googlesource.com/chromium/src/third_party/abseil-cpp"
++    "chromium-abseil-cpp::git+https://chromium.googlesource.com/chromium/src/third_party/abseil-cpp"
      "libpdfium.pc"
 +    "gcc-13.patch"
      )
@@ -33,15 +33,17 @@ index d4fc3f6..a5c7649 100644
  
  pkgver() {
  
-@@ -38,7 +41,7 @@ prepare() {
+@@ -38,8 +41,8 @@ prepare() {
  
    cd "$srcdir/pdfium"
  
 -  ln -sf $srcdir/build build
+-  ln -sf $srcdir/abseil-cpp third_party/abseil-cpp
 +  ln -sf $srcdir/chromium-build build
-   ln -sf $srcdir/abseil-cpp third_party/abseil-cpp
++  ln -sf $srcdir/chromium-abseil-cpp third_party/abseil-cpp
  
    # Pdfium is developed alongside Chromium and does not provide releases
+   # Upstream recommends using Chromium's dev channels instead
 @@ -51,6 +54,9 @@ prepare() {
    # git checkout "chromium/$(curl https://omahaproxy.appspot.com/linux?channel=beta | cut -d'.' -f 3)"
    # git checkout "chromium/$(curl https://omahaproxy.appspot.com/linux?channel=dev | cut -d'.' -f 3)"

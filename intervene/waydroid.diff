@@ -1,13 +1,51 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index ec4ea66..52adb0d 100644
+index ec4ea66..c3cfeee 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -7,7 +7,7 @@ pkgrel=1
+@@ -3,14 +3,16 @@
+ 
+ pkgname=waydroid
+ pkgver=1.4.1
+-pkgrel=1
++pkgrel=2
  pkgdesc="A container-based approach to boot a full Android system on a regular Linux system"
  arch=('any')
  url='https://waydro.id/'
 -license=('GPL')
++install=$pkgname.install
 +license=('GPL3')
  depends=('lxc' 'python-gbinder' 'python-gobject' 'nftables' 'dnsmasq' 'gtk3' 'dbus-python')
  makedepends=('git')
- optdepends=('python-pyclip: share clipboard with container')
+-optdepends=('python-pyclip: share clipboard with container')
++optdepends=('apparmor: AppArmor confinement support'
++            'python-pyclip: share clipboard with container')
+ _commit="7ce2e28e8ea76c1e79b273d122921c1f394e842f" # tags/1.4.1
+ source=("waydroid::git+https://github.com/waydroid/waydroid.git#commit=$_commit")
+ 
+@@ -20,7 +22,7 @@ pkgver() {
+ }
+ 
+ package() {
+-  make -C waydroid install DESTDIR="$pkgdir" USE_NFTABLES=1
++  make -C waydroid install install_apparmor DESTDIR="$pkgdir" USE_NFTABLES=1
+ }
+ 
+ sha256sums=('SKIP')
+diff --git a/waydroid.install b/waydroid.install
+new file mode 100644
+index 0000000..a33a8f2
+--- /dev/null
++++ b/waydroid.install
+@@ -0,0 +1,12 @@
++post_install() {
++  cat << EOF
++To enable use of AppArmor rules, run the following commands in a root terminal:
++  apparmor_parser -r -T -W /etc/apparmor.d/adbd
++  apparmor_parser -r -T -W /etc/apparmor.d/android_app
++  apparmor_parser -r -T -W /etc/apparmor.d/lxc/lxc-waydroid
++EOF
++}
++
++post_upgrade() {
++  post_install
++}

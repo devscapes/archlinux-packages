@@ -1,17 +1,18 @@
-diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
-index 98fa6d1..86a4c64 100644
---- a/trunk/PKGBUILD
-+++ b/trunk/PKGBUILD
-@@ -4,13 +4,13 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 98fa6d1..26312c4 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -4,13 +4,14 @@
  pkgbase=avidemux
  pkgname=('avidemux-cli' 'avidemux-qt')
  pkgver=2.8.1
 -pkgrel=2
-+pkgrel=2.1
++pkgrel=2.2
  pkgdesc='Graphical tool to edit video (filter/re-encode/split)'
  url='http://fixounet.free.fr/avidemux/'
  arch=('x86_64')
  license=('GPL2')
++groups=('extra-rebuild')
  makedepends=('cmake' 'libxslt' 'qt5-base' 'jack' 'libvorbis' 'libxv' 'opus' 'desktop-file-utils'
 -             'alsa-lib' 'lame' 'xvidcore' 'faad2' 'faac' 'x264' 'x265' 'libsamplerate'
 +             'alsa-lib' 'lame' 'xvidcore' 'faad2' 'faac' 'libx264.so' 'libx265.so' 'libsamplerate'

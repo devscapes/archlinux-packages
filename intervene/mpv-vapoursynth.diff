@@ -1,8 +1,8 @@
-diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
-index b301027..be56758 100644
---- a/trunk/PKGBUILD
-+++ b/trunk/PKGBUILD
-@@ -2,12 +2,13 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index ab269c9..fd9335b 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -3,12 +3,13 @@
  # Contributor: Bartłomiej Piotrowski <bpiotrowski@archlinux.org>
  # Contributor: Eivind Uggedal <eivind@uggedal.com>
  
@@ -12,17 +12,18 @@ index b301027..be56758 100644
  epoch=1
  _tag='5ae02ccad10542a74b397e39800ec01def0db4e1' # git rev-parse v${pkgver}
  pkgver=0.35.1
- pkgrel=4
+-pkgrel=6
 -pkgdesc='a free, open source, and cross-platform media player'
++pkgrel=5
 +pkgdesc='a free, open source, and cross-platform media player (with Vapoursynth libs)'
  arch=('x86_64')
  # We link against libraries that are licensed GPLv3 explicitly, so our
  # package is GPLv3 only as well. (Is this still correct?)
-@@ -22,19 +23,20 @@ depends=('alsa-lib' 'libasound.so' 'desktop-file-utils' 'ffmpeg' 'libavcodec.so'
+@@ -23,19 +24,20 @@ depends=('alsa-lib' 'libasound.so' 'desktop-file-utils' 'ffmpeg' 'libavcodec.so'
           'libva' 'libva.so' 'libva-drm.so' 'libva-wayland.so' 'libva-x11.so' 'libvdpau' 'libx11'
           'libxext' 'libxinerama' 'libxkbcommon' 'libxkbcommon.so' 'libxpresent' 'libxrandr' 'libxss'
           'libxv' 'luajit' 'mesa' 'mujs' 'libpipewire' 'rubberband' 'librubberband.so' 'shaderc'
--         'libshaderc_shared.so' 'uchardet' 'vulkan-icd-loader' 'wayland' 'zlib')
+-         'libshaderc_shared.so' 'uchardet' 'vulkan-icd-loader' 'wayland' 'zlib') 
 +         'libshaderc_shared.so' 'uchardet' 'vulkan-icd-loader' 'wayland' 'zlib' 'vapoursynth')
  makedepends=('git' 'meson' 'python-docutils' 'ladspa' 'wayland-protocols'
               'ffnvcodec-headers' 'vulkan-headers')
@@ -42,7 +43,7 @@ index b301027..be56758 100644
  
    git cherry-pick -n \
      985655ebfd77ceddc44d76f8cc6dc446002f34ee \
-@@ -52,9 +54,10 @@ build() {
+@@ -53,9 +55,10 @@ build() {
      -Ddvbin=enabled
      -Ddvdnav=enabled
      -Dlibarchive=enabled
@@ -54,7 +55,7 @@ index b301027..be56758 100644
  
    meson compile -C build
  }
-@@ -69,9 +72,9 @@ package() {
+@@ -70,9 +73,9 @@ package() {
    # delete private entries only required for static linking 
    sed -i -e '/Requires.private/d' -e '/Libs.private/d' "${pkgdir}"/usr/lib/pkgconfig/mpv.pc
  

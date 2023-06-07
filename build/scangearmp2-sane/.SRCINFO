@@ -1,7 +1,7 @@
 pkgbase = scangearmp2-sane
 	pkgdesc = Canon ScanGear MP v2 scanner utility and sane backend
 	pkgver = 4.50.1
-	pkgrel = 1
+	pkgrel = 2
 	url = https://github.com/Ordissimo/scangearmp2
 	arch = x86_64
 	license = GPL

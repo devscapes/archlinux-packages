@@ -1,0 +1,34 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index fa9a6ec..c5cffab 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -9,7 +9,9 @@ pkgrel=1
+ arch=('x86_64')
+ url="https://github.com/KhronosGroup/SPIRV-LLVM-Translator"
+ license=('custom:Apache 2.0 with LLVM Exception')
+-makedepends=(llvm-minimal-git git cmake spirv-headers-git spirv-tools-git "llvm-libs<17")
++groups=('mesa-minimal')
++# edit makedepends array so we build with our llvm-git
++makedepends=(llvm-git git cmake spirv-headers-git spirv-tools-git)
+ checkdepends=(python python-setuptools clang-minimal-git)
+ depends=(llvm-libs-minimal-git spirv-tools-git gcc-libs glibc)
+ provides=(spirv-llvm-translator)
+@@ -32,13 +34,18 @@ build() {
+         -B _build \
+         -S "$srcdir"/$_srcname  \
+         -G "Unix Makefiles" \
++        -D CMAKE_AR=/usr/bin/llvm-ar \
+         -D CMAKE_BUILD_TYPE=Release \
++        -D CMAKE_C_COMPILER=clang \
++        -D CMAKE_CXX_COMPILER=clang++ \
+         -D CMAKE_INSTALL_PREFIX=/usr \
+         -D CMAKE_POSITION_INDEPENDENT_CODE=ON \
++        -D CMAKE_RANLIB=/usr/bin/llvm-ranlib \
+         -D CMAKE_SKIP_RPATH=ON \
+         -D LLVM_EXTERNAL_LIT=/usr/bin/lit \
+         -D LLVM_EXTERNAL_SPIRV_HEADERS_SOURCE_DIR=/usr/include/spirv/ \
+         -D LLVM_SPIRV_INCLUDE_TESTS=ON \
++        -D LLVM_USE_LINKER=lld \
+         -D BUILD_SHARED_LIBS=ON \
+         -Wno-dev
+ 
