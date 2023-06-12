@@ -1,11 +1,11 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 82f507c..0061c67 100644
+index a3ecc69..b6712ea 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -2,11 +2,12 @@
  
  pkgbase=linux-lts
- pkgver=6.1.32
+ pkgver=6.1.33
 -pkgrel=1
 +pkgrel=1.1
  pkgdesc='LTS Linux'
@@ -18,10 +18,10 @@ index 82f507c..0061c67 100644
    xmlto python-sphinx graphviz imagemagick texlive-latexextra
 @@ -25,7 +26,7 @@ validpgpkeys=(
  # https://www.kernel.org/pub/linux/kernel/v6.x/sha256sums.asc
- sha256sums=('7c88b7a09ba2b9e47b78eba2b32b1db6a4d89636f7ddd586545f9671a2521a6c'
+ sha256sums=('b87d6ba8ea7328e8007a7ea9171d1aa0d540d95eacfcab09578e0a3b623dd2cd'
              'SKIP'
--            '7917638e7374749978ebac59f926c06fc6d16774543ed9feed9b6b255eff4403'
-+            '7aa50e7a7769f9cfa50042e364196e901bd408a3f07b27bfdcc16d831159fc27'
+-            '476e6368e0d04d21f9688eec74a628fe287829185a9fb54bdc15378848038405'
++            'b4147609476623489397171702b4879aa6b2cadecc817d7b4cca9f2f2dfdd5c3'
              '1bd8388fcb6ed4eec46450c65eb7a0889a8c541f164a39e3064633981a7a4a3d')
  
  export KBUILD_BUILD_HOST=archlinux
@@ -54,7 +54,7 @@ index 82f507c..0061c67 100644
    find . -name 'Kconfig*' -exec install -Dm644 {} "$builddir/{}" \;
  
 diff --git a/config b/config
-index 09b11a6..57160c0 100644
+index 4fdf615..fb0d5d6 100644
 --- a/config
 +++ b/config
 @@ -906,9 +906,9 @@ CONFIG_MODULE_SIG_ALL=y

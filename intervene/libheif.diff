@@ -1,13 +1,13 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index b188a33..43ec683 100644
+index b188a33..b1a2635 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -3,13 +3,14 @@
+@@ -3,17 +3,25 @@
  
  pkgname=libheif
  pkgver=1.16.2
 -pkgrel=1
-+pkgrel=1.1
++pkgrel=1.2
  pkgdesc='HEIF file format decoder and encoder'
  arch=(x86_64)
  url='https://github.com/strukturag/libheif'
@@ -18,4 +18,34 @@ index b188a33..43ec683 100644
 +depends=(libde265 libx265.so aom dav1d)
  optdepends=('libjpeg: for heif-convert and heif-enc' 'libpng: for heif-convert and heif-enc'
              'svt-av1: svt-av1 encoder' 'rav1e: rav1e encoder')
- source=(https://github.com/strukturag/libheif/releases/download/v$pkgver/libheif-$pkgver.tar.gz)
+-source=(https://github.com/strukturag/libheif/releases/download/v$pkgver/libheif-$pkgver.tar.gz)
+-sha256sums=('7f97e4205c0bd9f9b8560536c8bd2e841d1c9a6d610401eb3eb87ed9cdfe78ea')
++source=(https://github.com/strukturag/libheif/releases/download/v$pkgver/libheif-$pkgver.tar.gz
++        rav1e-dlopen.patch)
++sha256sums=('7f97e4205c0bd9f9b8560536c8bd2e841d1c9a6d610401eb3eb87ed9cdfe78ea'
++            '2d295aea633f6140879ed974bc8832bdabdd9278bdbcd86c3e4accf02a4addb7')
++
++prepare() {
++  # fix all dlopen issues with libheif-rav1e.so plugin
++  patch -d $pkgname-$pkgver -Np2 <rav1e-dlopen.patch
++}
+ 
+ build() {
+   cmake -B build -S $pkgname-$pkgver\
+diff --git a/rav1e-dlopen.patch b/rav1e-dlopen.patch
+new file mode 100644
+index 0000000..86a7140
+--- /dev/null
++++ b/rav1e-dlopen.patch
+@@ -0,0 +1,11 @@
++--- src/libheif-1.16.2/libheif/plugins/CMakeLists.txt.orig	2023-05-23 03:02:09.000000000 +0800
+++++ src/libheif-1.16.2/libheif/plugins/CMakeLists.txt	2023-06-12 16:39:25.467536032 +0800
++@@ -67,7 +67,7 @@
++ plugin_compilation(svtenc SvtEnc SvtEnc SvtEnc)
++ 
++ set(RAV1E_sources encoder_rav1e.cc encoder_rav1e.h)
++-set(RAV1E_extra_plugin_sources ../box.cc ../error.cc)
+++set(RAV1E_extra_plugin_sources ../bitstream.cc ../box.cc ../error.cc ../nclx.cc)
++ plugin_compilation(rav1e RAV1E RAV1E RAV1E)
++ 
++ if (WITH_UNCOMPRESSED_CODEC)

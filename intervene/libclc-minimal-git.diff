@@ -1,16 +1,8 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 5010468..d8b47f0 100644
+index 5010468..a7fc4fe 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -3,16 +3,19 @@
- # Contributor: Solomon Choina <shlomochoina@gmail.com>
- 
- pkgname=libclc-minimal-git
--pkgver=17.0.0_r462218.51572c2cd720
--pkgrel=2
-+pkgver=17.0.0_r463189.7a258706e3d1
-+pkgrel=1
- pkgdesc="companion package to llvm-minimal-git,  Library requirements of the OpenCL C programming language"
+@@ -9,9 +9,11 @@ pkgdesc="companion package to llvm-minimal-git,  Library requirements of the Ope
  arch=('any')
  url="https://libclc.llvm.org/"
  license=('custom:Apache 2.0 with LLVM Exception')
@@ -18,15 +10,12 @@ index 5010468..d8b47f0 100644
  provides=(libclc)
  conflicts=(libclc)
 -makedepends=(llvm-minimal-git clang-minimal-git cmake  git python spirv-llvm-translator-minimal-git 'llvm-libs<17')
--source=("git+https://github.com/llvm/llvm-project.git"
 +# edit makedepends array so we build with our llvm-git
 +makedepends=(llvm-git cmake git python spirv-llvm-translator-minimal-git)
-+# pin commit that passes Debian expensive CI checks - Sat, 20 May 2023 21:30:02 +0300
-+source=("llvm-project::git+https://github.com/llvm/llvm-project.git#commit=7a258706e3d194ea9cec364c8e535446646fbcf1"
+ source=("git+https://github.com/llvm/llvm-project.git"
  )
  sha256sums=('SKIP')
- 
-@@ -49,8 +52,13 @@ build() {
+@@ -49,8 +51,13 @@ build() {
      cmake \
        -B _build \
        -S "$srcdir"/llvm-project/libclc  \

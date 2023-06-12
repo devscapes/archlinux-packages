@@ -1,14 +1,8 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index eef1e77..27d54b7 100644
+index ee40a90..f954289 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -2,12 +2,12 @@
- 
- pkgname="ayatana-indicator-datetime"
- pkgver="22.9.1"
--pkgrel="1"
-+pkgrel="2"
- pkgdesc="Ayatana Indicator providing clock and calendar"
+@@ -7,7 +7,7 @@ pkgdesc="Ayatana Indicator providing clock and calendar"
  arch=("i686" "x86_64" "pentium4")
  url="https://github.com/AyatanaIndicators/ayatana-indicator-datetime"
  license=("GPL3")
@@ -16,4 +10,4 @@ index eef1e77..27d54b7 100644
 +makedepends=("cmake-extras" "ayatana-indicator-messages>=0.9.0" "intltool" "glib2" "libical" "properties-cpp" "libnotify")
  depends=("libayatana-common>=0.9.5" "evolution-data-server" "libaccounts-glib")
  source=("${pkgname}-${pkgver}.tar.gz::https://github.com/AyatanaIndicators/${pkgname}/archive/${pkgver}.tar.gz")
- md5sums=("19a37830bd743a7bf6dc178764be85b2")
+ md5sums=("99664ac08ec27e2ae4a676b4324beffc")

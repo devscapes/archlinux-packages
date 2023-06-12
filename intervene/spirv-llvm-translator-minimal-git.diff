@@ -1,8 +1,8 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index fa9a6ec..c5cffab 100644
+index fa9a6ec..ba24631 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -9,7 +9,9 @@ pkgrel=1
+@@ -9,9 +9,11 @@ pkgrel=1
  arch=('x86_64')
  url="https://github.com/KhronosGroup/SPIRV-LLVM-Translator"
  license=('custom:Apache 2.0 with LLVM Exception')
@@ -11,8 +11,11 @@ index fa9a6ec..c5cffab 100644
 +# edit makedepends array so we build with our llvm-git
 +makedepends=(llvm-git git cmake spirv-headers-git spirv-tools-git)
  checkdepends=(python python-setuptools clang-minimal-git)
- depends=(llvm-libs-minimal-git spirv-tools-git gcc-libs glibc)
+-depends=(llvm-libs-minimal-git spirv-tools-git gcc-libs glibc)
++depends=(spirv-tools-git gcc-libs glibc)
  provides=(spirv-llvm-translator)
+ conflicts=(spirv-llvm-translator)
+ source=("git+$url.git"
 @@ -32,13 +34,18 @@ build() {
          -B _build \
          -S "$srcdir"/$_srcname  \
@@ -32,3 +35,12 @@ index fa9a6ec..c5cffab 100644
          -D BUILD_SHARED_LIBS=ON \
          -Wno-dev
  
+@@ -50,6 +57,8 @@ check() {
+ }
+ 
+ package() {
++    # move llvm-libs-minimal-git dependency here
++    depends+=('llvm-libs-minimal-git')
+ 
+     make -C _build DESTDIR="${pkgdir}" install
+     install -Dm755 _build/tools/llvm-spirv/llvm-spirv -t "$pkgdir"/usr/bin
