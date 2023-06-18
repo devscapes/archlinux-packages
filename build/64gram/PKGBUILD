@@ -12,15 +12,15 @@ _cppgir_commit=960fe054ffaab7cf55722fea6094c56a8ee8f18e
 pkgname=64gram
 pkgver=1.0.85
 _pkgver=${pkgver/.beta}
-pkgrel=1
+pkgrel=2
 pkgdesc='Provide Windows 64bit build with some enhancements.'
 arch=('x86_64')
 url="https://64gr.am"
 license=('GPL3')
 depends=('hunspell' 'ffmpeg' 'hicolor-icon-theme' 'lz4' 'minizip' 'openal' 'ttf-opensans'
-         'qt6-imageformats' 'qt6-svg' 'qt6-wayland' 'qt6-5compat' 'xxhash' 'glibmm-2.68'
-         'rnnoise' 'pipewire' 'libxtst' 'libxrandr' 'jemalloc' 'abseil-cpp' 'libdispatch'
-         'openssl' 'protobuf')
+         'qt6-imageformats' 'qt6-svg' 'qt6-wayland' 'xxhash' 'glibmm-2.68' 'rnnoise'
+         'pipewire' 'libxtst' 'libxrandr' 'jemalloc' 'abseil-cpp' 'libdispatch' 'openssl'
+         'protobuf')
 makedepends=('cmake' 'git' 'ninja' 'python' 'range-v3' 'tl-expected' 'microsoft-gsl' 'meson'
              'extra-cmake-modules' 'wayland-protocols' 'plasma-wayland-protocols' 'libtg_owt'
              'gobject-introspection' 'glib2' 'boost' 'fmt')

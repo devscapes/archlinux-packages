@@ -1,0 +1,30 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 711d5e1..6bba438 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -3,7 +3,7 @@
+ 
+ pkgname=latte-dock-git
+ _gitname=latte-dock
+-pkgver=r6036.e1e8c47a
++pkgver=0.10.8.r6046.5e5c3524
+ pkgrel=1
+ pkgdesc='Latte is a dock based on plasma frameworks that provides an elegant and intuitive experience for your tasks and plasmoids'
+ arch=('x86_64')
+@@ -16,11 +16,15 @@ conflicts=('latte-dock')
+ provides=('latte-dock')
+ source=("git+${url}.git")
+ sha256sums=('SKIP')
++options=('lto')
+ 
+ pkgver() {
+    cd ${_gitname}
+ 
+-   printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
++   printf '%s.r%s.%s' \
++      "$(grep ^#### CHANGELOG.md | head -1 | cut -d' ' -f3)" \
++      "$(git rev-list --count HEAD)" \
++      "$(git rev-parse --short HEAD)"
+    
+ }
+ 

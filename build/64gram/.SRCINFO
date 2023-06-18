@@ -1,7 +1,7 @@
 pkgbase = 64gram
 	pkgdesc = Provide Windows 64bit build with some enhancements.
 	pkgver = 1.0.85
-	pkgrel = 1
+	pkgrel = 2
 	url = https://64gr.am
 	arch = x86_64
 	license = GPL3
@@ -31,7 +31,6 @@ pkgbase = 64gram
 	depends = qt6-imageformats
 	depends = qt6-svg
 	depends = qt6-wayland
-	depends = qt6-5compat
 	depends = xxhash
 	depends = glibmm-2.68
 	depends = rnnoise

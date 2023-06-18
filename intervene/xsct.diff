@@ -1,13 +1,27 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 6a32c89..c034545 100644
+index 6a32c89..2222ec0 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -7,7 +7,7 @@ gitname=sct
+@@ -1,13 +1,13 @@
+ # Mainteiner: Perseo <pgutierrez@gmail.com>
+ pkgname=xsct
+ pkgver=1.9
+-pkgrel=1
++pkgrel=3
+ gitname=sct
+ 
  pkgdesc="Improved sct (set screen color temperature)"
  arch=('i686' 'x86_64')
  url="https://github.com/faf0/${gitname}"
 -license=('Public Domain')
-+license=('custom:Public Domain')
++license=('Unlicense')
  depends=()
  makedepends=('git' 'libx11' 'libxrandr')
  source=("https://github.com/faf0/sct/archive/refs/tags/${pkgver}.tar.gz")
+@@ -15,6 +15,5 @@ md5sums=('5483876b5a7fb291a7d1aabac41d3c7f')
+ 
+ package() {
+     cd "$srcdir/${gitname}-${pkgver}"
+-    ls -lrt
+     make DESTDIR="${pkgdir}/" install
+ }
