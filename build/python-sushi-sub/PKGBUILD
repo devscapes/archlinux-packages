@@ -1,0 +1,54 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+
+pkgname=python-sushi-sub
+pkgver=0.6.2
+pkgrel=1
+pkgdesc='Automatic subtitle shifter based on audio'
+url='https://github.com/FichteFoll/Sushi'
+arch=('any')
+license=('MIT')
+depends=('python-numpy' 'python-opencv')
+makedepends=('python-build' 'python-installer' 'python-setuptools' 'python-wheel')
+optdepends=('ffmpeg: for any kind of demuxing'
+            'mkvtoolnix-cli: for fast timecodes extraction when demuxing'
+            'scxvid: for making keyframes')
+conflicts=('sushi-shifter-git')
+replaces=('sushi-shifter-git')
+source=("Sushi-${pkgver}.tar.gz::${url}/archive/refs/tags/${pkgver}.tar.gz")
+sha512sums=('5c4c7c2213d9ea919aa1a57e12b69a06ea6dc8eddc2da491ea2063d48988fbae422d9666b7a54240deee29688f06c10f49696b84104ab42d6236962c1131d265')
+b2sums=('66827c0acd9acbce591a1a6934e709897dac385063b2c32cf49ad67dc9f59c949a64c2bcddec9de48ca01bdca51eadcaca27cdaf2359ac307044c7825e74f489')
+
+_python_version() {
+    python3 <(\
+        cat << 'EOF'
+import sys
+vi = sys.version_info
+print(f"{vi.major}.{vi.minor}")
+EOF
+    )
+}
+
+build() {
+    cd "${srcdir}/Sushi-${pkgver}"
+    python -m build -w -n
+}
+
+check() {
+    cd "${srcdir}/Sushi-${pkgver}"
+    python -m unittest tests.{timecodes,main,subtitles,demuxing}
+}
+
+package() {
+    local _py=$(_python_version)
+
+    cd "${srcdir}/Sushi-${pkgver}"
+    python -m installer -d "${pkgdir}" dist/*.whl
+
+    # Rename wrapper to avoid conflicts with sushi from [extra]
+    mv "${pkgdir}"/usr/bin/sushi{,-sub}
+
+    # Symlink LICENSE from wheel dist-info copy
+    install -d "${pkgdir}/usr/share/licenses/${pkgname}"
+    ln -s "../../../lib/python${_py}/site-packages/sushi_sub-${pkgver}.dist-info/LICENSE" \
+        "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}

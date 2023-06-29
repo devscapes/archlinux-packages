@@ -1,0 +1,23 @@
+pkgbase = python-sushi-sub
+	pkgdesc = Automatic subtitle shifter based on audio
+	pkgver = 0.6.2
+	pkgrel = 1
+	url = https://github.com/FichteFoll/Sushi
+	arch = any
+	license = MIT
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-setuptools
+	makedepends = python-wheel
+	depends = python-numpy
+	depends = python-opencv
+	optdepends = ffmpeg: for any kind of demuxing
+	optdepends = mkvtoolnix-cli: for fast timecodes extraction when demuxing
+	optdepends = scxvid: for making keyframes
+	conflicts = sushi-shifter-git
+	replaces = sushi-shifter-git
+	source = Sushi-0.6.2.tar.gz::https://github.com/FichteFoll/Sushi/archive/refs/tags/0.6.2.tar.gz
+	sha512sums = 5c4c7c2213d9ea919aa1a57e12b69a06ea6dc8eddc2da491ea2063d48988fbae422d9666b7a54240deee29688f06c10f49696b84104ab42d6236962c1131d265
+	b2sums = 66827c0acd9acbce591a1a6934e709897dac385063b2c32cf49ad67dc9f59c949a64c2bcddec9de48ca01bdca51eadcaca27cdaf2359ac307044c7825e74f489
+
+pkgname = python-sushi-sub
