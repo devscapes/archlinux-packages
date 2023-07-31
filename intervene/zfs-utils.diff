@@ -1,0 +1,58 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 7a2ecf4..da002a9 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -3,21 +3,22 @@
+ # Contributor: Iacopo Isimbaldi <isiachi@rhye.it>
+ 
+ pkgname=zfs-utils
+-pkgver=2.1.12
++_pkgver=2.2.0-rc3
++pkgver=${_pkgver/-/.}
+ pkgrel=1
+ pkgdesc="Userspace utilities for the Zettabyte File System."
+ arch=("i686" "x86_64" "aarch64")
+ url="https://zfsonlinux.org/"
+ license=('CDDL')
+ optdepends=('python: for arcstat/arc_summary/dbufstat')
+-source=("https://github.com/zfsonlinux/zfs/releases/download/zfs-${pkgver}/zfs-${pkgver}.tar.gz"{,.asc}
++source=("https://github.com/zfsonlinux/zfs/releases/download/zfs-${_pkgver}/zfs-${_pkgver}.tar.gz"{,.asc}
+         "zfs.initcpio.install"
+         "zfs.initcpio.hook")
+-sha256sums=('64daa26aed3e12c931f6f4413d7527c4ebdb8da35416b356152b5f9fdd4c6e6d'
++sha256sums=('276c911ab4aa24b5c261e1e1822f74ed824a424cacf3f39b14da1aa08ce1906c'
+             'SKIP'
+             '2f09c742287f4738c7c09a9669f8055cd63d3b9474cd1f6d9447152d11a1b913'
+             '15b5acea44225b4364ec6472a08d3d48666d241fe84c142e1171cd3b78a5584f')
+-b2sums=('652780e6bf7b63f45909110726d53795fada034f6044c8393fa3980e30217ada6931e3c2bb57210719e3c78c16f973f69287b7e2b475601f4ce12d701d9d96ae'
++b2sums=('37c47bcbf34d9238f42bbc80e2b0712a9e64a48196a390e30cfc02a510e0a8c28da5aa52eb3963a2363d2d23881628cadad13e2121cf54a0582cfc7d55685313'
+         'SKIP'
+         'cb774227f157573f960bdb345e5b014c043a573c987d37a1db027b852d77a5eda1ee699612e1d8f4a2770897624889f1a3808116a171cc4c796a95e3caa43012'
+         '779c864611249c3f21d1864508d60cfe5e0f5541d74fb3093c6bdfa56be2c76f386ac1690d363beaee491c5132f5f6dbc01553aa408cda579ebca74b0e0fd1d0')
+@@ -27,7 +28,7 @@ backup=('etc/default/zfs'
+         'etc/zfs/zed.d/zed.rc')
+ 
+ prepare() {
+-    cd "${srcdir}"/zfs-${pkgver}
++    cd "${srcdir}"/zfs-${_pkgver}
+ 
+     # pyzfs is not built, but build system tries to check for python anyway
+     ln -sf /bin/true python3-fake
+@@ -42,7 +43,7 @@ build() {
+     export CFLAGS="$CFLAGS -fno-tree-vectorize"
+     export CXXFLAGS="$CXXFLAGS -fno-tree-vectorize"
+ 
+-    cd "${srcdir}"/zfs-${pkgver}
++    cd "${srcdir}"/zfs-${_pkgver}
+ 
+     ./configure --prefix=/usr \
+                 --sysconfdir=/etc \
+@@ -59,7 +60,7 @@ build() {
+ }
+ 
+ package() {
+-    cd "${srcdir}"/zfs-${pkgver}
++    cd "${srcdir}"/zfs-${_pkgver}
+ 
+     make DESTDIR="${pkgdir}" install
+     install -D -m644 contrib/bash_completion.d/zfs "${pkgdir}"/usr/share/bash-completion/completions/zfs

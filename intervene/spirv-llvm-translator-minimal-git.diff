@@ -1,29 +1,37 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index fa9a6ec..fca1f5f 100644
+index 2b215b1..ce0be5e 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -4,14 +4,16 @@ _srcname=SPIRV-LLVM-Translator
  pkgname=spirv-llvm-translator-minimal-git
  pkgdesc="Tool and a library for bi-directional translation between SPIR-V and LLVM IR, trunk version"
  epoch=1
--pkgver=r1774.772c7be
-+pkgver=17.0.0_r1802.b1782bfb9686
- pkgrel=1
+-pkgver=r1817.066514b
+-pkgrel=2
++pkgver=18.0.0_r1836.d498f485cbcb
++pkgrel=1
  arch=('x86_64')
  url="https://github.com/KhronosGroup/SPIRV-LLVM-Translator"
  license=('custom:Apache 2.0 with LLVM Exception')
--makedepends=(llvm-minimal-git git cmake spirv-headers-git spirv-tools-git "llvm-libs<17")
+-makedepends=(llvm-minimal-git git cmake spirv-headers-git spirv-tools-git)
+-checkdepends=(python python-setuptools clang-minimal-git)
+-depends=(llvm-libs-minimal-git spirv-tools-git gcc-libs glibc)
 +groups=('mesa-minimal')
 +# edit makedepends array so we build with our llvm-git
 +makedepends=(llvm-git git cmake spirv-headers-git spirv-tools-git)
- checkdepends=(python python-setuptools clang-minimal-git)
--depends=(llvm-libs-minimal-git spirv-tools-git gcc-libs glibc)
++checkdepends=(python python-setuptools)
 +depends=(spirv-tools-git gcc-libs glibc)
  provides=(spirv-llvm-translator)
  conflicts=(spirv-llvm-translator)
  source=("git+$url.git"
-@@ -23,7 +25,10 @@ sha512sums=('SKIP')
+@@ -21,9 +23,16 @@ md5sums=('SKIP')
+ sha512sums=('SKIP')
  
+ 
++prepare() {
++    sed 's/[0-9][0-9].0.0/18.0.0/' -i "${_srcname}/CMakeLists.txt"
++}
++
  pkgver() {
      cd $_srcname
 -    printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
@@ -34,7 +42,7 @@ index fa9a6ec..fca1f5f 100644
  }
  
  build() {
-@@ -32,13 +37,18 @@ build() {
+@@ -32,13 +41,19 @@ build() {
          -B _build \
          -S "$srcdir"/$_srcname  \
          -G "Unix Makefiles" \
@@ -46,6 +54,7 @@ index fa9a6ec..fca1f5f 100644
          -D CMAKE_POSITION_INDEPENDENT_CODE=ON \
 +        -D CMAKE_RANLIB=/usr/bin/llvm-ranlib \
          -D CMAKE_SKIP_RPATH=ON \
++        -D LLVM_ENABLE_LTO=Thin \
          -D LLVM_EXTERNAL_LIT=/usr/bin/lit \
          -D LLVM_EXTERNAL_SPIRV_HEADERS_SOURCE_DIR=/usr/include/spirv/ \
          -D LLVM_SPIRV_INCLUDE_TESTS=ON \
@@ -53,7 +62,7 @@ index fa9a6ec..fca1f5f 100644
          -D BUILD_SHARED_LIBS=ON \
          -Wno-dev
  
-@@ -50,6 +60,8 @@ check() {
+@@ -50,6 +65,8 @@ check() {
  }
  
  package() {

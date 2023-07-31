@@ -2,43 +2,44 @@
 # Contributor: Jan0660 <jan0660@tutanota.com>
 
 pkgname=oh-my-posh
-pkgver=17.5.3
+pkgver=18.2.0
 pkgrel=1
-pkgdesc="A prompt theme engine for any shell."
+pkgdesc="A prompt theme engine for any shell"
 arch=('x86_64')
 url="https://ohmyposh.dev"
 license=('MIT')
 depends=('glibc')
-makedepends=('git' 'go')
-source=("git+https://github.com/JanDeDobbeleer/oh-my-posh.git#tag=v$pkgver")
-sha256sums=('SKIP')
+makedepends=('go')
+source=("${pkgname}-${pkgver}.tar.gz::https://github.com/JanDeDobbeleer/oh-my-posh/archive/refs/tags/v${pkgver}.tar.gz")
+sha512sums=('3bc32ed93c7ce1623a20e152bbd6b0d2e98524d47dc44a2c23cfd6015c515cc9bffb3857f176fb1296d8ca2fcab50e85f8f75dca722aca6b8c5d606933598304')
+b2sums=('71678a155c6820a923a2ee9a46578d9db3c24c2897a88910f846f3e55664fb99549d60b70e817eaaa8bbc5555b77b77be4e0da5db0156da04b8fe64d33211c8e')
 
-prepare() {
-  sed "s/development/$pkgver/" -i "$srcdir/oh-my-posh/src/main.go"
-}
+_gourl=github.com/jandedobbeleer/${pkgname}/src/build
+_godate="$(date -u ${SOURCE_DATE_EPOCH:+-d @${SOURCE_DATE_EPOCH}} +"%Y-%m-%dT%H:%M:%SZ")"
 
 build() {
   export CGO_CPPFLAGS="${CPPFLAGS}"
   export CGO_CFLAGS="${CFLAGS}"
   export CGO_CXXFLAGS="${CXXFLAGS}"
   export CGO_LDFLAGS="${LDFLAGS}"
-  export GOFLAGS="-buildmode=pie -trimpath -ldflags=-linkmode=external -mod=readonly -modcacherw"
+  export GOFLAGS="-buildmode=pie -trimpath -mod=readonly -modcacherw"
 
-  cd "$srcdir/oh-my-posh/src"
+  cd "${srcdir}/${pkgname}-${pkgver}/src"
 
-  go build
+  # Only latest passed -ldflags= will be honored and -X variable doesn't work with GOFLAGS
+  go build -ldflags="-X ${_gourl}.Version=${pkgver} -X ${_gourl}.Date=${_godate} -linkmode=external"
 }
 
 package() {
-  cd "$srcdir/oh-my-posh"
+  cd "${srcdir}/${pkgname}-${pkgver}"
 
-  # install binary
-  install -Dm755 src/src "$pkgdir/usr/bin/oh-my-posh"
+  # Install binary
+  install -Dm755 src/src "${pkgdir}/usr/bin/${pkgname}"
 
-  # install default themes
-  install -d "$pkgdir/usr/share/oh-my-posh"
-  cp -r themes "$pkgdir/usr/share/oh-my-posh/themes"
+  # Install default themes
+  install -d "${pkgdir}/usr/share/${pkgname}"
+  cp -r themes "${pkgdir}/usr/share/${pkgname}/themes"
 
-  # copy license
-  install -m644 -Dt "$pkgdir/usr/share/licenses/$pkgname" COPYING
+  # Copy license
+  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
 }

@@ -1,0 +1,28 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index ad9c385..a3cadf3 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -19,14 +19,15 @@ pkgdesc='Web browser that blocks ads and trackers by default (binary release)'
+ arch=(x86_64 aarch64)
+ url=https://brave.com
+ license=(MPL2 BSD custom:chromium)
+-depends=(alsa-lib
+-         gtk3
+-         libxss
+-         nss
+-         ttf-font)
+-optdepends=('cups: Printer support'
+-            'libgnome-keyring: Enable GNOME keyring support'
+-            'libnotify: Native notification support')
++depends=('alsa-lib' 'dbus' 'glib2' 'gtk3' 'hicolor-icon-theme' 'libxss' 'nss' 'ttf-font')
++optdepends=('cups: printer support'
++            'kdialog: support for native dialogs in Plasma'
++            'kwallet: support for storing passwords in KWallet on Plasma'
++            'libnotify: native notification support'
++            'org.freedesktop.secrets: password storage backend on GNOME / Xfce'
++            'pipewire: WebRTC desktop sharing under Wayland'
++            'qt5-base: enable Qt5 with --enable-features=AllowQt --qt-version=5'
++            'qt6-base: enable Qt6 with --enable-features=AllowQt --qt-version=6')
+ provides=("${pkgname%-bin}=$pkgver" 'brave-browser')
+ conflicts=("${pkgname%-bin}")
+ options=(!strip)

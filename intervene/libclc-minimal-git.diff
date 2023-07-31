@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 5010468..a7fc4fe 100644
+index 5010468..caf5c0f 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -9,9 +9,11 @@ pkgdesc="companion package to llvm-minimal-git,  Library requirements of the Ope
@@ -15,7 +15,7 @@ index 5010468..a7fc4fe 100644
  source=("git+https://github.com/llvm/llvm-project.git"
  )
  sha256sums=('SKIP')
-@@ -49,8 +51,13 @@ build() {
+@@ -49,8 +51,14 @@ build() {
      cmake \
        -B _build \
        -S "$srcdir"/llvm-project/libclc  \
@@ -25,6 +25,7 @@ index 5010468..a7fc4fe 100644
 +      -D CMAKE_CXX_COMPILER=clang++ \
        -D CMAKE_INSTALL_PREFIX=/usr \
 +      -D CMAKE_RANLIB=/usr/bin/llvm-ranlib \
++      -D LLVM_ENABLE_LTO=Thin \
 +      -D LLVM_USE_LINKER=lld \
        -Wno-dev
    make -C _build

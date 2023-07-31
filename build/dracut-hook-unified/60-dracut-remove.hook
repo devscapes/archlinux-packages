@@ -1,0 +1,11 @@
+[Trigger]
+Type = Path
+Operation = Remove
+Target = usr/lib/modules/*/pkgbase
+
+[Action]
+Description = Removing linux initcpios (dracut)...
+When = PreTransaction
+Exec = /usr/share/libalpm/scripts/dracut remove
+Depends = grep
+NeedsTargets

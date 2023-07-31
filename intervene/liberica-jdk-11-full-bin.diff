@@ -1,21 +1,50 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 0dd8210..5158364 100644
+index 0dd8210..d0dab5b 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -7,13 +7,13 @@
+@@ -7,14 +7,15 @@
  _jdkname=liberica-jdk-11-full
  pkgname="${_jdkname}-bin"
  _java_ver=11
 -pkgver=11.0.19.u7
 -_pkgver=11.0.19+7
-+_pkgver=${_java_ver}.0.19+7
++_pkgver=${_java_ver}.0.20+8
 +pkgver=${_pkgver/+/.u}
  pkgrel=1
- pkgdesc='BellSoft builds of OpenJDK are fully certified and 100% open source Java Development Kits (JDKs) for all Java development and production workloads. Full version includes OpenJFX.'
+-pkgdesc='BellSoft builds of OpenJDK are fully certified and 100% open source Java Development Kits (JDKs) for all Java development and production workloads. Full version includes OpenJFX.'
++pkgdesc='Free and open source Java Development Kit produced by BellSoft (full version with OpenJFX)'
  arch=(aarch64 armv7h armv8h x86_64)
  url='https://bell-sw.com/'
 -license=('custom')
-+license=('custom:GPL-2.0 with Classpath Exception' 'custom:liberica')
++license=('custom:liberica')
  depends=('java-environment-common=3' 'java-runtime-common>=3' 'ca-certificates-utils')
++depends+=('glib2') # namcap
  optdepends=(ffmpeg freetype2 gtk2 gtk3 libnet)
  provides=(
+   "java-environment=$_java_ver"
+@@ -51,10 +52,10 @@ source_armv8h=(${source_armv7h[@]})
+ source_x86_64=(https://download.bell-sw.com/java/$_pkgver/bellsoft-jdk$_pkgver-linux-amd64-full.tar.gz)
+ 
+ # Upstream-provided: https://bell-sw.com/pages/downloads/
+-sha1sums_aarch64=('0ba7b7e5d83d996f655ffb4bf49d67312ed2bcc8')
+-sha1sums_armv7h=('c7e1b292fbb3e204eb4af3c74b247ca28fb05c2c')
++sha1sums_aarch64=('1e82b1755cc61a6af083e67c42101d78ab56d575')
++sha1sums_armv7h=('b343a387765963d68af75ccee33934d26fb6448a')
+ sha1sums_armv8h=(${sha1sums_armv7h[@]})
+-sha1sums_x86_64=('92b932c4bb7cba4c39466b5736ad2d1af83386f8')
++sha1sums_x86_64=('4108794f2fbb502962991005cf4986e0b6c22832')
+ 
+ _jvmdir="/usr/lib/jvm/${_jdkname}"
+ 
+@@ -74,9 +75,9 @@ package() {
+ 
+   # Legal
+   install -dm 755 "${pkgdir}/usr/share/licenses"
+-  cp -r legal "${pkgdir}/usr/share/licenses/${_jdkname}"
++  cp -r legal "${pkgdir}/usr/share/licenses/${pkgname}"
+   rm -rf "${pkgdir}/${_jvmdir}/legal"
+-  ln -s "/usr/share/licenses/${_jdkname}" "${pkgdir}/${_jvmdir}/legal"
++  ln -s "/usr/share/licenses/${pkgname}" "${pkgdir}/${_jvmdir}/legal"
+ 
+   # Man pages
+   for f in man/man1/* man/ja/man1/*; do

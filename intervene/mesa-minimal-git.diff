@@ -1,9 +1,9 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 64217c6..c43e72a 100644
+index 3eaaa95..dec0ad1 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -20,11 +20,14 @@ makedepends=(git meson ninja libglvnd python-mako xorgproto libxml2 libx11  libv
-               wayland-protocols glslang llvm-minimal-git libdrm libclc-minimal-git clang-minimal-git 'llvm-libs<17' rust rust-bindgen spirv-tools-git spirv-llvm-translator-minimal-git libvdpau systemd-libs)
+               wayland-protocols glslang llvm-minimal-git libdrm libclc-minimal-git clang-minimal-git rust rust-bindgen spirv-tools-git spirv-llvm-translator-minimal-git libvdpau systemd-libs)
  # In order to keep the package simple and ease troubleshooting only use one llvm implementation
  optdepends=('opengl-man-pages: for the OpenGL API man pages')
 -provides=(mesa vulkan-intel vulkan-radeon vulkan-mesa-layer libva-mesa-driver vulkan-swrast mesa-vdpau vulkan-driver opengl-driver)
@@ -19,24 +19,3 @@ index 64217c6..c43e72a 100644
  source=('mesa::git+https://gitlab.freedesktop.org/mesa/mesa.git'
                  'LICENSE'
  )
-@@ -32,7 +35,8 @@ md5sums=('SKIP'
-          '5c65a0fe315dd347e09b1f2826a1df5a')
- sha512sums=('SKIP'
-             '25da77914dded10c1f432ebcbf29941124138824ceecaf1367b3deedafaecabc082d463abcfa3d15abff59f177491472b505bcb5ba0c4a51bb6b93b4721a23c2')
--options=(!emptydirs)
-+# build without lto, causes all sorts of rendering issues
-+options=(!emptydirs !lto)
- 
- # ninja grabs all available cores and leaves almost nothing for other processes.
- # this package uses the environment variable NINJAFLAGS to allow the user to change this behaviour
-@@ -47,9 +51,9 @@ pkgver() {
- 
- build () {
-     
-+    # build without lto, causes all sorts of rendering issues
-     meson setup mesa _build \
-        -D b_ndebug=true \
--       -D b_lto=true \
-        -D buildtype=plain \
-        --wrap-mode=nofallback \
-        -D rust_std=2021 \

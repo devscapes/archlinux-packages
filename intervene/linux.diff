@@ -1,0 +1,104 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index b41f0e8..c37a7d7 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -2,12 +2,13 @@
+ 
+ pkgbase=linux
+ pkgver=6.4.7.arch1
+-pkgrel=1
++pkgrel=1.1
+ pkgdesc='Linux'
+ _srctag=v${pkgver%.*}-${pkgver##*.}
+ url="https://github.com/archlinux/linux/commits/$_srctag"
+ arch=(x86_64)
+ license=(GPL2)
++groups=('core-rebuild')
+ makedepends=(
+   bc
+   cpio
+@@ -29,7 +30,7 @@ makedepends=(
+ options=('!strip')
+ _srcname=archlinux-linux
+ source=(
+-  "$_srcname::git+https://github.com/archlinux/linux?signed#tag=$_srctag"
++  "${_srcname}-${_srctag}.tar.gz::https://github.com/archlinux/linux/archive/refs/tags/${_srctag}.tar.gz"
+   config  # the main kernel config file
+ )
+ validpgpkeys=(
+@@ -38,8 +39,8 @@ validpgpkeys=(
+   A2FF3A36AAA56654109064AB19802F8B0D70FC30  # Jan Alexander Steffens (heftig)
+   C7E7849466FE2358343588377258734B41C31549  # David Runge <dvzrv@archlinux.org>
+ )
+-b2sums=('SKIP'
+-        'a73a9eaa59dd45ccdd564b762c3816342873e9002c54b742f481ccd79c34549131ab3b0188445139b9e5fab696b60270f8148337387619456b4674d6ff28ccb7')
++b2sums=('e5738a8ff624555fb9b4f2bfb812ab36c978c9539d4d591376e4f14a412ed44c73acc43db0ceff29bf3ea9ff94d415db10ac5b35038954280a748244969a7d7e'
++        '3e22b26099f20de1855015370d0c2afc9850dc0080f3b7644210a75ce3d6521ea114734edcf904d9ec676a265aef7bfbc69f08d13567f3faa0e1eedc39836d25')
+ 
+ export KBUILD_BUILD_HOST=archlinux
+ export KBUILD_BUILD_USER=$pkgbase
+@@ -47,14 +48,15 @@ export KBUILD_BUILD_TIMESTAMP="$(date -Ru${SOURCE_DATE_EPOCH:+d @$SOURCE_DATE_EP
+ 
+ _make() {
+   test -s version
+-  make KERNELRELEASE="$(<version)" "$@"
++  make KERNELRELEASE="$(<version)" KCFLAGS="-march=x86-64-v3 -mtune=generic" "$@"
+ }
+ 
+ prepare() {
++  mv "${pkgbase}-${_srctag#v}" "${_srcname}"
+   cd $_srcname
+ 
+   echo "Setting version..."
+-  echo "-$pkgrel" > localversion.10-pkgrel
++  echo "-${pkgrel%.*}" > localversion.10-pkgrel
+   echo "${pkgbase#linux}" > localversion.20-pkgname
+   make defconfig
+   make -s kernelrelease > version
+@@ -162,6 +164,9 @@ _package-headers() {
+   # https://bugs.archlinux.org/task/71392
+   install -Dt "$builddir/drivers/iio/common/hid-sensors" -m644 drivers/iio/common/hid-sensors/*.h
+ 
++  # This is a bad idea for shipping, but required in conjunction with kernel lockdown
++  install -Dt "$builddir/certs" -m644 certs/signing_key.{pem,x509} || true
++
+   echo "Installing KConfig files..."
+   find . -name 'Kconfig*' -exec install -Dm644 {} "$builddir/{}" \;
+ 
+diff --git a/config b/config
+index 5b1515d..1f2a063 100644
+--- a/config
++++ b/config
+@@ -1,6 +1,6 @@
+ #
+ # Automatically generated file; DO NOT EDIT.
+-# Linux/x86 6.4.4-arch1 Kernel Configuration
++# Linux/x86 6.4.7-arch1 Kernel Configuration
+ #
+ CONFIG_CC_VERSION_TEXT="gcc (GCC) 13.1.1 20230714"
+ CONFIG_CC_IS_GCC=y
+@@ -933,9 +933,9 @@ CONFIG_MODULE_SIG_ALL=y
+ # CONFIG_MODULE_SIG_SHA1 is not set
+ # CONFIG_MODULE_SIG_SHA224 is not set
+ # CONFIG_MODULE_SIG_SHA256 is not set
+-# CONFIG_MODULE_SIG_SHA384 is not set
+-CONFIG_MODULE_SIG_SHA512=y
+-CONFIG_MODULE_SIG_HASH="sha512"
++CONFIG_MODULE_SIG_SHA384=y
++# CONFIG_MODULE_SIG_SHA512 is not set
++CONFIG_MODULE_SIG_HASH="sha384"
+ # CONFIG_MODULE_COMPRESS_NONE is not set
+ # CONFIG_MODULE_COMPRESS_GZIP is not set
+ # CONFIG_MODULE_COMPRESS_XZ is not set
+@@ -9982,7 +9982,10 @@ CONFIG_USB4=m
+ #
+ # Android
+ #
+-# CONFIG_ANDROID_BINDER_IPC is not set
++CONFIG_ANDROID_BINDER_IPC=y
++CONFIG_ANDROID_BINDERFS=y
++CONFIG_ANDROID_BINDER_DEVICES=""
++# CONFIG_ANDROID_BINDER_IPC_SELFTEST is not set
+ # end of Android
+ 
+ CONFIG_LIBNVDIMM=y

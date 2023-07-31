@@ -1,0 +1,26 @@
+pkgname=dracut-hook-unified
+pkgver=20230724
+pkgrel=1
+pkgdesc='Install/remove hooks for dracut (using unified script)'
+arch=('any')
+license=('Unlicense')
+depends=('bash' 'dracut')
+provides=('dracut-hook')
+conflicts=('dracut-hook')
+source=('60-dracut-remove.hook'
+        '90-dracut-install.hook'
+        'dracut')
+sha512sums=('99d66da411ffc92b85b280c2dbdadb947fa791f8f9355f6a1c62380ec41ad31824bc818e14fca21ce87bf354c2bd2ef2a53284d0f4bba3ae0ffe501135314678'
+            'ef874b38621d4427e96c8a50a58f51905037230ef76896a222e12df0ecddb57894e1201043cb85683869b3dbd741b6ab6f42e5fdbf8f41e39d6b97c442b1ed10'
+            'a5e04a4b232dd57d6fe538a939cbc038748358961cab2549febaeabb4361cd4e43e24bffb2e2ee680bfddbd58ab6bb9ee388ec02f92fb9b72a7c5791b3bf6f1d')
+b2sums=('a1c2245ab1834a1df3423ba51ebfab0f6fef8ab7017dea9df3ad242c3ee804e219535b5c6a37c56b25b740db2b8beebfe9d4bd7d8253f67d3d0d25855b600650'
+        '39ec1a0c517c79b11c0a54caea4000e022ef219ad94e584320f5058a47a372d4479b339a0693a31a847287f70d258f845b49da32e3e1bee42b72fa4193691839'
+        '0a9cf1fd4cccb521ba03a7238f6e5f720f172b6f7231d099a853b680f78be56304ec7171c14650139e6e58e30f8c4929c006d35ff21e4504399bc779ba57c47f')
+
+package() {
+    _libalpm_dir="${pkgdir}/usr/share/libalpm"
+
+    install -Dm644 60-dracut-remove.hook "${_libalpm_dir}/hooks/60-dracut-remove.hook"
+    install -Dm644 90-dracut-install.hook "${_libalpm_dir}/hooks/90-dracut-install.hook"
+    install -Dm755 dracut "${_libalpm_dir}/scripts/dracut"
+}

@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index d4fc3f6..9d4bf43 100644
+index c66a21d..1392b6a 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -7,21 +7,24 @@ pkgdesc="Open-source PDF rendering engine."
@@ -8,8 +8,8 @@ index d4fc3f6..9d4bf43 100644
  license=('BSD')
 -depends=('freetype2' 'lcms2' 'libjpeg' 'openjpeg2' 'icu')
 -conflicts=('libpdfium-bin')
-+# https://aur.archlinux.org/packages/libpdfium-nojs#comment-809341
-+depends=('freetype2' 'lcms2' 'libjpeg' 'openjpeg2' 'libicuuc.so')
++# https://aur.archlinux.org/packages/libpdfium-nojs#comment-809341 + namcap
++depends=('freetype2' 'lcms2' 'libjpeg' 'openjpeg2' 'icu' 'libicuuc.so' 'zlib')
 +conflicts=('libpdfium')
  provides=('libpdfium')
  makedepends=('git' 'python' 'gn' 'ninja')

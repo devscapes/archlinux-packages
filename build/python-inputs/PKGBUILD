@@ -1,0 +1,71 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+# Contributor: Major <majorx234@googlemail.com>
+
+pkgname=python-inputs
+pkgver=0.5
+pkgrel=4
+pkgdesc='Cross-platform Python support for keyboards, mice and gamepads'
+url='https://github.com/zeth/inputs'
+arch=('any')
+license=('BSD')
+depends=('python')
+makedepends=('git' 'python-build' 'python-installer' 'python-setuptools' 'python-sphinx'
+             'python-wheel')
+source=("${pkgname}::git+${url}.git#tag=v${pkgver}")
+sha512sums=('SKIP')
+b2sums=('SKIP')
+
+_python_version() {
+    python3 <(\
+        cat << 'EOF'
+import sys
+vi = sys.version_info
+print(f"{vi.major}.{vi.minor}")
+EOF
+    )
+}
+
+prepare() {
+    cd "${srcdir}/${pkgname}"
+
+    # Fixes around controller and LED indexes
+    git cherry-pick -n 3203c9e25f1e14c4316d85d59c536b4e407f569f
+
+    # Support hotplugging of devices
+    git cherry-pick -n 76f088e3fefed6a70ff242f9f1fff1cb2ce229a0
+
+    # Fixes around rumble state change
+    git cherry-pick -n d10379e07bc815253e8d7d08ca4e530f891dd936
+}
+
+build() {
+    cd "${srcdir}/${pkgname}"
+
+    # Build wheel package
+    python -m build -w -n
+
+    # Build documentation
+    make -C docs man
+}
+
+check() {
+    cd "${srcdir}/${pkgname}"
+    python -m unittest discover
+}
+
+package() {
+    local _py=$(_python_version)
+
+    cd "${srcdir}/${pkgname}"
+
+    # Install wheel package
+    python -m installer -d "${pkgdir}" dist/*.whl
+
+    # Install documentation
+    install -Dm644 docs/_build/man/inputs.1 "${pkgdir}/usr/share/man/man1/inputs.1"
+
+    # Symlink LICENSE from wheel dist-info copy
+    install -d "${pkgdir}/usr/share/licenses/${pkgname}"
+    ln -s "../../../lib/python${_py}/site-packages/${pkgname#python-}-${pkgver}.dist-info/LICENSE" \
+        "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}

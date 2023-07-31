@@ -1,0 +1,93 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 6d73f8c..40608bf 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -20,11 +20,13 @@ source=("$pkgname-$pkgver.tar.gz::https://github.com/wirbel-at-vdr-portal/w_scan
+         "vdr-wirbelscan-$_wirbelscan_version.tar.gz::https://github.com/wirbel-at-vdr-portal/wirbelscan-dev/archive/refs/tags/$_wirbelscan_version.tar.gz"
+         "git://git.tvdr.de/vdr.git#commit=$_vdr_gitver"
+         "vdr-plugin-satip-wirbel::git+https://github.com/wirbel-at-vdr-portal/vdr-plugin-satip.git#commit=$_satip_gitver"
++        't2-indonesia.patch'
+        )
+ sha256sums=('d61e81895e6b87bf41a554103e9c93feb573f36a2649d24e0e9b8577e7736ead'
+             'f58208ec8bb9eb868e50b5e2031f125d4d16aad625b812327c07d4de88371804'
+             'SKIP'
+-            'SKIP')
++            'SKIP'
++            '97ea8b38971c04c0011d491ed32b32e9d119aa653fc4c91ce970b65d99e4ca8d')
+ 
+ prepare() {
+   cd "$srcdir/$pkgname-$pkgver"
+@@ -40,6 +42,8 @@ prepare() {
+   ln -s "vdr-plugin-satip-wirbel" "vdr/PLUGINS/src/satip"
+   cp -a "$srcdir/wirbelscan-dev-$_wirbelscan_version" "vdr/PLUGINS/src"
+   ln -s "wirbelscan-dev-$_wirbelscan_version" "vdr/PLUGINS/src/wirbelscan"
++
++  patch -d vdr/PLUGINS/src/wirbelscan -N -p2 -b <"$srcdir/t2-indonesia.patch"
+ }
+ 
+ build() {
+diff --git a/t2-indonesia.patch b/t2-indonesia.patch
+new file mode 100644
+index 0000000..7c9ea0a
+--- /dev/null
++++ b/t2-indonesia.patch
+@@ -0,0 +1,59 @@
++--- src/wirbelscan-dev-2023.06.04/countries.cpp.orig	2023-06-04 20:19:16.000000000 +0800
+++++ src/wirbelscan-dev-2023.06.04/countries.cpp	2023-07-21 18:07:43.734443915 +0800
++@@ -376,6 +376,7 @@
++      case TW:     //      TAIWAN, DVB-T w. ATSC freq list (thanks for freqlist to mkrufky)
++      case VN:     //      VIET NAM
++      case AU:     //      AUSTRALIA, DVB-T w. 7MHz step
+++     case ID:     //      INDONESIA
++         switch(dvb) {    
++            case SCAN_CABLE:
++               scan_type = SCAN_CABLE;
++@@ -523,6 +524,18 @@
++               break;
++            }
++         break;
+++     case ID:     //      INDONESIA
+++        switch(dvb) {
+++           case SCAN_CABLE:
+++              channellist = DVBC_QAM;
+++              info("DVB-C");
+++              break;
+++           default:
+++              channellist = DVBT_ID;
+++              info("DVB-T/T2 ID");
+++              break;
+++           }
+++        break;
++      //**********ATSC freq lists******************************************//
++      case US:     //      UNITED STATES
++      case CA:     //      CANADA
++@@ -618,6 +631,11 @@
++            case 21 ... 55: return  306000000;
++            default:        return  SKIP_CHANNEL;
++            }
+++     case DVBT_ID:  //INDONESIA, 22..26 are currently reserved in most regions
+++        switch(channel) {
+++           case 22 ... 48: return  306000000;
+++           default:        return  SKIP_CHANNEL;
+++           }
++      case DVBC_QAM: //EUROPE
++      case DVBC_FI:  //FINLAND, QAM128
++         switch(channel) {
++@@ -654,6 +672,7 @@
++      case DVBT_FR:
++      case DVBT_GB:
++      case DVBT_EU_BAND3:
+++     case DVBT_ID:
++         switch(channel) { // dvb-t europe, 7MHz VHF ch5..12, all other 8MHz
++            case  5 ... 12:    return 7000000;
++            case 21 ... 69:    return 8000000;
++--- src/wirbelscan-dev-2023.06.04/countries.h.orig	2023-06-04 20:19:16.000000000 +0800
+++++ src/wirbelscan-dev-2023.06.04/countries.h	2023-07-21 18:13:13.699096204 +0800
++@@ -21,6 +21,7 @@
++   DVBC_BR                 = 10,
++   ISDBT_6MHZ              = 11,
++   DVBT_EU_BAND3           = 12,
+++  DVBT_ID                 = 13,
++   USERLIST                = 999
++ };
++ 

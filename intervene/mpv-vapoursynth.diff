@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index ab269c9..fd9335b 100644
+index 70e4387..5b5521f 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -3,12 +3,13 @@
@@ -10,16 +10,15 @@ index ab269c9..fd9335b 100644
 +_pkgname=mpv
 +pkgname=${_pkgname}-vapoursynth
  epoch=1
- _tag='5ae02ccad10542a74b397e39800ec01def0db4e1' # git rev-parse v${pkgver}
- pkgver=0.35.1
--pkgrel=6
+ _tag='3996724d3fa1c51cc7998f3de2e22e2c99e6d270' # git rev-parse v${pkgver}
+ pkgver=0.36.0
+ pkgrel=1
 -pkgdesc='a free, open source, and cross-platform media player'
-+pkgrel=5
-+pkgdesc='a free, open source, and cross-platform media player (with Vapoursynth libs)'
++pkgdesc='a free, open source, and cross-platform media player (with vapoursynth support)'
  arch=('x86_64')
  # We link against libraries that are licensed GPLv3 explicitly, so our
  # package is GPLv3 only as well. (Is this still correct?)
-@@ -23,19 +24,20 @@ depends=('alsa-lib' 'libasound.so' 'desktop-file-utils' 'ffmpeg' 'libavcodec.so'
+@@ -23,12 +24,13 @@ depends=('alsa-lib' 'libasound.so' 'desktop-file-utils' 'ffmpeg' 'libavcodec.so'
           'libva' 'libva.so' 'libva-drm.so' 'libva-wayland.so' 'libva-x11.so' 'libvdpau' 'libx11'
           'libxext' 'libxinerama' 'libxkbcommon' 'libxkbcommon.so' 'libxpresent' 'libxrandr' 'libxss'
           'libxv' 'luajit' 'mesa' 'mujs' 'libpipewire' 'rubberband' 'librubberband.so' 'shaderc'
@@ -35,15 +34,7 @@ index ab269c9..fd9335b 100644
  options=('!emptydirs')
  validpgpkeys=('145077D82501AA20152CACCE8D769208D5E31419') # sfan5 <sfan5@live.de>
  source=("git+https://github.com/mpv-player/mpv.git#tag=${_tag}?signed")
- sha256sums=('SKIP')
- 
- prepare() {
--  cd "${pkgname}"
-+  cd "${_pkgname}"
- 
-   git cherry-pick -n \
-     985655ebfd77ceddc44d76f8cc6dc446002f34ee \
-@@ -53,9 +55,10 @@ build() {
+@@ -45,9 +47,10 @@ build() {
      -Ddvbin=enabled
      -Ddvdnav=enabled
      -Dlibarchive=enabled
@@ -55,7 +46,7 @@ index ab269c9..fd9335b 100644
  
    meson compile -C build
  }
-@@ -70,9 +73,9 @@ package() {
+@@ -62,9 +65,9 @@ package() {
    # delete private entries only required for static linking 
    sed -i -e '/Requires.private/d' -e '/Libs.private/d' "${pkgdir}"/usr/lib/pkgconfig/mpv.pc
  

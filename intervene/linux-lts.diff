@@ -1,12 +1,14 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 60b1509..e27fab2 100644
+index 091f951..6942e2c 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -2,11 +2,12 @@
+@@ -1,12 +1,13 @@
+ # Maintainer: Andreas Radke <andyrtr@archlinux.org>
  
  pkgbase=linux-lts
- pkgver=6.1.37
+-pkgver=6.1.39
 -pkgrel=1
++pkgver=6.1.42
 +pkgrel=1.1
  pkgdesc='LTS Linux'
  url="https://www.kernel.org/"
@@ -16,12 +18,15 @@ index 60b1509..e27fab2 100644
  makedepends=(
    bc libelf pahole cpio perl tar xz gettext
    xmlto python-sphinx graphviz imagemagick texlive-latexextra
-@@ -25,7 +26,7 @@ validpgpkeys=(
+@@ -23,9 +24,9 @@ validpgpkeys=(
+   '647F28654894E3BD457199BE38DBBDC86092693E'  # Greg Kroah-Hartman
+ )
  # https://www.kernel.org/pub/linux/kernel/v6.x/sha256sums.asc
- sha256sums=('46cad712d261a23c8e483a3b79b6a84b9a5f731a8921c9127df35ae35cef1e80'
+-sha256sums=('4cddee22fdf657138a06af653492f67cd3a4762c04a34725534bd200d99085b8'
++sha256sums=('aaf8261b551c8b76b81eab8780b446e88cea4d551ae517ac3a9b2dbdbd381ed3'
              'SKIP'
--            'd26680b3a4103cf961553077af72aa93ff2d1635ad2292ad3758e2a70ff25c27'
-+            '536f1fad200333d8382d1e7d452d6bc56666156d207526a8248f6bfe631fab05'
+-            '20e2f62eb004af3f47609b4ab3380d8e870d51eba0df5f318a565910eada3503'
++            'c4cb932a23d5b63776336c13c204dd5c7585b624861743b305de912397bbdd04'
              '1bd8388fcb6ed4eec46450c65eb7a0889a8c541f164a39e3064633981a7a4a3d')
  
  export KBUILD_BUILD_HOST=archlinux
@@ -54,9 +59,17 @@ index 60b1509..e27fab2 100644
    find . -name 'Kconfig*' -exec install -Dm644 {} "$builddir/{}" \;
  
 diff --git a/config b/config
-index 2dafa65..04afcf6 100644
+index 9d0b8c4..8b39a27 100644
 --- a/config
 +++ b/config
+@@ -1,6 +1,6 @@
+ #
+ # Automatically generated file; DO NOT EDIT.
+-# Linux/x86 6.1.39 Kernel Configuration
++# Linux/x86 6.1.42 Kernel Configuration
+ #
+ CONFIG_CC_VERSION_TEXT="gcc (GCC) 13.1.1 20230714"
+ CONFIG_CC_IS_GCC=y
 @@ -906,9 +906,9 @@ CONFIG_MODULE_SIG_ALL=y
  # CONFIG_MODULE_SIG_SHA1 is not set
  # CONFIG_MODULE_SIG_SHA224 is not set

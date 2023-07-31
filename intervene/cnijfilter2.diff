@@ -1,13 +1,12 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 3fd5444..9c88026 100644
+index 2f1bc61..4d9599c 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -1,17 +1,17 @@
+@@ -1,17 +1,18 @@
  # Maintainer: Emanuel Couto <unit73e@gmail.com>
  pkgname=cnijfilter2
--pkgver=6.50
+ pkgver=6.60
 -pkgrel=1
-+pkgver=6.60
 +pkgrel=2
  pkgdesc="Canon IJ Printer Driver for Linux"
  arch=('i686' 'x86_64')
@@ -18,14 +17,13 @@ index 3fd5444..9c88026 100644
  makedepends=('automake' 'autoconf')
  provides=('tocanonij' 'tocnpwg' 'cnijlgmon3')
  conflicts=('cnijfilter' 'cnijfilter-mg3600')
--source=("https://gdlp01.c-wss.com/gds/9/0100011639/01/$pkgname-source-$pkgver-1.tar.gz")
--sha256sums=('1f240ee60adbd03f8706bd80f6f2f964b803facbb2e03f0ffbd68cc4ed77724e')
-+source=("https://gdlp01.c-wss.com/gds/3/0100011753/01/$pkgname-source-$pkgver-1.tar.gz")
+ source=("https://gdlp01.c-wss.com/gds/3/0100011753/01/$pkgname-source-$pkgver-1.tar.gz")
+ sha256sums=('997119d67897d2b6405555bc6baa4cf7727bf0ecc6467f86df408831b1dab6d0')
 +b2sums=('0207784251e70c5850da74eb76a4de16d4dc5760e91ce17fc86ee9c61cfac27c041ea3f434ecad846ee3cc93649ac627d41eaaa55d3baf2e148ad36d8e142b87')
  
  prepare() {
  	cd "$pkgname-source-$pkgver-1"
-@@ -24,14 +24,14 @@ build() {
+@@ -24,14 +25,14 @@ build() {
  	pushd cmdtocanonij2
  	./autogen.sh --prefix=/usr \
  		     --datadir=/usr/share \
@@ -42,7 +40,7 @@ index 3fd5444..9c88026 100644
  	make
  	popd
  
-@@ -46,7 +46,7 @@ build() {
+@@ -46,7 +47,7 @@ build() {
  		     --enable-libpath=/usr/lib/bjlib2 \
  		     --enable-progpath=/usr/bin \
  		     --datadir=/usr/share \

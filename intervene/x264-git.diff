@@ -1,12 +1,67 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index b43729a..241a0a8 100644
+index b43729a..406213c 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -38,6 +38,8 @@ pkgver() {
+@@ -5,6 +5,9 @@
+ # Contributor: zhuqin <zhuqin83[at]gmail>
+ # Contributor: pressh <pressh[at]gmail>
+ 
++# Set this variable to true or pass with makepkg to build with LLVM.
++: ${_llvm_build:=false}
++
+ # NOTE:
+ # This package provides both 8 and 10-bit support in a single package.
+ # x264 from the [extra] official repository is currently 8-bit only.
+@@ -21,6 +24,7 @@ url='https://www.videolan.org/developers/x264.html'
+ license=('GPL')
+ depends=('liblsmash.so')
+ makedepends=('git' 'nasm' 'l-smash')
++${_llvm_build} && makedepends+=('llvm17-opt')
+ provides=('x264' 'libx264' 'libx264-git' 'libx264.so')
+ conflicts=('x264' 'libx264' 'libx264-10bit' 'libx264-all')
+ replaces=('libx264-git' 'libx264-10bit-git' 'libx264-all-git')
+@@ -38,6 +42,45 @@ pkgver() {
  }
  
  build() {
-+    export CFLAGS+=" -mavx2 -msse2avx"
++    local extra_flags=()
++    local cpu_simd_flags=(
++        # Enable MMX instructions (used a lot), but disable 3DNow
++        '-mmmx' '-mno-3dnow' '-mno-3dnowa'
++        # Disable SSE3+ iterations only
++        '-mno-sse3' '-mno-ssse3' '-mno-sse4' '-mno-sse4a' '-mno-sse4.1' '-mno-sse4.2'
++        # Disable XOP/FMA4/CV16 extensions
++        '-mno-xop' '-mno-fma4' '-mno-f16c'
++        # Disable POPCNT/LZCNT extensions
++        '-mno-popcnt' '-mno-lzcnt'
++        # Disable AVX, and enable AVX2 and FMA3 extensions
++        '-mno-avx' '-mavx2' '-mfma'
++    )
++
++    if ${_llvm_build}; then
++        # Set path to our custom LLVM build set in dependencies
++        export PATH=/opt/llvm17/bin:$PATH
++        export LD_LIBRARY_PATH=/opt/llvm17/lib
++        # LD is set to `${CC} -o' always, so pass -fuse-ld= during final stage
++        export LDFLAGS+=" -fuse-ld=lld"
++        # Export full set of required LLVM tools
++        export AR=llvm-ar
++        export CC=clang
++        export RANLIB=llvm-ranlib
++        export RC=llvm-rc
++        export STRIP=llvm-strip
++
++        # Clang prefers to optimize code with SSE2 instructions
++        cpu_simd_flags+=('-mno-sse' '-msse2')
++    else
++        # GCC optimizes code with SSE instructions
++        cpu_simd_flags+=('-msse' '-mno-sse2' '-msse2avx')
++        # Include fat objects for LTO build
++        extra_flags=('-ffat-lto-objects')
++    fi
++
++    # Add LTO and CPU capabilities flags before proceeding
++    export CFLAGS+=" -mtune=native ${extra_flags[@]} ${cpu_simd_flags[@]}"
 +
      printf '%s\n' '  -> Building for 8-bit...'
      cd x264/build-8bit

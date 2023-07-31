@@ -1,0 +1,15 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 91701f1..6f42556 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -8,8 +8,8 @@ pkgdesc="a collection of common functions, classes and tools. Mainly used by w_s
+ arch=('i686' 'x86_64' 'armv6h' 'armv7h')
+ url="https://github.com/wirbel-at-vdr-portal/librepfunc"
+ license=('GPL2')
+-depends=('glibc')
+-makedepends=('gcc' 'gcc-libs')
++depends=('gcc-libs')
++options=('!emptydirs')
+ source=("$pkgname-$pkgver.tar.gz::https://github.com/wirbel-at-vdr-portal/librepfunc/archive/refs/tags/$pkgver.tar.gz")
+ sha256sums=('adfa4d5e9e041a963482c7557ad768b01e4feda3106558f778f60c5a5680ddd7')
+ 

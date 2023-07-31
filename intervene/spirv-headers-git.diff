@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index a89624d..ea3f5fe 100644
+index a89624d..110aaae 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -10,6 +10,7 @@ pkgdesc='SPIR-V header files Git version'
@@ -10,3 +10,12 @@ index a89624d..ea3f5fe 100644
  source=("git+https://github.com/KhronosGroup/$_pkgname.git")
  sha1sums=('SKIP')
  makedepends=('git' 'cmake')
+@@ -18,7 +19,7 @@ provides=("spirv-headers=1:$pkgver")
+ 
+ pkgver() {
+     cd "$_pkgname"
+-	git describe --long --tags | sed 's/^sdk-//; s/\([^-]*-g\)/r\1/; s/-/./g'
++    git describe --long --tags --match 'sdk-*' | sed 's/^sdk-//; s/\([^-]*-g\)/r\1/; s/-/./g'
+ }
+ 
+ build() {

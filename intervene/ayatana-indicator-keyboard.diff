@@ -1,0 +1,15 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index cabc171..f93fab1 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -7,8 +7,8 @@ pkgdesc="Ayatana Indicator Keyboard Applet"
+ arch=("i686" "x86_64" "pentium4")
+ url="https://github.com/AyatanaIndicators/ayatana-indicator-keyboard"
+ license=("GPL3")
+-makedepends=("intltool" "cmake-extras" "systemd" "glib2" "libx11")
+-depends=("libayatana-common>=0.9.5" "libxklavier" "hicolor-icon-theme" "accountsservice" "libxkbcommon")
++makedepends=("intltool" "cmake-extras" "systemd" "libx11")
++depends=("libayatana-common>=0.9.5" "libxklavier" "hicolor-icon-theme" "accountsservice" "libxkbcommon" "dconf" "glib2")
+ source=("${pkgname}-${pkgver}.tar.gz::https://github.com/AyatanaIndicators/${pkgname}/archive/${pkgver}.tar.gz")
+ md5sums=("84b26a684e19ac8f1dfa4f1aa6bc4085")
+ 

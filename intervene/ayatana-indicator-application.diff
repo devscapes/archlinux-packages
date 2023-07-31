@@ -1,0 +1,15 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 965a626..e18e0a2 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -7,8 +7,8 @@ pkgdesc="Ayatana Application Indicators"
+ arch=("i686" "x86_64" "pentium4")
+ url="https://github.com/AyatanaIndicators/ayatana-indicator-application"
+ license=("GPL3")
+-depends=("libayatana-appindicator" "dbus-glib")
+-makedepends=("cmake-extras" "glib2" "libayatana-indicator>=0.9.0" "gtk3" "libdbusmenu-gtk3" "systemd" "intltool")
++depends=("libayatana-appindicator" "dbus-glib" "glib2")
++makedepends=("cmake-extras" "libayatana-indicator>=0.9.0" "gtk3" "libdbusmenu-gtk3" "systemd" "intltool")
+ source=("${pkgname}-${pkgver}.tar.gz::https://github.com/AyatanaIndicators/${pkgname}/archive/${pkgver}.tar.gz")
+ md5sums=("83b373f6934f1865e307e19020fcc44b")
+ options=("!emptydirs")

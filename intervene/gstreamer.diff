@@ -1,11 +1,11 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index cd9dc6e..a030392 100644
+index f660a91..421f436 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -26,11 +26,12 @@ pkgname=(
    gstreamer-docs
  )
- pkgver=1.22.4
+ pkgver=1.22.5
 -pkgrel=1
 +pkgrel=1.1
  pkgdesc="Multimedia graph framework"
@@ -17,15 +17,15 @@ index cd9dc6e..a030392 100644
    # superproject
    git meson
 @@ -58,7 +59,7 @@ makedepends=(
-   qrencode json-glib libva libxkbcommon-x11
+   webrtc-audio-processing wildmidi wpewebkit zbar zvbi zxing-cpp
  
    # gst-plugins-ugly
--  a52dec opencore-amr libcdio libdvdread libmpeg2 x264
-+  a52dec opencore-amr libcdio libdvdread libmpeg2 libx264.so
+-  a52dec libcdio libdvdread libmpeg2 opencore-amr x264
++  a52dec libcdio libdvdread libmpeg2 opencore-amr libx264.so
  
    # gst-libav
    ffmpeg
-@@ -91,6 +92,10 @@ prepare() {
+@@ -96,6 +97,10 @@ prepare() {
  }
  
  build() {
@@ -36,21 +36,21 @@ index cd9dc6e..a030392 100644
    local meson_options=(
      # Superproject options
      -D devtools=disabled
-@@ -477,7 +482,7 @@ package_gst-plugins-bad() {
-     libkate liblrdf lilv libmodplug mjpegtools libmpcdec neon openal openexr
-     openjpeg2 opus libdvdnav libdvdread librsvg rtmpdump sbc libsndfile libltc
-     soundtouch spandsp srt libsrtp zvbi libwebp webrtc-audio-processing wildmidi
--    x265 zbar gsm libopenmpt libldac libfreeaptx qrencode json-glib libavtp
-+    libx265.so zbar gsm libopenmpt libldac libfreeaptx qrencode json-glib libavtp
-     libmicrodns svt-hevc zxing-cpp
+@@ -485,7 +490,7 @@ package_gst-plugins-bad() {
+     libmpcdec libopenmpt librsvg libsndfile libsrtp libwebp libxml2 lilv
+     mjpegtools neon nettle openal openexr openjpeg2 openssl opus pango qrencode
+     rtmpdump sbc soundtouch spandsp srt svt-hevc webrtc-audio-processing
+-    wildmidi x265 zbar zvbi zxing-cpp
++    wildmidi libx265.so zbar zvbi zxing-cpp
    )
  
-@@ -634,7 +639,7 @@ package_gst-plugins-ugly() {
+   cd root; local files=(
+@@ -656,7 +661,7 @@ package_gst-plugins-ugly() {
    pkgdesc+=" - ugly plugins"
    depends=(
      "gst-plugins-base-libs=$pkgver"
--    libdvdread libmpeg2 a52dec libcdio x264 opencore-amr
-+    libdvdread libmpeg2 a52dec libcdio libx264.so opencore-amr
+-    a52dec libcdio libdvdread libmpeg2 opencore-amr x264
++    a52dec libcdio libdvdread libmpeg2 opencore-amr libx264.so
    )
  
    cd root; local files=(
