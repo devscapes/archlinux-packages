@@ -2,6 +2,7 @@ pkgname=dracut-hook-unified
 pkgver=20230724
 pkgrel=1
 pkgdesc='Install/remove hooks for dracut (using unified script)'
+url="https://github.com/archlinux-kud/packages/tree/main/build/${pkgname}"
 arch=('any')
 license=('Unlicense')
 depends=('bash' 'dracut')
