@@ -15,7 +15,7 @@ optdepends=('ffmpeg: for any kind of demuxing'
 conflicts=('sushi-shifter-git')
 replaces=('sushi-shifter-git')
 source=("Sushi-${pkgver}.tar.gz::${url}/archive/refs/tags/${pkgver}.tar.gz")
-sha512sums=('5c4c7c2213d9ea919aa1a57e12b69a06ea6dc8eddc2da491ea2063d48988fbae422d9666b7a54240deee29688f06c10f49696b84104ab42d6236962c1131d265')
+sha384sums=('25183b7e5a9dcedc29bc6bcfd62e5acc4cfb262b1e2c9346549893093127a570db64c79f478ba658f6e0a501564b78ed')
 b2sums=('66827c0acd9acbce591a1a6934e709897dac385063b2c32cf49ad67dc9f59c949a64c2bcddec9de48ca01bdca51eadcaca27cdaf2359ac307044c7825e74f489')
 
 _python_version() {

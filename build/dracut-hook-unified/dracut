@@ -22,11 +22,11 @@ dracut_install() {
 
     if ${build_uki}; then
         echo "==> Building unified kernel image for ${pkgbase}..."
-        dracut "${parameters[@]}" --kver "${kernel}" "${esp_directory}/Linux/dracut-${pkgbase}.efi"
+        dracut "${parameters[@]}" --kver "${kernel}" "${esp_directory}/Linux/archlinux-${pkgbase}.efi"
     else
         echo "==> Building initramfs for ${pkgbase}..."
         install -Dm644 "/usr/lib/modules/${kernel}/vmlinuz" "/boot/vmlinuz-${pkgbase}"
-        dracut "${parameters[@]}" --kver "${kernel}" "/boot/dracut-${pkgbase}.img"
+        dracut "${parameters[@]}" --kver "${kernel}" "/boot/archlinux-${pkgbase}.img"
     fi
 }
 
@@ -35,8 +35,8 @@ dracut_remove() {
 
     read -r pkgbase <"/usr/lib/modules/${kernel}/pkgbase"
     echo "==> Removing initramfs and unified kernel image for ${pkgbase}..."
-    rm -f "/boot/vmlinuz-${pkgbase}" "/boot/dracut-${pkgbase}.img" \
-        "${esp_directory}/Linux/dracut-${pkgbase}.efi"
+    rm -f "/boot/vmlinuz-${pkgbase}" "/boot/archlinux-${pkgbase}.img" \
+        "${esp_directory}/Linux/archlinux-${pkgbase}.efi"
 }
 
 while read -r line; do
@@ -66,9 +66,12 @@ if grep -q -P '^uefi=(\")?yes(\")?' /etc/dracut.conf.d/*; then
     build_uki=true
 fi
 
-# Install UKIs to /efi/EFI if it's available (default: /boot/EFI)
-if [[ -d /efi/EFI && ! -d /boot/EFI ]]; then
+# Install UKIs to /efi/EFI or /boot/efi/EFI if available
+# Default if neither matches: /boot/EFI
+if mountpoint -q /efi && [[ -d /efi/EFI ]]; then
     esp_directory=/efi/EFI
+elif mountpoint -q /boot/efi && [[ -d /boot/efi/EFI ]]; then
+    esp_directory=/boot/efi/EFI
 fi
 
 for kernel in "${kernels[@]}"; do

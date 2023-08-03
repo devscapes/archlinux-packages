@@ -1,0 +1,10 @@
+[Trigger]
+Type = Path
+Operation = Remove
+Target = boot/*.efi
+
+[Action]
+Description = Removing uninstalled EFI executables from actual ESP...
+When = PreTransaction
+Exec = /usr/share/libalpm/scripts/copy-to-esp uninstall
+NeedsTargets

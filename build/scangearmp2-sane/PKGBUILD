@@ -3,27 +3,29 @@
 
 pkgname=scangearmp2-sane
 pkgver=4.50.1
-pkgrel=2
-pkgdesc="Canon ScanGear MP v2 scanner utility and sane backend"
+pkgrel=3
+pkgdesc='Canon ScanGear MP v2 scanner utility and sane backend'
 arch=('x86_64')
-url="https://github.com/Ordissimo/scangearmp2"
-license=('GPL' 'custom:canon')
-depends=('gtk3')
-makedepends=('cmake' 'libjpeg' 'sane' 'intltool' 'git')
+url='https://github.com/Ordissimo/scangearmp2'
+license=('GPL2' 'custom:canon')
+depends=('glib2' 'gtk3' 'libusb')
+makedepends=('cmake' 'libjpeg-turbo' 'sane' 'intltool')
+optdepends=('libjpeg-turbo: sane backend plug-in'
+            'sane: sane backend plug-in')
 provides=('scangearmp2')
 conflicts=('scangearmp2')
-source=("git+$url.git#tag=V${pkgver}")
-sha256sums=('SKIP')
+_srcname="${pkgname%-sane}"
+source=("${_srcname}-${pkgver}.tar.gz::${url}/archive/refs/tags/V${pkgver}.tar.gz")
+sha384sums=('1cbd0f0d5716d2ae5888623d9e3fc14fdedc532b21d768689872247e2f58d19a70629654672f7e0b2dbd82eaed17c31d')
+b2sums=('343803e0a9cafbf77f60623c9de5dfc085d07e69a3414e74405b253165ee5992c60eebb5a5dc3ea31b8a9981240604b71cbc9108cf2d8d75a0121e5b0041066d')
 
 build() {
-    cd "scangearmp2"
-
-    cmake -Bbuild -DCMAKE_INSTALL_PREFIX="/"
+    cmake -B build -S "${_srcname}-${pkgver}" -DCMAKE_INSTALL_PREFIX="/"
     make -C build
 }
 
 package() {
-    make -C scangearmp2/build DESTDIR="$pkgdir" install
-    install -d "$pkgdir/usr/share/licenses"
-    mv "$pkgdir/usr/share/scangearmp2/doc" "$pkgdir/usr/share/licenses/$pkgname"
+    DESTDIR="${pkgdir}" make -C build install
+    install -d "${pkgdir}/usr/share/licenses"
+    mv "${pkgdir}/usr/share/scangearmp2/doc" "${pkgdir}/usr/share/licenses/${pkgname}"
 }

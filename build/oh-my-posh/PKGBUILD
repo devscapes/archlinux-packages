@@ -11,7 +11,7 @@ license=('MIT')
 depends=('glibc')
 makedepends=('go')
 source=("${pkgname}-${pkgver}.tar.gz::https://github.com/JanDeDobbeleer/oh-my-posh/archive/refs/tags/v${pkgver}.tar.gz")
-sha512sums=('3bc32ed93c7ce1623a20e152bbd6b0d2e98524d47dc44a2c23cfd6015c515cc9bffb3857f176fb1296d8ca2fcab50e85f8f75dca722aca6b8c5d606933598304')
+sha384sums=('935eda1373b35a09ef9eaec267fe7ebac31e1023daef67bc8d99c5ad860dc2f94048347742180f07cc22909ef26d55ca')
 b2sums=('71678a155c6820a923a2ee9a46578d9db3c24c2897a88910f846f3e55664fb99549d60b70e817eaaa8bbc5555b77b77be4e0da5db0156da04b8fe64d33211c8e')
 
 _gourl=github.com/jandedobbeleer/${pkgname}/src/build

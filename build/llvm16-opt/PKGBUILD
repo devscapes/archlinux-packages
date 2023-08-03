@@ -32,10 +32,10 @@ options=('staticlibs' '!lto') # Getting thousands of test failures with LTO
 source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/llvm-project-${pkgver}.src.tar.xz"{,.sig}
         'llvm16-ocaml5.patch' # Until the time comes when we get official backport...
         'llvm-config.h')
-sha512sums=('89a67ebfbbc764cc456e8825ecfa90707741f8835b1b2adffae0b227ab1fe5ca9cce75b0efaffc9ca8431cae528dc54fd838867a56a2b645344d9e82d19ab1b7'
+sha384sums=('b817e6ba9b38cd3c14c67714b1ad7c8cf14881b99f3951135b6c59e6178c834e45f0d8a93257ac11b37a62921b3763dc'
             'SKIP'
-            'baa1ebe92b38c965a77a1b524e78167d2c189456ce6a3ea34e22511532145e7b567dd21fe99938088ff69769dde6bde1972c78c59c38cf5df3541cafa4711c34'
-            '75e743dea28b280943b3cc7f8bbb871b57d110a7f2b9da2e6845c1c36bf170dd883fca54e463f5f49e0c3effe07fbd0db0f8cf5a12a2469d3f792af21a73fcdd')
+            '1db97a8cea91f84919d8ce2ee7db17c22a3c4fab35708ec46151f5c82cba74bdc3cb34f4b43d42e5eca1d2246dbc543f'
+            '3065a1f344a5a5bebeb0fd9fcc95bb325ebf63b20d9871d0f49bfbfd7a5434e3d5e8bdadac5a2d8033bb7fe2ebe3d7bb')
 b2sums=('95192d39cbd2914e5609db365965f1c00bfea6c2d653b3996bd2acef8a2b37e37f6fc8a9d2b65711ad72657e0ef52c42f733053cf65051e7822f27396c30406d'
         'SKIP'
         '2346d09ac295d4929b4d3c05507be30bfb0d88f6df9b235cf1b07dc4127f53c332b6347ef42fb8c06079314cfa9a751eaf56c55f601b48633e29b088dba4cff9'

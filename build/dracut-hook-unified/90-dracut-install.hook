@@ -12,5 +12,4 @@ Description = Updating linux initcpios (dracut)...
 When = PostTransaction
 Exec = /usr/share/libalpm/scripts/dracut install
 Depends = dracut
-Depends = grep
 NeedsTargets

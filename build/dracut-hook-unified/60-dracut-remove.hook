@@ -7,5 +7,4 @@ Target = usr/lib/modules/*/pkgbase
 Description = Removing linux initcpios (dracut)...
 When = PreTransaction
 Exec = /usr/share/libalpm/scripts/dracut remove
-Depends = grep
 NeedsTargets

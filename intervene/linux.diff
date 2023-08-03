@@ -1,12 +1,14 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index b41f0e8..c37a7d7 100644
+index a75a99e..b73fcce 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -2,12 +2,13 @@
+@@ -1,13 +1,14 @@
+ # Maintainer: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
  
  pkgbase=linux
- pkgver=6.4.7.arch1
--pkgrel=1
+-pkgver=6.4.7.arch1
+-pkgrel=3
++pkgver=6.4.8.arch1
 +pkgrel=1.1
  pkgdesc='Linux'
  _srctag=v${pkgver%.*}-${pkgver##*.}
@@ -32,8 +34,8 @@ index b41f0e8..c37a7d7 100644
  )
 -b2sums=('SKIP'
 -        'a73a9eaa59dd45ccdd564b762c3816342873e9002c54b742f481ccd79c34549131ab3b0188445139b9e5fab696b60270f8148337387619456b4674d6ff28ccb7')
-+b2sums=('e5738a8ff624555fb9b4f2bfb812ab36c978c9539d4d591376e4f14a412ed44c73acc43db0ceff29bf3ea9ff94d415db10ac5b35038954280a748244969a7d7e'
-+        '3e22b26099f20de1855015370d0c2afc9850dc0080f3b7644210a75ce3d6521ea114734edcf904d9ec676a265aef7bfbc69f08d13567f3faa0e1eedc39836d25')
++b2sums=('d89ca6c07863771c7730ecccd302df8b849e3950db69bc2789f4492a96d3c3b1e497923827730889d1bb14b4007edded61233ab290fcaf782849604ce7806abd'
++        '57f2d0a4aa6c00d36948a146a0e2eabe7cce8c7d4f20a1a7b36876083ee6dcc79f9c1c6057f0b210dafe444f82c9f11837d36c8b694c28695e44a1d18119c283')
  
  export KBUILD_BUILD_HOST=archlinux
  export KBUILD_BUILD_USER=$pkgbase
@@ -66,17 +68,30 @@ index b41f0e8..c37a7d7 100644
    find . -name 'Kconfig*' -exec install -Dm644 {} "$builddir/{}" \;
  
 diff --git a/config b/config
-index 5b1515d..1f2a063 100644
+index 5b1515d..d9c0a95 100644
 --- a/config
 +++ b/config
-@@ -1,6 +1,6 @@
+@@ -1,15 +1,15 @@
  #
  # Automatically generated file; DO NOT EDIT.
 -# Linux/x86 6.4.4-arch1 Kernel Configuration
-+# Linux/x86 6.4.7-arch1 Kernel Configuration
++# Linux/x86 6.4.8-arch1 Kernel Configuration
  #
- CONFIG_CC_VERSION_TEXT="gcc (GCC) 13.1.1 20230714"
+-CONFIG_CC_VERSION_TEXT="gcc (GCC) 13.1.1 20230714"
++CONFIG_CC_VERSION_TEXT="gcc (GCC) 13.2.1 20230730"
  CONFIG_CC_IS_GCC=y
+-CONFIG_GCC_VERSION=130101
++CONFIG_GCC_VERSION=130201
+ CONFIG_CLANG_VERSION=0
+ CONFIG_AS_IS_GNU=y
+-CONFIG_AS_VERSION=24000
++CONFIG_AS_VERSION=24090
+ CONFIG_LD_IS_BFD=y
+-CONFIG_LD_VERSION=24000
++CONFIG_LD_VERSION=24090
+ CONFIG_LLD_VERSION=0
+ CONFIG_CC_CAN_LINK=y
+ CONFIG_CC_CAN_LINK_STATIC=y
 @@ -933,9 +933,9 @@ CONFIG_MODULE_SIG_ALL=y
  # CONFIG_MODULE_SIG_SHA1 is not set
  # CONFIG_MODULE_SIG_SHA224 is not set

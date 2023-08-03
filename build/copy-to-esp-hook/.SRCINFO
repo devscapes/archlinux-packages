@@ -1,0 +1,21 @@
+pkgbase = copy-to-esp-hook
+	pkgdesc = Hooks to copy/remove EFI executables installed on /boot to actual EFI system partition
+	pkgver = 20230803
+	pkgrel = 1
+	url = https://github.com/archlinux-kud/packages/tree/main/build/copy-to-esp-hook
+	arch = any
+	license = Unlicense
+	depends = bash
+	depends = coreutils
+	depends = util-linux
+	source = 60-copy-to-esp-uninstall.hook
+	source = 90-copy-to-esp-install.hook
+	source = copy-to-esp
+	sha384sums = 9156f15e5366dc5ed71ca3299df785833c164d8c0bb9b48667485e38209335babf08b225c6a9ce9abd0ecbea867c58d8
+	sha384sums = 98f4dea43deeadc1c63e41e188de2f492a3e66d48bc1a07b4e8d727f1b26a19949096972e0f454fc4ca922ce148d2bb1
+	sha384sums = 72acbf19acb9766f65f280e6dd407fff0c6aae87a1b14dd11868868e1bfe73b5cd6f44a828fa11e944bd66f20deca819
+	b2sums = 13a91235fb271d6862c05ef9bb185756fe4ef9cba795d3858db886a83b9e52d2747d7bd2e5a6ec54543f0a8633626943dd52f3320851147b463c70657f943ceb
+	b2sums = 712ef7a6331d34809649a826949b562e2168bb872b56cb0a30eb5c5e8ca412bc73c087bb4dadaa3e33d77c1cf530fcffb6f0a08c85092c475bbf251d3a0775d0
+	b2sums = e2717f1d2468c4f43983415d6116ba9d3f85a0b3dc7beb870d97beaac70ff95512fe7fcb119db089316d8cb5150afedfb3a2b231ee1dcb47c090dd06c6c636f8
+
+pkgname = copy-to-esp-hook
