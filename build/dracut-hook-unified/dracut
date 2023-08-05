@@ -6,7 +6,7 @@
 kernels=()
 build_all=false
 build_uki=false
-esp_directory=/boot/EFI
+esp_directory=
 action=${1}
 
 dracut_install() {
@@ -66,12 +66,21 @@ if grep -q -P '^uefi=(\")?yes(\")?' /etc/dracut.conf.d/*; then
     build_uki=true
 fi
 
-# Install UKIs to /efi/EFI or /boot/efi/EFI if available
-# Default if neither matches: /boot/EFI
-if mountpoint -q /efi && [[ -d /efi/EFI ]]; then
-    esp_directory=/efi/EFI
-elif mountpoint -q /boot/efi && [[ -d /boot/efi/EFI ]]; then
-    esp_directory=/boot/efi/EFI
+# For UKIs, try to determine ESP directory
+if ${build_uki}; then
+    # vfat generally isn't case sensitive, so check /boot/efi/EFI before /boot/EFI
+    if mountpoint -q /boot/efi && [[ -d /boot/efi/EFI ]]; then
+        esp_directory=/boot/efi/EFI
+    # /boot/EFI should be default when nothing else matches, but blame systemd
+    elif mountpoint -q /boot && [[ -d /boot/EFI ]]; then
+        esp_directory=/boot/EFI
+    # Check for /efi/EFI last since systemd might mount ESP at /efi
+    elif mountpoint -q /efi && [[ -d /efi/EFI ]]; then
+        esp_directory=/efi/EFI
+    else
+        echo "==> uefi=\"yes\" detected in config, but unable to determine ESP mount point; perhaps not mounted?"
+        exit 1
+    fi
 fi
 
 for kernel in "${kernels[@]}"; do

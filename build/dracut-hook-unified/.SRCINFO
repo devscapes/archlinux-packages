@@ -1,6 +1,6 @@
 pkgbase = dracut-hook-unified
 	pkgdesc = Install/remove hooks for dracut (using unified script)
-	pkgver = 20230803
+	pkgver = 20230804
 	pkgrel = 1
 	url = https://github.com/archlinux-kud/packages/tree/main/build/dracut-hook-unified
 	install = dracut-hook.install
@@ -15,9 +15,9 @@ pkgbase = dracut-hook-unified
 	source = dracut
 	sha384sums = 48d678181fcd92839370af548887e1de37bd58507ef08a3d6630b92763c5bb9c06c43bc120e8befb953fa3cb3a3a3f43
 	sha384sums = e3ccc9894472b651be9738f6c0ab07a769d5655e5528a54c667926168285a74f5aa8aaa757a302c8f8e85050bced5ed2
-	sha384sums = d2d4736b7ff61594bdcd2dfa2b7389d458c11ccac210fd7b87c6716bdf3efe00c08c5f2d3bf518864026176cf0476349
+	sha384sums = fe55137ae02937a1142cf845dc92695474ded4a568e5748d4fbd242253469a2757cda8769e8c1f89a13f15e7257ae69b
 	b2sums = 950af00b1d75a383daa0367772b448aad442356ed2cc16d7b9dfd6d48b51ab7b9db174e689b40a83d0587380f44f8f8e27f4e2102e9549baf9c6ac61e5bff45b
 	b2sums = bf2e1b238db923be560593a23d119fbbd33ca958472024b63521414403a40e45254c18623dd33222d7f76847250aa44cd4915953a71c0824872dc3d029e82ba7
-	b2sums = 4d3561615e6ce6156a2adee8484ad43b66de6f14eef2070743766c34ea26da9529bf58ef2fe29630d289a2acae8d95385c2ea089e3b7ceafb685f264c639faf1
+	b2sums = 1345bfef922e140a97616e6aa0e48c30aa222a2c1256257248a4c635c3078420b6e4870f33747e1964098a98342f07879eebefcca2b25d88eb3c75adf7b46bac
 
 pkgname = dracut-hook-unified
