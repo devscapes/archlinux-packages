@@ -1,8 +1,15 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 11a384c..b9fd670 100644
+index 11a384c..769532c 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -8,7 +8,7 @@ pkgdesc="Official Tutanota email client"
+@@ -2,18 +2,18 @@
+ # Co-Maintainer: Aaron J. Graves <linux@ajgraves.com>
+ # Contributor: ganthern <https://github.com/ganthern>
+ pkgname=tutanota-desktop
+-pkgver=3.115.2
++pkgver=3.116.8
+ pkgrel=1
+ pkgdesc="Official Tutanota email client"
  arch=('x86_64')
  url="https://tutanota.com"
  license=('GPL3')
@@ -11,3 +18,9 @@ index 11a384c..b9fd670 100644
  #makedepends=('node-gyp>=9.0.0' 'nodejs>=16.16.0' 'npm>=8.0.0')
  makedepends=('git' 'nvm' 'python')
  source=("https://github.com/tutao/tutanota/archive/$pkgname-release-$pkgver.tar.gz"
+         "$pkgname.desktop")
+-sha256sums=('e193cb32c40c19a9b19563fd93570f0a0351024804975e715817bfc4c4bca64b'
++sha256sums=('132289bd8462955739ed9497ff1e36ac9204a92802733da5c45683a7db4b54ad'
+             '9a41e5474e1568b13093c91fd54538fe614003f5f5d4f895553f73207c28cb08')
+ 
+ _ensure_local_nvm() {

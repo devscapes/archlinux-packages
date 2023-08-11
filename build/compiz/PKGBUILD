@@ -6,14 +6,16 @@
 
 pkgname=compiz
 pkgver=0.9.14.2
-pkgrel=3
+pkgrel=4
 epoch=1
 pkgdesc="Composite manager for Aiglx and Xgl, with plugins and CCSM"
 arch=('i686' 'x86_64')
 url="https://launchpad.net/compiz"
 license=('GPL' 'LGPL' 'MIT')
-depends=('boost-libs' 'xorg-server' 'fuse2' 'glibmm' 'libwnck3' 'python-gobject' 'python-cairo' 'protobuf' 'metacity' 'glu')
-makedepends=('boost' 'cmake' 'intltool' 'cython' 'git' 'libxslt')
+depends=('boost-libs' 'dconf' 'dbus' 'fuse2' 'glib2' 'glibmm' 'glu'
+         'hicolor-icon-theme' 'libwnck3' 'libxml2' 'libxslt' 'metacity'
+         'protobuf' 'python' 'python-cairo' 'python-gobject' 'xorg-server')
+makedepends=('boost' 'cmake' 'cython' 'intltool' 'git')
 optdepends=(
   'xorg-xprop: grab various window properties for use in window matching rules'
 )
@@ -63,48 +65,44 @@ prepare() {
 }
 
 build() {
-  cd "${pkgname}"
-
-  mkdir build; cd build
-
-  cmake .. \
-    -DCMAKE_BUILD_TYPE="Release" \
+  cmake -B build -S "${pkgname}" \
+    -DCMAKE_CXX_STANDARD=17 \
+    -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX="/usr" \
     -DCMAKE_INSTALL_LIBDIR="/usr/lib" \
-    -DCOMPIZ_DISABLE_SCHEMAS_INSTALL=On \
-    -DCOMPIZ_BUILD_WITH_RPATH=Off \
-    -DCOMPIZ_PACKAGING_ENABLED=On \
-    -DBUILD_GTK=On \
-    -DBUILD_METACITY=On \
-    -DBUILD_KDE4=Off \
-    -DCOMPIZ_BUILD_TESTING=Off \
-    -DCOMPIZ_WERROR=Off \
+    -DCOMPIZ_DISABLE_SCHEMAS_INSTALL=ON \
+    -DCOMPIZ_BUILD_WITH_RPATH=OFF \
+    -DCOMPIZ_PACKAGING_ENABLED=ON \
+    -DBUILD_GTK=ON \
+    -DBUILD_METACITY=ON \
+    -DBUILD_KDE4=OFF \
+    -DCOMPIZ_BUILD_TESTING=OFF \
+    -DCOMPIZ_WERROR=OFF \
     -DCOMPIZ_DEFAULT_PLUGINS="composite,opengl,decor,resize,place,move,compiztoolbox,staticswitcher,regex,animation,wall,ccp"
 
-    make
+  make -C build
 }
 
 package() {
-  cd "${pkgname}/build"
-  make DESTDIR="${pkgdir}" install
+  DESTDIR="${pkgdir}" make -C build install
 
   # findcompiz_install needs COMPIZ_DESTDIR and install needs DESTDIR
   # make findcompiz_install
   CMAKE_DIR=$(cmake --system-information | grep '^CMAKE_ROOT' | awk -F\" '{print $2}')
-  install -dm755 "${pkgdir}${CMAKE_DIR}/Modules/"
-  install -m644 ../cmake/FindCompiz.cmake "${pkgdir}${CMAKE_DIR}/Modules/"
+  install -Dm644 "${pkgname}/cmake/FindCompiz.cmake" \
+    -t "${pkgdir}${CMAKE_DIR}/Modules/"
 
   # Add documentation
-  install -dm755 "${pkgdir}/usr/share/doc/compiz/"
-  install ../{AUTHORS,NEWS,README} "${pkgdir}/usr/share/doc/compiz/"
+  install -Dm644 "${pkgname}"/{AUTHORS,NEWS,README} \
+    -t "${pkgdir}/usr/share/doc/compiz/"
 
   # Add the gsettings schema files
-  if ls generated/glib-2.0/schemas/ | grep -qm1 .gschema.xml; then
-    install -dm755 "${pkgdir}/usr/share/glib-2.0/schemas/"
-    install -m644 generated/glib-2.0/schemas/*.gschema.xml "${pkgdir}/usr/share/glib-2.0/schemas/"
+  if ls build/generated/glib-2.0/schemas/ | grep -qm1 .gschema.xml; then
+    install -Dm644 build/generated/glib-2.0/schemas/*.gschema.xml \
+      -t "${pkgdir}/usr/share/glib-2.0/schemas/"
   fi
 
   # Install licenses
-  install -dm755 "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 "${srcdir}/${pkgname}"/{COPYING,COPYING.GPL,COPYING.LGPL,COPYING.MIT} "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -Dm644 "${pkgname}"/{COPYING,COPYING.GPL,COPYING.LGPL,COPYING.MIT} \
+    -t "${pkgdir}/usr/share/licenses/${pkgname}/"
 }

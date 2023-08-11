@@ -1,13 +1,13 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 75dc923..20e8a11 100644
+index 75dc923..405201c 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -8,12 +8,12 @@ pkgdesc="Service and tools for management of snap packages."
+@@ -8,20 +8,20 @@ pkgdesc="Service and tools for management of snap packages."
  depends=('squashfs-tools' 'libseccomp' 'libsystemd' 'apparmor')
  optdepends=('bash-completion: bash completion support'
              'xdg-desktop-portal: desktop integration')
 -pkgver=2.60
-+pkgver=2.60.1
++pkgver=2.60.2
  pkgrel=1
  arch=('x86_64' 'i686' 'armv7h' 'aarch64')
  url="https://github.com/snapcore/snapd"
@@ -17,12 +17,14 @@ index 75dc923..20e8a11 100644
  conflicts=('snap-confine')
  options=('!strip' 'emptydirs' '!lto')
  install=snapd.install
-@@ -21,7 +21,7 @@ source=(
-     "$pkgname-$pkgver.tar.xz::https://github.com/snapcore/${pkgname}/releases/download/${pkgver}/${pkgname}_${pkgver}.vendor.tar.xz"
+ source=(
+-    "$pkgname-$pkgver.tar.xz::https://github.com/snapcore/${pkgname}/releases/download/${pkgver}/${pkgname}_${pkgver}.vendor.tar.xz"
++    "$pkgname-$pkgver.tar.xz::https://github.com/snapcore/${pkgname}/releases/download/${pkgver}/${pkgname}_${pkgver}.tar.xz"
  )
- sha256sums=(
+-sha256sums=(
 -    '1d940ba7cee1b6a1fd961c591abf8fdde9d313eff0fb8b6967ad01f40426f33e'
-+    'f7b4a95501179d1aaf7e066989b3543a38eec44c623caffc2e149875def41a4b'
++b2sums=(
++    'a8b49dfb23ddfb60e8037093f69825c35ec8c4278004d159d9b2e9127c15038e8eacd54c58b5c5a29d3b049a18307a38ace025ad6b149da042ee285276bda38a'
  )
  
  

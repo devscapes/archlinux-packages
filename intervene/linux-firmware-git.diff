@@ -1,0 +1,72 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index ff32229..9978237 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -56,7 +56,7 @@ package_linux-firmware-whence-git() {
+   provides=("${pkgname%-git}=$pkgver")
+   pkgdesc+=" - contains the WHENCE license file which documents the vendor license details"
+ 
+-  install -Dt "${pkgdir}/usr/share/licenses/${pkgname%-git}" -m644 ${pkgbase}/WHENCE
++  install -Dt "${pkgdir}/usr/share/licenses/${pkgname}" -m644 ${pkgbase}/WHENCE
+ }
+ 
+ package_linux-firmware-git() {
+@@ -66,41 +66,32 @@ package_linux-firmware-git() {
+ 
+   cd ${pkgbase}
+ 
+-  # reverted to xz compression (https://bugs.archlinux.org/task/78892)
+-  #ZSTD_CLEVEL=19 make DESTDIR="${pkgdir}" FIRMWAREDIR=/usr/lib/firmware install-zst
+-  make DESTDIR="${pkgdir}" FIRMWAREDIR=/usr/lib/firmware install-xz
++  ZSTD_CLEVEL=19 make DESTDIR="${pkgdir}" FIRMWAREDIR=/usr/lib/firmware install-zst
+ 
+-  # useless without CONFIG_MICROCODE_LATE_LOADING
+-  # https://bugs.archlinux.org/task/46591
+-  #
+-  # # Trigger a microcode reload for configurations not using early updates
+-  # echo 'w /sys/devices/system/cpu/microcode/reload - - - - 1' |
+-  #   install -Dm644 /dev/stdin "${pkgdir}/usr/lib/tmpfiles.d/${pkgname%-git}.conf"
+-
+-  install -Dt "${pkgdir}/usr/share/licenses/${pkgname%-git}" -m644 LICEN*
++  install -Dt "${pkgdir}/usr/share/licenses/${pkgname}" -m644 LICEN*
+ 
+   cd "${pkgdir}"
+ 
+   # remove arm64 firmware https://bugs.archlinux.org/task/76583
+-  rm usr/lib/firmware/mrvl/prestera/mvsw_prestera_fw_arm64-v4.1.img.xz
++  rm usr/lib/firmware/mrvl/prestera/mvsw_prestera_fw_arm64-v4.1.img.zst
+ 
+   # split
+   _pick linux-firmware-nfp usr/lib/firmware/netronome
+-  _pick linux-firmware-nfp usr/share/licenses/${pkgname%-git}/LICENCE.Netronome
++  _pick linux-firmware-nfp usr/share/licenses/${pkgname}/LICENCE.Netronome
+ 
+   _pick linux-firmware-mellanox usr/lib/firmware/mellanox
+ 
+   _pick linux-firmware-marvell usr/lib/firmware/{libertas,mwl8k,mwlwifi,mrvl}
+-  _pick linux-firmware-marvell usr/share/licenses/${pkgname%-git}/LICENCE.{Marvell,NXP}
++  _pick linux-firmware-marvell usr/share/licenses/${pkgname}/LICENCE.{Marvell,NXP}
+ 
+   _pick linux-firmware-qcom usr/lib/firmware/{qcom,a300_*}
+-  _pick linux-firmware-qcom usr/share/licenses/${pkgname%-git}/LICENSE.qcom*
++  _pick linux-firmware-qcom usr/share/licenses/${pkgname}/LICENSE.qcom*
+ 
+   _pick linux-firmware-liquidio usr/lib/firmware/liquidio
+-  _pick linux-firmware-liquidio usr/share/licenses/${pkgname%-git}/LICENCE.cavium_liquidio
++  _pick linux-firmware-liquidio usr/share/licenses/${pkgname}/LICENCE.cavium_liquidio
+ 
+   _pick linux-firmware-qlogic usr/lib/firmware/{qlogic,qed,ql2???_*,c{b,t,t2}fw-*}
+-  _pick linux-firmware-qlogic usr/share/licenses/${pkgname%-git}/LICENCE.{qla1280,qla2xxx}
++  _pick linux-firmware-qlogic usr/share/licenses/${pkgname}/LICENCE.{qla1280,qla2xxx}
+ 
+   _pick linux-firmware-bnx2x usr/lib/firmware/bnx2x*
+ }
+@@ -113,7 +104,7 @@ package_amd-ucode-git() {
+ 
+   install -Dt "${pkgdir}/boot" -m644 amd-ucode.img
+ 
+-  install -Dt "${pkgdir}/usr/share/licenses/${pkgname%-git}" -m644 ${pkgbase}/LICENSE.amd-ucode
++  install -Dt "${pkgdir}/usr/share/licenses/${pkgname}" -m644 ${pkgbase}/LICENSE.amd-ucode
+ }
+ 
+ package_linux-firmware-nfp-git() {

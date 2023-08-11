@@ -1,14 +1,12 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 091f951..ad8e748 100644
+index b96ea00..7fd9cc5 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -1,12 +1,13 @@
- # Maintainer: Andreas Radke <andyrtr@archlinux.org>
+@@ -2,11 +2,12 @@
  
  pkgbase=linux-lts
--pkgver=6.1.39
+ pkgver=6.1.44
 -pkgrel=1
-+pkgver=6.1.43
 +pkgrel=1.1
  pkgdesc='LTS Linux'
  url="https://www.kernel.org/"
@@ -18,15 +16,12 @@ index 091f951..ad8e748 100644
  makedepends=(
    bc libelf pahole cpio perl tar xz gettext
    xmlto python-sphinx graphviz imagemagick texlive-latexextra
-@@ -23,9 +24,9 @@ validpgpkeys=(
-   '647F28654894E3BD457199BE38DBBDC86092693E'  # Greg Kroah-Hartman
- )
+@@ -25,7 +26,7 @@ validpgpkeys=(
  # https://www.kernel.org/pub/linux/kernel/v6.x/sha256sums.asc
--sha256sums=('4cddee22fdf657138a06af653492f67cd3a4762c04a34725534bd200d99085b8'
-+sha256sums=('245248470a62d4e94b46f753afc01e19e45b9e6f3a0fa06e7f5da21fe845a808'
+ sha256sums=('2e51d41fe11d082ae167cee05772bb07ca7f19448d2b46772d8ca2db7673a1a5'
              'SKIP'
 -            '20e2f62eb004af3f47609b4ab3380d8e870d51eba0df5f318a565910eada3503'
-+            'fb33944ac3b2db45b8fc2b386831a007ebbee662612c7aebcdc5bbe9548586fb'
++            'b3181df08c1b80b36e82ae36aa10bb65d5739ef3ca4b1247d0c8651a5ad8650e'
              '1bd8388fcb6ed4eec46450c65eb7a0889a8c541f164a39e3064633981a7a4a3d')
  
  export KBUILD_BUILD_HOST=archlinux
@@ -59,27 +54,27 @@ index 091f951..ad8e748 100644
    find . -name 'Kconfig*' -exec install -Dm644 {} "$builddir/{}" \;
  
 diff --git a/config b/config
-index 9d0b8c4..c59ebef 100644
+index 9d0b8c4..ebf6f9b 100644
 --- a/config
 +++ b/config
 @@ -1,15 +1,15 @@
  #
  # Automatically generated file; DO NOT EDIT.
 -# Linux/x86 6.1.39 Kernel Configuration
-+# Linux/x86 6.1.43 Kernel Configuration
++# Linux/x86 6.1.44 Kernel Configuration
  #
 -CONFIG_CC_VERSION_TEXT="gcc (GCC) 13.1.1 20230714"
-+CONFIG_CC_VERSION_TEXT="gcc (GCC) 13.2.1 20230730"
++CONFIG_CC_VERSION_TEXT="gcc (GCC) 13.2.1 20230801"
  CONFIG_CC_IS_GCC=y
 -CONFIG_GCC_VERSION=130101
 +CONFIG_GCC_VERSION=130201
  CONFIG_CLANG_VERSION=0
  CONFIG_AS_IS_GNU=y
 -CONFIG_AS_VERSION=24000
-+CONFIG_AS_VERSION=24090
++CONFIG_AS_VERSION=24100
  CONFIG_LD_IS_BFD=y
 -CONFIG_LD_VERSION=24000
-+CONFIG_LD_VERSION=24090
++CONFIG_LD_VERSION=24100
  CONFIG_LLD_VERSION=0
  CONFIG_CC_CAN_LINK=y
  CONFIG_CC_CAN_LINK_STATIC=y

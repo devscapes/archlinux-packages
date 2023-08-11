@@ -2,7 +2,7 @@
 # Contributor: Jan0660 <jan0660@tutanota.com>
 
 pkgname=oh-my-posh
-pkgver=18.2.0
+pkgver=18.3.3
 pkgrel=1
 pkgdesc="A prompt theme engine for any shell"
 arch=('x86_64')
@@ -11,8 +11,8 @@ license=('MIT')
 depends=('glibc')
 makedepends=('go')
 source=("${pkgname}-${pkgver}.tar.gz::https://github.com/JanDeDobbeleer/oh-my-posh/archive/refs/tags/v${pkgver}.tar.gz")
-sha384sums=('935eda1373b35a09ef9eaec267fe7ebac31e1023daef67bc8d99c5ad860dc2f94048347742180f07cc22909ef26d55ca')
-b2sums=('71678a155c6820a923a2ee9a46578d9db3c24c2897a88910f846f3e55664fb99549d60b70e817eaaa8bbc5555b77b77be4e0da5db0156da04b8fe64d33211c8e')
+sha384sums=('ba0aa0d275598132541b4603778a55acee5237de3bd1a8761dc63cb2e62648e2f8367b01e8ac68e29508596b23159ec3')
+b2sums=('7334a7b9a9c739f780bc96ed78d3ab03f3b714631216548db3de2f84e3af2c7d6fbfba7dd468fca3bcac66a9f29d5b4d0b8b21112d9f54bb57af15e057b6b486')
 
 _gourl=github.com/jandedobbeleer/${pkgname}/src/build
 _godate="$(date -u ${SOURCE_DATE_EPOCH:+-d @${SOURCE_DATE_EPOCH}} +"%Y-%m-%dT%H:%M:%SZ")"

@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 2b215b1..ce0be5e 100644
+index 2b215b1..95522b1 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -4,14 +4,16 @@ _srcname=SPIRV-LLVM-Translator
@@ -8,7 +8,7 @@ index 2b215b1..ce0be5e 100644
  epoch=1
 -pkgver=r1817.066514b
 -pkgrel=2
-+pkgver=18.0.0_r1836.d498f485cbcb
++pkgver=18.0.0_r1848.4f7efd3bcb85
 +pkgrel=1
  arch=('x86_64')
  url="https://github.com/KhronosGroup/SPIRV-LLVM-Translator"
@@ -28,9 +28,9 @@ index 2b215b1..ce0be5e 100644
  sha512sums=('SKIP')
  
  
-+prepare() {
-+    sed 's/[0-9][0-9].0.0/18.0.0/' -i "${_srcname}/CMakeLists.txt"
-+}
++#prepare() {
++#    sed 's/[0-9][0-9].0.0/18.0.0/' -i "${_srcname}/CMakeLists.txt"
++#}
 +
  pkgver() {
      cd $_srcname

@@ -1,8 +1,8 @@
 pkgbase = scangearmp2-sane
 	pkgdesc = Canon ScanGear MP v2 scanner utility and sane backend
 	pkgver = 4.50.1
-	pkgrel = 3
-	url = https://github.com/Ordissimo/scangearmp2
+	pkgrel = 4
+	url = https://github.com/ThierryHFR/scangearmp2
 	arch = x86_64
 	license = GPL2
 	license = custom:canon
@@ -17,7 +17,7 @@ pkgbase = scangearmp2-sane
 	optdepends = sane: sane backend plug-in
 	provides = scangearmp2
 	conflicts = scangearmp2
-	source = scangearmp2-4.50.1.tar.gz::https://github.com/Ordissimo/scangearmp2/archive/refs/tags/V4.50.1.tar.gz
+	source = scangearmp2-4.50.1.tar.gz::https://github.com/ThierryHFR/scangearmp2/archive/refs/tags/V4.50.1.tar.gz
 	sha384sums = 1cbd0f0d5716d2ae5888623d9e3fc14fdedc532b21d768689872247e2f58d19a70629654672f7e0b2dbd82eaed17c31d
 	b2sums = 343803e0a9cafbf77f60623c9de5dfc085d07e69a3414e74405b253165ee5992c60eebb5a5dc3ea31b8a9981240604b71cbc9108cf2d8d75a0121e5b0041066d
 
