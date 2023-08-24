@@ -1,6 +1,6 @@
 pkgbase = 64gram
 	pkgdesc = Unofficial 64-bit Telegram Desktop build with some enhancements
-	pkgver = 1.0.88
+	pkgver = 1.0.90
 	pkgrel = 1
 	url = https://64gr.am
 	arch = x86_64
@@ -47,24 +47,24 @@ pkgbase = 64gram
 	depends = xz
 	optdepends = webkit2gtk: embedded browser features
 	optdepends = xdg-desktop-portal: desktop integration
-	provides = telegram-desktop=4.8.10
+	provides = telegram-desktop=4.9.3
 	conflicts = telegram-desktop
 	conflicts = forkgram
 	replaces = tdesktop-x64
 	replaces = 64gram-desktop
-	noextract = expected-lite-4.8.10.tar.gz
-	noextract = cppgir-ada922a260479da27c989e39ed47e17a36cc2969.tar.bz2
-	source = https://github.com/TDesktop-x64/tdesktop/releases/download/v1.0.88/64Gram-1.0.88-full.tar.gz
-	source = expected-lite-4.8.10.tar.gz::https://github.com/martinmoene/expected-lite/archive/refs/tags/v0.6.3.tar.gz
-	source = https://gitlab.com/mnauw/cppgir/-/archive/ada922a260479da27c989e39ed47e17a36cc2969/cppgir-ada922a260479da27c989e39ed47e17a36cc2969.tar.bz2
+	noextract = expected-lite-0.6.3.tar.gz
+	noextract = cppgir-fa346156b25dd79a8bf5a50cd10022858b859984.tar.bz2
+	source = https://github.com/TDesktop-x64/tdesktop/releases/download/v1.0.90/64Gram-1.0.90-full.tar.gz
+	source = expected-lite-0.6.3.tar.gz::https://github.com/martinmoene/expected-lite/archive/refs/tags/v.tar.gz
+	source = https://gitlab.com/mnauw/cppgir/-/archive/fa346156b25dd79a8bf5a50cd10022858b859984/cppgir-fa346156b25dd79a8bf5a50cd10022858b859984.tar.bz2
 	source = https://download.gnome.org/sources/glibmm/2.77/glibmm-2.77.0.tar.xz
-	sha384sums = 2c7cfd0d97e9cd38a5cb3f8456b97a832c403360e8e1bb1f59df07e5191f0592e3d3a2156ea56e3ecf646894808d4b66
+	sha384sums = ec798ed8ebc6432f273f4ede659c2be5bac9f445635c17c921791e136b4fdbc2d35db8f11668e4225fabbb79e0415365
 	sha384sums = 6454e7b41a8319d7bef88352539ae11d6e050e4bef9379890fa53697fe83996b18d6f9681b0e079c64253f85a571d619
-	sha384sums = 3fd4e2a265866cdbd7d6d92e7938dfc133a41568142179530c13fa71cc579b7f24aeac4e6089dec1cad6a1f6e1bfa39f
+	sha384sums = 86d322ef192dc195323e2d56821efc249f6e8cb912c7db9a8f12d4b82ec11e529e762aa38894b7164586d2121d2bc367
 	sha384sums = 40fb55ba19444abffe65e56a0c6c729846db4f4388968bb8a020df0e691580fe36f541bad21a22d8b9a65fef50211bfd
-	b2sums = 76a4a3263443c8c2a451685eb80b385b9c6c23625152b9811e2d727d4fe94c806dbf63b15b7fafcbc0c3da47a09288c9ad98bd23f0a2e0446ab01a3c240ca35e
+	b2sums = c7a4fb2bcd3f9b735b25ae1b337ab1f3bd3df2053a843450c83382886b164405351467678be6a58966714fee54257887b3cdbb3a1d1cc4eabb870a7ab6e481cc
 	b2sums = 7b9eb948d674d4fb4904c6deb4f2c8c2d578d73d8401dc386a49c5f09cc75c6fd70e0c6aa72cd1e1fb9d82cf55917c8a6d60868190ba063340eda4f3191ebc56
-	b2sums = 73fe45188c8304da84cc39b838176a9100622f3a2aa6cdb7a8eb4c58bb16fe5a8772c8bdc0d7686a322d86bc1aba3b22c3b1ebfeab98e7d282f7258050249a50
+	b2sums = aa4ae094e2337e8f845b10a14f6adf626efaa2e573baf53d34ee180e8be68b31e9bd967a24ce63e392a88c007b6f65221922754c10f154dbc5edbffdae786c61
 	b2sums = c9c48248e78b90101bb546474837f8f60bba4b8cd6b2b019e919964a9f0a2fb967cb9d2b61ca449587db01ddbeca8eb31147467cfe744ea071ba43a09badda72
 
 pkgname = 64gram

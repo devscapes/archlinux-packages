@@ -1,11 +1,11 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 28517bc..34ddb29 100644
+index 97dc0db..5bc7945 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -2,12 +2,13 @@
  
  pkgbase=linux
- pkgver=6.4.9.arch1
+ pkgver=6.4.11.arch2
 -pkgrel=1
 +pkgrel=1.1
  pkgdesc='Linux'
@@ -17,7 +17,7 @@ index 28517bc..34ddb29 100644
  makedepends=(
    bc
    cpio
-@@ -29,7 +30,7 @@ makedepends=(
+@@ -23,7 +24,7 @@ makedepends=(
  options=('!strip')
  _srcname=archlinux-linux
  source=(
@@ -26,18 +26,18 @@ index 28517bc..34ddb29 100644
    config  # the main kernel config file
  )
  validpgpkeys=(
-@@ -38,8 +39,8 @@ validpgpkeys=(
+@@ -32,8 +33,8 @@ validpgpkeys=(
    A2FF3A36AAA56654109064AB19802F8B0D70FC30  # Jan Alexander Steffens (heftig)
    C7E7849466FE2358343588377258734B41C31549  # David Runge <dvzrv@archlinux.org>
  )
 -b2sums=('SKIP'
 -        'edfe3c41fcecef398197215663240ec15f1c30c35aa789e39bd02194ed3cda5582b61e9696825fe663b23750d717583d94c8443c3d8d065985c53194a0753280')
-+b2sums=('34fdfe4637170aebaf0d1fe5029cde2d537383f33c5205ffaf12e55a05bbb7d95884ebbb3b9906c54ff2cbcfc30adaf5c7b186ac7745c4e2d812ab0ecfe1386e'
++b2sums=('1eb3d0ff9cccedbb99db77efbfa3891b7a68f9a9f89f5e129adfedc3e331ecbf181d3cc1684fd8d1f0598cee86934a058ffbd79a2cff9aa26682dc602ee5be20'
 +        'c66a0a4bf48210f63ed4a7ce46d9d9fc56ee000642867535d3d18e2ecc8ed24435ef354e1492135827a81adcb08f7c7c542df28a7d220977361e3488bee9ab87')
  
  export KBUILD_BUILD_HOST=archlinux
  export KBUILD_BUILD_USER=$pkgbase
-@@ -47,14 +48,15 @@ export KBUILD_BUILD_TIMESTAMP="$(date -Ru${SOURCE_DATE_EPOCH:+d @$SOURCE_DATE_EP
+@@ -41,14 +42,15 @@ export KBUILD_BUILD_TIMESTAMP="$(date -Ru${SOURCE_DATE_EPOCH:+d @$SOURCE_DATE_EP
  
  _make() {
    test -s version
@@ -55,7 +55,7 @@ index 28517bc..34ddb29 100644
    echo "${pkgbase#linux}" > localversion.20-pkgname
    make defconfig
    make -s kernelrelease > version
-@@ -162,6 +164,9 @@ _package-headers() {
+@@ -155,6 +157,9 @@ _package-headers() {
    # https://bugs.archlinux.org/task/71392
    install -Dt "$builddir/drivers/iio/common/hid-sensors" -m644 drivers/iio/common/hid-sensors/*.h
  
@@ -65,6 +65,14 @@ index 28517bc..34ddb29 100644
    echo "Installing KConfig files..."
    find . -name 'Kconfig*' -exec install -Dm644 {} "$builddir/{}" \;
  
+@@ -220,7 +225,6 @@ _package-docs() {
+ pkgname=(
+   "$pkgbase"
+   "$pkgbase-headers"
+-  "$pkgbase-docs"
+ )
+ for _p in "${pkgname[@]}"; do
+   eval "package_$_p() {
 diff --git a/config b/config
 index 206a7c1..303400b 100644
 --- a/config

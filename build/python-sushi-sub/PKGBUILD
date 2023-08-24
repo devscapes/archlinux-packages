@@ -2,7 +2,7 @@
 
 pkgname=python-sushi-sub
 pkgver=0.6.2
-pkgrel=1
+pkgrel=2
 pkgdesc='Automatic subtitle shifter based on audio'
 url='https://github.com/FichteFoll/Sushi'
 arch=('any')
@@ -14,9 +14,12 @@ optdepends=('ffmpeg: for any kind of demuxing'
             'scxvid: for making keyframes')
 conflicts=('sushi-shifter-git')
 replaces=('sushi-shifter-git')
-source=("Sushi-${pkgver}.tar.gz::${url}/archive/refs/tags/${pkgver}.tar.gz")
-sha384sums=('25183b7e5a9dcedc29bc6bcfd62e5acc4cfb262b1e2c9346549893093127a570db64c79f478ba658f6e0a501564b78ed')
-b2sums=('66827c0acd9acbce591a1a6934e709897dac385063b2c32cf49ad67dc9f59c949a64c2bcddec9de48ca01bdca51eadcaca27cdaf2359ac307044c7825e74f489')
+source=("Sushi-${pkgver}.tar.gz::${url}/archive/refs/tags/${pkgver}.tar.gz"
+        "Sushi-np-ma-average.patch::https://patch-diff.githubusercontent.com/raw/FichteFoll/Sushi/pull/1.patch")
+sha384sums=('25183b7e5a9dcedc29bc6bcfd62e5acc4cfb262b1e2c9346549893093127a570db64c79f478ba658f6e0a501564b78ed'
+            '29fdd4112d739ab75f595b00c32c8d6aa9df052e8d35125e910f2d79ebe969b87c188d9730d6386ca71c9dfa72d4aea2')
+b2sums=('66827c0acd9acbce591a1a6934e709897dac385063b2c32cf49ad67dc9f59c949a64c2bcddec9de48ca01bdca51eadcaca27cdaf2359ac307044c7825e74f489'
+        'd65e0391c0404da4ca1817152acea212860e0651ab4db86c4451a05219014d69c4bf6833af8450c919d7f5b3d2edabd0ea70102a7d9347db648aebfad9ff7079')
 
 _python_version() {
     python3 <(\
@@ -28,6 +31,11 @@ EOF
     )
 }
 
+prepare() {
+    # Avoid an edge case of division-by-zero error
+    patch -d "${srcdir}/Sushi-${pkgver}" -N -p1 <"${srcdir}/Sushi-np-ma-average.patch"
+}
+
 build() {
     cd "${srcdir}/Sushi-${pkgver}"
     python -m build -w -n
@@ -35,6 +43,7 @@ build() {
 
 check() {
     cd "${srcdir}/Sushi-${pkgver}"
+    # python -m unittest discover doesn't find anything
     python -m unittest tests.{timecodes,main,subtitles,demuxing}
 }
 

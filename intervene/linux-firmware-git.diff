@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index ff32229..9978237 100644
+index d815972..239195c 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -56,7 +56,7 @@ package_linux-firmware-whence-git() {
@@ -11,30 +11,16 @@ index ff32229..9978237 100644
  }
  
  package_linux-firmware-git() {
-@@ -66,41 +66,32 @@ package_linux-firmware-git() {
+@@ -68,7 +68,7 @@ package_linux-firmware-git() {
  
-   cd ${pkgbase}
+   ZSTD_CLEVEL=19 make DESTDIR="${pkgdir}" FIRMWAREDIR=/usr/lib/firmware install-zst
  
--  # reverted to xz compression (https://bugs.archlinux.org/task/78892)
--  #ZSTD_CLEVEL=19 make DESTDIR="${pkgdir}" FIRMWAREDIR=/usr/lib/firmware install-zst
--  make DESTDIR="${pkgdir}" FIRMWAREDIR=/usr/lib/firmware install-xz
-+  ZSTD_CLEVEL=19 make DESTDIR="${pkgdir}" FIRMWAREDIR=/usr/lib/firmware install-zst
- 
--  # useless without CONFIG_MICROCODE_LATE_LOADING
--  # https://bugs.archlinux.org/task/46591
--  #
--  # # Trigger a microcode reload for configurations not using early updates
--  # echo 'w /sys/devices/system/cpu/microcode/reload - - - - 1' |
--  #   install -Dm644 /dev/stdin "${pkgdir}/usr/lib/tmpfiles.d/${pkgname%-git}.conf"
--
 -  install -Dt "${pkgdir}/usr/share/licenses/${pkgname%-git}" -m644 LICEN*
 +  install -Dt "${pkgdir}/usr/share/licenses/${pkgname}" -m644 LICEN*
  
    cd "${pkgdir}"
  
-   # remove arm64 firmware https://bugs.archlinux.org/task/76583
--  rm usr/lib/firmware/mrvl/prestera/mvsw_prestera_fw_arm64-v4.1.img.xz
-+  rm usr/lib/firmware/mrvl/prestera/mvsw_prestera_fw_arm64-v4.1.img.zst
+@@ -77,21 +77,21 @@ package_linux-firmware-git() {
  
    # split
    _pick linux-firmware-nfp usr/lib/firmware/netronome
@@ -61,7 +47,7 @@ index ff32229..9978237 100644
  
    _pick linux-firmware-bnx2x usr/lib/firmware/bnx2x*
  }
-@@ -113,7 +104,7 @@ package_amd-ucode-git() {
+@@ -104,7 +104,7 @@ package_amd-ucode-git() {
  
    install -Dt "${pkgdir}/boot" -m644 amd-ucode.img
  

@@ -26,7 +26,7 @@ dracut_install() {
     else
         echo "==> Building initramfs for ${pkgbase}..."
         install -Dm644 "/usr/lib/modules/${kernel}/vmlinuz" "/boot/vmlinuz-${pkgbase}"
-        dracut "${parameters[@]}" --kver "${kernel}" "/boot/archlinux-${pkgbase}.img"
+        dracut "${parameters[@]}" --kver "${kernel}" "/boot/initramfs-${pkgbase}.img"
     fi
 }
 
@@ -35,7 +35,7 @@ dracut_remove() {
 
     read -r pkgbase <"/usr/lib/modules/${kernel}/pkgbase"
     echo "==> Removing initramfs and unified kernel image for ${pkgbase}..."
-    rm -f "/boot/vmlinuz-${pkgbase}" "/boot/archlinux-${pkgbase}.img" \
+    rm -f "/boot/vmlinuz-${pkgbase}" "/boot/initramfs-${pkgbase}.img" \
         "${esp_directory}/Linux/archlinux-${pkgbase}.efi"
 }
 

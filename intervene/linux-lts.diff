@@ -1,11 +1,11 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index b96ea00..7fd9cc5 100644
+index 87134c0..7aae228 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -2,11 +2,12 @@
  
  pkgbase=linux-lts
- pkgver=6.1.44
+ pkgver=6.1.46
 -pkgrel=1
 +pkgrel=1.1
  pkgdesc='LTS Linux'
@@ -18,10 +18,10 @@ index b96ea00..7fd9cc5 100644
    xmlto python-sphinx graphviz imagemagick texlive-latexextra
 @@ -25,7 +26,7 @@ validpgpkeys=(
  # https://www.kernel.org/pub/linux/kernel/v6.x/sha256sums.asc
- sha256sums=('2e51d41fe11d082ae167cee05772bb07ca7f19448d2b46772d8ca2db7673a1a5'
+ sha256sums=('f5f67bcfccd47f8d9db2d5ba24e33af7778f40a777577d1fba424f4a1712a296'
              'SKIP'
--            '20e2f62eb004af3f47609b4ab3380d8e870d51eba0df5f318a565910eada3503'
-+            'b3181df08c1b80b36e82ae36aa10bb65d5739ef3ca4b1247d0c8651a5ad8650e'
+-            'b2e7094970d6dcc9fcfc0ea3d1519fbfd3ccb93600eb23b98e2ed80b2b37e832'
++            'c14af979f3e91e2fb8121930c61dbc6d275d757517a595e1da1c6558f744d8c9'
              '1bd8388fcb6ed4eec46450c65eb7a0889a8c541f164a39e3064633981a7a4a3d')
  
  export KBUILD_BUILD_HOST=archlinux
@@ -39,7 +39,7 @@ index b96ea00..7fd9cc5 100644
  build() {
    cd $_srcname
 -  make htmldocs all
-+  make KCFLAGS='-march=x86-64-v3 -mtune=generic' htmldocs all
++  make KCFLAGS='-march=x86-64-v3 -mtune=generic' all
  }
  
  _package() {
@@ -53,32 +53,20 @@ index b96ea00..7fd9cc5 100644
    echo "Installing KConfig files..."
    find . -name 'Kconfig*' -exec install -Dm644 {} "$builddir/{}" \;
  
+@@ -192,7 +196,7 @@ _package-docs() {
+   ln -sr "$builddir/Documentation" "$pkgdir/usr/share/doc/$pkgbase"
+ }
+ 
+-pkgname=("$pkgbase" "$pkgbase-headers" "$pkgbase-docs")
++pkgname=("$pkgbase" "$pkgbase-headers")
+ for _p in "${pkgname[@]}"; do
+   eval "package_$_p() {
+     $(declare -f "_package${_p#$pkgbase}")
 diff --git a/config b/config
-index 9d0b8c4..ebf6f9b 100644
+index 519f1c7..04dab5f 100644
 --- a/config
 +++ b/config
-@@ -1,15 +1,15 @@
- #
- # Automatically generated file; DO NOT EDIT.
--# Linux/x86 6.1.39 Kernel Configuration
-+# Linux/x86 6.1.44 Kernel Configuration
- #
--CONFIG_CC_VERSION_TEXT="gcc (GCC) 13.1.1 20230714"
-+CONFIG_CC_VERSION_TEXT="gcc (GCC) 13.2.1 20230801"
- CONFIG_CC_IS_GCC=y
--CONFIG_GCC_VERSION=130101
-+CONFIG_GCC_VERSION=130201
- CONFIG_CLANG_VERSION=0
- CONFIG_AS_IS_GNU=y
--CONFIG_AS_VERSION=24000
-+CONFIG_AS_VERSION=24100
- CONFIG_LD_IS_BFD=y
--CONFIG_LD_VERSION=24000
-+CONFIG_LD_VERSION=24100
- CONFIG_LLD_VERSION=0
- CONFIG_CC_CAN_LINK=y
- CONFIG_CC_CAN_LINK_STATIC=y
-@@ -906,9 +906,9 @@ CONFIG_MODULE_SIG_ALL=y
+@@ -909,9 +909,9 @@ CONFIG_MODULE_SIG_ALL=y
  # CONFIG_MODULE_SIG_SHA1 is not set
  # CONFIG_MODULE_SIG_SHA224 is not set
  # CONFIG_MODULE_SIG_SHA256 is not set
@@ -91,7 +79,7 @@ index 9d0b8c4..ebf6f9b 100644
  # CONFIG_MODULE_COMPRESS_NONE is not set
  # CONFIG_MODULE_COMPRESS_GZIP is not set
  # CONFIG_MODULE_COMPRESS_XZ is not set
-@@ -9813,7 +9813,10 @@ CONFIG_USB4=m
+@@ -9816,7 +9816,10 @@ CONFIG_USB4=m
  #
  # Android
  #

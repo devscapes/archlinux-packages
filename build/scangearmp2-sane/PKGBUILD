@@ -2,8 +2,8 @@
 # Contributor: Paul van der Linden <mail@paultjuh.org>
 
 pkgname=scangearmp2-sane
-pkgver=4.50.1
-pkgrel=4
+pkgver=4.60.0
+pkgrel=1
 pkgdesc='Canon ScanGear MP v2 scanner utility and sane backend'
 arch=('x86_64')
 url='https://github.com/ThierryHFR/scangearmp2'
@@ -15,9 +15,15 @@ optdepends=('libjpeg-turbo: sane backend plug-in'
 provides=('scangearmp2')
 conflicts=('scangearmp2')
 _srcname="${pkgname%-sane}"
-source=("${_srcname}-${pkgver}.tar.gz::${url}/archive/refs/tags/V${pkgver}.tar.gz")
-sha384sums=('1cbd0f0d5716d2ae5888623d9e3fc14fdedc532b21d768689872247e2f58d19a70629654672f7e0b2dbd82eaed17c31d')
-b2sums=('343803e0a9cafbf77f60623c9de5dfc085d07e69a3414e74405b253165ee5992c60eebb5a5dc3ea31b8a9981240604b71cbc9108cf2d8d75a0121e5b0041066d')
+source=("${_srcname}-${pkgver}.tar.gz::${url}/releases/download/${pkgver}/${_srcname}-${pkgver}.tar.gz")
+noextract=("${_srcname}-${pkgver}.tar.gz") # root folder might be different than what we expect
+sha384sums=('6bb62ba0286c00179da890afddd5d893f7524f68eb0bea438bd53632375f39be28338418e971c29edcfec16a36510603')
+b2sums=('652d5fabea1eb3063904f27d4c48424fe1a680dadef4f710d1f0af1f41fbd86477a2f0d171a645bfa8913e6e7a8556ad6d10a5c0d808c0b3d480b361401b494c')
+
+prepare() {
+    mkdir "${_srcname}-${pkgver}"
+    tar xf "${_srcname}-${pkgver}.tar.gz" -C "${_srcname}-${pkgver}" --strip-components 1
+}
 
 build() {
     cmake -B build -S "${_srcname}-${pkgver}" -DCMAKE_INSTALL_PREFIX="/"

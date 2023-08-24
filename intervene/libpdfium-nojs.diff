@@ -1,8 +1,8 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index c66a21d..1392b6a 100644
+index 87a4702..6a9d5c7 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -7,21 +7,24 @@ pkgdesc="Open-source PDF rendering engine."
+@@ -7,14 +7,15 @@ pkgdesc="Open-source PDF rendering engine."
  arch=('x86_64')
  url="https://pdfium.googlesource.com/pdfium/"
  license=('BSD')
@@ -21,19 +21,9 @@ index c66a21d..1392b6a 100644
 +    "chromium-build::git+https://chromium.googlesource.com/chromium/src/build.git"
 +    "chromium-abseil-cpp::git+https://chromium.googlesource.com/chromium/src/third_party/abseil-cpp"
      "libpdfium.pc"
-+    "gcc-13.patch"
      )
  
- md5sums=('SKIP'
-          'SKIP'
-          'SKIP'
--         'feb270967925a0844b1b9a9e15288eb3')
-+         'feb270967925a0844b1b9a9e15288eb3'
-+         '1b6859be209a9b672a8fe06f6608f336')
- 
- pkgver() {
- 
-@@ -38,8 +41,8 @@ prepare() {
+@@ -38,8 +39,8 @@ prepare() {
  
    cd "$srcdir/pdfium"
  
@@ -44,17 +34,7 @@ index c66a21d..1392b6a 100644
  
    # Pdfium is developed alongside Chromium and does not provide releases
    # Upstream recommends using Chromium's dev channels instead
-@@ -51,6 +54,9 @@ prepare() {
-   # git checkout "chromium/$(curl https://omahaproxy.appspot.com/linux?channel=beta | cut -d'.' -f 3)"
-   # git checkout "chromium/$(curl https://omahaproxy.appspot.com/linux?channel=dev | cut -d'.' -f 3)"
- 
-+  # Include cstdint to fix building with GCC 13
-+  patch -p1 <../gcc-13.patch
-+
-   # Extract build repo revision needed from DEPS file and do a checkout
-   cd "$srcdir/pdfium/build"
-   git checkout $(awk '/build_revision/ {print substr($2,2,40)}' $srcdir/pdfium/DEPS) -q
-@@ -65,7 +71,7 @@ prepare() {
+@@ -65,7 +66,7 @@ prepare() {
  
    # Use system provided icu library (unbundling)
    mkdir -p "$srcdir/pdfium/third_party/icu"
@@ -63,7 +43,7 @@ index c66a21d..1392b6a 100644
  
    # Download and decode shim header script needed to unbundle icu (gittiles is weird)
    mkdir -p "$srcdir/pdfium/tools/generate_shim_headers/"
-@@ -75,7 +81,7 @@ prepare() {
+@@ -75,7 +76,7 @@ prepare() {
    echo "Done."
    
    # Create fake gclient_args.gni file to satisfy include list for build/config/compiler/compiler.gni
@@ -72,22 +52,3 @@ index c66a21d..1392b6a 100644
    
    # Exclude test fonts from build
    cd "$srcdir/pdfium/testing/"
-diff --git a/gcc-13.patch b/gcc-13.patch
-new file mode 100644
-index 0000000..304087f
---- /dev/null
-+++ b/gcc-13.patch
-@@ -0,0 +1,13 @@
-+diff --git a/constants/annotation_flags.h b/constants/annotation_flags.h
-+index 2ac244e063..fa121de649 100644
-+--- a/constants/annotation_flags.h
-++++ b/constants/annotation_flags.h
-+@@ -5,6 +5,8 @@
-+ #ifndef CONSTANTS_ANNOTATION_FLAGS_H_
-+ #define CONSTANTS_ANNOTATION_FLAGS_H_
-+ 
-++#include <cstdint>
-++
-+ namespace pdfium {
-+ namespace annotation_flags {
-+ 
