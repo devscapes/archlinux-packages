@@ -1,9 +1,3 @@
-[submodule "build/megacmd"]
-	path = build/megacmd
-	url = https://github.com/archlinux-kud/megacmd-dynamic.git
-[submodule "build/hardened_malloc"]
-	path = build/hardened_malloc
-	url = https://github.com/archlinux-kud/hardened_malloc.git
 [submodule "build/linux-tkg"]
 	path = build/linux-tkg
 	url = https://github.com/archlinux-kud/linux-tkg.git

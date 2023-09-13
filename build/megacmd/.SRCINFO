@@ -1,0 +1,45 @@
+pkgbase = megacmd
+	pkgdesc = MEGA Command Line Interactive and Scriptable Application
+	pkgver = 1.6.3
+	pkgrel = 3
+	url = https://mega.nz/cmd
+	arch = x86_64
+	license = BSD
+	license = GPL3
+	depends = crypto++
+	depends = freeimage
+	depends = libmediainfo
+	depends = libpdfium
+	depends = libsodium
+	depends = libuv
+	depends = openssl
+	depends = pcre
+	depends = sqlite
+	depends = zlib
+	depends = libavcodec.so
+	depends = libavformat.so
+	depends = libavutil.so
+	depends = libcares.so
+	depends = libcurl.so
+	depends = libreadline.so
+	depends = libswscale.so
+	optdepends = bash-completion: for completion script
+	provides = mega-sdk=4.17.1d
+	provides = libmega.so
+	conflicts = megacmd-dynamic
+	conflicts = mega-sdk
+	replaces = megacmd-dynamic
+	source = MEGAcmd::git+https://github.com/meganz/MEGAcmd.git#tag=1.6.3_Linux
+	source = meganz-sdk::git+https://github.com/meganz/sdk.git#tag=v4.17.1d
+	source = ffmpeg.patch
+	source = pdfium.patch
+	sha512sums = SKIP
+	sha512sums = SKIP
+	sha512sums = 45ad4d0a50057e4500e5ef312691d958b96a20905b9dbe7851da0411f6da20ae287a9aca275bae30689ee38a4ea5dd881c3ddc3e1db736f4b3d1052335917fb1
+	sha512sums = 8fbf76a670c2923fe61de46b159128180cf69caead90ef8bc62c2829a8ca94846127149863089f9c572fcb998229244f828230791fd51b8339698732704c94f6
+	b2sums = SKIP
+	b2sums = SKIP
+	b2sums = 1d902c55fa8c5ceb5a225d1eceff3b15d8c62cb72c232a78d902c8afcd45a8d0f87e906cf21a7331aa287cd40926e9ab7d411a1fcfc7060db72f8116814938aa
+	b2sums = 3c140752bd1be91525888ee88048ab0df9aa1834096773301f9672f6d4e1651a88c6318e1e5dc5349f47292ca1adf2778223c10a973f43bb7c8a997972b18109
+
+pkgname = megacmd
