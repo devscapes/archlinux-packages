@@ -18,7 +18,7 @@
 # Contributor: Tomas Wilhelmsson <tomas.wilhelmsson@gmail.com>
 
 pkgname=llvm17-opt
-pkgver=17.0.0rc2
+pkgver=17.0.0rc4
 pkgrel=1
 pkgdesc='LLVM compiler suite stable version 17 (installs to /opt)'
 arch=('x86_64')
@@ -33,17 +33,53 @@ optdepends=('openmp: OpenMP support in clang with -fopenmp'
 # We provide LLVM tools, but not replace existing ones
 provides=('clang17' 'compiler-rt17' 'lld17' 'lldb17' 'llvm17' 'llvm17-libs' 'polly17')
 options=('staticlibs' '!lto')
-_tagver=llvmorg-17.0.0-rc2
+_tagver=llvmorg-17.0.0-rc4
 source=("https://github.com/llvm/llvm-project/releases/download/${_tagver}/llvm-project-${pkgver}.src.tar.xz"{,.sig}
         'llvm-config.h')
-sha384sums=('7753e6a9036716ac11d22c5c83a03fe1b0ba9fa1512b18242a4b9744962bd6eee49a68dce2e4e742201be8dd784fd130'
+sha384sums=('758fca97f2d5e62a9d12619886fd86eb76d2d191632d28b956678fa80783585d141bcf03cee8f94b9d8279c051ba8d11'
             'SKIP'
             '3065a1f344a5a5bebeb0fd9fcc95bb325ebf63b20d9871d0f49bfbfd7a5434e3d5e8bdadac5a2d8033bb7fe2ebe3d7bb')
-b2sums=('58ed818f61e1cd179288d578e89460782617a3791a65dbc3e1f207629004f0d61225e87b78fdc0eeb3647912e5056ab68ce35ea2639a34ded1d8bdf0452e31f8'
+b2sums=('e3bf524e55db5e4305099ecdff09c0d3eab7957a5f8729eefe636e361460f405fbfd569af38aa39eea3b6c1e024feaa0400f8bc092194f2c3b54c695e7962591'
         'SKIP'
         'c7e56bfbb9983bc30977fed8d6e028d007dcce2bce03e91c38070fa4d5eb261919ab85f77a150cc31a857195586922b7bafb43070555da0194846fd1f6d1f515')
 validpgpkeys=('474E22316ABF4785A88C6E8EA2C794A986419D8A'  # Tom Stellard <tstellar@redhat.com>
               'D574BD5D1D0E98895E3BF90044F2485E45D59042') # Tobias Hieta <tobias@hieta.se>
+
+# Utilizing LLVM_DISTRIBUTION_COMPONENTS to avoid
+# installing static libraries; inspired by Gentoo
+_get_distribution_components() {
+    local target
+    ninja -t targets | grep -Po 'install-\K.*(?=-stripped:)' | while read -r target; do
+        case $target in
+            clang-libraries|llvm-libraries|distribution)
+                continue
+                ;;
+            # shared libraries
+            LLVM|LLVMgold)
+                ;;
+            # libraries needed for clang-tblgen
+            LLVMDemangle|LLVMSupport|LLVMTableGen)
+                ;;
+            # exclude static libraries
+            LLVM*)
+                continue
+                ;;
+            # exclude llvm-exegesis (doesn't seem useful without libpfm)
+            llvm-exegesis)
+                continue
+                ;;
+            clang-tidy-headers)
+                continue
+                ;;
+            clang|clangd|clang-*)
+                ;;
+            clang*|findAllSymbols)
+                continue
+                ;;
+        esac
+        echo $target
+    done
+}
 
 _python_optimize() {
     python3 -m compileall "${@}"
@@ -69,6 +105,31 @@ prepare() {
 
 build() {
     local _install="opt/${pkgbase%%-opt}"
+    local _cmake_args=(
+        "-S" "${srcdir}/llvm-project-${pkgver}.src/llvm"
+        "-G" "Ninja"
+        "-DCMAKE_BUILD_TYPE=Release"
+        "-DCMAKE_INSTALL_PREFIX=/${_install}"
+        "-DLLVM_BINUTILS_INCDIR=/${_install}/include"
+        "-DLLVM_APPEND_VC_REV=OFF"
+        "-DLLVM_VERSION_SUFFIX="
+        "-DLLVM_HOST_TRIPLE=${CHOST}"
+        "-DLLVM_ENABLE_RTTI=ON"
+        "-DLLVM_ENABLE_FFI=ON"
+        "-DFFI_INCLUDE_DIR:PATH=$(pkg-config --variable=includedir libffi)"
+        "-DLLVM_BUILD_LLVM_DYLIB=ON"
+        "-DLLVM_LINK_LLVM_DYLIB=ON"
+        "-DLLVM_INSTALL_UTILS=ON"
+        "-DLLVM_BUILD_DOCS=ON"
+        "-DLLVM_ENABLE_DOXYGEN=OFF"
+        "-DLLVM_ENABLE_SPHINX=ON"
+        "-DSPHINX_OUTPUT_HTML:BOOL=OFF"
+        "-DSPHINX_WARNINGS_AS_ERRORS=OFF"
+        "-DLLVM_ENABLE_PROJECTS=polly;lldb;lld;compiler-rt;clang-tools-extra;clang"
+        "-DLLVM_ENABLE_DUMP=ON"
+        "-DLLVM_ENABLE_BINDINGS=OFF"
+        "-DLLVM_POLLY_LINK_INTO_TOOLS=OFF"
+    )
     local _bootstrap_options=(
         "-DCMAKE_AR=/${_install}/bin/llvm-ar"
         "-DCMAKE_C_COMPILER=clang"
@@ -86,34 +147,18 @@ build() {
         export LD_LIBRARY_PATH="/${_install}/lib"
     fi
 
-    cmake \
-        -B _build \
-        -S "${srcdir}/llvm-project-${pkgver}.src/llvm" \
-        -G Ninja \
-        ${_bootstrap:+"${_bootstrap_options[@]}"} \
-        -D CMAKE_BUILD_TYPE=Release \
-        -D CMAKE_INSTALL_PREFIX="/${_install}" \
-        -D LLVM_BINUTILS_INCDIR="/${_install}/include" \
-        -D LLVM_APPEND_VC_REV=OFF \
-        -D LLVM_VERSION_SUFFIX="" \
-        -D LLVM_HOST_TRIPLE="${CHOST}" \
-        -D LLVM_ENABLE_RTTI=ON \
-        -D LLVM_ENABLE_FFI=ON \
-        -D FFI_INCLUDE_DIR:PATH="$(pkg-config --variable=includedir libffi)" \
-        -D LLVM_BUILD_LLVM_DYLIB=ON \
-        -D LLVM_LINK_LLVM_DYLIB=ON \
-        -D LLVM_INSTALL_UTILS=ON \
-        -D LLVM_BUILD_DOCS=ON \
-        -D LLVM_ENABLE_DOXYGEN=OFF \
-        -D LLVM_ENABLE_SPHINX=ON \
-        -D SPHINX_OUTPUT_HTML:BOOL=OFF \
-        -D SPHINX_WARNINGS_AS_ERRORS=OFF \
-        -D LLVM_ENABLE_PROJECTS="polly;lldb;lld;compiler-rt;clang-tools-extra;clang" \
-        -D LLVM_LIT_ARGS="-sv --ignore-fail" \
-        -D LLVM_ENABLE_DUMP=ON \
-        -D LLVM_ENABLE_BINDINGS=OFF \
-        -Wno-dev
+    [[ -n ${_bootstrap} ]] && _cmake_args+=("${_bootstrap_options[@]}")
+    cmake -B _build "${_cmake_args[@]}"
 
+    pushd _build
+    local distribution_components=$(_get_distribution_components | paste -sd\;)
+    test -n "${distribution_components}"
+    _cmake_args+=("-DLLVM_DISTRIBUTION_COMPONENTS=${distribution_components}")
+    popd
+
+    cmake -B _build "${_cmake_args[@]}" \
+        -D LLVM_LIT_ARGS="-sv --ignore-fail" \
+        -Wno-dev
     ninja -C _build
 }
 

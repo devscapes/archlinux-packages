@@ -1,0 +1,17 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 5e3f113..f84209b 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -8,10 +8,11 @@ _vlcver=3.0.18
+ # optional fixup version including hyphen
+ _vlcfixupver=
+ pkgver=${_vlcver}${_vlcfixupver//-/.r}
+-pkgrel=15
++pkgrel=15.1
+ pkgdesc='Multi-platform MPEG, VCD/DVD, and DivX player'
+ url='https://www.videolan.org/vlc/'
+ arch=('x86_64')
++groups=('extra-rebuild')
+ license=('LGPL2.1' 'GPL2')
+ # NOTE: switch to ffmpeg4.4, as ffmpeg >= 5 requires extensive changes disabling VAAPI (only supported with vlc >= 4)
+ depends=('a52dec' 'libdvbpsi' 'libxpm' 'libdca' 'libproxy' 'lua' 'libidn'

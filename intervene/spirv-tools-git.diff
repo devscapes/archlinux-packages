@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index b3deefa..ba83e48 100644
+index b3deefa..044f9c9 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -2,14 +2,14 @@
@@ -7,7 +7,7 @@ index b3deefa..ba83e48 100644
  
  pkgname=spirv-tools-git
 -pkgver=r3673.e0936b6
-+pkgver=1.3.250.0.r92.ge68fe9be4
++pkgver=1.3.261.0.r36.g47b63a4d7
  pkgrel=1
  epoch=1
  pkgdesc='API and commands for processing SPIR-V modules'

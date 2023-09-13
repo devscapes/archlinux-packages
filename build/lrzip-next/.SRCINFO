@@ -1,0 +1,19 @@
+pkgbase = lrzip-next
+	pkgdesc = Next generation of multi-threaded compression based on rzip
+	pkgver = 0.12.2
+	pkgrel = 2
+	url = https://github.com/pete4abw/lrzip-next
+	arch = x86_64
+	license = GPL2
+	depends = bzip2
+	depends = bzip3
+	depends = lzo
+	depends = zstd
+	provides = lrzip
+	conflicts = lrzip
+	options = lto
+	source = lrzip-next-0.12.2.tar.gz::https://github.com/pete4abw/lrzip-next/archive/refs/tags/v0.12.2.tar.gz
+	sha384sums = 34758cb2339ad6b5d473a3c2fa488a550f33353469df4a8343392b2fe4f96e90eb6b5c6de74ffb26cee60ef8fd8d7cdf
+	b2sums = 33be447174481dc5e5d0bb00c02e10b3f060fc921ba131fcc370f46c9c81a12d69f49ffdfbb4222ce6a200034ea093ccf82bc3d1e4639dd03188eeefff6c7e38
+
+pkgname = lrzip-next

@@ -1,0 +1,17 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 462a518..6b54987 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -6,10 +6,11 @@
+ 
+ pkgname=ffmpeg
+ pkgver=6.0
+-pkgrel=9
++pkgrel=9.1
+ epoch=2
+ pkgdesc='Complete solution to record, convert and stream audio and video'
+ arch=(x86_64)
++groups=('extra-rebuild')
+ url=https://ffmpeg.org/
+ license=(GPL3)
+ depends=(

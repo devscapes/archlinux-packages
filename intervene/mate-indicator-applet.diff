@@ -1,0 +1,23 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index f4df26e..a6e0009 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -2,13 +2,14 @@
+ 
+ pkgname="mate-indicator-applet"
+ pkgver="1.26.0"
+-pkgrel="1"
+-pkgdesc="Applet to display information from various applications consistently in the MATE panel (Built with Ayatana support)"
++pkgrel="3"
++pkgdesc="Applet to display information from various applications consistently in the MATE panel (built with Ayatana support)"
+ arch=("i686" "x86_64" "pentium4")
++groups=('mate')
+ url="http://www.mate-desktop.org/"
+ license=("LGPL2.1" "GPL3")
+-makedepends=("autoconf-archive" "intltool" "gtk3" "libtool" "libx11" "libxml2" "mate-common")
+-depends=("mate-panel" "ayatana-ido" "libayatana-indicator")
++makedepends=("autoconf-archive" "intltool" "libxml2" "mate-common")
++depends=("mate-panel" "ayatana-ido" "libayatana-indicator" "gtk3" "hicolor-icon-theme" "glib2" "at-spi2-core" "libx11")
+ source=("${pkgname}-${pkgver}.tar.gz::https://github.com/mate-desktop/${pkgname}/archive/v${pkgver}.tar.gz")
+ md5sums=("2bbcb5eabf803459d1b930e92a8d4242")
+ 
