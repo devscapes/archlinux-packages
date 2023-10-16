@@ -1,22 +1,23 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 47bff1e..a82e8dc 100644
+index 6f574ea..03ebf17 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -3,13 +3,13 @@
  
  pkgname="ayatana-settings"
- pkgver="21.1.28"
+ pkgver="23.10.13"
 -pkgrel=1
 +pkgrel=2
  pkgdesc="Configuration tool for tweaking all Ayatana system indicators"
  arch=("any")
  url="https://github.com/AyatanaIndicators/ayatana-settings"
  license=("GPL3")
- depends=("gtk3" "gobject-introspection" "python-psutil")
+-depends=("gtk3" "gobject-introspection" "python-psutil")
 -makedepends=("python-setuptools" "python-polib")
++depends=("gtk3" "gobject-introspection" "hicolor-icon-theme" "python" "python-psutil")
 +makedepends=("python-build" "python-installer" "python-wheel" "python-setuptools" "python-polib")
  source=("${pkgname}-${pkgver}.tar.gz::https://github.com/AyatanaIndicators/${pkgname}/archive/${pkgver}.tar.gz")
- md5sums=("5c48898b4dddcae29abb44e1b070a4e5")
+ md5sums=("2a2433c4120e84af3e9b7fecf39062a6")
  options=("!emptydirs")
 @@ -17,12 +17,12 @@ options=("!emptydirs")
  build()
@@ -30,6 +31,6 @@ index 47bff1e..a82e8dc 100644
  {
      cd ${srcdir}/${pkgname}-${pkgver}
 -    python setup.py install --root="${pkgdir}" --optimize=1
-+    python -m installer -d "${pkgdir}" --compile-bytecode 1 dist/*.whl
++    python -m installer -d "${pkgdir}" dist/*.whl
  }
  

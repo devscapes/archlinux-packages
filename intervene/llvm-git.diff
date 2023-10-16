@@ -1,23 +1,26 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 29def2e..cbb3800 100644
+index 29def2e..8641b0b 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -16,7 +16,7 @@
+@@ -16,24 +16,26 @@
  
  
  pkgname=('llvm-git' 'llvm-libs-git' 'llvm-ocaml-git')
 -pkgver=17.0.0_r464790.ed0620fd24a1
-+pkgver=18.0.0_r474162.710b5a12324e
++pkgver=18.0.0_r477569.0ad92c0cbb34
  pkgrel=1
  arch=('x86_64')
  url="https://llvm.org/"
-@@ -26,14 +26,16 @@ makedepends=('git' 'cmake' 'ninja' 'libffi' 'libedit' 'ncurses' 'libxml2'
-              'python-sphinx' 'python-recommonmark' 'swig' 'python' 'python-six' 'lua53'
+ license=('custom:Apache 2.0 with LLVM Exception')
+ makedepends=('git' 'cmake' 'ninja' 'libffi' 'libedit' 'ncurses' 'libxml2' 
+              'python-setuptools' 'lldb' 'ocaml' 'ocaml-ctypes' 'ocaml-findlib'
+-             'python-sphinx' 'python-recommonmark' 'swig' 'python' 'python-six' 'lua53'
++             'python-myst-parser' 'python-recommonmark' 'swig' 'python' 'python-six' 'lua53'
               'ocl-icd' 'opencl-headers' 'z3' 'jsoncpp' 'ocaml-stdlib-shims')
  checkdepends=("python-psutil")
 -source=("llvm-project::git+https://github.com/llvm/llvm-project.git"
-+# pin commit that passes Debian/Ubuntu expensive CI checks - Sun, 10 Sep 2023 12:25:19 +0200
-+source=("llvm-project::git+https://github.com/llvm/llvm-project.git#commit=710b5a12324e54d42632985c46a3071fc2504fc9"
++# pin commit that passes Debian/Ubuntu expensive CI checks - Sat, 14 Oct 2023 18:38:18 +0200
++source=("llvm-project::git+https://github.com/llvm/llvm-project.git#commit=0ad92c0cbb34a6e24a9a32f03f3ddeb2114b378e"
          "llvm-config.h")
  
  md5sums=('SKIP'

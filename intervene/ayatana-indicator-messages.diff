@@ -1,8 +1,14 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 8833f92..47cac01 100644
+index 8512fa9..d25f443 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -7,8 +7,8 @@ pkgdesc="Ayatana Indicator that collects messages that need a response"
+@@ -2,13 +2,13 @@
+ 
+ pkgname="ayatana-indicator-messages"
+ pkgver="23.10.0"
+-pkgrel="1"
++pkgrel="2"
+ pkgdesc="Ayatana Indicator that collects messages that need a response"
  arch=("i686" "x86_64" "pentium4")
  url="https://github.com/AyatanaIndicators/ayatana-indicator-messages"
  license=("GPL3")
@@ -11,5 +17,5 @@ index 8833f92..47cac01 100644
 +makedepends=("cmake-extras" "gobject-introspection" "gtk-doc" "intltool" "vala" "systemd")
 +depends=("accountsservice" "hicolor-icon-theme" "dconf" "glib2")
  source=("${pkgname}-${pkgver}.tar.gz::https://github.com/AyatanaIndicators/${pkgname}/archive/${pkgver}.tar.gz")
- md5sums=("a5ef45313142b4023dc44fdee19c8076")
+ md5sums=("b051c879e5cdf5911343ac12ed00a857")
  provides=("indicator-messages")

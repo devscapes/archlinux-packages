@@ -1,0 +1,21 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 42a95a8..72b4854 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -2,13 +2,13 @@
+ 
+ pkgname="libayatana-common"
+ pkgver="0.9.9"
+-pkgrel="1"
++pkgrel="2"
+ pkgdesc="Ayatana System Indicators' common API functions"
+ arch=("i686" "x86_64" "pentium4")
+ url="https://github.com/AyatanaIndicators/libayatana-common"
+ license=("GPL3")
+-makedepends=("cmake" "cmake-extras" "glib2" "vala" "gobject-introspection" "intltool")
+-depends=("dconf" "zenity")
++makedepends=("cmake" "cmake-extras" "vala" "gobject-introspection" "intltool")
++depends=("dconf" "glib2" "zenity")
+ source=("${pkgname}-${pkgver}.tar.gz::https://github.com/AyatanaIndicators/$pkgname/archive/$pkgver.tar.gz")
+ md5sums=("884f56abfdb34461843e3f2f70ac37c9")
+ 

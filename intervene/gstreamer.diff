@@ -1,13 +1,13 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index f9ff6d3..664741a 100644
+index f4cce88..2a94748 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -26,10 +26,11 @@ pkgname=(
    gstreamer-docs
  )
- pkgver=1.22.5
--pkgrel=2
-+pkgrel=2.1
+ pkgver=1.22.6
+-pkgrel=1
++pkgrel=1.1
  pkgdesc="Multimedia graph framework"
  url="https://gstreamer.freedesktop.org/"
  arch=(x86_64)
@@ -24,10 +24,10 @@ index f9ff6d3..664741a 100644
  
    # gst-libav
    ffmpeg
-@@ -93,9 +94,16 @@ prepare() {
+@@ -88,9 +89,16 @@ prepare() {
  
-   # Unbreak qt-egl build
-   git apply -3 ../0002-qt-Unbreak-build-with-qt-egl-enabled-but-viv_fb-miss.patch
+   # Disable broken tests
+   git apply -3 ../0001-HACK-meson-Disable-broken-tests.patch
 +
 +  # This test is failing 90% of the time
 +  sed '/netsim/d' -i subprojects/gst-plugins-bad/tests/check/meson.build
@@ -41,7 +41,7 @@ index f9ff6d3..664741a 100644
    local meson_options=(
      # Superproject options
      -D devtools=disabled
-@@ -485,7 +493,7 @@ package_gst-plugins-bad() {
+@@ -480,7 +488,7 @@ package_gst-plugins-bad() {
      libmpcdec libopenmpt librsvg libsndfile libsrtp libwebp libxml2 lilv
      mjpegtools neon nettle openal openexr openjpeg2 openssl opus pango qrencode
      rtmpdump sbc soundtouch spandsp srt svt-hevc webrtc-audio-processing
@@ -50,7 +50,7 @@ index f9ff6d3..664741a 100644
    )
  
    cd root; local files=(
-@@ -656,7 +664,7 @@ package_gst-plugins-ugly() {
+@@ -651,7 +659,7 @@ package_gst-plugins-ugly() {
    pkgdesc+=" - ugly plugins"
    depends=(
      "gst-plugins-base-libs=$pkgver"

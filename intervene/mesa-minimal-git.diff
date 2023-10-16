@@ -1,9 +1,9 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 150266c..7db56e7 100644
+index 96139bf..e5f1cdb 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -20,11 +20,14 @@ makedepends=(git meson ninja libglvnd python-mako xorgproto libxml2 libx11  libv
-               wayland-protocols glslang llvm-minimal-git libdrm libclc-minimal-git clang-minimal-git rust rust-bindgen spirv-tools-git spirv-llvm-translator-minimal-git libvdpau systemd-libs)
+@@ -21,11 +21,14 @@ makedepends=(git meson ninja libglvnd python-mako xorgproto libxml2 libx11  libv
+                             rust rust-bindgen spirv-tools-git spirv-llvm-translator-minimal-git libvdpau systemd-libs)
  # In order to keep the package simple and ease troubleshooting only use one llvm implementation
  optdepends=('opengl-man-pages: for the OpenGL API man pages')
 -provides=(mesa vulkan-intel vulkan-radeon vulkan-mesa-layer libva-mesa-driver vulkan-swrast mesa-vdpau vulkan-driver opengl-driver)
@@ -19,11 +19,11 @@ index 150266c..7db56e7 100644
  source=("mesa::git+https://gitlab.freedesktop.org/mesa/mesa.git"
                  'LICENSE'
  )
-@@ -121,6 +124,7 @@ package_opencl-rusticl-mesa-minimal-git() {
+@@ -123,6 +126,7 @@ package_opencl-rusticl-mesa-minimal-git() {
      pkgdesc="OpenCL support in rust for mesa drivers (git version)"
      conflicts=(opencl-clover-mesa opencl-rusticl-mesa)
      provides=(opencl-rusticl-mesa opencl-driver)
 +    replaces=('rusticl-mesa-minimal-git')
      depends=(libdrm spirv-llvm-translator-minimal-git libclc-minimal-git spirv-tools-git
-     mesa-minimal-git=$pkgver-$pkgrel llvm-libs-minimal-git clang-libs-minimal-git clang-minimal-git
-     expat libelf zstd lm_sensors zlib gcc-libs glibc)
+                     mesa-minimal-git=$pkgver-$pkgrel llvm-libs-minimal-git clang-libs-minimal-git
+                     clang-opencl-headers-minimal-git expat libelf zstd lm_sensors zlib gcc-libs glibc

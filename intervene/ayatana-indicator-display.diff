@@ -1,15 +1,13 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index fca3a2b..4331056 100644
+index f65db6e..6caccca 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -7,8 +7,8 @@ pkgdesc="Ayatana Indicator Display"
- arch=("i686" "x86_64" "pentium4")
+@@ -8,7 +8,7 @@ arch=("i686" "x86_64" "pentium4")
  url="https://github.com/AyatanaIndicators/ayatana-indicator-display"
  license=("GPL3")
--depends=("xsct" "libayatana-common" "geoclue" "hicolor-icon-theme")
--makedepends=("intltool" "cmake-extras" "glib2" "systemd" "hicolor-icon-theme" "properties-cpp")
-+depends=("xsct" "libayatana-common" "geoclue" "hicolor-icon-theme" "dconf" "glib2")
-+makedepends=("intltool" "cmake-extras" "systemd" "properties-cpp")
+ depends=("xsct" "libayatana-common>=0.9.8" "geoclue" "hicolor-icon-theme" "glib2" "gcc-libs" "glibc" "dconf")
+-makedepends=("intltool" "cmake" "cmake-extras" "systemd")
++makedepends=("intltool" "cmake" "cmake-extras" "systemd" "properties-cpp")
  source=("${pkgname}-${pkgver}.tar.gz::https://github.com/AyatanaIndicators/${pkgname}/archive/${pkgver}.tar.gz")
- md5sums=("73c4c2164ae617aefabc8fc872cf2144")
+ md5sums=("8dffd0d6de8377777c2708ea2f467637")
  conflicts=("redshift")

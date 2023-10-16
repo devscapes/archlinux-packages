@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index d815972..c7064e8 100644
+index d815972..cbbd613 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -6,7 +6,7 @@ pkgbase=linux-firmware-git
@@ -7,7 +7,7 @@ index d815972..c7064e8 100644
           linux-firmware-{nfp,mellanox,marvell,qcom,liquidio,qlogic,bnx2x}-git
  )
 -pkgver=20230814.0e048b06
-+pkgver=20230907.dfa11466
++pkgver=20231013.1be48f85
  pkgrel=1
  pkgdesc="Firmware files for Linux"
  url="https://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git;a=summary"

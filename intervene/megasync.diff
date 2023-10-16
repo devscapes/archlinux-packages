@@ -1,17 +1,18 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 49bb1e1..00f9787 100644
+index 49bb1e1..9d3d621 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -6,7 +6,7 @@
+@@ -6,25 +6,25 @@
  # Contributor: Hexchain Tong <i at hexchain dot org>
  
  pkgname=megasync
 -pkgver=4.9.0.0
+-pkgrel=1
 +pkgver=4.9.6.0
- pkgrel=1
++pkgrel=2
  pkgdesc="Easy automated syncing between your computers and your MEGA cloud drive"
  arch=('i686' 'x86_64')
-@@ -14,17 +14,17 @@ url="https://github.com/meganz/MEGAsync"
+ url="https://github.com/meganz/MEGAsync"
  license=('custom:MEGA LIMITED CODE REVIEW LICENCE')
  depends=('c-ares' 'crypto++' 'libsodium' 'hicolor-icon-theme' 'libuv'
           'qt5-svg' 'qt5-x11extras' 'libmediainfo' 'libraw' 'qt5-base'

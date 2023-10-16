@@ -1,0 +1,13 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 34fd5bc..05ad8b8 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -9,7 +9,7 @@ arch=("i686" "x86_64" "pentium4")
+ url="https://tari.in/www/software/matekbd-keyboard-display"
+ license=("LGPL3")
+ depends=("libxklavier" "hicolor-icon-theme" "gtk3" "libmatekbd" "glib2" "glibc")
+-makedepends=("at-spi2-core")
++makedepends=("at-spi2-core" "cmake")
+ source=("${pkgname}-${pkgver}.tar.gz::https://github.com/tari01/${pkgname}/archive/${pkgver}.tar.gz")
+ md5sums=("49770d03f61a3c6509d13d3e2f405d3d")
+ 

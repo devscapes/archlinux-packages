@@ -1,0 +1,18 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index ae35ac1..0cc19ce 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -6,11 +6,12 @@
+ 
+ pkgname=ffmpeg4.4
+ pkgver=4.4.4
+-pkgrel=3
++pkgrel=3.1
+ pkgdesc='Complete solution to record, convert and stream audio and video'
+ arch=(x86_64)
+ url=https://ffmpeg.org/
+ license=(GPL3)
++groups=('extra-rebuild')
+ depends=(
+   alsa-lib
+   aom

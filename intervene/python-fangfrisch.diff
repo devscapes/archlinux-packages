@@ -1,0 +1,26 @@
+diff --git a/.SRCINFO b/.SRCINFO
+index c46c539..8496825 100644
+--- a/.SRCINFO
++++ b/.SRCINFO
+@@ -5,7 +5,7 @@ pkgbase = python-fangfrisch
+ 	url = https://rseichter.github.io/fangfrisch/
+ 	install = fangfrisch.install
+ 	arch = any
+-	license = GPL
++	license = GPL3
+ 	makedepends = python-setuptools
+ 	makedepends = python-build
+ 	makedepends = python-installer
+diff --git a/PKGBUILD b/PKGBUILD
+index d4fdd2a..963b6a2 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -5,7 +5,7 @@ pkgver=1.6.1
+ pkgrel=4
+ pkgdesc="Freshclam like utility that allows downloading unofficial virus definition files"
+ arch=('any')
+-license=('GPL')
++license=('GPL3')
+ url="https://rseichter.github.io/fangfrisch/"
+ conflicts=('clamav-unofficial-sigs')
+ provides=('clamav-unofficial-sigs')

@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index a89624d..9a2535a 100644
+index a89624d..01e9a51 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -3,13 +3,14 @@
@@ -9,7 +9,7 @@ index a89624d..9a2535a 100644
 -epoch=1
 -pkgver=1.3.236.0.r4.g34d0464
 +epoch=2
-+pkgver=1.3.261.0.r6.gd790ced
++pkgver=1.5.5.r608.4183b26
  pkgrel=1
  pkgdesc='SPIR-V header files Git version'
  arch=('any')
@@ -19,12 +19,15 @@ index a89624d..9a2535a 100644
  source=("git+https://github.com/KhronosGroup/$_pkgname.git")
  sha1sums=('SKIP')
  makedepends=('git' 'cmake')
-@@ -18,7 +19,7 @@ provides=("spirv-headers=1:$pkgver")
+@@ -18,7 +19,10 @@ provides=("spirv-headers=1:$pkgver")
  
  pkgver() {
      cd "$_pkgname"
 -	git describe --long --tags | sed 's/^sdk-//; s/\([^-]*-g\)/r\1/; s/-/./g'
-+    git describe --long --tags --match 'sdk-*' | sed 's/^sdk-//; s/\([^-]*-g\)/r\1/; s/-/./g'
++    printf '%s.r%s.%s' \
++        "$(grep -R project\(SPIRV-Headers CMakeLists.txt | cut -d' ' -f5 | sed 's/[\)]//')" \
++        "$(git rev-list --count HEAD)" \
++        "$(git rev-parse --short HEAD)"
  }
  
  build() {
