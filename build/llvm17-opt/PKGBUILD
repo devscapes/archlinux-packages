@@ -18,7 +18,7 @@
 # Contributor: Tomas Wilhelmsson <tomas.wilhelmsson@gmail.com>
 
 pkgname=llvm17-opt
-pkgver=17.0.0rc4
+pkgver=17.0.2
 pkgrel=1
 pkgdesc='LLVM compiler suite stable version 17 (installs to /opt)'
 arch=('x86_64')
@@ -33,13 +33,13 @@ optdepends=('openmp: OpenMP support in clang with -fopenmp'
 # We provide LLVM tools, but not replace existing ones
 provides=('clang17' 'compiler-rt17' 'lld17' 'lldb17' 'llvm17' 'llvm17-libs' 'polly17')
 options=('staticlibs' '!lto')
-_tagver=llvmorg-17.0.0-rc4
+_tagver=llvmorg-17.0.2
 source=("https://github.com/llvm/llvm-project/releases/download/${_tagver}/llvm-project-${pkgver}.src.tar.xz"{,.sig}
         'llvm-config.h')
-sha384sums=('758fca97f2d5e62a9d12619886fd86eb76d2d191632d28b956678fa80783585d141bcf03cee8f94b9d8279c051ba8d11'
+sha384sums=('a0386acb6ef809f5d27773be6873c40f67ae9f2daa1a0d9c30ddeb87f474d30d8e4077dc0e8d669784c0518ac8180772'
             'SKIP'
             '3065a1f344a5a5bebeb0fd9fcc95bb325ebf63b20d9871d0f49bfbfd7a5434e3d5e8bdadac5a2d8033bb7fe2ebe3d7bb')
-b2sums=('e3bf524e55db5e4305099ecdff09c0d3eab7957a5f8729eefe636e361460f405fbfd569af38aa39eea3b6c1e024feaa0400f8bc092194f2c3b54c695e7962591'
+b2sums=('fa9e2e48ce1117063f5cef0aeef85ce84b99bd8fae23022572a6f016eff2ffbf8aab6250b0bdb6e0bbea1c4daf10cecceb18e80496260b5aa81086075d503e12'
         'SKIP'
         'c7e56bfbb9983bc30977fed8d6e028d007dcce2bce03e91c38070fa4d5eb261919ab85f77a150cc31a857195586922b7bafb43070555da0194846fd1f6d1f515')
 validpgpkeys=('474E22316ABF4785A88C6E8EA2C794A986419D8A'  # Tom Stellard <tstellar@redhat.com>
