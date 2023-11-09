@@ -1,0 +1,62 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+# Contributor: Caleb Maclennan <caleb@alerque.com>
+# Contributor: José Miguel Sarasola <jmsaraur@gmail.com>
+# Contributor: Như Bảo Trương <28810481+nhubaotruong@users.noreply.github.com>
+# Contributor: Andrés Rodríguez <hello@andres.codes>
+# Contributor: Jacob Mischka <jacob@mischka.me>
+# Contributor: Manuel Mazzuola <origin.of@gmail.com>
+# Contributor: Simón Oroño <simonorono@protonmail.com>
+# Contributor: now-im <now im 627 @ gmail . com>
+# Contributor: Giusy Digital <kurmikon at libero dot it>
+
+pkgname=brave-beta-bin
+pkgver=1.61.68
+pkgrel=1
+pkgdesc='Web browser that blocks ads and trackers by default (beta binary release)'
+url='https://brave.com/download-beta'
+license=('BSD' 'MPL2' 'custom:chromium')
+arch=('x86_64')
+depends=('alsa-lib' 'dbus' 'glib2' 'gtk3' 'hicolor-icon-theme' 'libxss' 'nss' 'ttf-font')
+optdepends=('cups: printer support'
+            'kdialog: support for native dialogs in Plasma'
+            'kwallet: support for storing passwords in KWallet on Plasma'
+            'libnotify: native notification support'
+            'org.freedesktop.secrets: password storage backend on GNOME / Xfce'
+            'pepper-flash: Adobe Flash Player support'
+            'pipewire: WebRTC desktop sharing under Wayland'
+            'qt5-base: enable Qt5 with --enable-features=AllowQt --qt-version=5'
+            'qt6-base: enable Qt6 with --enable-features=AllowQt --qt-version=6')
+provides=("${pkgname%-bin}=${pkgver}" 'brave-browser-beta')
+conflicts=("${pkgname%-bin}")
+options=('!strip')
+source=("${pkgname}-${pkgver}-x86_64.zip::https://github.com/brave/brave-browser/releases/download/v${pkgver}/brave-browser-beta-${pkgver}-linux-amd64.zip"
+        "${pkgname}.sh"
+        "brave-browser-beta.desktop")
+noextract=("${pkgname}-${pkgver}-x86_64.zip")
+# https://github.com/brave/brave-browser/releases/download/v${pkgver}/brave-browser-beta-${pkgver}-linux-amd64.zip.sha256
+sha256sums=('19a0cd874ec8183e0a6f34aa34533fb8866834b1af9b142a4e14249cddaa7fdb'
+            '9129fca8e31302096e71fa81023f90dd7b6590c44a023690865b9fc3daa74bcb'
+            '589a1d06a2f0fe7df6ba3c8e808565ef33e0884ca7f66bbd953d3541a180ce96')
+
+prepare() {
+    mkdir brave
+    bsdtar -xf "${pkgname}-${pkgver}-${CARCH}.zip" -C brave
+    mv -t . brave/{LICENSE,product_logo_128_beta.png}
+    chmod +x brave/brave
+}
+
+package() {
+    install -d "${pkgdir}/opt"
+    cp -a brave "${pkgdir}/opt/${pkgname}"
+
+    # allow firejail users to get the suid sandbox working
+    chmod 4755 "${pkgdir}/opt/${pkgname}/chrome-sandbox"
+
+    install -Dm755 "${pkgname}.sh" "${pkgdir}/usr/bin/${pkgname%-bin}"
+    install -Dm644 -t "${pkgdir}/usr/share/applications" "brave-browser-beta.desktop"
+
+    install -Dm644 product_logo_128_beta.png \
+        "${pkgdir}/usr/share/icons/hicolor/128x128/apps/brave-desktop-beta.png"
+
+    install -Dm644 -t "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
+}

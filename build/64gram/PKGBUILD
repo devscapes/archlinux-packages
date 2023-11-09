@@ -5,15 +5,15 @@
 # Maintainer: Albert I <kras@raphielgang.org>
 
 # Only bump if changelog explicitly says a TDesktop version
-_tdesktop_ver=4.10.2
+_tdesktop_ver=4.11.5
 # We need to fetch our own cppgir copy here *shrugs*
 _cppgir_commit=69ef481cba38e848554cc5403b8d4141d3c51335
 _expected_lite_ver=0.6.3
 
 pkgname=64gram-desktop
-pkgver=1.0.98
+pkgver=1.1.2
 _pkgver=${pkgver/.beta}
-pkgrel=2
+pkgrel=1
 pkgdesc='Unofficial 64-bit Telegram Desktop build with some enhancements'
 arch=('x86_64')
 url="https://64gr.am"
@@ -36,11 +36,11 @@ source=("https://github.com/TDesktop-x64/tdesktop/releases/download/v${_pkgver}/
         "${pkgname}-fix-lzma-link.patch::https://aur.archlinux.org/cgit/aur.git/plain/fix-lzma-link.patch?h=64gram-desktop&id=480c0d51d97e2810610869e6c1349c1b3f26fdb5")
 noextract=("expected-lite-${_expected_lite_ver}.tar.gz"
            "cppgir-${_cppgir_commit}.tar.bz2")
-sha384sums=('fb70fa9a62f0642d12dcbdb605791d434098133ce996c55c7b7d534e900cab75b1d494b1cb359bd6588dcc7e7f3552d3'
+sha384sums=('a2c98ecf5e50acedcd487f486cfdb0fe0f7b9e602da3a43e86a2076d8560b968bf5edf77e063fa92711cb34fe670fe54'
             '6454e7b41a8319d7bef88352539ae11d6e050e4bef9379890fa53697fe83996b18d6f9681b0e079c64253f85a571d619'
             '04b272d85c9a9796c617053dc752f48f483f2441979e4d02e8f4d48a3f1b63e68f31000e9bbd972397137555a29de89d'
             'fc99bc01e59380551939787c62afdced8cf3818a82d080f61c3d91fdee7146251bb52ece03acf04d25098118272e5a8e')
-b2sums=('9bc2f1f294153f3d3a344b432bccded03d6b5857f019d466d9f5a29dd57f6f54a043633cf0a98ff3ee569a9c032f9534168bc3476755e306f98103c05948ad19'
+b2sums=('2edd512a89a72afc6215ccadcbd52b62a3cb3a5dac389d68a4c273c1c30341e980a4f9d83054ba8956c76de1aeef9a4539466776e386070eced57496b2a59933'
         '7b9eb948d674d4fb4904c6deb4f2c8c2d578d73d8401dc386a49c5f09cc75c6fd70e0c6aa72cd1e1fb9d82cf55917c8a6d60868190ba063340eda4f3191ebc56'
         'b34386e6beb76c68f4f52395fcca80583e56ef3fd4a327724bc19253e64fab3419b064d4e7371213e9e80c6ab233ad3d6290e07271c1dcdf90b5ae00d23bd481'
         '184f9e72e2092b4f7e28490adf94472729b75973daa607c1033d79ddc3416d16670acedfb5e6ea66d9299211fe1b10b7deba34e9edc79198fbccfc98d2555730')

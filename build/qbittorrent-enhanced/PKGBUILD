@@ -11,7 +11,7 @@
 
 pkgbase=qbittorrent-enhanced
 pkgname=("${pkgbase}"{,-nox,-qt5})
-pkgver=4.5.5.10
+pkgver=4.6.0.10
 pkgrel=1
 pkgdesc='An advanced BitTorrent client programmed in C++, based on Qt toolkit and libtorrent-rasterbar (Enhanced Edition)'
 arch=('x86_64')
@@ -19,7 +19,7 @@ url='https://github.com/c0re100/qBittorrent-Enhanced-Edition'
 license=('GPL3' 'custom')
 makedepends=('boost' 'cmake' 'git' 'libtorrent-rasterbar' qt{5,6}-{base,tools,svg})
 optdepends=('python: needed for torrent search tab')
-_commit=0cf9d4918bf899bc0453b11e5e7d21ec5c82e01f # refs/tags/release-4.5.5.10
+_commit=22445bd2264dfaac0713d0f308dc16062b0a4000 # refs/tags/release-4.6.0.10
 source=("${pkgbase}::git+${url}.git#commit=${_commit}?signed")
 sha256sums=('SKIP')
 # gpg --import <(curl -s https://github.com/c0re100.gpg)

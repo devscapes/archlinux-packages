@@ -2,7 +2,7 @@
 # Contributor: Paul van der Linden <mail@paultjuh.org>
 
 pkgname=scangearmp2-sane
-pkgver=4.60.0
+pkgver=4.70a
 pkgrel=1
 pkgdesc='Canon ScanGear MP v2 scanner utility and sane backend'
 arch=('x86_64')
@@ -17,8 +17,8 @@ conflicts=('scangearmp2')
 _srcname="${pkgname%-sane}"
 source=("${_srcname}-${pkgver}.tar.gz::${url}/releases/download/${pkgver}/${_srcname}-${pkgver}.tar.gz")
 noextract=("${_srcname}-${pkgver}.tar.gz") # root folder might be different than what we expect
-sha384sums=('6bb62ba0286c00179da890afddd5d893f7524f68eb0bea438bd53632375f39be28338418e971c29edcfec16a36510603')
-b2sums=('652d5fabea1eb3063904f27d4c48424fe1a680dadef4f710d1f0af1f41fbd86477a2f0d171a645bfa8913e6e7a8556ad6d10a5c0d808c0b3d480b361401b494c')
+sha384sums=('4864e7b65a6093dfc1b9fee7ee052da62172d0e7ef439d24abd866e479e272337634077d811306b603ab529e86612e45')
+b2sums=('9004de78c99ec98e2ae5f7869bc792b75fdf9324527aa54243bde1220944aff647fa81d9429d2d4d2b3402c39e2f06e6e8e150dad589fe9e72498b1ea1b0b430')
 
 prepare() {
     mkdir "${_srcname}-${pkgver}"

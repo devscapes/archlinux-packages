@@ -1,0 +1,39 @@
+pkgbase = brave-beta-bin
+	pkgdesc = Web browser that blocks ads and trackers by default (beta binary release)
+	pkgver = 1.61.68
+	pkgrel = 1
+	url = https://brave.com/download-beta
+	arch = x86_64
+	license = BSD
+	license = MPL2
+	license = custom:chromium
+	depends = alsa-lib
+	depends = dbus
+	depends = glib2
+	depends = gtk3
+	depends = hicolor-icon-theme
+	depends = libxss
+	depends = nss
+	depends = ttf-font
+	optdepends = cups: printer support
+	optdepends = kdialog: support for native dialogs in Plasma
+	optdepends = kwallet: support for storing passwords in KWallet on Plasma
+	optdepends = libnotify: native notification support
+	optdepends = org.freedesktop.secrets: password storage backend on GNOME / Xfce
+	optdepends = pepper-flash: Adobe Flash Player support
+	optdepends = pipewire: WebRTC desktop sharing under Wayland
+	optdepends = qt5-base: enable Qt5 with --enable-features=AllowQt --qt-version=5
+	optdepends = qt6-base: enable Qt6 with --enable-features=AllowQt --qt-version=6
+	provides = brave-beta=1.61.68
+	provides = brave-browser-beta
+	conflicts = brave-beta
+	noextract = brave-beta-bin-1.61.68-x86_64.zip
+	options = !strip
+	source = brave-beta-bin-1.61.68-x86_64.zip::https://github.com/brave/brave-browser/releases/download/v1.61.68/brave-browser-beta-1.61.68-linux-amd64.zip
+	source = brave-beta-bin.sh
+	source = brave-browser-beta.desktop
+	sha256sums = 19a0cd874ec8183e0a6f34aa34533fb8866834b1af9b142a4e14249cddaa7fdb
+	sha256sums = 9129fca8e31302096e71fa81023f90dd7b6590c44a023690865b9fc3daa74bcb
+	sha256sums = 589a1d06a2f0fe7df6ba3c8e808565ef33e0884ca7f66bbd953d3541a180ce96
+
+pkgname = brave-beta-bin
