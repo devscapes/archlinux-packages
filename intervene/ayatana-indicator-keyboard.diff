@@ -1,11 +1,11 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 35bf50a..89ce549 100644
+index 024d5cd..940508a 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -2,13 +2,13 @@
  
  pkgname="ayatana-indicator-keyboard"
- pkgver="23.10.0"
+ pkgver="23.10.1"
 -pkgrel="1"
 +pkgrel="2"
  pkgdesc="Ayatana Indicator Keyboard Applet"
@@ -18,4 +18,4 @@ index 35bf50a..89ce549 100644
 +depends=("libayatana-common>=0.9.9" "libxklavier" "hicolor-icon-theme" "accountsservice" "libxkbcommon" "dconf" "glib2")
  optdepends=("matekbd-keyboard-display: Needed for displaying keyboard layouts on MATE" "libgnomekbd: Needed for displaying keyboard layouts on non-MATE")
  source=("${pkgname}-${pkgver}.tar.gz::https://github.com/AyatanaIndicators/${pkgname}/archive/${pkgver}.tar.gz")
- md5sums=("bdc0a5ebfc063c8243ecd70f1abbcd95")
+ md5sums=("d739f4f6461590e34358f89faa7b7dd6")

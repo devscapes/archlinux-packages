@@ -1,13 +1,13 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index b09e7a3..f017847 100644
+index 6aec552..d122911 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -8,10 +8,11 @@ _vlcver=3.0.19
+@@ -8,10 +8,11 @@ _vlcver=3.0.20
  # optional fixup version including hyphen
  _vlcfixupver=
  pkgver=${_vlcver}${_vlcfixupver//-/.r}
--pkgrel=1
-+pkgrel=1.1
+-pkgrel=2
++pkgrel=2.1
  pkgdesc='Multi-platform MPEG, VCD/DVD, and DivX player'
  url='https://www.videolan.org/vlc/'
  arch=('x86_64')

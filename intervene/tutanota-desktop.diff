@@ -1,10 +1,10 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 9b666a4..1f3808a 100644
+index 218f088..5dd3a37 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -8,7 +8,7 @@ pkgdesc="Official Tutanota email client"
  arch=('x86_64')
- url="https://tutanota.com"
+ url="https://tuta.com"
  license=('GPL3')
 -depends=('alsa-lib' 'gtk3' 'libsecret' 'nss')
 +depends=('alsa-lib' 'dbus' 'gtk3' 'hicolor-icon-theme' 'libsecret' 'libxss' 'nss')

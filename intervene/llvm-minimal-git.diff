@@ -1,15 +1,14 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 3a58632..b7f67c4 100644
+index eee4aa0..f315f26 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -17,14 +17,18 @@
  
  pkgbase=llvm-minimal-git
- pkgname=(llvm-minimal-git llvm-libs-minimal-git clang-minimal-git clang-libs-minimal-git clang-opencl-headers-minimal-git)
--pkgver=18.0.0_r477072.116a1aeff5ea
--pkgrel=2
-+pkgver=18.0.0_r477569.0ad92c0cbb34
-+pkgrel=1
+ pkgname=(llvm-minimal-git llvm-libs-minimal-git clang-minimal-git clang-libs-minimal-git)
+-pkgver=18.0.0_r479739.cd6022916bff
++pkgver=18.0.0_r480000.a0cd6265bcd8
+ pkgrel=1
  arch=('x86_64')
  url="https://llvm.org/"
  license=('custom:Apache 2.0 with LLVM Exception')
@@ -19,8 +18,8 @@ index 3a58632..b7f67c4 100644
 -source=("git+https://github.com/llvm/llvm-project.git"
 +# Build with LLVM instead of GCC, using llvm-git (expected of same version)
 +makedepends+=('llvm-git')
-+# pin commit that passes Debian/Ubuntu expensive CI checks - Sat, 14 Oct 2023 18:38:18 +0200
-+source=("llvm-project::git+https://github.com/llvm/llvm-project.git#commit=0ad92c0cbb34a6e24a9a32f03f3ddeb2114b378e"
++# pin commit that passes Debian/Ubuntu expensive CI checks - Tue, 7 Nov 2023 15:30:56 +0800
++source=("llvm-project::git+https://github.com/llvm/llvm-project.git#commit=a0cd6265bcd851da8d4586298cd5d1e4b395a386"
                  'local://llvm-config.h'
  )
                  

@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 6d73f8c..40608bf 100644
+index d3e1a7a..30e0cfe 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -20,11 +20,13 @@ source=("$pkgname-$pkgver.tar.gz::https://github.com/wirbel-at-vdr-portal/w_scan
@@ -8,8 +8,8 @@ index 6d73f8c..40608bf 100644
          "vdr-plugin-satip-wirbel::git+https://github.com/wirbel-at-vdr-portal/vdr-plugin-satip.git#commit=$_satip_gitver"
 +        't2-indonesia.patch'
         )
- sha256sums=('d61e81895e6b87bf41a554103e9c93feb573f36a2649d24e0e9b8577e7736ead'
-             'f58208ec8bb9eb868e50b5e2031f125d4d16aad625b812327c07d4de88371804'
+ sha256sums=('5a68eb2340a478f3cbd5d064ede0eba06593c4349aa924d04b70579de4080c45'
+             '5079bc93cd09edab2dc2f077d70af42c13306c688d52365b1e7c0e1781771596'
              'SKIP'
 -            'SKIP')
 +            'SKIP'

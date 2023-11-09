@@ -1,29 +1,38 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 2f1bc61..4d9599c 100644
+index 2f1bc61..f590a88 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -1,17 +1,18 @@
+@@ -1,37 +1,38 @@
  # Maintainer: Emanuel Couto <unit73e@gmail.com>
  pkgname=cnijfilter2
- pkgver=6.60
--pkgrel=1
-+pkgrel=2
+-pkgver=6.60
++pkgver=6.70a
++_pkgver=${pkgver%[a-z]}
+ pkgrel=1
  pkgdesc="Canon IJ Printer Driver for Linux"
  arch=('i686' 'x86_64')
  url="https://www.canon.com.au/home-printers"
  license=('GPL' 'custom:canon')
 -depends=('cups' 'libxml2' 'ghostscript')
-+depends=('cups' 'libxml2' 'ghostscript' 'libusb-1.0.so')
++depends=('cups' 'libxml2' 'ghostscript' 'libusb' 'libusb-1.0.so')
  makedepends=('automake' 'autoconf')
  provides=('tocanonij' 'tocnpwg' 'cnijlgmon3')
  conflicts=('cnijfilter' 'cnijfilter-mg3600')
- source=("https://gdlp01.c-wss.com/gds/3/0100011753/01/$pkgname-source-$pkgver-1.tar.gz")
- sha256sums=('997119d67897d2b6405555bc6baa4cf7727bf0ecc6467f86df408831b1dab6d0')
-+b2sums=('0207784251e70c5850da74eb76a4de16d4dc5760e91ce17fc86ee9c61cfac27c041ea3f434ecad846ee3cc93649ac627d41eaaa55d3baf2e148ad36d8e142b87')
+-source=("https://gdlp01.c-wss.com/gds/3/0100011753/01/$pkgname-source-$pkgver-1.tar.gz")
+-sha256sums=('997119d67897d2b6405555bc6baa4cf7727bf0ecc6467f86df408831b1dab6d0')
++source=("https://gdlp01.c-wss.com/gds/7/0100012137/01/$pkgname-source-${_pkgver}-1.tar.gz")
++sha256sums=('8c4e8c047fc3ed0848ecc315b3101d30fce0c1256c88844ba248b3cf9aec9e3e')
  
  prepare() {
- 	cd "$pkgname-source-$pkgver-1"
-@@ -24,14 +25,14 @@ build() {
+-	cd "$pkgname-source-$pkgver-1"
++	cd "${pkgname}-source-${_pkgver}-1"
+ 	sed -e '/GET_PROTOCOL/ s:^int:extern &:g' -i 'lgmon3/src/cnijlgmon3.c'
+ }
+ 
+ build() {
+-	cd "$pkgname-source-$pkgver-1"
++	cd "${pkgname}-source-${_pkgver}-1"
+ 
  	pushd cmdtocanonij2
  	./autogen.sh --prefix=/usr \
  		     --datadir=/usr/share \
@@ -49,3 +58,21 @@ index 2f1bc61..4d9599c 100644
  	make #CFLAGS="${CFLAGS} -fcommon"
  	popd
  
+@@ -68,7 +69,7 @@ build() {
+ }
+ 
+ check() {
+-	cd "$pkgname-source-$pkgver-1"
++	cd "${pkgname}-source-${_pkgver}-1"
+ 
+ 	pushd cmdtocanonij2
+ 	make check
+@@ -106,7 +107,7 @@ package() {
+ 	mkdir -p "$pkgdir/usr/lib/cups/backend"
+ 	mkdir -p "$pkgdir/usr/share/cups/model"
+ 
+-	cd "$pkgname-source-$pkgver-1"
++	cd "${pkgname}-source-${_pkgver}-1"
+ 
+ 	install -m644 com/ini/cnnet.ini "$pkgdir/usr/lib/bjlib2"
+ 	install -sm755 com/libs_bin_$CARCH/*.so.* "$pkgdir/usr/lib"

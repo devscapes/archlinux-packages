@@ -1,13 +1,13 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 753527f..f715484 100644
+index 37ee7b4..e21f83d 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -2,7 +2,7 @@
  # Contributor: Wyatt J. Brown <sushidudeteam at gmail dot com>
  # shellcheck disable=SC2034,SC2148,SC2154
  pkgname=all-repository-fonts
--pkgver=20220904
-+pkgver=20230423
+-pkgver=20231101
++pkgver=20231108
  pkgrel=1
  pkgdesc='Meta package for all fonts in the official repositories.'
  arch=('any')
@@ -19,15 +19,7 @@ index 753527f..f715484 100644
  	'adobe-source-han-serif-jp-fonts'
  	'adobe-source-han-serif-kr-fonts'
  	'adobe-source-han-serif-otc-fonts'
-@@ -24,7 +25,6 @@ depends=(
- 	'adobe-source-serif-fonts'
- 	'awesome-terminal-fonts'
- 	'cantarell-fonts'
--	'dina-font'
- 	'gentium-plus-font'
- 	'gnu-free-fonts'
- 	'gsfonts'
-@@ -35,12 +35,16 @@ depends=(
+@@ -34,12 +35,16 @@ depends=(
  	'noto-fonts-emoji'
  	'noto-fonts-extra'
  	'opendesktop-fonts'
@@ -44,15 +36,7 @@ index 753527f..f715484 100644
  	'otf-ipaexfont'
  	'otf-ipafont'
  	'otf-ipamjfont'
-@@ -48,7 +52,6 @@ depends=(
- 	'otf-latinmodern-math'
- 	'otf-overpass'
- 	'powerline-fonts'
--	'tamsyn-font'
- 	'terminus-font'
- 	'tex-gyre-fonts'
- 	'ttc-iosevka'
-@@ -78,12 +81,16 @@ depends=(
+@@ -76,12 +81,16 @@ depends=(
  	'ttf-anonymous-pro'
  	'ttf-arphic-ukai'
  	'ttf-arphic-uming'
@@ -69,23 +53,25 @@ index 753527f..f715484 100644
  	'ttf-croscore'
  	'ttf-dejavu'
  	'ttf-droid'
-@@ -99,6 +106,7 @@ depends=(
+@@ -97,6 +106,7 @@ depends=(
  	'ttf-ibm-plex'
  	'ttf-inconsolata'
  	'ttf-indic-otf'
 +	'ttf-input'
- 	'ttf-ionicons'
  	'ttf-jetbrains-mono'
  	'ttf-joypixels'
-@@ -107,6 +115,7 @@ depends=(
+ 	'ttf-junicode'
+@@ -104,8 +114,8 @@ depends=(
  	'ttf-lato'
  	'ttf-liberation'
  	'ttf-monofur'
 +	'ttf-monoid'
- 	'ttf-nerd-fonts-symbols-2048-em'
+ 	'ttf-nerd-fonts-symbols'
+-	'ttf-nerd-fonts-symbols-common'
+ 	'ttf-nerd-fonts-symbols-mono'
  	'ttf-opensans'
  	'ttf-proggy-clean'
-@@ -114,6 +123,7 @@ depends=(
+@@ -113,6 +123,7 @@ depends=(
  	'ttf-roboto-mono'
  	'ttf-sarasa-gothic'
  	'ttf-sazanami'

@@ -1,69 +1,20 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 49bb1e1..9d3d621 100644
+index a35dd01..a235468 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -6,25 +6,25 @@
- # Contributor: Hexchain Tong <i at hexchain dot org>
- 
- pkgname=megasync
--pkgver=4.9.0.0
--pkgrel=1
-+pkgver=4.9.6.0
-+pkgrel=2
- pkgdesc="Easy automated syncing between your computers and your MEGA cloud drive"
- arch=('i686' 'x86_64')
- url="https://github.com/meganz/MEGAsync"
- license=('custom:MEGA LIMITED CODE REVIEW LICENCE')
- depends=('c-ares' 'crypto++' 'libsodium' 'hicolor-icon-theme' 'libuv'
-          'qt5-svg' 'qt5-x11extras' 'libmediainfo' 'libraw' 'qt5-base'
--         'ffmpeg' 'libpdfium' 'freeimage' 'libudev.so')
-+         'ffmpeg' 'libpdfium' 'freeimage' 'libudev.so' 'curl' 'icu' 'sqlite')
- makedepends=('qt5-tools' 'swig' 'doxygen' 'lsb-release' 'git')
--_extname="_Linux"
-+_extname="_Win"
- source=("git+https://github.com/meganz/MEGAsync.git#tag=v${pkgver}${_extname}"
--        "meganz-sdk::git+https://github.com/meganz/sdk.git"
-+        "meganz-sdk::git+https://github.com/meganz/sdk.git#tag=v4.25.0"
-         "pdfium.patch"
-         "ffmpeg.patch")
- sha256sums=('SKIP'
-             'SKIP'
-             'bdad237f67d772789bf6e6835108827201296fc5cf793d28d94af8a1b04e56c9'
--            'd5fcd4018a665e7a591ab796569777cf0a74fadc7c953f6879f37c949f82e7ae')
-+            'd26d78793b6b3c675551b429a5a7aea2139090b1c32786aa908c1e0dfd86ac68')
- 
- prepare() {
-     cd "MEGAsync"
-diff --git a/ffmpeg.patch b/ffmpeg.patch
-index 9a1af14..575394c 100644
---- a/ffmpeg.patch
-+++ b/ffmpeg.patch
-@@ -1,5 +1,5 @@
- diff --git a/src/gfx/freeimage.cpp b/src/gfx/freeimage.cpp
--index 2f685279a..e4b0a8c4a 100644
-+index eb66f6b67..8379b755b 100644
- --- a/src/gfx/freeimage.cpp
- +++ b/src/gfx/freeimage.cpp
- @@ -209,12 +209,6 @@ bool GfxProviderFreeImage::readbitmapFreeimage(FileSystemAccess*, const LocalPat
-@@ -15,20 +15,10 @@ index 2f685279a..e4b0a8c4a 100644
-  const char *GfxProviderFreeImage::supportedformatsFfmpeg()
-  {
-      return  ".264.265.3g2.3gp.3gpa.3gpp.3gpp2.mp3"
--@@ -313,7 +307,7 @@ bool GfxProviderFreeImage::readbitmapFfmpeg(FileSystemAccess* fa, const LocalPat
-- 
--     // Find decoder for video stream
--     AVCodecID codecId = codecParm->codec_id;
---    AVCodec* decoder = avcodec_find_decoder(codecId);
--+    const AVCodec* decoder = avcodec_find_decoder(codecId);
--     if (!decoder)
--     {
--         LOG_warn << "Codec not found: " << codecId;
--@@ -330,11 +324,6 @@ bool GfxProviderFreeImage::readbitmapFfmpeg(FileSystemAccess* fa, const LocalPat
-+@@ -330,10 +324,6 @@ bool GfxProviderFreeImage::readbitmapFfmpeg(FileSystemAccess* fa, const LocalPat
-  
-      // Force seeking to key frames
-      formatContext->seek2any = false;
---    videoStream->skip_to_keyframe = true;
- -    if (decoder->capabilities & CAP_TRUNCATED)
- -    {
- -        codecContext->flags |= CAP_TRUNCATED;
+@@ -11,13 +11,13 @@ pkgver=4.10.0.0
+ pkgrel=1
+ pkgdesc='Official MEGA desktop application for syncing with MEGA Cloud Drive'
+ arch=('x86_64')
+-url='https://github.com/meganz/MEGAsync/'
++url='https://mega.nz/desktop'
+ license=('custom')
+ depends=('c-ares' 'crypto++' 'curl' 'ffmpeg' 'freeimage' 'icu' 'libmediainfo'
+          'libpdfium' 'libsodium' 'libudev.so' 'libuv' 'libxcb' 'libzen' 'openssl'
+          'qt5-base' 'qt5-svg' 'qt5-x11extras' 'sqlite' 'zlib'  'hicolor-icon-theme')
+ makedepends=('git' 'doxygen' 'lsb-release' 'qt5-tools' 'swig')
+-source=("git+https://github.com/meganz/MEGAsync.git#tag=v${pkgver}_OSX"
++source=("git+https://github.com/meganz/MEGAsync.git#tag=v${pkgver}_Linux"
+         'meganz-sdk'::'git+https://github.com/meganz/sdk.git'
+         '010-megasync-libpdfium.patch'
+         '020-megasync-ffmpeg.patch')

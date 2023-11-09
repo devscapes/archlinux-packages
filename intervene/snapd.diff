@@ -1,13 +1,13 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 8fc1a1d..b81fe5f 100644
+index b65a7b2..863199d 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -13,7 +13,7 @@ pkgrel=1
+@@ -13,7 +13,7 @@ pkgrel=2
  arch=('x86_64' 'i686' 'armv7h' 'aarch64')
  url="https://github.com/snapcore/snapd"
  license=('GPL3')
--makedepends=('git' 'go' 'go-tools' 'libseccomp' 'libcap' 'systemd' 'xfsprogs' 'python-docutils' 'apparmor')
-+makedepends=('git' 'go' 'go-tools' 'libcap' 'systemd' 'xfsprogs' 'python-docutils')
+-makedepends=('git' 'go' 'go-tools' 'libseccomp' 'libcap' 'systemd' 'xfsprogs' 'python-docutils' 'apparmor' 'autoconf-archive')
++makedepends=('git' 'go' 'go-tools' 'libcap' 'systemd' 'xfsprogs' 'python-docutils' 'autoconf-archive')
  conflicts=('snap-confine')
  options=('!strip' 'emptydirs' '!lto')
  install=snapd.install

@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 96139bf..e5f1cdb 100644
+index d413b07..56ee2bc 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -21,11 +21,14 @@ makedepends=(git meson ninja libglvnd python-mako xorgproto libxml2 libx11  libv
@@ -19,11 +19,11 @@ index 96139bf..e5f1cdb 100644
  source=("mesa::git+https://gitlab.freedesktop.org/mesa/mesa.git"
                  'LICENSE'
  )
-@@ -123,6 +126,7 @@ package_opencl-rusticl-mesa-minimal-git() {
+@@ -124,6 +127,7 @@ package_opencl-rusticl-mesa-minimal-git() {
      pkgdesc="OpenCL support in rust for mesa drivers (git version)"
      conflicts=(opencl-clover-mesa opencl-rusticl-mesa)
      provides=(opencl-rusticl-mesa opencl-driver)
 +    replaces=('rusticl-mesa-minimal-git')
      depends=(libdrm spirv-llvm-translator-minimal-git libclc-minimal-git spirv-tools-git
                      mesa-minimal-git=$pkgver-$pkgrel llvm-libs-minimal-git clang-libs-minimal-git
-                     clang-opencl-headers-minimal-git expat libelf zstd lm_sensors zlib gcc-libs glibc
+                     expat libelf zstd lm_sensors zlib gcc-libs glibc

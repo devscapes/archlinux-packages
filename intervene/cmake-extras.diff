@@ -1,0 +1,23 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index f2498c1..57303ee 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -1,7 +1,7 @@
+ # Maintainer: Robert Tari <robert at tari dot in>
+ 
+ pkgname="cmake-extras"
+-pkgver="1.6"
++pkgver="1.7"
+ pkgrel=1
+ pkgdesc="A collection of add-ons for the CMake build tool"
+ arch=("any")
+@@ -9,7 +9,8 @@ url="https://gitlab.com/ubports/core/${pkgname}"
+ license=("LGPL3")
+ depends=("cmake" "python")
+ source=("${pkgname}-${pkgver}.tar.gz::https://gitlab.com/ubports/core/${pkgname}/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+-md5sums=("3f4a4f785cf34e6d201422e00e9e3ffa")
++sha384sums=('443f9b9fb84c91640cba0f939763ad572936225b397ad5809bf43c146ed24e5803388e4d4f4be47d0c6fd9ee24433e71')
++b2sums=('7b714a69ec791df8b3172d51109c3a856414350147370a73627e1342e2e654c84b9e9f69fd1c7b4b1a1354357509f56f8273eea5fbcc3cb676c3625e252d8c8a')
+ 
+ build()
+ {

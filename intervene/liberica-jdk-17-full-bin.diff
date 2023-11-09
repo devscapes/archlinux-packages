@@ -1,16 +1,15 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 33a19df..3a5b1b0 100644
+index 61bb498..3b7a245 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -9,14 +9,15 @@ _pkgbase=liberica-jdk-full
  _java_ver=17
  _jdkname="liberica-jdk-${_java_ver}-full"
  pkgname="${_jdkname}-bin"
--pkgver=${_java_ver}.0.8.u7
--_pkgver=${_java_ver}.0.8+7
+-pkgver=${_java_ver}.0.9.u11
+ _pkgver=${_java_ver}.0.9+11
 -pkgrel=2
 -pkgdesc='BellSoft builds of OpenJDK are fully certified and 100% open source Java Development Kits (JDKs) for all Java development and production workloads. Full version includes OpenJFX.'
-+_pkgver=${_java_ver}.0.8.1+1
 +pkgver=${_pkgver/+/.u}
 +pkgrel=1
 +pkgdesc='Free and open source Java Development Kit produced by BellSoft (full version with OpenJFX)'
@@ -23,21 +22,6 @@ index 33a19df..3a5b1b0 100644
  optdepends=(ffmpeg freetype2 gtk2 gtk3 libnet)
  provides=(
    "java-environment=${pkgver/.*}"
-@@ -63,10 +64,10 @@ sha1sums=('7d79a8c26a125f55f52493df7dca2189c8521b3c'
-           'b8233f9ff931ce97a265827fac18ed90f4e248c6'
-           'a0da2952bc87a425182c3ac88e88649fbaa7cb65'
-           'eb36aa73a9be98164447774217865b91e79d503c')
--sha1sums_aarch64=('d930246ae35c07ca2aa0ec5d22462860b447925c')
--sha1sums_armv7h=('3cf2cf209bb7d5dca73a944ce6fdce38b32179d9')
--sha1sums_armv8h=('3cf2cf209bb7d5dca73a944ce6fdce38b32179d9')
--sha1sums_x86_64=('dcaf7083faf8cef9f2ae8836aa0178e3b2ede7b5')
-+sha1sums_aarch64=('89259ec143807b214ad2dcf7eb457cad9218615f')
-+sha1sums_armv7h=('c67083f00ee18eaf022f30053e761f37a4592b47')
-+sha1sums_armv8h=("${sha1sums_armv7h[0]}")
-+sha1sums_x86_64=('4481cddcce2ff5fdb18481191cc241acbc3ead46')
- 
- source_aarch64=(https://download.bell-sw.com/java/$_pkgver/bellsoft-jdk$_pkgver-linux-aarch64-full.tar.gz)
- source_armv7h=(https://download.bell-sw.com/java/$_pkgver/bellsoft-jdk$_pkgver-linux-arm32-vfp-hflt-full.tar.gz)
 @@ -99,9 +100,9 @@ package() {
  
    # Legal

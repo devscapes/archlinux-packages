@@ -1,11 +1,11 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index ec4ea66..c3cfeee 100644
+index 8279163..045c1f6 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -3,14 +3,16 @@
  
  pkgname=waydroid
- pkgver=1.4.1
+ pkgver=1.4.2
 -pkgrel=1
 +pkgrel=2
  pkgdesc="A container-based approach to boot a full Android system on a regular Linux system"
@@ -19,7 +19,7 @@ index ec4ea66..c3cfeee 100644
 -optdepends=('python-pyclip: share clipboard with container')
 +optdepends=('apparmor: AppArmor confinement support'
 +            'python-pyclip: share clipboard with container')
- _commit="7ce2e28e8ea76c1e79b273d122921c1f394e842f" # tags/1.4.1
+ _commit="209c90d47330ddb357b5209309c80c4257f05fe3" # tags/1.4.2
  source=("waydroid::git+https://github.com/waydroid/waydroid.git#commit=$_commit")
  
 @@ -20,7 +22,7 @@ pkgver() {
