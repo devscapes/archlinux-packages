@@ -1,8 +1,7 @@
 pkgbase = nerd-fonts-git
 	pkgdesc = Iconic font aggregator, collection, and patcher (git version, super package)
-	pkgver = 3.0.2.r108.ge87b3488d
+	pkgver = 3.1.1.r4.g8423b7224
 	pkgrel = 1
-	epoch = 1
 	url = https://www.nerdfonts.com
 	install = nerd-fonts.install
 	arch = any

@@ -6,7 +6,7 @@
 # Contributor: <kastor@fobos.org.ar>
 
 pkgname=lrzip-next
-pkgver=0.12.3
+pkgver=0.12.4
 pkgrel=1
 pkgdesc='Next generation of multi-threaded compression based on rzip'
 url='https://github.com/pete4abw/lrzip-next'
@@ -17,8 +17,8 @@ provides=('lrzip')
 conflicts=('lrzip')
 options=('lto')
 source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
-sha384sums=('0c56f42217e93f798d38fa9e5f43bc29d76e6d8593dc07f2964f2d42431191ca2fe9b6c57718b1a0021e55c5d41d3291')
-b2sums=('df6de4f3d6e49738aa94822f84714434363ef59ed0ee744a07cd165d7dfdab50c2221ad37faa25f114839a92309da23438ca9da1f3f76d98182f55c825ad528c')
+sha384sums=('b9b77df0fac6bdce232835cfef133ffdec74fdc6b1dec1df579907b383ef0255fc61b3c6601137322a4a69053106bc02')
+b2sums=('8f015cf9e549ea313d055d4dbbaa8c063d2e134a70087ce87c17804aa632432f2c8f8ac7e138ccf2a9bb8108f9f36428c75296be3ee1a48da0e55fde8dd4c167')
 
 build() {
   cd "${pkgname}-${pkgver}"
