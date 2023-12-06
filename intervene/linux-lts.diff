@@ -1,195 +1,11 @@
-diff --git a/0002-HID-logitech-hidpp-Fix-kernel-crash-on-receiver-USB-.patch b/0002-HID-logitech-hidpp-Fix-kernel-crash-on-receiver-USB-.patch
-new file mode 100644
-index 0000000..0dfe051
---- /dev/null
-+++ b/0002-HID-logitech-hidpp-Fix-kernel-crash-on-receiver-USB-.patch
-@@ -0,0 +1,178 @@
-+From 74448d5f94b2f99944bf17dd9300f8ec66a69e8a Mon Sep 17 00:00:00 2001
-+From: Hans de Goede <hdegoede@redhat.com>
-+Date: Thu, 5 Oct 2023 20:26:38 +0200
-+Subject: [PATCH] HID: logitech-hidpp: Fix kernel crash on receiver USB
-+ disconnect
-+
-+hidpp_connect_event() has *four* time-of-check vs time-of-use (TOCTOU)
-+races when it races with itself.
-+
-+hidpp_connect_event() primarily runs from a workqueue but it also runs
-+on probe() and if a "device-connected" packet is received by the hw
-+when the thread running hidpp_connect_event() from probe() is waiting on
-+the hw, then a second thread running hidpp_connect_event() will be
-+started from the workqueue.
-+
-+This opens the following races (note the below code is simplified):
-+
-+1. Retrieving + printing the protocol (harmless race):
-+
-+	if (!hidpp->protocol_major) {
-+		hidpp_root_get_protocol_version()
-+		hidpp->protocol_major = response.rap.params[0];
-+	}
-+
-+We can actually see this race hit in the dmesg in the abrt output
-+attached to rhbz#2227968:
-+
-+[ 3064.624215] logitech-hidpp-device 0003:046D:4071.0049: HID++ 4.5 device connected.
-+[ 3064.658184] logitech-hidpp-device 0003:046D:4071.0049: HID++ 4.5 device connected.
-+
-+Testing with extra logging added has shown that after this the 2 threads
-+take turn grabbing the hw access mutex (send_mutex) so they ping-pong
-+through all the other TOCTOU cases managing to hit all of them:
-+
-+2. Updating the name to the HIDPP name (harmless race):
-+
-+	if (hidpp->name == hdev->name) {
-+		...
-+		hidpp->name = new_name;
-+	}
-+
-+3. Initializing the power_supply class for the battery (problematic!):
-+
-+hidpp_initialize_battery()
-+{
-+        if (hidpp->battery.ps)
-+                return 0;
-+
-+	probe_battery(); /* Blocks, threads take turns executing this */
-+
-+	hidpp->battery.desc.properties =
-+		devm_kmemdup(dev, hidpp_battery_props, cnt, GFP_KERNEL);
-+
-+	hidpp->battery.ps =
-+		devm_power_supply_register(&hidpp->hid_dev->dev,
-+					   &hidpp->battery.desc, cfg);
-+}
-+
-+4. Creating delayed input_device (potentially problematic):
-+
-+	if (hidpp->delayed_input)
-+		return;
-+
-+	hidpp->delayed_input = hidpp_allocate_input(hdev);
-+
-+The really big problem here is 3. Hitting the race leads to the following
-+sequence:
-+
-+	hidpp->battery.desc.properties =
-+		devm_kmemdup(dev, hidpp_battery_props, cnt, GFP_KERNEL);
-+
-+	hidpp->battery.ps =
-+		devm_power_supply_register(&hidpp->hid_dev->dev,
-+					   &hidpp->battery.desc, cfg);
-+
-+	...
-+
-+	hidpp->battery.desc.properties =
-+		devm_kmemdup(dev, hidpp_battery_props, cnt, GFP_KERNEL);
-+
-+	hidpp->battery.ps =
-+		devm_power_supply_register(&hidpp->hid_dev->dev,
-+					   &hidpp->battery.desc, cfg);
-+
-+So now we have registered 2 power supplies for the same battery,
-+which looks a bit weird from userspace's pov but this is not even
-+the really big problem.
-+
-+Notice how:
-+
-+1. This is all devm-maganaged
-+2. The hidpp->battery.desc struct is shared between the 2 power supplies
-+3. hidpp->battery.desc.properties points to the result from the second
-+   devm_kmemdup()
-+
-+This causes a use after free scenario on USB disconnect of the receiver:
-+1. The last registered power supply class device gets unregistered
-+2. The memory from the last devm_kmemdup() call gets freed,
-+   hidpp->battery.desc.properties now points to freed memory
-+3. The first registered power supply class device gets unregistered,
-+   this involves sending a remove uevent to userspace which invokes
-+   power_supply_uevent() to fill the uevent data
-+4. power_supply_uevent() uses hidpp->battery.desc.properties which
-+   now points to freed memory leading to backtraces like this one:
-+
-+Sep 22 20:01:35 eric kernel: BUG: unable to handle page fault for address: ffffb2140e017f08
-+...
-+Sep 22 20:01:35 eric kernel: Workqueue: usb_hub_wq hub_event
-+Sep 22 20:01:35 eric kernel: RIP: 0010:power_supply_uevent+0xee/0x1d0
-+...
-+Sep 22 20:01:35 eric kernel:  ? asm_exc_page_fault+0x26/0x30
-+Sep 22 20:01:35 eric kernel:  ? power_supply_uevent+0xee/0x1d0
-+Sep 22 20:01:35 eric kernel:  ? power_supply_uevent+0x10d/0x1d0
-+Sep 22 20:01:35 eric kernel:  dev_uevent+0x10f/0x2d0
-+Sep 22 20:01:35 eric kernel:  kobject_uevent_env+0x291/0x680
-+Sep 22 20:01:35 eric kernel:  power_supply_unregister+0x8e/0xa0
-+Sep 22 20:01:35 eric kernel:  release_nodes+0x3d/0xb0
-+Sep 22 20:01:35 eric kernel:  devres_release_group+0xfc/0x130
-+Sep 22 20:01:35 eric kernel:  hid_device_remove+0x56/0xa0
-+Sep 22 20:01:35 eric kernel:  device_release_driver_internal+0x19f/0x200
-+Sep 22 20:01:35 eric kernel:  bus_remove_device+0xc6/0x130
-+Sep 22 20:01:35 eric kernel:  device_del+0x15c/0x3f0
-+Sep 22 20:01:35 eric kernel:  ? __queue_work+0x1df/0x440
-+Sep 22 20:01:35 eric kernel:  hid_destroy_device+0x4b/0x60
-+Sep 22 20:01:35 eric kernel:  logi_dj_remove+0x9a/0x100 [hid_logitech_dj 5c91534a0ead2b65e04dd799a0437e3b99b21bc4]
-+Sep 22 20:01:35 eric kernel:  hid_device_remove+0x44/0xa0
-+Sep 22 20:01:35 eric kernel:  device_release_driver_internal+0x19f/0x200
-+Sep 22 20:01:35 eric kernel:  bus_remove_device+0xc6/0x130
-+Sep 22 20:01:35 eric kernel:  device_del+0x15c/0x3f0
-+Sep 22 20:01:35 eric kernel:  ? __queue_work+0x1df/0x440
-+Sep 22 20:01:35 eric kernel:  hid_destroy_device+0x4b/0x60
-+Sep 22 20:01:35 eric kernel:  usbhid_disconnect+0x47/0x60 [usbhid 727dcc1c0b94e6b4418727a468398ac3bca492f3]
-+Sep 22 20:01:35 eric kernel:  usb_unbind_interface+0x90/0x270
-+Sep 22 20:01:35 eric kernel:  device_release_driver_internal+0x19f/0x200
-+Sep 22 20:01:35 eric kernel:  bus_remove_device+0xc6/0x130
-+Sep 22 20:01:35 eric kernel:  device_del+0x15c/0x3f0
-+Sep 22 20:01:35 eric kernel:  ? kobject_put+0xa0/0x1d0
-+Sep 22 20:01:35 eric kernel:  usb_disable_device+0xcd/0x1e0
-+Sep 22 20:01:35 eric kernel:  usb_disconnect+0xde/0x2c0
-+Sep 22 20:01:35 eric kernel:  usb_disconnect+0xc3/0x2c0
-+Sep 22 20:01:35 eric kernel:  hub_event+0xe80/0x1c10
-+
-+There have been quite a few bug reports (see Link tags) about this crash.
-+
-+Fix all the TOCTOU issues, including the really bad power-supply related
-+system crash on USB disconnect, by making probe() use the workqueue for
-+running hidpp_connect_event() too, so that it can never run more then once.
-+
-+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2227221
-+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2227968
-+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2227968
-+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2242189
-+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217412#c58
-+Cc: stable@vger.kernel.org
-+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-+Link: https://lore.kernel.org/r/20231005182638.3776-1-hdegoede@redhat.com
-+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-+---
-+ drivers/hid/hid-logitech-hidpp.c | 3 ++-
-+ 1 file changed, 2 insertions(+), 1 deletion(-)
-+
-+diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
-+index 97eefb77f601..fb427391c3b8 100644
-+--- a/drivers/hid/hid-logitech-hidpp.c
-++++ b/drivers/hid/hid-logitech-hidpp.c
-+@@ -4275,7 +4275,8 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
-+ 			goto hid_hw_init_fail;
-+ 	}
-+ 
-+-	hidpp_connect_event(hidpp);
-++	schedule_work(&hidpp->work);
-++	flush_work(&hidpp->work);
-+ 
-+ 	if (will_restart) {
-+ 		/* Reset the HID node state */
-+-- 
-+2.42.0
-+
 diff --git a/PKGBUILD b/PKGBUILD
-index 0bbda12..e643d66 100644
+index 884a154..afc7bd7 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -2,10 +2,11 @@
  
  pkgbase=linux-lts
- pkgver=6.1.58
+ pkgver=6.1.65
 -pkgrel=1
 +pkgrel=1.1
  pkgdesc='LTS Linux'
@@ -199,16 +15,16 @@ index 0bbda12..e643d66 100644
  license=(GPL2)
  makedepends=(
    bc
-@@ -46,6 +47,13 @@ b2sums=('64d90b1be8b75385f3019d4f9e1bf807c7e2b0923d3575abe2ccef05a451b5742719ab6
+@@ -46,6 +47,13 @@ b2sums=('998fdc0128c6cee0c8e98dbe697680aa9ac733562fc97041794fef44c7d10096248a946
          '02a10396c92ab93124139fc3e37b1d4d8654227556d0d11486390da35dfc401ff5784ad86d0d2aa7eacac12bc451aa2ff138749748c7e24deadd040d5404734c'
-         '2f5bea114cf95a54e9e9fddfc43c5f467a21b284f5d71e31664c81487d6a1adbddbb16e15a56307be47ff53782d89208e4df201286c35ec421177bc189a4a001')
+         '131b7e579703cb166d2668041768f31faf8f05d1955c958d31ec06ecdf6c2a61dec0d211bbe4cadadf64e1a5baf0a4aa67bf173c5b73975349267bb18216b452')
  
-+sha256sums[3]='7739d27164309e64f8e26043f5d320976b615f9a7e20013905f93e0c6097e77f'
-+b2sums[3]='d13680d69b3764dd725d23fe29c506c3b2c43dda55bca349f2caf5b4e6a8a3fd1b3d45dba3a998c47f38a4a18fe69a9a68c1ddb286d856dbf7d925a76b670bc9'
++sha256sums[3]='e2ea8e7832ba2934462531448c1b26123476af7297ee5635dfc0d95b47f04f3f'
++b2sums[3]='d0e1bdbc87fcdf6fc570abfd47b79840713b8a8fa2c1bcc957f13ab0a51f7d60922681527534c4d838ba6df0d3cba4878e3acd35dbd5d5aa8db8580182b1ef79'
 +
-+source+=('0002-HID-logitech-hidpp-Fix-kernel-crash-on-receiver-USB-.patch')
-+sha256sums+=('ffe2b96336e1854972aabb61d7c778c3374a9eed697026526e53d7a6aaf4af06')
-+b2sums+=('b3d8b2207eb79095b76b4887b53883d72eb9a34d7c6e8206e05d55fd2cd940a93387d09acd2ebf445ec6b4d870528a97513a22688df50478c821075a2048bf15')
++source+=("0001-more-uarches-for-kernel-5.17+-20230105.patch::https://raw.githubusercontent.com/graysky2/kernel_compiler_patch/48eccba759279c53f206f7e5d7534b623d25c382/more-uarches-for-kernel-5.17+.patch")
++sha256sums+=('81ad663925a0aa5b5332a69bae7227393664bb81ee2e57a283e7f16e9ff75efe')
++b2sums+=('508ff463d936e07e0c3ac2017da12bda52d3db5d98d45fe908f35c4d9fadb253cc9d5c17b8915ec600b5024fcecc2746a04d32096e7ebf691438d4ab8bd067a8')
 +
  export KBUILD_BUILD_HOST=archlinux
  export KBUILD_BUILD_USER=$pkgbase
@@ -222,13 +38,11 @@ index 0bbda12..e643d66 100644
    echo "${pkgbase#linux}" > localversion.20-pkgname
  
    local src
-@@ -78,8 +86,7 @@ prepare() {
- 
+@@ -79,7 +87,6 @@ prepare() {
  build() {
    cd $_srcname
--  make all
+   make all
 -  make htmldocs
-+  make KCFLAGS='-march=x86-64-v3 -mtune=generic' all
  }
  
  _package() {
@@ -251,10 +65,62 @@ index 0bbda12..e643d66 100644
  for _p in "${pkgname[@]}"; do
    eval "package_$_p() {
 diff --git a/config b/config
-index 28b89a2..07f0d3f 100644
+index 5989365..b87415f 100644
 --- a/config
 +++ b/config
-@@ -909,9 +909,9 @@ CONFIG_MODULE_SIG_ALL=y
+@@ -384,10 +384,50 @@ CONFIG_JAILHOUSE_GUEST=y
+ CONFIG_ACRN_GUEST=y
+ CONFIG_INTEL_TDX_GUEST=y
+ # CONFIG_MK8 is not set
++# CONFIG_MK8SSE3 is not set
++# CONFIG_MK10 is not set
++# CONFIG_MBARCELONA is not set
++# CONFIG_MBOBCAT is not set
++# CONFIG_MJAGUAR is not set
++# CONFIG_MBULLDOZER is not set
++# CONFIG_MPILEDRIVER is not set
++# CONFIG_MSTEAMROLLER is not set
++# CONFIG_MEXCAVATOR is not set
++# CONFIG_MZEN is not set
++# CONFIG_MZEN2 is not set
++# CONFIG_MZEN3 is not set
++# CONFIG_MZEN4 is not set
+ # CONFIG_MPSC is not set
+ # CONFIG_MCORE2 is not set
+ # CONFIG_MATOM is not set
+-CONFIG_GENERIC_CPU=y
++# CONFIG_MNEHALEM is not set
++# CONFIG_MWESTMERE is not set
++# CONFIG_MSILVERMONT is not set
++# CONFIG_MGOLDMONT is not set
++# CONFIG_MGOLDMONTPLUS is not set
++# CONFIG_MSANDYBRIDGE is not set
++# CONFIG_MIVYBRIDGE is not set
++# CONFIG_MHASWELL is not set
++# CONFIG_MBROADWELL is not set
++# CONFIG_MSKYLAKE is not set
++# CONFIG_MSKYLAKEX is not set
++# CONFIG_MCANNONLAKE is not set
++# CONFIG_MICELAKE is not set
++# CONFIG_MCASCADELAKE is not set
++# CONFIG_MCOOPERLAKE is not set
++# CONFIG_MTIGERLAKE is not set
++# CONFIG_MSAPPHIRERAPIDS is not set
++# CONFIG_MROCKETLAKE is not set
++# CONFIG_MALDERLAKE is not set
++# CONFIG_MRAPTORLAKE is not set
++# CONFIG_MMETEORLAKE is not set
++# CONFIG_MEMERALDRAPIDS is not set
++# CONFIG_GENERIC_CPU is not set
++# CONFIG_GENERIC_CPU2 is not set
++CONFIG_GENERIC_CPU3=y
++# CONFIG_GENERIC_CPU4 is not set
++# CONFIG_MNATIVE_INTEL is not set
++# CONFIG_MNATIVE_AMD is not set
+ CONFIG_X86_INTERNODE_CACHE_SHIFT=6
+ CONFIG_X86_L1_CACHE_SHIFT=6
+ CONFIG_X86_TSC=y
+@@ -909,9 +949,9 @@ CONFIG_MODULE_SIG_ALL=y
  # CONFIG_MODULE_SIG_SHA1 is not set
  # CONFIG_MODULE_SIG_SHA224 is not set
  # CONFIG_MODULE_SIG_SHA256 is not set
@@ -267,7 +133,7 @@ index 28b89a2..07f0d3f 100644
  # CONFIG_MODULE_COMPRESS_NONE is not set
  # CONFIG_MODULE_COMPRESS_GZIP is not set
  # CONFIG_MODULE_COMPRESS_XZ is not set
-@@ -9810,7 +9810,10 @@ CONFIG_USB4=m
+@@ -9810,7 +9850,10 @@ CONFIG_USB4=m
  #
  # Android
  #

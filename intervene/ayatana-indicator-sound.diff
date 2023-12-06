@@ -1,15 +1,16 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 7d14821..5018f81 100644
+index 92032ee..3058a12 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -2,13 +2,13 @@
+@@ -2,13 +2,14 @@
  
  pkgname="ayatana-indicator-sound"
- pkgver="23.10.1"
+ pkgver="23.10.3"
 -pkgrel="1"
 +pkgrel="2"
  pkgdesc="Ayatana system sound indicator"
  arch=("i686" "x86_64" "pentium4")
++groups=('ayatana-indicators')
  url="https://github.com/AyatanaIndicators/ayatana-indicator-sound"
  license=("GPL3")
 -makedepends=("cmake-extras" "intltool" "vala" "systemd" "glib2" "libxml2" "gobject-introspection")
@@ -17,5 +18,5 @@ index 7d14821..5018f81 100644
 +makedepends=("cmake-extras" "intltool" "vala" "systemd" "libxml2" "gobject-introspection")
 +depends=("accountsservice" "libpulse" "libgee" "libnotify" "libayatana-common>=0.9.9" "dconf" "glib2")
  source=("${pkgname}-${pkgver}.tar.gz::https://github.com/AyatanaIndicators/${pkgname}/archive/${pkgver}.tar.gz")
- md5sums=("34a35cf7f118f17e1a91336b871a7d5e")
+ md5sums=("c5178d9eeac100083e6f225dee6a9278")
  

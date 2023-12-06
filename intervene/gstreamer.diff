@@ -1,11 +1,11 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index f4cce88..2a94748 100644
+index 9a2d0ba..9429648 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -26,10 +26,11 @@ pkgname=(
    gstreamer-docs
  )
- pkgver=1.22.6
+ pkgver=1.22.7
 -pkgrel=1
 +pkgrel=1.1
  pkgdesc="Multimedia graph framework"

@@ -1,0 +1,22 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 1385e7a..e144e85 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -2,7 +2,7 @@
+ # Maintainer: Primalmotion <primalmotion@pm.me>
+ pkgname=networkd-dispatcher
+ pkgver=2.2.4
+-pkgrel=0
++pkgrel=1
+ pkgdesc="A dispatcher daemon for systemd-networkd events"
+ arch=('any')
+ url="https://gitlab.com/craftyguy/networkd-dispatcher"
+@@ -10,8 +10,6 @@ license=('GPL3')
+ makedepends=('asciidoc')
+ depends=('python' 'python-dbus' 'python-gobject' 'dbus-glib')
+ optdepends=('wireless_tools: for interacting with wlan interfaces', 'iw: for interacting with wlan interfaces')
+-provides=("${pkgname}")
+-conflicts=("${pkgname}")
+ backup=('etc/conf.d/networkd-dispatcher.conf')
+ source=("https://gitlab.com/craftyguy/${pkgname}/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+ sha512sums=('6eb8a3d2d2c4b1c57b10e6b7539744c6747e5a0e3680937190d3a802fab55c491a3560727a7f84354be71dc8bf50a7432deaa624a0bdd6671ebc9cd655f1e564')

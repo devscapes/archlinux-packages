@@ -1,0 +1,12 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index d12021e..218f583 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -5,6 +5,7 @@ pkgver="23.10.4"
+ pkgrel="1"
+ pkgdesc="Ayatana Indicator Display"
+ arch=("i686" "x86_64" "pentium4")
++groups=('ayatana-indicators')
+ url="https://github.com/AyatanaIndicators/ayatana-indicator-display"
+ license=("GPL3")
+ depends=("xsct" "libayatana-common>=0.9.8" "geoclue" "hicolor-icon-theme" "glib2" "gcc-libs" "glibc" "dconf" "accountsservice")

@@ -1,0 +1,16 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 059294d..795ecee 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -2,9 +2,10 @@
+ 
+ pkgname="ayatana-indicator-a11y"
+ pkgver="23.10.1"
+-pkgrel="1"
++pkgrel="2"
+ pkgdesc="Ayatana Indicator for Accessibility Settings"
+ arch=("i686" "x86_64" "pentium4")
++groups=('ayatana-indicators')
+ url="https://github.com/AyatanaIndicators/ayatana-indicator-a11y"
+ license=("GPL3")
+ makedepends=("cmake" "cmake-extras" "systemd" "intltool")

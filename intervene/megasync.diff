@@ -1,8 +1,8 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index a35dd01..a235468 100644
+index d7e0779..4856247 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -11,13 +11,13 @@ pkgver=4.10.0.0
+@@ -11,13 +11,13 @@ pkgver=4.11.0.0
  pkgrel=1
  pkgdesc='Official MEGA desktop application for syncing with MEGA Cloud Drive'
  arch=('x86_64')

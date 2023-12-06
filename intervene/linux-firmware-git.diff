@@ -1,18 +1,20 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index d815972..4fc56f3 100644
+index d815972..f6fb429 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -6,7 +6,7 @@ pkgbase=linux-firmware-git
+@@ -6,16 +6,16 @@ pkgbase=linux-firmware-git
  pkgname=(linux-firmware-whence-git linux-firmware-git amd-ucode-git
           linux-firmware-{nfp,mellanox,marvell,qcom,liquidio,qlogic,bnx2x}-git
  )
 -pkgver=20230814.0e048b06
-+pkgver=20231107.2340796d
++pkgver=20231205.c004dbee
  pkgrel=1
  pkgdesc="Firmware files for Linux"
  url="https://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git;a=summary"
-@@ -15,7 +15,7 @@ arch=('any')
- makedepends=('git')
+ license=('GPL2' 'GPL3' 'custom')
+ arch=('any')
+-makedepends=('git')
++makedepends=('git' 'rdfind')
  options=(!strip)
  #branch=main
 -source=("${pkgbase}::git+https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git?signed")

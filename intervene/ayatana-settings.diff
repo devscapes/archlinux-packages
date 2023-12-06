@@ -1,15 +1,16 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 6f574ea..03ebf17 100644
+index 197b98d..9eb9d57 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -3,13 +3,13 @@
+@@ -3,13 +3,14 @@
  
  pkgname="ayatana-settings"
- pkgver="23.10.13"
+ pkgver="23.11.14"
 -pkgrel=1
 +pkgrel=2
  pkgdesc="Configuration tool for tweaking all Ayatana system indicators"
  arch=("any")
++groups=('ayatana-indicators')
  url="https://github.com/AyatanaIndicators/ayatana-settings"
  license=("GPL3")
 -depends=("gtk3" "gobject-introspection" "python-psutil")
@@ -17,9 +18,9 @@ index 6f574ea..03ebf17 100644
 +depends=("gtk3" "gobject-introspection" "hicolor-icon-theme" "python" "python-psutil")
 +makedepends=("python-build" "python-installer" "python-wheel" "python-setuptools" "python-polib")
  source=("${pkgname}-${pkgver}.tar.gz::https://github.com/AyatanaIndicators/${pkgname}/archive/${pkgver}.tar.gz")
- md5sums=("2a2433c4120e84af3e9b7fecf39062a6")
+ md5sums=("234caec1854c6ece424f1ef61f46178b")
  options=("!emptydirs")
-@@ -17,12 +17,12 @@ options=("!emptydirs")
+@@ -17,12 +18,12 @@ options=("!emptydirs")
  build()
  {
      cd ${srcdir}/${pkgname}-${pkgver}

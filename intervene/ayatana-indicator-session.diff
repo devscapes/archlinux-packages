@@ -1,0 +1,12 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index d9f8e2e..0e1f88a 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -5,6 +5,7 @@ pkgver="23.10.2"
+ pkgrel="1"
+ pkgdesc="Ayatana Indicator showing session management, status and user switching"
+ arch=("i686" "x86_64" "pentium4")
++groups=('ayatana-indicators')
+ url="https://github.com/AyatanaIndicators/ayatana-indicator-session"
+ license=("GPL2" "GPL3")
+ makedepends=("cmake-extras" "intltool")

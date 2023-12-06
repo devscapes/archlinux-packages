@@ -1,0 +1,53 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 9c6be29..16558f7 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -22,7 +22,7 @@ pkgver=${major}_${minor}
+ pkgrel=1
+ arch=('x86_64')
+ url=https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-22-40
+-license=('custom: multiple')
++license=('custom:AMDGPU-PRO EULA')
+ groups=('Radeon_Software_for_Linux')
+ 
+ source=(progl::https://raw.githubusercontent.com/Ashark/archlinux-amdgpu-pro/master/progl
+@@ -99,7 +99,6 @@ move_copyright() {
+ 
+ package_amf-amdgpu-pro () {
+     pkgdesc="AMDGPU Pro Advanced Multimedia Framework"
+-    license=('custom: AMDGPU-PRO EULA')
+     depends=("libdrm" "vulkan-amdgpu-pro=${major}_${minor}-${pkgrel}")
+     optdepends=("rocm-opencl-runtime: Warning unspecified optdep description")
+ 
+@@ -111,7 +110,6 @@ package_amf-amdgpu-pro () {
+ 
+ package_amdgpu-pro-oglp () {
+     pkgdesc="AMDGPU Pro OpenGL driver"
+-    license=('custom: AMDGPU-PRO EULA')
+     provides=('libgl')
+     depends=("libdrm" "libglvnd" "libx11")
+ 
+@@ -140,7 +138,6 @@ package_amdgpu-pro-oglp () {
+ 
+ package_lib32-amdgpu-pro-oglp () {
+     pkgdesc="AMDGPU Pro OpenGL driver (32-bit)"
+-    license=('custom: AMDGPU-PRO EULA')
+     provides=('lib32-libgl')
+     depends=("lib32-libx11")
+ 
+@@ -163,7 +160,6 @@ package_lib32-amdgpu-pro-oglp () {
+ 
+ package_vulkan-amdgpu-pro () {
+     pkgdesc="AMDGPU Pro Vulkan driver"
+-    license=('custom: AMDGPU-PRO EULA')
+     provides=('vulkan-driver')
+     depends=("vulkan-icd-loader" "wayland" "zlib")
+     optdepends=("openssl-1.1: Warning unspecified optdep description")
+@@ -182,7 +178,6 @@ package_vulkan-amdgpu-pro () {
+ 
+ package_lib32-vulkan-amdgpu-pro () {
+     pkgdesc="AMDGPU Pro Vulkan driver (32-bit)"
+-    license=('custom: AMDGPU-PRO EULA')
+     provides=('lib32-vulkan-driver')
+     depends=("lib32-vulkan-icd-loader" "lib32-wayland" "lib32-zlib")
+     optdepends=("lib32-openssl-1.1: Warning unspecified optdep description")

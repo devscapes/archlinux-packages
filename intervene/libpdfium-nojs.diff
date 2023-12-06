@@ -1,8 +1,15 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 5f16bcf..87d7b90 100644
+index e70e0a0..7e54bb5 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -7,14 +7,15 @@ pkgdesc="Open-source PDF rendering engine."
+@@ -1,20 +1,21 @@
+ # Maintainer: Felix Kauselmann <licorn@gmail.com>
+ 
+ pkgname=libpdfium-nojs
+-pkgver=5993.r1.6e55da0c45
++pkgver=6099.r0.ga3895af47f
+ pkgrel=1
+ pkgdesc="Open-source PDF rendering engine."
  arch=('x86_64')
  url="https://pdfium.googlesource.com/pdfium/"
  license=('BSD')
@@ -23,6 +30,15 @@ index 5f16bcf..87d7b90 100644
      "libpdfium.pc"
      )
  
+@@ -29,7 +30,7 @@ pkgver() {
+   
+   # Version = branch name/number + number of commits since branch creation
+   # + short head
+-  printf  "%s.r%s.%s" $(git rev-parse --abbrev-ref HEAD | cut -d '/' -f2)\
++  printf  "%s.r%s.g%s" $(git rev-parse --abbrev-ref HEAD | cut -d '/' -f2)\
+    $(git rev-list --count main..) $(git rev-parse --short HEAD)
+ 
+ }
 @@ -38,8 +39,8 @@ prepare() {
  
    cd "$srcdir/pdfium"
@@ -34,7 +50,7 @@ index 5f16bcf..87d7b90 100644
  
    # Pdfium is developed alongside Chromium and does not provide releases
    # Upstream recommends using Chromium's dev channels instead
-@@ -65,7 +66,7 @@ prepare() {
+@@ -67,7 +68,7 @@ prepare() {
  
    # Use system provided icu library (unbundling)
    mkdir -p "$srcdir/pdfium/third_party/icu"
@@ -43,7 +59,7 @@ index 5f16bcf..87d7b90 100644
  
    # Download and decode shim header script needed to unbundle icu (gittiles is weird)
    mkdir -p "$srcdir/pdfium/tools/generate_shim_headers/"
-@@ -75,7 +76,7 @@ prepare() {
+@@ -77,7 +78,7 @@ prepare() {
    echo "Done."
    
    # Create fake gclient_args.gni file to satisfy include list for build/config/compiler/compiler.gni
