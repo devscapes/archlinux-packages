@@ -1,14 +1,15 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 2b215b1..13ddf79 100644
+index 2b215b1..b431d9d 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -4,14 +4,16 @@ _srcname=SPIRV-LLVM-Translator
+@@ -3,15 +3,16 @@
+ _srcname=SPIRV-LLVM-Translator
  pkgname=spirv-llvm-translator-minimal-git
  pkgdesc="Tool and a library for bi-directional translation between SPIR-V and LLVM IR, trunk version"
- epoch=1
+-epoch=1
 -pkgver=r1817.066514b
 -pkgrel=2
-+pkgver=18.0.0_r1893.88eff5835fbc
++pkgver=18.0.0.r1921.gaeeaf6c3
 +pkgrel=1
  arch=('x86_64')
  url="https://github.com/KhronosGroup/SPIRV-LLVM-Translator"
@@ -24,25 +25,29 @@ index 2b215b1..13ddf79 100644
  provides=(spirv-llvm-translator)
  conflicts=(spirv-llvm-translator)
  source=("git+$url.git"
-@@ -21,9 +23,16 @@ md5sums=('SKIP')
+@@ -21,9 +22,20 @@ md5sums=('SKIP')
  sha512sums=('SKIP')
  
  
-+#prepare() {
-+#    sed 's/[0-9][0-9].0.0/18.0.0/' -i "${_srcname}/CMakeLists.txt"
-+#}
++prepare() {
++    cd $_srcname
++    # Declaration was changed with SPIRV-Headers@d5acd42cb7cdaa5d0f2c5f739208eeeed395f491
++    grep -R LongConstantCompositeINTEL . | cut -d: -f1 | uniq | while read -r file; do
++        sed 's/LongConstantCompositeINTEL/LongCompositesINTEL/g' -i "$file"
++    done
++}
 +
  pkgver() {
      cd $_srcname
 -    printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
-+    printf "%s_r%s.%s" \
-+        "$(grep \(BASE_LLVM_VERSION CMakeLists.txt | awk '{print $3}' | sed 's/[)]//')" \
++    printf "%s.r%s.g%s" \
++        "$(grep -o 'BASE_LLVM_VERSION [^ \)]*' CMakeLists.txt | cut -d' ' -f2)" \
 +        "$(git rev-list --count HEAD)" \
-+        "$(git rev-parse --short=12 HEAD)"
++        "$(git rev-parse --short HEAD)"
  }
  
  build() {
-@@ -32,13 +41,19 @@ build() {
+@@ -32,13 +44,19 @@ build() {
          -B _build \
          -S "$srcdir"/$_srcname  \
          -G "Unix Makefiles" \
@@ -62,7 +67,7 @@ index 2b215b1..13ddf79 100644
          -D BUILD_SHARED_LIBS=ON \
          -Wno-dev
  
-@@ -50,6 +65,8 @@ check() {
+@@ -50,6 +68,8 @@ check() {
  }
  
  package() {

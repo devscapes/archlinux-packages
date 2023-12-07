@@ -1,8 +1,16 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 787dc94..edad2ca 100644
+index 0b9b86f..7b7b6fd 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -9,7 +9,7 @@ pkgdesc='API and commands for processing SPIR-V modules'
+@@ -2,14 +2,13 @@
+ # Contributor: Eric Engestrom <aur [at] engestrom [dot] ch>
+ 
+ pkgname=spirv-tools-git
+-epoch=3
+-pkgver="2023.5".3845.2a238ed24
++pkgver=2023.5.rc1.r36.g6b4f0c9d0
+ pkgrel=1
+ pkgdesc='API and commands for processing SPIR-V modules'
  url='https://github.com/KhronosGroup/SPIRV-Tools'
  arch=('i686' 'x86_64')
  license=('custom')
@@ -11,12 +19,26 @@ index 787dc94..edad2ca 100644
  source=('git+https://github.com/KhronosGroup/SPIRV-Tools'
                'git+https://github.com/google/googletest.git'
                'git+https://github.com/google/effcee.git'
-@@ -64,7 +64,7 @@ pkgver() {
-   _rev=$(git rev-list --count HEAD)
-   _hash=$(git rev-parse --short=7 HEAD)
- 
--  printf "$_ver1"".r""$_rev"".""$_hash"
-+  printf '%s.r%s.%s' "${_ver1}" "${_rev}" "${_hash}"
+@@ -52,6 +51,9 @@ prepare() {
+   
+ #  patch --directory="SPIRV-Tools" --forward --strip=1 --input="${srcdir}"/212dd9247ad60d5dcd262e43c24ec92de1a8ef1d.patch
+ #  patch --directory="SPIRV-Tools" --forward --strip=1 --input="${srcdir}"/5cf47a9f90e192a1c799a04d7416b6dcd7dd59a8.patch
++
++  # Declaration was changed with SPIRV-Headers@d5acd42cb7cdaa5d0f2c5f739208eeeed395f491
++  sed 's/LongConstantCompositeINTEL/LongCompositesINTEL/' -i SPIRV-Tools/test/enum_set_test.cpp
+   
+   cmake   -S SPIRV-Tools -B _build "${cmake_args[@]}" -Wno-dev
+   make -C _build spirv-tools-build-version
+@@ -60,10 +62,10 @@ prepare() {
+ pkgver() {
+   local _ver1 _ver2
+   # read fails if only 1 var is used
+-  IFS="," read -r _ver1 _ver2 < _build/build-version.inc || [ -n "_ver1" ]
++  IFS=", " read -r _ver1 _ver2 < _build/build-version.inc || [ -n "_ver1" ]
+   
+   cd SPIRV-Tools  
+-  echo ${_ver1//v/}.$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
++  echo "${_ver2}" | cut -d' ' -f3 | sed 's/v//;s/\([^-]*-g\)/r\1/;s/-/./g;s/"//'
  }
  
  

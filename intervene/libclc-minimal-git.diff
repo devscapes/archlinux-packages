@@ -1,8 +1,16 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 5010468..caf5c0f 100644
+index 5010468..618112d 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -9,9 +9,11 @@ pkgdesc="companion package to llvm-minimal-git,  Library requirements of the Ope
+@@ -3,30 +3,24 @@
+ # Contributor: Solomon Choina <shlomochoina@gmail.com>
+ 
+ pkgname=libclc-minimal-git
+-pkgver=17.0.0_r462218.51572c2cd720
+-pkgrel=2
++pkgver=18.0.0.r483086.gf17e76697289
++pkgrel=1
+ pkgdesc="companion package to llvm-minimal-git,  Library requirements of the OpenCL C programming language"
  arch=('any')
  url="https://libclc.llvm.org/"
  license=('custom:Apache 2.0 with LLVM Exception')
@@ -15,7 +23,32 @@ index 5010468..caf5c0f 100644
  source=("git+https://github.com/llvm/llvm-project.git"
  )
  sha256sums=('SKIP')
-@@ -49,8 +51,14 @@ build() {
+ 
+ prepare() {
+   cd llvm-project
+-  local _commit_hash=$(echo $(pacman -Q llvm-minimal-git) | cut -d' ' -f2 |  cut -d'-' -f1 | cut -d'.' -f4)
+-  # makepkg installs deps after processing the body of the PKGBUI:LD. 
+-  # This prevents using _commit_hash in the source= array unless llvm-minimal-git is installed before build starts.
+-  # best alternative seems to be to use git reset in prepare() .
+-  # example how the command works
+-  # pacman -Q llvm-minimal-git output =   llvm-minimal-git 17.0.0_r461863.8064caf83fb1-1
+-  # the first cut removes (pkgname) llvm-minimal-git
+-  # the 2nd cut removes (pkgrel) 1
+-  # the 3rd removes (revision count) r461863 so only (the commit hash) 8064caf83fb1 remains
++  local _commit_hash=$(echo $(pacman -Q llvm-minimal-git) | grep -w ^Version | grep -o 'g[^ -]*' | sed 's/g//')
+ 
+   git reset --hard $_commit_hash
+ }
+@@ -41,7 +35,7 @@ pkgver() {
+             'BEGIN { ORS="." ; i=0 } \
+              /set\(LLVM_VERSION_/ { print $2 ; i++ ; if (i==2) ORS="" } \
+              END { print "\n" }' \
+-             CMakeLists.txt)_r$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
++             CMakeLists.txt).r$(git rev-list --count HEAD).g$(git rev-parse --short HEAD)
+     echo "${_pkgver}"
+ }
+ 
+@@ -49,8 +43,14 @@ build() {
      cmake \
        -B _build \
        -S "$srcdir"/llvm-project/libclc  \
