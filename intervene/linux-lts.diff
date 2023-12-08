@@ -1,11 +1,11 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 884a154..afc7bd7 100644
+index a0bbb9e..887e04c 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -2,10 +2,11 @@
  
  pkgbase=linux-lts
- pkgver=6.1.65
+ pkgver=6.1.66
 -pkgrel=1
 +pkgrel=1.1
  pkgdesc='LTS Linux'
@@ -15,12 +15,12 @@ index 884a154..afc7bd7 100644
  license=(GPL2)
  makedepends=(
    bc
-@@ -46,6 +47,13 @@ b2sums=('998fdc0128c6cee0c8e98dbe697680aa9ac733562fc97041794fef44c7d10096248a946
+@@ -46,6 +47,13 @@ b2sums=('012cbd2ce29a2cc37db2b83380acf5e1b99343e07fa712c8243b5680fe043134d90f3c2
          '02a10396c92ab93124139fc3e37b1d4d8654227556d0d11486390da35dfc401ff5784ad86d0d2aa7eacac12bc451aa2ff138749748c7e24deadd040d5404734c'
-         '131b7e579703cb166d2668041768f31faf8f05d1955c958d31ec06ecdf6c2a61dec0d211bbe4cadadf64e1a5baf0a4aa67bf173c5b73975349267bb18216b452')
+         '2d94948b162ebcfe87eeec873712fadcda1427a41879a9ac4e426d0faa59431a840a39ab2636d2c7bfb014a335fe7eceafbb46f8da336b872be8ea0a2e373888')
  
-+sha256sums[3]='e2ea8e7832ba2934462531448c1b26123476af7297ee5635dfc0d95b47f04f3f'
-+b2sums[3]='d0e1bdbc87fcdf6fc570abfd47b79840713b8a8fa2c1bcc957f13ab0a51f7d60922681527534c4d838ba6df0d3cba4878e3acd35dbd5d5aa8db8580182b1ef79'
++sha256sums[3]='a41e1e391de9d1c414b5a8e117c97c399acc4c56e5e14758f485bc1841ccef85'
++b2sums[3]='83e6ebe733148e0a717f815afcfa28dff46019edbc6367698294b63074a62fd3bd9009ce02f7c7dfad372f8bbfaba103109e365979bd5176ecfb9722620ce2b1'
 +
 +source+=("0001-more-uarches-for-kernel-5.17+-20230105.patch::https://raw.githubusercontent.com/graysky2/kernel_compiler_patch/48eccba759279c53f206f7e5d7534b623d25c382/more-uarches-for-kernel-5.17+.patch")
 +sha256sums+=('81ad663925a0aa5b5332a69bae7227393664bb81ee2e57a283e7f16e9ff75efe')
@@ -65,7 +65,7 @@ index 884a154..afc7bd7 100644
  for _p in "${pkgname[@]}"; do
    eval "package_$_p() {
 diff --git a/config b/config
-index 5989365..b87415f 100644
+index e41b9c4..97e607b 100644
 --- a/config
 +++ b/config
 @@ -384,10 +384,50 @@ CONFIG_JAILHOUSE_GUEST=y
