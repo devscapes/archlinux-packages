@@ -1,0 +1,83 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 01554a8..eff5ddf 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -7,7 +7,7 @@ pkgname=(
+   'avidemux-qt6-git'
+   'avidemux-cli-git'
+ )
+-pkgver=2.8.2.230910.dd023f161
++pkgver=2.8.2.r9997.g0ca1b22bb
+ pkgrel=1
+ pkgdesc="A graphical/cli tool to edit video (filter/re-encode/split). (GIT version)"
+ arch=('x86_64')
+@@ -20,8 +20,6 @@ makedepends=(
+   'nasm'
+   'aom'
+   'a52dec'
+-  'aften'
+-  'dcaenc'
+   'faac'
+   'faad2'
+   'fribidi'
+@@ -41,7 +39,9 @@ makedepends=(
+   'twolame'
+   'xvidcore'
+   'x264'
++  'libx264.so'
+   'x265'
++  'libx265.so'
+   'sqlite'
+   'glu'
+   'qt5-script'
+@@ -61,7 +61,6 @@ source=(
+   'opus_check.patch'
+   'fix_mpeg-ts_typo.patch'
+   'fix_ugly_slider.patch'
+-  'https://github.com/FFmpeg/FFmpeg/commit/effadce6c756247ea8bae32dc13bb3e6f464f0eb.patch'
+ )
+ sha256sums=(
+   'SKIP'
+@@ -71,15 +70,12 @@ sha256sums=(
+   'ae6d2c93163b7b760591688c7811dfdd4a952ed9074d8cbdf4953b701f0fa7db'
+   'a11452a93c993bdf71f0c29d686badec1c50231bc9d3c6f02f280e06cd8add7a'
+   '3c91ddefadfad5f43d514941ddfa1942ea2c618525aaae36bde5a5d18f8e2067'
+-  '206f4d8437b21f6197ffc444c86d0504892a5c2137cb227b4af1c1e8bf2c426c'
+ )
+ 
+-options=('debug')
+-
+ pkgver() {
+   cd avidemux
+   _ver="$(cat cmake/avidemuxVersion.cmake | grep -m3 -e CPACK_PACKAGE_VERSION_MAJOR -e CPACK_PACKAGE_VERSION_MINOR -e CPACK_PACKAGE_VERSION_P | grep -o "[[:digit:]]*" | paste -sd'.')"
+-  echo -e "${_ver}.$(date -u +%g%m%d).$(git rev-parse --short HEAD | head -c 11)"
++  printf '%s.r%s.g%s' "${_ver}" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+ }
+ 
+ prepare() {
+@@ -89,9 +85,6 @@ prepare() {
+   git -c protocol.file.allow=always submodule update --init \
+     avidemux/qt4/i18n
+ 
+-  # fix build ffmpeg about ASM encode
+-  cp "${srcdir}/effadce6c756247ea8bae32dc13bb3e6f464f0eb.patch" avidemux_core/ffmpeg_package/patches/upstream/effadce6c756247ea8bae32dc13bb3e6f464f0eb.patch
+-
+   # http://avidemux.org/smif/index.php/topic,16301.0.html
+   patch -p1 -i "${srcdir}/fix_verbose.patch"
+ 
+@@ -233,14 +226,12 @@ package_avidemux-core-git() {
+     'a52dec' # 'liba52.so'
+     'alsa-lib' 'libasound.so'
+     'aom' 'libaom.so'
+-    'aften' # 'libaften.so'
+-    'dcaenc' # 'libdcaenc.so'
+     'faac' 'libfaac.so'
+     'faad2' 'libfaad.so'
+     'gcc-libs' # 'libgcc_s.so' 'libstdc++.so'
+     'glibc' # 'libc.so' 'libm.so'
+     'fribidi'
+-    'jack2' 'libjack.so'
++    'jack' 'libjack.so'
+     'lame' 'libmp3lame.so'
+     'libass' 'libass.so'
+     'libfdk-aac' 'libfdk-aac.so'
