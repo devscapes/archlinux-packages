@@ -1,11 +1,11 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index c98e240..89d520a 100644
+index f998be4..c8190db 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -2,10 +2,11 @@
  
  pkgbase=linux
- pkgver=6.6.5.arch1
+ pkgver=6.6.7.arch1
 -pkgrel=1
 +pkgrel=1.1
  pkgdesc='Linux'
@@ -15,21 +15,23 @@ index c98e240..89d520a 100644
  license=(GPL2)
  makedepends=(
    bc
-@@ -49,6 +50,13 @@ b2sums=('9d66d720f2f037cfd480835ab38807fe5aabcff09bd210c5cb0dc80bd3e1182434df9f0
+@@ -49,6 +50,15 @@ b2sums=('000c45693d074c79816ea61c8e46b58281eed5532903df92c466d3f062ec6a302e59c27
          'SKIP'
          'eee80b262d447770f89bb16e4c84a5faedd8e2a46d57a5b6ad6371f5a9a8e11194f82c9160d78486fc1a889ad9dea6f0b2d90b8a21235aefc30bf7fe3ef355f6')
  
-+sha256sums[4]='7407827d0814090477cef661fa5bdabac19b792abdcb3c18e45b96ecf4378c40'
-+b2sums[4]='1754f19313e14023f69953067dd848f4c94957c3f105be12461fbc875432abd232daf0f78f4e0138b404626ba2910bd42ae9162f3c8b69e706e8e8d94a63c717'
++# Update .config checksum separately
++sha256sums[4]='8d24f258da4c72c7f72b4906ad301b8d9959169bc83d11e537ee6a67ff60ee18'
++b2sums[4]='5913ebbe88d96ed98ac1a57aae25a5ccc95c2e6990b07ebe8590ced63288bd681a3ef4f8c2eb8a396a16081fdf5623e062c00d6b6e279307de42d0856c7bed96'
 +
-+source+=("0001-more-uarches-for-kernel-5.17+-20230105.patch::https://raw.githubusercontent.com/graysky2/kernel_compiler_patch/48eccba759279c53f206f7e5d7534b623d25c382/more-uarches-for-kernel-5.17+.patch")
++# Additional patches
++source+=("0100-more-uarches-for-kernel-5.17+-20230105.patch::https://raw.githubusercontent.com/graysky2/kernel_compiler_patch/48eccba759279c53f206f7e5d7534b623d25c382/more-uarches-for-kernel-5.17+.patch")
 +sha256sums+=('81ad663925a0aa5b5332a69bae7227393664bb81ee2e57a283e7f16e9ff75efe')
 +b2sums+=('508ff463d936e07e0c3ac2017da12bda52d3db5d98d45fe908f35c4d9fadb253cc9d5c17b8915ec600b5024fcecc2746a04d32096e7ebf691438d4ab8bd067a8')
 +
  export KBUILD_BUILD_HOST=archlinux
  export KBUILD_BUILD_USER=$pkgbase
  export KBUILD_BUILD_TIMESTAMP="$(date -Ru${SOURCE_DATE_EPOCH:+d @$SOURCE_DATE_EPOCH})"
-@@ -57,7 +65,7 @@ prepare() {
+@@ -57,7 +67,7 @@ prepare() {
    cd $_srcname
  
    echo "Setting version..."
@@ -38,7 +40,7 @@ index c98e240..89d520a 100644
    echo "${pkgbase#linux}" > localversion.20-pkgname
  
    local src
-@@ -82,7 +90,6 @@ prepare() {
+@@ -82,7 +92,6 @@ prepare() {
  build() {
    cd $_srcname
    make all
@@ -46,7 +48,7 @@ index c98e240..89d520a 100644
  }
  
  _package() {
-@@ -164,6 +171,9 @@ _package-headers() {
+@@ -164,6 +173,9 @@ _package-headers() {
    # https://bugs.archlinux.org/task/71392
    install -Dt "$builddir/drivers/iio/common/hid-sensors" -m644 drivers/iio/common/hid-sensors/*.h
  
@@ -56,7 +58,7 @@ index c98e240..89d520a 100644
    echo "Installing KConfig files..."
    find . -name 'Kconfig*' -exec install -Dm644 {} "$builddir/{}" \;
  
-@@ -229,7 +239,6 @@ _package-docs() {
+@@ -229,7 +241,6 @@ _package-docs() {
  pkgname=(
    "$pkgbase"
    "$pkgbase-headers"
@@ -65,14 +67,14 @@ index c98e240..89d520a 100644
  for _p in "${pkgname[@]}"; do
    eval "package_$_p() {
 diff --git a/config b/config
-index 1187088..9cb1bb0 100644
+index 1187088..6aa41c4 100644
 --- a/config
 +++ b/config
 @@ -1,6 +1,6 @@
  #
  # Automatically generated file; DO NOT EDIT.
 -# Linux/x86 6.6.2-arch1 Kernel Configuration
-+# Linux/x86 6.6.5-arch1 Kernel Configuration
++# Linux/x86 6.6.7-arch1 Kernel Configuration
  #
  CONFIG_CC_VERSION_TEXT="gcc (GCC) 13.2.1 20230801"
  CONFIG_CC_IS_GCC=y
