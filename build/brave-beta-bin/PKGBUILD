@@ -10,38 +10,54 @@
 # Contributor: Giusy Digital <kurmikon at libero dot it>
 
 pkgname=brave-beta-bin
-pkgver=1.62.98
+pkgver=1.62.121
 pkgrel=1
 pkgdesc='Web browser that blocks ads and trackers by default (beta binary release)'
 url='https://brave.com/download-beta'
-license=('BSD' 'MPL2' 'custom:chromium')
+license=('MPL-2.0')
 arch=('x86_64')
-depends=('alsa-lib' 'dbus' 'glib2' 'gtk3' 'hicolor-icon-theme' 'libxss' 'nss' 'ttf-font')
-optdepends=('cups: printer support'
-            'kdialog: support for native dialogs in Plasma'
-            'kwallet: support for storing passwords in KWallet on Plasma'
-            'libnotify: native notification support'
-            'org.freedesktop.secrets: password storage backend on GNOME / Xfce'
-            'pepper-flash: Adobe Flash Player support'
-            'pipewire: WebRTC desktop sharing under Wayland'
-            'qt5-base: enable Qt5 with --enable-features=AllowQt --qt-version=5'
-            'qt6-base: enable Qt6 with --enable-features=AllowQt --qt-version=6')
+depends=(
+    'alsa-lib'
+    'bash'
+    'dbus' 'libdbus-1.so'
+    'expat' 'libexpat.so'
+    'gcc-libs'
+    'glib2' 'libgio-2.0.so' 'libglib-2.0.so' 'libgobject-2.0.so'
+    'glibc'
+    'gtk3'
+    'hicolor-icon-theme'
+    'libxss'
+    'nss'
+    'ttf-font'
+)
+optdepends=(
+    'cups: printer support'
+    'kdialog: support for native dialogs in Plasma'
+    'kwallet: support for storing passwords in KWallet on Plasma'
+    'libnotify: native notification support'
+    'org.freedesktop.secrets: password storage backend on GNOME / Xfce'
+    'pepper-flash: Adobe Flash Player support'
+    'pipewire: WebRTC desktop sharing under Wayland'
+    'qt5-base: enable Qt5 with --enable-features=AllowQt --qt-version=5'
+    'qt6-base: enable Qt6 with --enable-features=AllowQt --qt-version=6'
+)
 provides=("${pkgname%-bin}=${pkgver}" 'brave-browser-beta')
 conflicts=("${pkgname%-bin}")
 options=('!strip')
 source=("${pkgname}-${pkgver}-x86_64.zip::https://github.com/brave/brave-browser/releases/download/v${pkgver}/brave-browser-beta-${pkgver}-linux-amd64.zip"
         "${pkgname}.sh"
-        "brave-browser-beta.desktop")
+        'brave-browser-beta.desktop')
 noextract=("${pkgname}-${pkgver}-x86_64.zip")
 # https://github.com/brave/brave-browser/releases/download/v${pkgver}/brave-browser-beta-${pkgver}-linux-amd64.zip.sha256
-sha256sums=('a0419f349630cb234bdce363427610394d37467779d579b0ff6478052895683b'
+sha256sums=('5b7bfd968438f583cb9d47744582cc88f3ecbc05ea42343794c3f2bc88d0199c'
             '9129fca8e31302096e71fa81023f90dd7b6590c44a023690865b9fc3daa74bcb'
             '589a1d06a2f0fe7df6ba3c8e808565ef33e0884ca7f66bbd953d3541a180ce96')
 
 prepare() {
     mkdir brave
     bsdtar -xf "${pkgname}-${pkgver}-${CARCH}.zip" -C brave
-    mv -t . brave/{LICENSE,product_logo_128_beta.png}
+    mv brave/product_logo_128_beta.png .
+    rm brave/LICENSE # we don't need another license copy
     chmod +x brave/brave
 }
 
@@ -57,6 +73,4 @@ package() {
 
     install -Dm644 product_logo_128_beta.png \
         "${pkgdir}/usr/share/icons/hicolor/128x128/apps/brave-desktop-beta.png"
-
-    install -Dm644 -t "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }

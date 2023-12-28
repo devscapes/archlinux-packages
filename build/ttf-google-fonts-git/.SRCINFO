@@ -1,14 +1,12 @@
 pkgbase = ttf-google-fonts-git
 	pkgdesc = TrueType fonts from the Google Fonts project (git version)
-	pkgver = r6702.gade3d5331
+	pkgver = r6737.gb81989291
 	pkgrel = 1
-	url = https://github.com/google/fonts
+	url = https://fonts.google.com
 	arch = any
-	license = Apache
-	license = custom:OFL
-	license = custom:Ubuntu Font Licence 1.0
-	makedepends = git
+	license = Apache-2.0 AND OFL-1.0-RFN AND OFL-1.1 AND OFL-1.1-RFN AND OFL-1.1-no-RFN AND LicenseRef-UFL-1.0
 	makedepends = fontconfig
+	makedepends = git
 	depends = adobe-source-code-pro-fonts
 	depends = adobe-source-sans-fonts
 	depends = adobe-source-serif-fonts
@@ -85,6 +83,6 @@ pkgbase = ttf-google-fonts-git
 	conflicts = ttf-work-sans-variable
 	conflicts = ttf-zilla-slab
 	source = git+https://github.com/google/fonts.git
-	sha512sums = SKIP
+	sha256sums = SKIP
 
 pkgname = ttf-google-fonts-git

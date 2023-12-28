@@ -1,0 +1,40 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+# Contributor: Arthorius <Arthcomicando@gmail.com>
+
+pkgname=magnus
+pkgver=1.0.3.r8.g7947fb6
+pkgrel=1
+pkgdesc='A very simple screen magnifier'
+url='https://github.com/stuartlangridge/magnus'
+arch=('any')
+license=('MIT')
+depends=(
+    'gdk-pixbuf2'
+    'glib2'
+    'gtk3'
+    'libkeybinder3'
+    'python'
+    'python-gobject'
+    'python-setproctitle'
+)
+makedepends=(
+    'git'
+    'python-distutils-extra'
+    'python-setuptools'
+)
+_commit=7947fb64e4611fb81c6246e908ff57125eb520ec
+source=("git+https://github.com/stuartlangridge/magnus.git#commit=${_commit}")
+sha256sums=('SKIP')
+
+pkgver() {
+    git -C "${pkgname}" describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
+}
+
+package() {
+    cd magnus
+
+    python setup.py install --no-compile --root="${pkgdir}"
+    find "${pkgdir}" -name setup.py -delete # shouldn't be here
+
+    install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}

@@ -1,0 +1,10 @@
+pkgbase = xorg-server-dummy
+	pkgdesc = Dummy package to satisfy xorg-server dependency on full Wayland system
+	pkgver = 1
+	pkgrel = 1
+	arch = any
+	provides = xorg-server
+	provides = x-server
+	conflicts = xorg-server
+
+pkgname = xorg-server-dummy

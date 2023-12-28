@@ -1,0 +1,9 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+
+pkgname=xorg-server-dummy
+pkgver=1
+pkgrel=1
+pkgdesc='Dummy package to satisfy xorg-server dependency on full Wayland system'
+arch=('any')
+provides=('xorg-server' 'x-server')
+conflicts=('xorg-server')

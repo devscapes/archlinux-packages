@@ -4,69 +4,168 @@
 
 _pkgname=nerd-fonts
 pkgname=${_pkgname}-git
-pkgver=3.1.1.r4.g8423b7224
+pkgver=3.1.1.r9.g1a3b10023
 pkgrel=1
 pkgdesc="Iconic font aggregator, collection, and patcher (git version, super package)"
 arch=('any')
 url='https://www.nerdfonts.com'
 install=${_pkgname}.install
-license=('MIT' 'custom:OFL')
+license=('MIT AND OFL-1.1')
 options=('!debug' '!strip')
-makedepends=('git' 'fontconfig' 'xorg-mkfontscale' 'xorg-bdftopcf' 'xorg-font-util')
-# Patched Nerd Fonts available in the [community] repo
-nerd_community_pkgs=(
+makedepends=(
+    'fontconfig'
+    'git'
+    'xorg-bdftopcf'
+    'xorg-font-util'
+    'xorg-mkfontscale'
+)
+# Patched Nerd Fonts available in [extra]
+nerd_extra_pkgs=(
     # OTF packages
-    'otf-aurulent-nerd' 'otf-codenewroman-nerd' 'otf-comicshanns-nerd' 'otf-droid-nerd'
-    'otf-firamono-nerd' 'otf-hasklig-nerd' 'otf-hermit-nerd' 'otf-opendyslexic-nerd'
+    'otf-aurulent-nerd'
+    'otf-codenewroman-nerd'
+    'otf-comicshanns-nerd'
+    'otf-commit-mono-nerd'
+    'otf-droid-nerd'
+    'otf-firamono-nerd'
+    'otf-geist-mono-nerd'
+    'otf-hasklig-nerd'
+    'otf-hermit-nerd'
+    'otf-monaspace-nerd'
+    'otf-opendyslexic-nerd'
     'otf-overpass-nerd'
+
     # TTF packages
-    'ttf-3270-nerd' 'ttf-agave-nerd' 'ttf-anonymouspro-nerd' 'ttf-arimo-nerd'
-    'ttf-bigblueterminal-nerd' 'ttf-bitstream-vera-mono-nerd' 'ttf-cascadia-code-nerd'
-    'ttf-cousine-nerd' 'ttf-daddytime-mono-nerd' 'ttf-dejavu-nerd' 'ttf-fantasque-nerd'
-    'ttf-firacode-nerd' 'ttf-go-nerd' 'ttf-hack-nerd' 'ttf-heavydata-nerd' 'ttf-iawriter-nerd'
-    'ttf-ibmplex-mono-nerd' 'ttf-inconsolata-go-nerd' 'ttf-inconsolata-lgc-nerd'
-    'ttf-inconsolata-nerd' 'ttf-iosevka-nerd' 'ttf-iosevkaterm-nerd' 'ttf-jetbrains-mono-nerd'
-    'ttf-lekton-nerd' 'ttf-liberation-mono-nerd' 'ttf-lilex-nerd' 'ttf-meslo-nerd'
-    'ttf-monofur-nerd' 'ttf-monoid-nerd' 'ttf-mononoki-nerd' 'ttf-mplus-nerd'
-    'ttf-nerd-fonts-symbols' 'ttf-nerd-fonts-symbols-common' 'ttf-nerd-fonts-symbols-mono'
-    'ttf-noto-nerd' 'ttf-profont-nerd' 'ttf-proggyclean-nerd' 'ttf-roboto-mono-nerd'
-    'ttf-sharetech-mono-nerd' 'ttf-sourcecodepro-nerd' 'ttf-space-mono-nerd' 'ttf-terminus-nerd'
-    'ttf-tinos-nerd' 'ttf-ubuntu-mono-nerd' 'ttf-ubuntu-nerd' 'ttf-victor-mono-nerd'
+    'ttf-0xproto-nerd'
+    'ttf-3270-nerd'
+    'ttf-agave-nerd'
+    'ttf-anonymouspro-nerd'
+    'ttf-arimo-nerd'
+    'ttf-bigblueterminal-nerd'
+    'ttf-bitstream-vera-mono-nerd'
+    'ttf-cascadia-code-nerd'
+    'ttf-cascadia-mono-nerd'
+    'ttf-cousine-nerd'
+    'ttf-d2coding-nerd'
+    'ttf-daddytime-mono-nerd'
+    'ttf-dejavu-nerd'
+    'ttf-envycoder-nerd'
+    'ttf-fantasque-nerd'
+    'ttf-firacode-nerd'
+    'ttf-go-nerd'
+    'ttf-hack-nerd'
+    'ttf-heavydata-nerd'
+    'ttf-iawriter-nerd'
+    'ttf-ibmplex-mono-nerd'
+    'ttf-inconsolata-go-nerd'
+    'ttf-inconsolata-lgc-nerd'
+    'ttf-inconsolata-nerd'
+    'ttf-intone-nerd'
+    'ttf-iosevka-nerd'
+    'ttf-iosevkaterm-nerd'
+    'ttf-jetbrains-mono-nerd'
+    'ttf-lekton-nerd'
+    'ttf-liberation-mono-nerd'
+    'ttf-lilex-nerd'
+    'ttf-martian-mono-nerd'
+    'ttf-meslo-nerd'
+    'ttf-monofur-nerd'
+    'ttf-monoid-nerd'
+    'ttf-mononoki-nerd'
+    'ttf-mplus-nerd'
+    'ttf-nerd-fonts-symbols'
+    'ttf-nerd-fonts-symbols-common'
+    'ttf-nerd-fonts-symbols-mono'
+    'ttf-noto-nerd'
+    'ttf-profont-nerd'
+    'ttf-proggyclean-nerd'
+    'ttf-roboto-mono-nerd'
+    'ttf-sharetech-mono-nerd'
+    'ttf-sourcecodepro-nerd'
+    'ttf-space-mono-nerd'
+    'ttf-terminus-nerd'
+    'ttf-tinos-nerd'
+    'ttf-ubuntu-mono-nerd'
+    'ttf-ubuntu-nerd'
+    'ttf-victor-mono-nerd'
 )
 # Other Nerd Fonts packages available in AUR
 # for provides=() and conflicts=(), all except few packages that don't make sense
 nerd_aur_provides_pkgs=(
-    'nerd-fonts-complete-mono-glyphs' 'nerd-fonts-complete-starship' 'nerd-fonts-gabmus'
-    'ttf-blex-nerd-font-git' 'ttf-nerd-fonts-hack-complete-git'
+    'nerd-fonts-complete-mono-glyphs'
+    'nerd-fonts-complete-starship'
+    'nerd-fonts-gabmus'
+    'ttf-blex-nerd-font-git'
+    'ttf-nerd-fonts-hack-complete-git'
 )
-# for replaces and conflicts=(), counterparts on [community] repo exist
+# for replaces and conflicts=(), counterparts on [extra] exist
 nerd_aur_replaces_pkgs=(
-    'nerd-fonts-noto-sans-regular-complete' 'nerd-fonts-profont' 'otf-cascadia-code-nerd'
-    'ttf-nerd-fonts-symbols-1000-em' 'ttf-nerd-fonts-symbols-2048-em' 'ttf-literation'
+    'nerd-fonts-noto-sans-regular-complete'
+    'nerd-fonts-profont'
+    'otf-cascadia-code-nerd'
+    'ttf-nerd-fonts-symbols-1000-em'
+    'ttf-nerd-fonts-symbols-2048-em'
+    'ttf-literation'
 )
 # 3rd party repos still shipping nerd-fonts- prefixed packages are the worst
-# for replace=() and conflicts=(), as what {o,t}tf-*-nerd packages in [community] repo do
+# for replace=() and conflicts=(), as what {o,t}tf-*-nerd packages in [extra] do
 nerd_3p_repo_pkgs=(
-    'nerd-fonts-3270' 'nerd-fonts-agave' 'nerd-fonts-anonymous-pro' 'nerd-fonts-arimo'
-    'nerd-fonts-aurulent-sans-mono' 'nerd-fonts-bigblue-terminal'
-    'nerd-fonts-bitstream-vera-sans-mono' 'nerd-fonts-cascadia-code' 'nerd-fonts-code-new-roman'
-    'nerd-fonts-complete' 'nerd-fonts-cousine' 'nerd-fonts-daddytimemono'
-    'nerd-fonts-dejavu-sans-mono' 'nerd-fonts-droid-sans-mono' 'nerd-fonts-fantasque-sans-mono'
-    'nerd-fonts-fira' 'nerd-fonts-fira-code' 'nerd-fonts-go' 'nerd-fonts-gohu' 'nerd-fonts-hack'
-    'nerd-fonts-hasklig' 'nerd-fonts-heavy-data' 'nerd-fonts-hermit' 'nerd-fonts-ia-writer'
-    'nerd-fonts-ibm-plex-mono' 'nerd-fonts-inconsolata' 'nerd-fonts-inconsolata-go'
-    'nerd-fonts-inconsolata-lgc' 'nerd-fonts-iosevka' 'nerd-fonts-jetbrains-mono'
-    'nerd-fonts-lekton' 'nerd-fonts-liberation' 'nerd-fonts-meslo-lg' 'nerd-fonts-monofur'
-    'nerd-fonts-monoid' 'nerd-fonts-mononoki' 'nerd-fonts-mplus' 'nerd-fonts-noto'
-    'nerd-fonts-opendyslexic' 'nerd-fonts-overpass' 'nerd-fonts-profont' 'nerd-fonts-proggycleantt'
-    'nerd-fonts-robotomono' 'nerd-fonts-share-tech-mono' 'nerd-fonts-source-code-pro'
-    'nerd-fonts-space-mono' 'nerd-fonts-terminus' 'nerd-fonts-tinos' 'nerd-fonts-ubuntu'
-    'nerd-fonts-ubuntu-mono' 'nerd-fonts-victor-mono'
+    'nerd-fonts-3270'
+    'nerd-fonts-agave'
+    'nerd-fonts-anonymous-pro'
+    'nerd-fonts-arimo'
+    'nerd-fonts-aurulent-sans-mono'
+    'nerd-fonts-bigblue-terminal'
+    'nerd-fonts-bitstream-vera-sans-mono'
+    'nerd-fonts-cascadia-code'
+    'nerd-fonts-code-new-roman'
+    'nerd-fonts-complete'
+    'nerd-fonts-cousine'
+    'nerd-fonts-daddytimemono'
+    'nerd-fonts-dejavu-sans-mono'
+    'nerd-fonts-droid-sans-mono'
+    'nerd-fonts-fantasque-sans-mono'
+    'nerd-fonts-fira'
+    'nerd-fonts-fira-code'
+    'nerd-fonts-go'
+    'nerd-fonts-gohu'
+    'nerd-fonts-hack'
+    'nerd-fonts-hasklig'
+    'nerd-fonts-heavy-data'
+    'nerd-fonts-hermit'
+    'nerd-fonts-ia-writer'
+    'nerd-fonts-ibm-plex-mono'
+    'nerd-fonts-inconsolata'
+    'nerd-fonts-inconsolata-go'
+    'nerd-fonts-inconsolata-lgc'
+    'nerd-fonts-iosevka'
+    'nerd-fonts-jetbrains-mono'
+    'nerd-fonts-lekton'
+    'nerd-fonts-liberation'
+    'nerd-fonts-meslo-lg'
+    'nerd-fonts-monofur'
+    'nerd-fonts-monoid'
+    'nerd-fonts-mononoki'
+    'nerd-fonts-mplus'
+    'nerd-fonts-noto'
+    'nerd-fonts-opendyslexic'
+    'nerd-fonts-overpass'
+    'nerd-fonts-profont'
+    'nerd-fonts-proggycleantt'
+    'nerd-fonts-robotomono'
+    'nerd-fonts-share-tech-mono'
+    'nerd-fonts-source-code-pro'
+    'nerd-fonts-space-mono'
+    'nerd-fonts-terminus'
+    'nerd-fonts-tinos'
+    'nerd-fonts-ubuntu'
+    'nerd-fonts-ubuntu-mono'
+    'nerd-fonts-victor-mono'
 )
 provides=(
     'nerd-fonts' # rofimoji
     'ttf-font-nerd' # spaceship
-    "${nerd_community_pkgs[@]}"
+    "${nerd_extra_pkgs[@]}"
     "${nerd_aur_provides_pkgs[@]}"
 )
 replaces=(
@@ -74,7 +173,7 @@ replaces=(
     "${nerd_3p_repo_pkgs[@]}"
 )
 conflicts=(
-    "${nerd_community_pkgs[@]}"
+    "${nerd_extra_pkgs[@]}"
     "${nerd_aur_provides_pkgs[@]}"
     "${nerd_aur_replaces_pkgs[@]}"
     "${nerd_3p_repo_pkgs[@]}"

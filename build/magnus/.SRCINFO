@@ -1,0 +1,21 @@
+pkgbase = magnus
+	pkgdesc = A very simple screen magnifier
+	pkgver = 1.0.3.r8.g7947fb6
+	pkgrel = 1
+	url = https://github.com/stuartlangridge/magnus
+	arch = any
+	license = MIT
+	makedepends = git
+	makedepends = python-distutils-extra
+	makedepends = python-setuptools
+	depends = gdk-pixbuf2
+	depends = glib2
+	depends = gtk3
+	depends = libkeybinder3
+	depends = python
+	depends = python-gobject
+	depends = python-setproctitle
+	source = git+https://github.com/stuartlangridge/magnus.git#commit=7947fb64e4611fb81c6246e908ff57125eb520ec
+	sha256sums = SKIP
+
+pkgname = magnus

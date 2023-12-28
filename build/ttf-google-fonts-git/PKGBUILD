@@ -10,13 +10,13 @@
 # Contributor: Alexander De Sousa <archaur.xandy21@spamgourmet.com>
 
 pkgname=ttf-google-fonts-git
-pkgver=r6702.gade3d5331
+pkgver=r6737.gb81989291
 pkgrel=1
-pkgdesc="TrueType fonts from the Google Fonts project (git version)"
+pkgdesc='TrueType fonts from the Google Fonts project (git version)'
 arch=('any')
-url="https://github.com/google/fonts"
-license=('Apache' 'custom:OFL' 'custom:Ubuntu Font Licence 1.0')
-# pull these fonts from the [extra] and [community] repos, and exclude from this package
+url='https://fonts.google.com'
+license=('Apache-2.0 AND OFL-1.0-RFN AND OFL-1.1 AND OFL-1.1-RFN AND OFL-1.1-no-RFN AND LicenseRef-UFL-1.0')
+# pull these fonts from [extra], and exclude from this package
 depends=(
     'adobe-source-code-pro-fonts'
     'adobe-source-sans-fonts'
@@ -46,7 +46,10 @@ depends=(
     'ttf-roboto-mono'
     'ttf-ubuntu-font-family'
 )
-makedepends=('git' 'fontconfig')
+makedepends=(
+    'fontconfig'
+    'git'
+)
 # other fonts on available AUR that we seek to provide
 gfonts_pkgs=(
    'jsmath-fonts'
@@ -77,8 +80,8 @@ gfonts_pkgs=(
 )
 conflicts=("${gfonts_pkgs[@]}")
 provides=("${gfonts_pkgs[@]}")
-source=(git+"${url}".git)
-sha512sums=('SKIP')
+source=(git+https://github.com/google/fonts.git)
+sha256sums=('SKIP')
 
 pkgver() {
   cd fonts
@@ -98,28 +101,28 @@ prepare() {
 
   cd fonts/ofl
   local files
-  # NOTE: These are the font families that already exist in the [extra] and [community] repos.
+  # NOTE: These are the font families that already exist in [extra]
   ## Noto font families
-  files=($(find -maxdepth 1 -name 'noto*'))
+  files=($(find -maxdepth 1 -iname 'noto*'))
   for i in "${files[@]}"; do
-    [[ $i =~ thailooped ]] && continue
-    rm -r $i
+    [[ ${i} =~ thailooped ]] && continue
+    rm -r "${i}"
   done
 
   ## IBM Plex font families
-  find -maxdepth 1 -name 'ibmplex*' -exec rm -r {} \;
+  find -maxdepth 1 -iname 'ibmplex*' -exec rm -r {} \;
 
   ## Ubuntu font family
   rm -r "${srcdir}/fonts/ufl"
 
-  ## Fonts where only static variants are packaged in the [extra] and [community] repos.
+  ## Fonts where only static variants are packaged in [extra]
   for font_family in "${variable_fonts_only[@]}"; do
-    find -maxdepth 1 -name "$font_family" -exec rm -r {}/static \;
+    find -maxdepth 1 -name "${font_family}" -exec rm -r {}/static \; 2>/dev/null
   done
 }
 
 package() {
-  # NOTE: These are the font families that already exist in the [extra] and [community] repos.
+  # NOTE: These are the font families that already exist in [extra]
   declare -A omitted_font_families=(
     [anonymous-pro]=1
     [arimo]=1
@@ -156,24 +159,25 @@ package() {
 
 
   while IFS= read -rd '' file; do
-    font_family=$(fc-query -f '%{family[0]|downcase|translate( ,-)}\n' "$file" | sed -n '1p')
+    font_family=$(fc-query -f '%{family[0]|downcase|translate( ,-)}\n' "${file}" | sed -n '1p')
 
     # NOTE: Skip the rest of the loop if we're not supposed to be touching this family
-    ((omitted_font_families["$font_family"])) && continue
+    ((omitted_font_families["${font_family}"])) && continue
 
-    pkg_font_path="$pkgdir"/usr/share/fonts/"$font_family"
-    install -Dm644 "$file" -t "$pkg_font_path"  # TODO: Check and make sure $font_family is being created
+    pkg_font_path="${pkgdir}/usr/share/fonts/${font_family}"
+    # TODO: Check and make sure ${font_family} is being created
+    install -Dm644 "${file}" -t "${pkg_font_path}"
 
-    # NOTE: If the font's license already exists, we don't need to copy the license again.
-    src_license_path="${file%/*}"/OFL.txt
-    pkg_font_license="$pkgdir"/usr/share/licenses/"$pkgname"/LICENSE."$font_family"
-    if [[ -f "$src_license_path" && ! -f "$pkg_font_license" ]]; then
-      install -Dm644 "$src_license_path" "$pkg_font_license"
+    # NOTE: If the font's license already exists, we don't need to copy the license again
+    src_license_path="${file%/*}/OFL.txt"
+    pkg_font_license="${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.$font_family"
+    if [[ -f "${src_license_path}" && ! -f "${pkg_font_license}" ]]; then
+      install -Dm644 "${src_license_path}" "${pkg_font_license}"
     fi
-  done < <(find "$srcdir" -type f -iname \*.ttf -print0)
+  done < <(find "${srcdir}" -type f -iname '*.ttf' -print0)
 
-  # NOTE: Since the zcool xiaowei chinese font has special characters. We need to change
+  # NOTE: Since the zcool xiaowei chinese font has special characters, we need to change
   # the folder name to prevent errors during package compression.
-  mv "$pkgdir"/usr/share/fonts/站酷小薇体 "$pkgdir"/usr/share/fonts/zcool-xiaowei-regular
-  mv "$pkgdir"/usr/share/licenses/"$pkgname"/LICENSE.站酷小薇体 "$pkgdir"/usr/share/licenses/"$pkgname"/LICENSE.zcool-xiaowei-regular
+  mv "${pkgdir}/usr/share/fonts/站酷小薇体" "${pkgdir}/usr/share/fonts/zcool-xiaowei-regular"
+  mv "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.站酷小薇体" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.zcool-xiaowei-regular"
 }
