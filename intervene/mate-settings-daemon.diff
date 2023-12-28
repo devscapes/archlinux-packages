@@ -1,17 +1,17 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 24f9a51..d304a1c 100644
+index ed37af9..8f5f714 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -3,7 +3,7 @@
+@@ -4,7 +4,7 @@
  
  pkgname=mate-settings-daemon
- pkgver=1.26.0
+ pkgver=1.26.1
 -pkgrel=1
-+pkgrel=1.2
++pkgrel=1.1
  pkgdesc="The MATE Settings daemon"
  url="https://mate-desktop.org"
  arch=('x86_64')
-@@ -13,11 +13,12 @@ depends=('dbus-glib' 'libcanberra' 'libmatekbd' 'libmatemixer' 'libnotify'
+@@ -14,11 +14,12 @@ depends=('dbus-glib' 'libcanberra' 'libmatekbd' 'libmatemixer' 'libnotify'
  makedepends=('python')
  optdepends=('libcanberra-pulse: PulseAudio support'
              'pulseaudio-alsa: PulseAudio support')
@@ -20,17 +20,17 @@ index 24f9a51..d304a1c 100644
  conflicts=('mate-settings-daemon-gtk3')
  replaces=('mate-settings-daemon-gtk3')
  source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
- sha256sums=('b77aa017ff811a6fcae40bd45f18d8606eec87be21e3e6fa6d35c0fe14e66d41')
+ sha256sums=('697ea65b542921c2b766145292d268d3009cc2da8316d2a7869869055e4b1859')
 +options=('lto')
  
  build() {
-     	cd "${pkgname}-${pkgver}"
-@@ -29,7 +30,7 @@ build() {
-         	--enable-pulse
+ 	cd "${pkgname}-${pkgver}"
+@@ -30,7 +31,7 @@ build() {
+ 	            --enable-pulse
  
-     	#https://bugzilla.gnome.org/show_bug.cgi?id=656231
--    	sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
-+    	sed -i -e 's/ -shared / -Wl,-O3,--as-needed\0/g' libtool
+ 	#https://bugzilla.gnome.org/show_bug.cgi?id=656231
+-	sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
++	sed -i -e 's/ -shared / -Wl,-O3,--as-needed\0/g' libtool
  
-     	make
+ 	make
  }

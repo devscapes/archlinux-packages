@@ -142,13 +142,13 @@ index 0000000..50c5c3e
 +2.43.0
 +
 diff --git a/PKGBUILD b/PKGBUILD
-index 04e622e..39bced4 100644
+index 99fada8..691c96f 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -2,10 +2,11 @@
  
  pkgbase=linux-lts
- pkgver=6.1.68
+ pkgver=6.1.69
 -pkgrel=1
 +pkgrel=1.1
  pkgdesc='LTS Linux'
@@ -158,17 +158,17 @@ index 04e622e..39bced4 100644
  license=(GPL2)
  makedepends=(
    bc
-@@ -46,6 +47,22 @@ b2sums=('35aaad87cf0fc957b2e9123e13c9971bfb5f04eeaecf4ff04d1fa3484556f12ed2dedc8
+@@ -46,6 +47,22 @@ b2sums=('21038f291c7eb06f6fbe866132c0805d5784e3ed53dd089cfe97c95569701776d20e84f
          '02a10396c92ab93124139fc3e37b1d4d8654227556d0d11486390da35dfc401ff5784ad86d0d2aa7eacac12bc451aa2ff138749748c7e24deadd040d5404734c'
-         'd9d18f10ec13c1e4531958bc8d734ac6fdf678a423da944528d6fda562c9892322e249f66c0569e9333034a9d21025ca6e349d97980b3585757eed59ce23ff0f')
+         '5d1e8976b6db1d569de242064230512156cda0c10450387e1bf863aa1b7faf16f0c97e19e1767b6a2dfd2f8cbe4f79496f25281c5bab4fa46d6901387c20f921')
  
 +# Updated checksum for 0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-C.patch
 +sha256sums[2]='3a6c8da0f295653c195e8cdd152a349be84d9867be74920467685ed7f119b605'
 +b2sums[2]='abdc0bc966727dac881ef4b1ded5d40c15ea36695f5c0a81f1e5a55d11a630fa264874df9aa02816ab2077e778138010e3af7f70c839c3c64f1df24ab63392cc'
 +
 +# Update .config checksum separately
-+sha256sums[3]='eee6f552d70f0bc1817dc878db727dc9548def95625d90ce980cbd4c7de9d36f'
-+b2sums[3]='59ab306e71791f2be71acb68d1a41e79609aaf99c43ecdc9f62a11de7863500ca9f45aca3770ac7f27b5ab29be99faa212d53427b791a90ce9ad83136201a096'
++sha256sums[3]='b591865ec774b1cb313ecfecc96285a28280ab32a25148e0d267ddafb37fb275'
++b2sums[3]='8fca27c8109df760209c8bf3b60b2109a926db1f3278b3fe4a5443b308b7b88216b6555e5d1993b6e18bf685bd57464158fcfa7aae96ff885763c36f21fba941'
 +
 +# Additional patches
 +source+=('0002-drivers-firmware-skip-simpledrm-if-nvidia-drm.modese.patch'
@@ -217,7 +217,7 @@ index 04e622e..39bced4 100644
  for _p in "${pkgname[@]}"; do
    eval "package_$_p() {
 diff --git a/config b/config
-index 2888358..313d99e 100644
+index e1806b9..3afd3b8 100644
 --- a/config
 +++ b/config
 @@ -384,10 +384,50 @@ CONFIG_JAILHOUSE_GUEST=y
@@ -285,7 +285,7 @@ index 2888358..313d99e 100644
  # CONFIG_MODULE_COMPRESS_NONE is not set
  # CONFIG_MODULE_COMPRESS_GZIP is not set
  # CONFIG_MODULE_COMPRESS_XZ is not set
-@@ -9810,7 +9850,10 @@ CONFIG_USB4=m
+@@ -9809,7 +9849,10 @@ CONFIG_USB4=m
  #
  # Android
  #

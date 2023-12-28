@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 2b215b1..b431d9d 100644
+index 147339e..e308ec1 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -3,15 +3,16 @@
@@ -7,16 +7,16 @@ index 2b215b1..b431d9d 100644
  pkgname=spirv-llvm-translator-minimal-git
  pkgdesc="Tool and a library for bi-directional translation between SPIR-V and LLVM IR, trunk version"
 -epoch=1
--pkgver=r1817.066514b
--pkgrel=2
-+pkgver=18.0.0.r1921.gaeeaf6c3
-+pkgrel=1
+-pkgver=r1929.8e6f467
++pkgver=18.0.0.r1933.ge63fdb86
+ pkgrel=1
  arch=('x86_64')
  url="https://github.com/KhronosGroup/SPIRV-LLVM-Translator"
- license=('custom:Apache 2.0 with LLVM Exception')
+-license=('custom:Apache 2.0 with LLVM Exception')
 -makedepends=(llvm-minimal-git git cmake spirv-headers-git spirv-tools-git)
 -checkdepends=(python python-setuptools clang-minimal-git)
 -depends=(llvm-libs-minimal-git spirv-tools-git gcc-libs glibc)
++license=('Apache-2.0 WITH LLVM-exception')
 +groups=('mesa-minimal')
 +# edit makedepends array so we build with our llvm-git
 +makedepends=(llvm-git git cmake spirv-headers-git spirv-tools-git)
@@ -25,18 +25,8 @@ index 2b215b1..b431d9d 100644
  provides=(spirv-llvm-translator)
  conflicts=(spirv-llvm-translator)
  source=("git+$url.git"
-@@ -21,9 +22,20 @@ md5sums=('SKIP')
- sha512sums=('SKIP')
+@@ -22,7 +23,10 @@ sha512sums=('SKIP')
  
- 
-+prepare() {
-+    cd $_srcname
-+    # Declaration was changed with SPIRV-Headers@d5acd42cb7cdaa5d0f2c5f739208eeeed395f491
-+    grep -R LongConstantCompositeINTEL . | cut -d: -f1 | uniq | while read -r file; do
-+        sed 's/LongConstantCompositeINTEL/LongCompositesINTEL/g' -i "$file"
-+    done
-+}
-+
  pkgver() {
      cd $_srcname
 -    printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
@@ -47,7 +37,7 @@ index 2b215b1..b431d9d 100644
  }
  
  build() {
-@@ -32,13 +44,19 @@ build() {
+@@ -31,13 +35,19 @@ build() {
          -B _build \
          -S "$srcdir"/$_srcname  \
          -G "Unix Makefiles" \
@@ -67,7 +57,7 @@ index 2b215b1..b431d9d 100644
          -D BUILD_SHARED_LIBS=ON \
          -Wno-dev
  
-@@ -50,6 +68,8 @@ check() {
+@@ -49,6 +59,8 @@ check() {
  }
  
  package() {

@@ -1,13 +1,26 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 9cbcc26..7365060 100644
+index ac9d347..dd86fe2 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -8,7 +8,7 @@ pkgdesc="Official Tutanota email client"
+@@ -7,8 +7,19 @@ pkgrel=1
+ pkgdesc="Official Tutanota email client"
  arch=('x86_64')
  url="https://tuta.com"
- license=('GPL3')
+-license=('GPL3')
 -depends=('alsa-lib' 'gtk3' 'libsecret' 'nss')
-+depends=('alsa-lib' 'dbus' 'gtk3' 'hicolor-icon-theme' 'libsecret' 'libxss' 'nss')
++license=('GPL-3.0-or-later')
++depends=(
++  'alsa-lib'
++  'dbus' 'libdbus-1.so'
++  'expat' 'libexpat.so'
++  'gcc-libs'
++  'glib2' 'libgio-2.0.so' 'libglib-2.0.so' 'libgobject-2.0.so'
++  'glibc'
++  'gtk3'
++  'hicolor-icon-theme'
++  'libsecret' 'libsecret-1.so'
++  'libxss'
++  'nss')
  makedepends=('git' 'nvm' 'python')
  source=("https://github.com/tutao/tutanota/archive/$pkgname-release-$pkgver.tar.gz"
          "$pkgname.desktop")

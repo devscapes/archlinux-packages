@@ -1,0 +1,67 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 751d578..dbdca1a 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -1,36 +1,48 @@
+ # Maintainer: ChinaNuke <chinanuke@nuke666.cn>
+ # Contributor: Shayne Hartford <shayneehartford@gmail.com>
+ 
+-pkgname=plasma5-themes-layan-git
+-pkgver=r73.7ab7cd7
+-pkgrel=2
++pkgbase=plasma5-themes-layan-git
++pkgname=('plasma5-themes-layan-git' 'kvantum-theme-layan-git')
++pkgver=r74.e4cd64a
++pkgrel=1
+ pkgdesc="A flat Design theme for KDE Plasma desktop"
+ arch=(any)
+ url="https://github.com/vinceliuice/Layan-kde"
+-license=('GPL3')
++license=('GPL-3.0-only')
+ makedepends=('git')
+-optdepends=('kvantum: Better looking for application styles'
+-            'tela-icon-theme: Matching icon theme')
+-provides=('layan-kde-git')
+-replaces=('layan-kde-git')
+-conflicts=('layan-kde-git')
+ options=('!strip')
+-source=("${pkgname%-git}::git+https://github.com/vinceliuice/Layan-kde.git")
++source=("${pkgbase%-git}::git+https://github.com/vinceliuice/Layan-kde.git")
+ sha256sums=('SKIP')
+ 
+ pkgver() {
+-    cd "$srcdir/${pkgname%-git}"
++    cd "$srcdir/${pkgbase%-git}"
+     printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+ }
+ 
+ prepare() {
+-    cd "$srcdir/${pkgname%-git}"
++    cd "$srcdir/${pkgbase%-git}"
+     sed -i "s#/usr/share#$pkgdir/usr/share#" install.sh
+ }
+ 
+-package() {
+-    cd "$srcdir/${pkgname%-git}"
++package_plasma5-themes-layan-git() {
++    optdepends=('tela-icon-theme: Matching icon theme')
++    provides=("${pkgname%-git}")
++    replaces=('layan-kde-git')
++    conflicts=('layan-kde-git')
++
++    cd "$srcdir/${pkgbase%-git}"
+ 
+     install -d "$pkgdir/usr/share"
+     ./install.sh
++
++    # Kvantum themes should belong to separate package
++    mv "$pkgdir/usr/share/Kvantum" ../
++}
++
++package_kvantum-theme-layan-git() {
++    depends=('kvantum')
++    provides=("${pkgname%-git}")
++
++    install -d "$pkgdir/usr/share"
++    mv "$srcdir/Kvantum" "$pkgdir/usr/share/"
+ }

@@ -1,16 +1,18 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 059294d..795ecee 100644
+index 2632bbe..bdcaf44 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -2,9 +2,10 @@
- 
- pkgname="ayatana-indicator-a11y"
- pkgver="23.10.1"
--pkgrel="1"
-+pkgrel="2"
+@@ -5,10 +5,11 @@ pkgver="23.10.3"
+ pkgrel="1"
  pkgdesc="Ayatana Indicator for Accessibility Settings"
  arch=("i686" "x86_64" "pentium4")
 +groups=('ayatana-indicators')
  url="https://github.com/AyatanaIndicators/ayatana-indicator-a11y"
- license=("GPL3")
+-license=("GPL3")
++license=("GPL-3.0-only")
  makedepends=("cmake" "cmake-extras" "systemd" "intltool")
+-depends=("accountsservice" "glibc" "glib2" "onboard" "orca" "espeak-ng" "dconf" "magnus" "libayatana-common")
++depends=("accountsservice" "libaccountsservice.so" "glibc" "glib2" "libgio-2.0.so" "libglib-2.0.so" "libgobject-2.0.so" "onboard" "orca" "espeak-ng" "dconf" "magnus" "libayatana-common" "libayatana-common.so")
+ source=("${pkgname}-${pkgver}.tar.gz::https://github.com/AyatanaIndicators/${pkgname}/archive/${pkgver}.tar.gz")
+ md5sums=("684015aca47c479f3866f436d1300f3b")
+ 

@@ -1,23 +1,30 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 6afead9..f5a1607 100644
+index 6afead9..0ecf9e8 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -16,7 +16,7 @@
+@@ -15,26 +15,30 @@
+ # Contributor: Tomas Wilhelmsson <tomas.wilhelmsson@gmail.com>
  
  
++# pin commit that passes Debian/Ubuntu expensive CI checks
++_commit=7a1a476116481fdbee3c4d016fa2786c4ea3316e
++
  pkgname=('llvm-git' 'llvm-libs-git' 'llvm-ocaml-git')
 -pkgver=18.0.0_r479038.d16d149e3d96
-+pkgver=18.0.0.r483052.g2a951d78df63
++pkgver=18.0.0.r484839.g7a1a47611648
  pkgrel=1
  arch=('x86_64')
  url="https://llvm.org/"
-@@ -27,14 +27,16 @@ makedepends=('git' 'cmake' 'ninja' 'libffi' 'libedit' 'ncurses' 'libxml2'
+-license=('custom:Apache 2.0 with LLVM Exception')
++license=('Apache-2.0 WITH LLVM-exception')
+ makedepends=('git' 'cmake' 'ninja' 'libffi' 'libedit' 'ncurses' 'libxml2' 
+              'python-setuptools' 'lldb' 'ocaml' 'ocaml-ctypes' 'ocaml-findlib'
+              'python-sphinx' 'python-recommonmark' 'swig' 'python' 'python-six'
               'python-myst-parser' 'lua53' 'ocl-icd' 'opencl-headers' 'z3'
               'jsoncpp' 'ocaml-stdlib-shims')
  checkdepends=("python-psutil")
 -source=("llvm-project::git+https://github.com/llvm/llvm-project.git"
-+# pin commit that passes Debian/Ubuntu expensive CI checks - Thu, 7 Dec 2023 13:24:05 +0800
-+source=("llvm-project::git+https://github.com/llvm/llvm-project.git#commit=2a951d78df633f2100a91b556f675efb4fec568b"
++source=("llvm-project::git+https://github.com/llvm/llvm-project.git#commit=${_commit}"
          "llvm-config.h")
  
  md5sums=('SKIP'
@@ -30,7 +37,7 @@ index 6afead9..f5a1607 100644
  
  # NINJAFLAGS is an env var used to pass commandline options to ninja
  # NOTE: It's your responbility to validate the value of $NINJAFLAGS. If unsure, don't set it.
-@@ -56,11 +58,19 @@ pkgver() {
+@@ -56,11 +60,19 @@ pkgver() {
              'BEGIN { ORS="." ; i=0 } \
               /set\(LLVM_VERSION_/ { print $2 ; i++ ; if (i==2) ORS="" } \
               END { print "\n" }' \
@@ -51,7 +58,7 @@ index 6afead9..f5a1607 100644
      
      export CFLAGS+=" ${CPPFLAGS}"
      export CXXFLAGS+=" ${CPPFLAGS}"
-@@ -68,6 +78,7 @@ build() {
+@@ -68,6 +80,7 @@ build() {
          -B _build \
          -S "$srcdir"/llvm-project/llvm  \
          -G Ninja \
@@ -59,7 +66,15 @@ index 6afead9..f5a1607 100644
          -D CMAKE_BUILD_TYPE=Release \
          -D CMAKE_INSTALL_PREFIX=/usr \
          -D LLVM_BINUTILS_INCDIR=/usr/include \
-@@ -85,8 +96,6 @@ build() {
+@@ -77,6 +90,7 @@ build() {
+         -D LLVM_ENABLE_RTTI=ON \
+         -D LLVM_ENABLE_FFI=ON \
+         -D FFI_INCLUDE_DIR:PATH="$(pkg-config --variable=includedir libffi)" \
++        -D LLVM_ENABLE_Z3_SOLVER=ON \
+         -D LLVM_BUILD_LLVM_DYLIB=ON \
+         -D LLVM_LINK_LLVM_DYLIB=ON \
+         -D LLVM_INSTALL_UTILS=ON \
+@@ -85,8 +99,6 @@ build() {
          -D LLVM_ENABLE_SPHINX=ON \
          -D SPHINX_OUTPUT_HTML:BOOL=OFF \
          -D SPHINX_WARNINGS_AS_ERRORS=OFF \
@@ -68,7 +83,7 @@ index 6afead9..f5a1607 100644
          -D LLVM_ENABLE_PROJECTS="polly;lldb;lld;compiler-rt;clang-tools-extra;clang" \
          -D LLVM_LIT_ARGS="-sv --ignore-fail" \
          -D LLVM_ENABLE_DUMP=ON \
-@@ -97,6 +106,9 @@ build() {
+@@ -97,6 +109,9 @@ build() {
  }
  
  check() {
@@ -78,9 +93,24 @@ index 6afead9..f5a1607 100644
      ninja -C _build $NINJAFLAGS check-llvm
      ninja -C _build $NINJAFLAGS check-clang
      ninja -C _build $NINJAFLAGS check-clang-tools
-@@ -109,8 +121,9 @@ package_llvm-git() {
+@@ -107,10 +122,23 @@ check() {
+ 
+ package_llvm-git() {
      pkgdesc="LLVM development version. includes clang and many other tools"
-     depends=("llvm-libs-git=$pkgver-$pkgrel" 'perl')
+-    depends=("llvm-libs-git=$pkgver-$pkgrel" 'perl')
++    depends=(
++        "llvm-libs-git=${pkgver}-${pkgrel}"
++        'gcc-libs'
++        'glibc'
++        'libedit' 'libedit.so'
++        'libxml2' 'libxml2.so'
++        'lua53'
++        'ncurses' 'libncursesw.so' 'libpanelw.so'
++        'perl'
++        'xz' 'liblzma.so'
++        'zlib' 'libz.so'
++        'zstd' 'libzstd.so'
++    )
      optdepends=('python: for scripts')
 +    # workaround some awkward stuffs from attempting to build LLVM components with itself
      provides=(aur-llvm-git compiler-rt-git clang-git lldb-git lld-git polly-git
@@ -89,11 +119,23 @@ index 6afead9..f5a1607 100644
      # A package always provides itself, so there's no need to provide llvm-git
      conflicts=('llvm' 'compiler-rt' 'clang' 'lldb' 'polly' 'lld')
      
-@@ -171,7 +184,8 @@ package_llvm-git() {
+@@ -170,8 +198,19 @@ package_llvm-git() {
+ 
  package_llvm-libs-git() {
      pkgdesc="runtime libraries for llvm-git"
-     depends=('gcc-libs' 'zlib' 'libffi' 'libedit' 'ncurses' 'libxml2' 'z3' 'lua53')
+-    depends=('gcc-libs' 'zlib' 'libffi' 'libedit' 'ncurses' 'libxml2' 'z3' 'lua53')
 -    provides=(aur-llvm-libs-git llvm-libs)
++    depends=(
++        'gcc-libs'
++        'glibc'
++        'libedit' 'libedit.so'
++        'libffi' 'libffi.so'
++        'libxml2' 'libxml2.so'
++        'ncurses' 'libncursesw.so'
++        'z3' 'libz3.so'
++        'zlib' 'libz.so'
++        'zstd' 'libzstd.so'
++    )
 +    # workaround some awkward stuffs from attempting to build LLVM components with itself
 +    provides=(aur-llvm-libs-git llvm-libs clang-libs-minimal-git llvm-libs-minimal-git)
      conflicts=('llvm-libs')

@@ -1,13 +1,13 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 9794183..1bcd9c0 100644
+index 0ab0016..aa402e8 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -6,10 +6,11 @@
  
  pkgname=ffmpeg
  pkgver=6.1
--pkgrel=2
-+pkgrel=2.1
+-pkgrel=3
++pkgrel=3.1
  epoch=2
  pkgdesc='Complete solution to record, convert and stream audio and video'
  arch=(x86_64)

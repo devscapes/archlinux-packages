@@ -1,24 +1,37 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 52f74f1..25b07ce 100644
+index cbc1b3b..f2042f7 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -3,8 +3,8 @@
- _pkgbase=moe-theme
+@@ -4,11 +4,11 @@ _pkgbase=moe-theme
  pkgbase="${_pkgbase}-git"
- pkgname=(plasma-theme-moe-git kvantum-theme-moe-git)
--pkgver=r29.bd9b178
+ pkgname=(plasma5-themes-moe-git kvantum-theme-moe-git)
+ pkgver=r41.0eae9f1
 -pkgrel=1
-+pkgver=r41.0eae9f1
-+pkgrel=2
- pkgdesc='Moe is a light theme, with blur transparencies and red tones with gradients.'
++pkgrel=3
+ pkgdesc='A light theme, with blur transparencies and red tones with gradients.'
  arch=('any')
  url="https://gitlab.com/jomada/${_pkgbase}"
-@@ -43,7 +43,7 @@ package_plasma-theme-moe-git() {
+-license=('GPL3')
++license=('GPL-3.0-or-later')
+ makedepends=('git')
+ options=(!strip)
+ source=("${_pkgbase}::git+https://gitlab.com/jomada/${_pkgbase}")
+@@ -20,7 +20,9 @@ pkgver() {
  }
  
- package_kvantum-theme-moe-git() {
--    depends=(kvantum-qt5)
-+    depends=('kvantum')
+ package_plasma5-themes-moe-git() {
+-    optdepends=('kvantum-theme-moe-git: Moe theme for Kvantum (recommended)')
++    provides=("${pkgname%-git}")
++    replaces=('plasma-theme-moe-git')
++    conflicts=('plasma-theme-moe-git')
  
-     cd "${srcdir}/${_pkgbase}"
+     cd "${_pkgbase}"
+ 
+@@ -39,6 +41,7 @@ package_plasma5-themes-moe-git() {
+ 
+ package_kvantum-theme-moe-git() {
+     depends=(kvantum)
++    provides=("${pkgname%-git}")
+ 
+     cd "${_pkgbase}"
  

@@ -1,11 +1,11 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index f998be4..c8190db 100644
+index 079246f..2afe4cc 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -2,10 +2,11 @@
  
  pkgbase=linux
- pkgver=6.6.7.arch1
+ pkgver=6.6.8.arch1
 -pkgrel=1
 +pkgrel=1.1
  pkgdesc='Linux'
@@ -15,13 +15,13 @@ index f998be4..c8190db 100644
  license=(GPL2)
  makedepends=(
    bc
-@@ -49,6 +50,15 @@ b2sums=('000c45693d074c79816ea61c8e46b58281eed5532903df92c466d3f062ec6a302e59c27
+@@ -49,6 +50,15 @@ b2sums=('d6f58bfae29239f985c1aa329b19c2fdea1c08c79e819e60f85359e9ef00e97a7f72d74
          'SKIP'
-         'eee80b262d447770f89bb16e4c84a5faedd8e2a46d57a5b6ad6371f5a9a8e11194f82c9160d78486fc1a889ad9dea6f0b2d90b8a21235aefc30bf7fe3ef355f6')
+         '72b204712173dd109f60c6c81a10dc24c64eba7c2be8182a520b52f31ba2ecc4082fc711656a7e4893aac26120f9271c1fda3e37ad94236db95b14a6fdb56a82')
  
 +# Update .config checksum separately
-+sha256sums[4]='8d24f258da4c72c7f72b4906ad301b8d9959169bc83d11e537ee6a67ff60ee18'
-+b2sums[4]='5913ebbe88d96ed98ac1a57aae25a5ccc95c2e6990b07ebe8590ced63288bd681a3ef4f8c2eb8a396a16081fdf5623e062c00d6b6e279307de42d0856c7bed96'
++sha256sums[4]='40037cbdd16026e40ce3a0a7abfad5d1aaa3d649a562cc557bdecad71e68517a'
++b2sums[4]='965d6f30d1465c5b143ba61b702029286f2594c3ecff71bd19b0d9a663d4dab1c6dfab1315020aadf870b35e72ace2ffa20196098962225f650e17863641d22b'
 +
 +# Additional patches
 +source+=("0100-more-uarches-for-kernel-5.17+-20230105.patch::https://raw.githubusercontent.com/graysky2/kernel_compiler_patch/48eccba759279c53f206f7e5d7534b623d25c382/more-uarches-for-kernel-5.17+.patch")
@@ -67,17 +67,9 @@ index f998be4..c8190db 100644
  for _p in "${pkgname[@]}"; do
    eval "package_$_p() {
 diff --git a/config b/config
-index 1187088..6aa41c4 100644
+index a3abe9a..3cd600d 100644
 --- a/config
 +++ b/config
-@@ -1,6 +1,6 @@
- #
- # Automatically generated file; DO NOT EDIT.
--# Linux/x86 6.6.2-arch1 Kernel Configuration
-+# Linux/x86 6.6.7-arch1 Kernel Configuration
- #
- CONFIG_CC_VERSION_TEXT="gcc (GCC) 13.2.1 20230801"
- CONFIG_CC_IS_GCC=y
 @@ -401,10 +401,50 @@ CONFIG_JAILHOUSE_GUEST=y
  CONFIG_ACRN_GUEST=y
  CONFIG_INTEL_TDX_GUEST=y
@@ -143,7 +135,7 @@ index 1187088..6aa41c4 100644
  # CONFIG_MODULE_COMPRESS_NONE is not set
  # CONFIG_MODULE_COMPRESS_GZIP is not set
  # CONFIG_MODULE_COMPRESS_XZ is not set
-@@ -10132,7 +10172,10 @@ CONFIG_USB4=m
+@@ -10131,7 +10171,10 @@ CONFIG_USB4=m
  #
  # Android
  #

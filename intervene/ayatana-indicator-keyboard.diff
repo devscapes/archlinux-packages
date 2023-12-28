@@ -1,21 +1,20 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 024d5cd..940508a 100644
+index e99f858..2b5cba3 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -2,13 +2,13 @@
- 
- pkgname="ayatana-indicator-keyboard"
- pkgver="23.10.1"
--pkgrel="1"
-+pkgrel="2"
+@@ -6,10 +6,12 @@ pkgrel="1"
  pkgdesc="Ayatana Indicator Keyboard Applet"
  arch=("i686" "x86_64" "pentium4")
  url="https://github.com/AyatanaIndicators/ayatana-indicator-keyboard"
- license=("GPL3")
+-license=("GPL3")
 -makedepends=("intltool" "cmake-extras" "systemd" "glib2" "libx11")
 -depends=("libayatana-common>=0.9.9" "libxklavier" "hicolor-icon-theme" "accountsservice" "libxkbcommon")
++groups=('ayatana-indicators')
++license=("GPL-3.0-only")
 +makedepends=("intltool" "cmake-extras" "systemd" "libx11")
-+depends=("libayatana-common>=0.9.9" "libxklavier" "hicolor-icon-theme" "accountsservice" "libxkbcommon" "dconf" "glib2")
++depends=("libayatana-common>=0.9.9" "libayatana-common.so" "libxklavier" "hicolor-icon-theme" "accountsservice" "libaccountsservice.so" "libxkbcommon" "libxkbregistry.so" "dconf" "glib2" "libgio-2.0.so" "libglib-2.0.so" "libgobject-2.0.so" "glibc")
  optdepends=("matekbd-keyboard-display: Needed for displaying keyboard layouts on MATE" "libgnomekbd: Needed for displaying keyboard layouts on non-MATE")
++provides=('libayatana-keyboard-lomiri.so' 'libayatana-keyboard-x11.so')
  source=("${pkgname}-${pkgver}.tar.gz::https://github.com/AyatanaIndicators/${pkgname}/archive/${pkgver}.tar.gz")
- md5sums=("d739f4f6461590e34358f89faa7b7dd6")
+ md5sums=("b1a06866d7892acdd113d27d6bc958fc")
+ 

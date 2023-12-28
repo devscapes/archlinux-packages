@@ -1,29 +1,34 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index eee4aa0..62316e6 100644
+index eee4aa0..6cf260b 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -17,14 +17,18 @@
+@@ -15,16 +15,22 @@
+ # Contributor: Tomas Wilhelmsson <tomas.wilhelmsson@gmail.com>
  
+ 
++# pin commit that passes Debian/Ubuntu expensive CI checks
++_commit=7a1a476116481fdbee3c4d016fa2786c4ea3316e
++
  pkgbase=llvm-minimal-git
  pkgname=(llvm-minimal-git llvm-libs-minimal-git clang-minimal-git clang-libs-minimal-git)
 -pkgver=18.0.0_r479739.cd6022916bff
-+pkgver=18.0.0.r483052.g2a951d78df63
++pkgver=18.0.0.r484839.g7a1a47611648
  pkgrel=1
  arch=('x86_64')
  url="https://llvm.org/"
- license=('custom:Apache 2.0 with LLVM Exception')
+-license=('custom:Apache 2.0 with LLVM Exception')
++license=('Apache-2.0 WITH LLVM-exception')
 +groups=('mesa-minimal')
  makedepends=(git cmake libffi libedit ncurses libxml2
               libxcrypt python python-setuptools)
 -source=("git+https://github.com/llvm/llvm-project.git"
 +# Build with LLVM instead of GCC, using llvm-git (expected of same version)
 +makedepends+=('llvm-git')
-+# pin commit that passes Debian/Ubuntu expensive CI checks - Thu, 7 Dec 2023 13:24:05 +0800
-+source=("llvm-project::git+https://github.com/llvm/llvm-project.git#commit=2a951d78df633f2100a91b556f675efb4fec568b"
++source=("llvm-project::git+https://github.com/llvm/llvm-project.git#commit=${_commit}"
                  'local://llvm-config.h'
  )
                  
-@@ -97,7 +101,7 @@ pkgver() {
+@@ -97,7 +103,7 @@ pkgver() {
              'BEGIN { ORS="." ; i=0 } \
               /set\(LLVM_VERSION_/ { print $2 ; i++ ; if (i==2) ORS="" } \
               END { print "\n" }' \
@@ -32,7 +37,7 @@ index eee4aa0..62316e6 100644
      echo "${_pkgver}"
  }
  
-@@ -105,9 +109,15 @@ build() {
+@@ -105,9 +111,15 @@ build() {
      
      local cmake_args=(
          -G "Unix Makefiles"
@@ -48,3 +53,70 @@ index eee4aa0..62316e6 100644
          -D FFI_INCLUDE_DIR=$(pkg-config --variable=includedir libffi)
          -D LLVM_VERSION_SUFFIX=""
          -D LLVM_APPEND_VC_REV=ON
+@@ -155,7 +167,15 @@ check() {
+ 
+ package_llvm-minimal-git() {
+     pkgdesc="Collection of modular and reusable compiler and toolchain technologies"
+-    depends=(llvm-libs-minimal-git="$pkgver-$pkgrel" clang-libs-minimal-git="$pkgver-$pkgrel")
++    depends=(
++        "clang-libs-minimal-git=${pkgver}-${pkgrel}"
++        "llvm-libs-minimal-git=${pkgver}-${pkgrel}"
++        'gcc-libs'
++        'glibc'
++        'ncurses' 'libncursesw.so'
++        'zlib' 'libz.so'
++        'zstd' 'libzstd.so'
++    )
+     provides=('llvm')
+     conflicts=('llvm')
+     optdepends=('python: for using lit (LLVM Integrated Tester)'
+@@ -208,7 +228,18 @@ package_llvm-minimal-git() {
+ 
+ package_llvm-libs-minimal-git() {
+     pkgdesc="LLVM runtime libraries, trunk version"
+-    depends=('gcc-libs' 'zlib' 'libffi' 'libedit' 'ncurses' 'libxml2' 'llvm-libs')
++    #depends=('gcc-libs' 'zlib' 'libffi' 'libedit' 'ncurses' 'libxml2' 'llvm-libs')
++    depends=(
++        "llvm-libs<${pkgver%%.*}"
++        'gcc-libs'
++        'glibc'
++        'libedit' 'libedit.so'
++        'libffi' 'libffi.so'
++        'libxml2' 'libxml2.so'
++        'ncurses' 'libncursesw.so'
++        'zlib' 'libz.so'
++        'zstd' 'libzstd.so'
++    )
+     # some applications expect llvmgold.so to be present and fail badly if it isn't.
+     # adding llvm-libs as depend is the easiest solution
+ 
+@@ -225,7 +256,15 @@ _python_optimize() {
+ 
+ package_clang-minimal-git(){
+   pkgdesc='C language family frontend for LLVM (git version)'
+-  depends=(llvm-libs-minimal-git clang-libs-minimal-git gcc)
++  depends=(
++      "clang-libs-minimal-git=${pkgver}-${pkgrel}"
++      "llvm-libs-minimal-git=${pkgver}-${pkgrel}"
++      'gcc-libs'
++      'glibc'
++      'libxml2' 'libxml2.so'
++      'ncurses' 'libncursesw.so'
++      'perl'
++  )
+   optdepends=('openmp: OpenMP support in clang with -fopenmp'
+               'python: for scan-view, scan-build, git-clang-format, clang-rename and python bindings'
+               'llvm-minimal-git: referenced by some clang headers')
+@@ -255,7 +294,11 @@ package_clang-minimal-git(){
+ 
+ package_clang-libs-minimal-git() {
+     pkgdesc="clang runtime libraries, trunk version"
+-    depends=(llvm-libs-minimal-git="$pkgver-$pkgrel")
++    depends=(
++        "llvm-libs-minimal-git=${pkgver}-${pkgrel}"
++        'gcc-libs'
++        'glibc'
++    )
+     # the functionality offered by this package is part of the clang repo pacakge.
+     # TODO: when/if this functionality is split off from repo clang, verify if changes are needed to this package
+ 
