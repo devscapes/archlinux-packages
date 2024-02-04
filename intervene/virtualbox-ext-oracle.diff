@@ -1,0 +1,13 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index cc60ac8..8701cd7 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -7,7 +7,7 @@ pkgrel=1
+ pkgdesc='Oracle VM VirtualBox Extension Pack'
+ arch=('any')
+ url='https://www.virtualbox.org/'
+-license=('custom:PUEL')
++license=('LicenseRef-PUEL')
+ depends=("virtualbox=${pkgver}")
+ optdepends=('rdesktop: client to connect vm via RDP')
+ options=('!strip')

@@ -1,0 +1,24 @@
+diff --git a/PKGBUILD b/PKGBUILD
+index 53755e7..8d7fb75 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -7,9 +7,10 @@ pkgname=mpv
+ epoch=1
+ _tag='807b9343ef911d138950411cdb83c16a151d2018' # git rev-parse v${pkgver}
+ pkgver=0.37.0
+-pkgrel=2
++pkgrel=2.1
+ pkgdesc='a free, open source, and cross-platform media player'
+ arch=('x86_64')
++groups=('extra-rebuild')
+ license=('GPL-2.0-or-later AND LGPL-2.1-or-later')
+ url='https://mpv.io/'
+ depends=('alsa-lib' 'libasound.so' 'desktop-file-utils' 'ffmpeg' 'libavcodec.so' 'libavdevice.so'
+@@ -26,6 +27,7 @@ makedepends=('git' 'meson' 'python-docutils' 'ladspa' 'wayland-protocols'
+              'ffnvcodec-headers' 'vulkan-headers')
+ optdepends=('yt-dlp: for video-sharing websites playback'
+             'youtube-dl: for video-sharing websites playback')
++replaces=('mpv-vapoursynth') # transitional, vapoursynth enabled in official package now
+ provides=('libmpv.so')
+ options=('!emptydirs')
+ validpgpkeys=('145077D82501AA20152CACCE8D769208D5E31419') # sfan5 <sfan5@live.de>

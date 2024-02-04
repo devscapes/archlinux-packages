@@ -1,18 +1,19 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index ae35ac1..0cc19ce 100644
+index 0eadd94..83eb3c5 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -6,11 +6,12 @@
- 
- pkgname=ffmpeg4.4
- pkgver=4.4.4
--pkgrel=3
-+pkgrel=3.1
+@@ -10,7 +10,8 @@ pkgrel=4
  pkgdesc='Complete solution to record, convert and stream audio and video'
  arch=(x86_64)
  url=https://ffmpeg.org/
- license=(GPL3)
+-license=(GPL3)
++license=('GPL-3.0-or-later')
 +groups=('extra-rebuild')
  depends=(
    alsa-lib
    aom
+@@ -201,3 +202,4 @@ package() {
+ }
+ 
+ # vim:set sw=2 et:
++pkgrel=${pkgrel}.1

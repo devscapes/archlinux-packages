@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index b43729a..406213c 100644
+index b43729a..e0a253f 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -5,6 +5,9 @@
@@ -12,11 +12,22 @@ index b43729a..406213c 100644
  # NOTE:
  # This package provides both 8 and 10-bit support in a single package.
  # x264 from the [extra] official repository is currently 8-bit only.
-@@ -21,6 +24,7 @@ url='https://www.videolan.org/developers/x264.html'
- license=('GPL')
+@@ -13,14 +16,15 @@
+ # 10-bit, please see, e.g.: https://gist.github.com/l4n9th4n9/4459997
+ 
+ pkgname=x264-git
+-pkgver=161.r3042.gb3aadb76
+-pkgrel=1
++pkgver=164.r3173.g4815ccad
++pkgrel=2
+ arch=('x86_64')
+ pkgdesc='Open Source H.264/AVC video encoder (git version)'
+ url='https://www.videolan.org/developers/x264.html'
+-license=('GPL')
++license=('GPL-2.0-or-later')
  depends=('liblsmash.so')
  makedepends=('git' 'nasm' 'l-smash')
-+${_llvm_build} && makedepends+=('llvm17-opt')
++${_llvm_build} && makedepends+=('llvm18-opt')
  provides=('x264' 'libx264' 'libx264-git' 'libx264.so')
  conflicts=('x264' 'libx264' 'libx264-10bit' 'libx264-all')
  replaces=('libx264-git' 'libx264-10bit-git' 'libx264-all-git')
@@ -40,8 +51,8 @@ index b43729a..406213c 100644
 +
 +    if ${_llvm_build}; then
 +        # Set path to our custom LLVM build set in dependencies
-+        export PATH=/opt/llvm17/bin:$PATH
-+        export LD_LIBRARY_PATH=/opt/llvm17/lib
++        export PATH=/opt/llvm18/bin:$PATH
++        export LD_LIBRARY_PATH=/opt/llvm18/lib
 +        # LD is set to `${CC} -o' always, so pass -fuse-ld= during final stage
 +        export LDFLAGS+=" -fuse-ld=lld"
 +        # Export full set of required LLVM tools

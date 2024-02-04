@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 5010468..7127c1c 100644
+index 5010468..99cfaf9 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -3,30 +3,24 @@
@@ -8,7 +8,7 @@ index 5010468..7127c1c 100644
  pkgname=libclc-minimal-git
 -pkgver=17.0.0_r462218.51572c2cd720
 -pkgrel=2
-+pkgver=18.0.0.r484854.g7f69c8b3a6c0
++pkgver=19.0.0.r487623.g1f8c3c3ab132
 +pkgrel=1
  pkgdesc="companion package to llvm-minimal-git,  Library requirements of the OpenCL C programming language"
  arch=('any')

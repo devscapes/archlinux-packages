@@ -1,21 +1,35 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 8be0c66..70daae1 100644
+index 8be0c66..bc36e28 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -7,14 +7,13 @@ gitname=sct
+@@ -1,20 +1,22 @@
+ # Mainteiner: Perseo <perseo.gi98@gmail.com>
+ pkgname=xsct
+-pkgver=2.0
++pkgver=2.2
+ pkgrel=1
+ gitname=sct
+ 
  pkgdesc="Improved sct (set screen color temperature)"
  arch=('i686' 'x86_64')
  url="https://github.com/faf0/${gitname}"
 -license=('Public Domain')
+-depends=()
 +license=('Unlicense')
- depends=()
++depends=('glibc')
  makedepends=('git' 'libx11' 'libxrandr')
 -source=("https://github.com/faf0/sct/archive/refs/tags/${pkgver}.tar.gz")
+-md5sums=('43caee9b0bff464178b714d68e214b3d')
 +source=("${gitname}-${pkgver}.tar.gz::${url}/archive/refs/tags/${pkgver}.tar.gz")
- md5sums=('43caee9b0bff464178b714d68e214b3d')
++sha384sums=('5ab5c041de181be3326977dbebd466524896d8b02bf70bdfbf66ed6f6ff7679ba641559942a30c03c1a05b6d00b3f196')
++
++build() {
++    make -C "${gitname}-${pkgver}"
++}
  
  package() {
-     cd "$srcdir/${gitname}-${pkgver}"
+-    cd "$srcdir/${gitname}-${pkgver}"
 -    ls -lrt
-     make DESTDIR="${pkgdir}/" install
+-    make DESTDIR="${pkgdir}/" install
++    DESTDIR="${pkgdir}" make -C "${gitname}-${pkgver}" install
  }

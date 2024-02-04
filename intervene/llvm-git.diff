@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 6afead9..0ecf9e8 100644
+index 6afead9..66b5b46 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -15,26 +15,30 @@
@@ -7,11 +7,11 @@ index 6afead9..0ecf9e8 100644
  
  
 +# pin commit that passes Debian/Ubuntu expensive CI checks
-+_commit=7a1a476116481fdbee3c4d016fa2786c4ea3316e
++_commit=4b8e55cb04e68053a80f4ee26f4efbf08fe30b02
 +
  pkgname=('llvm-git' 'llvm-libs-git' 'llvm-ocaml-git')
 -pkgver=18.0.0_r479038.d16d149e3d96
-+pkgver=18.0.0.r484839.g7a1a47611648
++pkgver=19.0.0.r487592.g4b8e55cb04e6
  pkgrel=1
  arch=('x86_64')
  url="https://llvm.org/"

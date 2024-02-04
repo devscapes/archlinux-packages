@@ -1,14 +1,14 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index a4ca496..ddb3821 100644
+index 37e0775..c5006c0 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -7,14 +7,15 @@
  _jdkname=liberica-jdk-11-full
  pkgname="${_jdkname}-bin"
  _java_ver=11
--pkgver=11.0.21.u10
--_pkgver=11.0.21+10
-+_pkgver=${_java_ver}.0.21+10
+-pkgver=11.0.22.u12
+-_pkgver=11.0.22+12
++_pkgver=${_java_ver}.0.22+12
 +pkgver=${_pkgver/+/.u}
  pkgrel=1
 -pkgdesc='BellSoft builds of OpenJDK are fully certified and 100% open source Java Development Kits (JDKs) for all Java development and production workloads. Full version includes OpenJFX.'
@@ -16,9 +16,9 @@ index a4ca496..ddb3821 100644
  arch=(aarch64 armv7h armv8h x86_64)
  url='https://bell-sw.com/'
 -license=('custom')
-+license=('custom:liberica')
++license=('LicenseRef-Liberica-EULA')
  depends=('java-environment-common=3' 'java-runtime-common>=3' 'ca-certificates-utils')
-+depends+=('glib2') # namcap
++depends+=('bash' 'glib2' 'glibc' 'zlib' 'libz.so')  # namcap
  optdepends=(ffmpeg freetype2 gtk2 gtk3 libnet)
  provides=(
    "java-environment=$_java_ver"

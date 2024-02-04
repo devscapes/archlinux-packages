@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index e0d6163..43a3aa6 100644
+index e0d6163..2d29460 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -8,18 +8,19 @@
@@ -7,7 +7,7 @@ index e0d6163..43a3aa6 100644
  
  pkgname=namcap-git
 -pkgver=3.4.0.r28.g57d1463
-+pkgver=3.4.2.r14.g58592b0
++pkgver=3.5.2.r2.g2a54990
  pkgrel=1
 -pkgdesc="A Pacman package analyzer"
 +pkgdesc="A Pacman package analyzer (git version)"
@@ -19,9 +19,10 @@ index e0d6163..43a3aa6 100644
           elfutils
           licenses
 -         pkgconfig
+-         python
 +         pkgconf
-          python
           pyalpm
++         python
 +         python-license-expression
           python-pyelftools)
  makedepends=(git

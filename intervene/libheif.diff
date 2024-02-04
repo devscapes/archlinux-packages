@@ -1,20 +1,17 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 0046d3e..ae42cd6 100644
+index e450a78..775f97b 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -3,10 +3,11 @@
- 
- pkgname=libheif
- pkgver=1.17.6
--pkgrel=1
-+pkgrel=1.1
+@@ -7,7 +7,8 @@ pkgrel=3
  pkgdesc='An HEIF and AVIF file format decoder and encoder'
  arch=(x86_64)
  url='https://github.com/strukturag/libheif'
+-license=(GPL3)
 +groups=('extra-rebuild')
- license=(GPL3)
++license=('LGPL-3.0-or-later')
  makedepends=(cmake
               dav1d
+              ffmpeg
 @@ -21,7 +22,7 @@ depends=(aom
           glibc
           libde265
@@ -24,3 +21,8 @@ index 0046d3e..ae42cd6 100644
  optdepends=('libjpeg: for heif-convert and heif-enc'
              'libpng: for heif-convert and heif-enc'
              'dav1d: dav1d encoder'
+@@ -45,3 +46,4 @@ build() {
+ package() {
+   DESTDIR="$pkgdir" cmake --install build
+ }
++pkgrel=${pkgrel}.1

@@ -1,27 +1,29 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 079246f..2afe4cc 100644
+index e4f10f8..3fb55b0 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -2,10 +2,11 @@
+@@ -2,11 +2,12 @@
  
  pkgbase=linux
- pkgver=6.6.8.arch1
+ pkgver=6.7.3.arch1
 -pkgrel=1
 +pkgrel=1.1
  pkgdesc='Linux'
  url='https://github.com/archlinux/linux'
  arch=(x86_64)
+-license=(GPL2)
 +groups=('core-rebuild')
- license=(GPL2)
++license=('GPL-2.0-only')
  makedepends=(
    bc
-@@ -49,6 +50,15 @@ b2sums=('d6f58bfae29239f985c1aa329b19c2fdea1c08c79e819e60f85359e9ef00e97a7f72d74
+   cpio
+@@ -49,6 +50,15 @@ b2sums=('2dea0685e5c9b279beb7661f4efa91ccd662d55eb7c5a69aff52fc74bbb574fcb490a9a
          'SKIP'
-         '72b204712173dd109f60c6c81a10dc24c64eba7c2be8182a520b52f31ba2ecc4082fc711656a7e4893aac26120f9271c1fda3e37ad94236db95b14a6fdb56a82')
+         '526e6a5dc674218466d7596c8b96e219bb8a17b8a1e676c95e8d67ff3c507cc9a91e5e0c624d86ae207753f66525eaed77ce526d06186cb9d9e448116cb1bacb')
  
 +# Update .config checksum separately
-+sha256sums[4]='40037cbdd16026e40ce3a0a7abfad5d1aaa3d649a562cc557bdecad71e68517a'
-+b2sums[4]='965d6f30d1465c5b143ba61b702029286f2594c3ecff71bd19b0d9a663d4dab1c6dfab1315020aadf870b35e72ace2ffa20196098962225f650e17863641d22b'
++sha256sums[4]='2c4ee925858478dbd2a587d2fbc8c09b788fe20952576dcda0a633781ab80b7a'
++b2sums[4]='03a25305fdd5c8a2fdd55f672148e548bc78fa6600b3969b37fef6a350430777cfef5f1529b3b95ebbf1a3384a6f74d167209c83c637ef340511d614f1f2b0db'
 +
 +# Additional patches
 +source+=("0100-more-uarches-for-kernel-5.17+-20230105.patch::https://raw.githubusercontent.com/graysky2/kernel_compiler_patch/48eccba759279c53f206f7e5d7534b623d25c382/more-uarches-for-kernel-5.17+.patch")
@@ -67,7 +69,7 @@ index 079246f..2afe4cc 100644
  for _p in "${pkgname[@]}"; do
    eval "package_$_p() {
 diff --git a/config b/config
-index a3abe9a..3cd600d 100644
+index 2d63c0b..f309265 100644
 --- a/config
 +++ b/config
 @@ -401,10 +401,50 @@ CONFIG_JAILHOUSE_GUEST=y
@@ -109,33 +111,54 @@ index a3abe9a..3cd600d 100644
 +# CONFIG_MTIGERLAKE is not set
 +# CONFIG_MSAPPHIRERAPIDS is not set
 +# CONFIG_MROCKETLAKE is not set
-+# CONFIG_MALDERLAKE is not set
++CONFIG_MALDERLAKE=y
 +# CONFIG_MRAPTORLAKE is not set
 +# CONFIG_MMETEORLAKE is not set
 +# CONFIG_MEMERALDRAPIDS is not set
 +# CONFIG_GENERIC_CPU is not set
 +# CONFIG_GENERIC_CPU2 is not set
-+CONFIG_GENERIC_CPU3=y
++# CONFIG_GENERIC_CPU3 is not set
 +# CONFIG_GENERIC_CPU4 is not set
 +# CONFIG_MNATIVE_INTEL is not set
 +# CONFIG_MNATIVE_AMD is not set
  CONFIG_X86_INTERNODE_CACHE_SHIFT=6
  CONFIG_X86_L1_CACHE_SHIFT=6
  CONFIG_X86_TSC=y
-@@ -955,9 +995,9 @@ CONFIG_MODULE_SIG_ALL=y
- # CONFIG_MODULE_SIG_SHA1 is not set
- # CONFIG_MODULE_SIG_SHA224 is not set
+@@ -947,9 +987,9 @@ CONFIG_MODULE_SIG_FORMAT=y
+ CONFIG_MODULES=y
+ CONFIG_MODULE_DEBUGFS=y
+ # CONFIG_MODULE_DEBUG is not set
+-CONFIG_MODULE_FORCE_LOAD=y
++# CONFIG_MODULE_FORCE_LOAD is not set
+ CONFIG_MODULE_UNLOAD=y
+-CONFIG_MODULE_FORCE_UNLOAD=y
++# CONFIG_MODULE_FORCE_UNLOAD is not set
+ CONFIG_MODULE_UNLOAD_TAINT_TRACKING=y
+ # CONFIG_MODVERSIONS is not set
+ CONFIG_MODULE_SRCVERSION_ALL=y
+@@ -958,17 +998,17 @@ CONFIG_MODULE_SIG=y
+ CONFIG_MODULE_SIG_ALL=y
  # CONFIG_MODULE_SIG_SHA256 is not set
--# CONFIG_MODULE_SIG_SHA384 is not set
+ # CONFIG_MODULE_SIG_SHA384 is not set
 -CONFIG_MODULE_SIG_SHA512=y
--CONFIG_MODULE_SIG_HASH="sha512"
-+CONFIG_MODULE_SIG_SHA384=y
 +# CONFIG_MODULE_SIG_SHA512 is not set
-+CONFIG_MODULE_SIG_HASH="sha384"
+ # CONFIG_MODULE_SIG_SHA3_256 is not set
+ # CONFIG_MODULE_SIG_SHA3_384 is not set
+-# CONFIG_MODULE_SIG_SHA3_512 is not set
+-CONFIG_MODULE_SIG_HASH="sha512"
++CONFIG_MODULE_SIG_SHA3_512=y
++CONFIG_MODULE_SIG_HASH="sha3-512"
  # CONFIG_MODULE_COMPRESS_NONE is not set
  # CONFIG_MODULE_COMPRESS_GZIP is not set
  # CONFIG_MODULE_COMPRESS_XZ is not set
-@@ -10131,7 +10171,10 @@ CONFIG_USB4=m
+ CONFIG_MODULE_COMPRESS_ZSTD=y
+ CONFIG_MODULE_DECOMPRESS=y
+-CONFIG_MODULE_ALLOW_MISSING_NAMESPACE_IMPORTS=y
++# CONFIG_MODULE_ALLOW_MISSING_NAMESPACE_IMPORTS is not set
+ CONFIG_MODPROBE_PATH="/sbin/modprobe"
+ CONFIG_MODULES_TREE_LOOKUP=y
+ CONFIG_BLOCK=y
+@@ -10202,7 +10242,10 @@ CONFIG_USB4=m
  #
  # Android
  #

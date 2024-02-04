@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index f417b48..37ef497 100644
+index f417b48..6386047 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -1,17 +1,22 @@
@@ -10,7 +10,7 @@ index f417b48..37ef497 100644
 +
  pkgname=x265-git
 -pkgver=3.5.r103.g34532bda1
-+pkgver=3.5.r153.gce8642f22
++pkgver=3.5.r155.g74abf80c7
  pkgrel=1
  pkgdesc='Open source H.265/HEVC video encoder (git version)'
  arch=('x86_64')
@@ -21,7 +21,7 @@ index f417b48..37ef497 100644
 +license=('GPL-2.0-or-later')
 +depends=('gcc-libs' 'glibc')
 +makedepends=('git' 'cmake' 'nasm' 'ninja')
-+${_llvm_build} && makedepends+=('llvm17-opt')
++${_llvm_build} && makedepends+=('llvm18-opt')
  provides=('x265' 'libx265.so')
  conflicts=('x265')
 -source=('git+https://bitbucket.org/multicoreware/x265_git.git')
@@ -30,7 +30,7 @@ index f417b48..37ef497 100644
  sha256sums=('SKIP')
  
  pkgver() {
-@@ -19,8 +24,43 @@ pkgver() {
+@@ -19,8 +24,42 @@ pkgver() {
  }
  
  build() {
@@ -50,8 +50,8 @@ index f417b48..37ef497 100644
 +
 +    if ${_llvm_build}; then
 +        # Set path to our custom LLVM build set in dependencies
-+        export PATH=/opt/llvm17/bin:$PATH
-+        export LD_LIBRARY_PATH=/opt/llvm17/lib
++        export PATH=/opt/llvm18/bin:$PATH
++        export LD_LIBRARY_PATH=/opt/llvm18/lib
 +        export CXX=clang++
 +
 +        # Clang optimizes code with SSE2 instructions
@@ -67,7 +67,6 @@ index f417b48..37ef497 100644
 +
 +    # Add LTO and CPU capabilities flags before proceeding
 +    export CXXFLAGS+=" -mtune=native ${extra_flags[@]} ${cpu_simd_flags[@]}"
-+    ${_llvm_build} && export LDFLAGS+=",-z,shstk" # explicitly enable CET for LLD
 +
      cmake -S x265_git/source -B build-12 \
 -        -G 'Unix Makefiles' \
@@ -75,7 +74,7 @@ index f417b48..37ef497 100644
          -DCMAKE_INSTALL_PREFIX='/usr' \
          -DHIGH_BIT_DEPTH='ON' \
          -DMAIN12='ON' \
-@@ -29,10 +69,10 @@ build() {
+@@ -29,10 +68,10 @@ build() {
          -DENABLE_SHARED='OFF' \
          -DCMAKE_ASM_NASM_FLAGS='-w-macro-params-legacy' \
          -Wno-dev
@@ -88,7 +87,7 @@ index f417b48..37ef497 100644
          -DCMAKE_INSTALL_PREFIX='/usr' \
          -DHIGH_BIT_DEPTH='ON' \
          -DEXPORT_C_API='OFF' \
-@@ -40,10 +80,10 @@ build() {
+@@ -40,10 +79,10 @@ build() {
          -DENABLE_SHARED='OFF' \
          -DCMAKE_ASM_NASM_FLAGS='-w-macro-params-legacy' \
          -Wno-dev
@@ -101,7 +100,7 @@ index f417b48..37ef497 100644
          -DCMAKE_INSTALL_PREFIX:PATH='/usr' \
          -DENABLE_SHARED='ON' \
          -DENABLE_HDR10_PLUS='ON' \
-@@ -55,9 +95,9 @@ build() {
+@@ -55,9 +94,9 @@ build() {
          -Wno-dev
      ln -s ../build-10/libx265.a build/libx265_main10.a
      ln -s ../build-12/libx265.a build/libx265_main12.a

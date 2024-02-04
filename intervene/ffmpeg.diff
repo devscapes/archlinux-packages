@@ -1,20 +1,18 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 0ab0016..aa402e8 100644
+index 3746ea4..b11b2a8 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -6,10 +6,11 @@
- 
- pkgname=ffmpeg
- pkgver=6.1
--pkgrel=3
-+pkgrel=3.1
+@@ -10,8 +10,9 @@ pkgrel=3
  epoch=2
  pkgdesc='Complete solution to record, convert and stream audio and video'
  arch=(x86_64)
 +groups=('extra-rebuild')
  url=https://ffmpeg.org/
- license=(GPL3)
+-license=(GPL3)
++license=('GPL-3.0-or-later')
  depends=(
+   alsa-lib
+   aom
 @@ -113,9 +114,6 @@ provides=(
    libswresample.so
    libswscale.so
@@ -22,6 +20,11 @@ index 0ab0016..aa402e8 100644
 -options=(
 -  debug
 -)
- _tag=3cdfac27d3ea06f8719faed48b4ae2e75e94a463
+ _tag=6f4048827982a8f48f71f551a6e1ed2362816eec
  source=(
    git+https://git.ffmpeg.org/ffmpeg.git?signed#tag=${_tag}
+@@ -227,3 +225,4 @@ package() {
+ }
+ 
+ # vim: ts=2 sw=2 et:
++pkgrel=${pkgrel}.1

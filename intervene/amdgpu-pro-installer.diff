@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 9c6be29..16558f7 100644
+index 7698751..cde04e9 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -22,7 +22,7 @@ pkgver=${major}_${minor}
@@ -7,19 +7,23 @@ index 9c6be29..16558f7 100644
  arch=('x86_64')
  url=https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-22-40
 -license=('custom: multiple')
-+license=('custom:AMDGPU-PRO EULA')
++license=('LicenseRef-AMDGPU-PRO-EULA')
  groups=('Radeon_Software_for_Linux')
  
  source=(progl::https://raw.githubusercontent.com/Ashark/archlinux-amdgpu-pro/master/progl
-@@ -99,7 +99,6 @@ move_copyright() {
+@@ -99,10 +99,8 @@ move_copyright() {
  
  package_amf-amdgpu-pro () {
      pkgdesc="AMDGPU Pro Advanced Multimedia Framework"
 -    license=('custom: AMDGPU-PRO EULA')
-     depends=("libdrm" "vulkan-amdgpu-pro=${major}_${minor}-${pkgrel}")
-     optdepends=("rocm-opencl-runtime: Warning unspecified optdep description")
+     depends=("libdrm" "vulkan-icd-loader")
+-    optdepends=("rocm-opencl-runtime: Warning unspecified optdep description"
+-                "vulkan-radeon: Warning unspecified optdep description")
++    optdepends=('rocm-opencl-runtime' 'vulkan-radeon')
  
-@@ -111,7 +110,6 @@ package_amf-amdgpu-pro () {
+     extract_deb "${srcdir}"/amf-amdgpu-pro_1.4.33-${minor}.${ubuntu_ver}_amd64.deb
+     extract_deb "${srcdir}"/libamdenc-amdgpu-pro_1.0-${minor}.${ubuntu_ver}_amd64.deb
+@@ -112,7 +110,6 @@ package_amf-amdgpu-pro () {
  
  package_amdgpu-pro-oglp () {
      pkgdesc="AMDGPU Pro OpenGL driver"
@@ -27,7 +31,7 @@ index 9c6be29..16558f7 100644
      provides=('libgl')
      depends=("libdrm" "libglvnd" "libx11")
  
-@@ -140,7 +138,6 @@ package_amdgpu-pro-oglp () {
+@@ -141,7 +138,6 @@ package_amdgpu-pro-oglp () {
  
  package_lib32-amdgpu-pro-oglp () {
      pkgdesc="AMDGPU Pro OpenGL driver (32-bit)"
@@ -35,19 +39,27 @@ index 9c6be29..16558f7 100644
      provides=('lib32-libgl')
      depends=("lib32-libx11")
  
-@@ -163,7 +160,6 @@ package_lib32-amdgpu-pro-oglp () {
+@@ -164,10 +160,9 @@ package_lib32-amdgpu-pro-oglp () {
  
  package_vulkan-amdgpu-pro () {
      pkgdesc="AMDGPU Pro Vulkan driver"
 -    license=('custom: AMDGPU-PRO EULA')
      provides=('vulkan-driver')
      depends=("vulkan-icd-loader" "wayland" "zlib")
-     optdepends=("openssl-1.1: Warning unspecified optdep description")
-@@ -182,7 +178,6 @@ package_vulkan-amdgpu-pro () {
+-    optdepends=("openssl-1.1: Warning unspecified optdep description")
++    optdepends=('openssl-1.1')
+ 
+     extract_deb "${srcdir}"/vulkan-amdgpu-pro_${major_short}-${minor}.${ubuntu_ver}_amd64.deb
+     move_libdir "opt/amdgpu-pro/lib/x86_64-linux-gnu" "usr/lib"
+@@ -183,10 +178,9 @@ package_vulkan-amdgpu-pro () {
  
  package_lib32-vulkan-amdgpu-pro () {
      pkgdesc="AMDGPU Pro Vulkan driver (32-bit)"
 -    license=('custom: AMDGPU-PRO EULA')
      provides=('lib32-vulkan-driver')
      depends=("lib32-vulkan-icd-loader" "lib32-wayland" "lib32-zlib")
-     optdepends=("lib32-openssl-1.1: Warning unspecified optdep description")
+-    optdepends=("lib32-openssl-1.1: Warning unspecified optdep description")
++    optdepends=('lib32-openssl-1.1')
+ 
+     extract_deb "${srcdir}"/vulkan-amdgpu-pro_${major_short}-${minor}.${ubuntu_ver}_i386.deb
+     move_libdir "opt/amdgpu-pro/lib/i386-linux-gnu" "usr/lib32"

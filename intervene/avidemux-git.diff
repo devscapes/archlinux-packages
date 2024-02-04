@@ -1,16 +1,22 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 01554a8..eff5ddf 100644
+index 01554a8..036254d 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -7,7 +7,7 @@ pkgname=(
+@@ -7,12 +7,12 @@ pkgname=(
    'avidemux-qt6-git'
    'avidemux-cli-git'
  )
 -pkgver=2.8.2.230910.dd023f161
-+pkgver=2.8.2.r9997.g0ca1b22bb
++pkgver=2.8.2.r10016.g13d62ae05
  pkgrel=1
  pkgdesc="A graphical/cli tool to edit video (filter/re-encode/split). (GIT version)"
  arch=('x86_64')
+ url='http://www.avidemux.org'
+-license=('GPL2')
++license=('GPL-2.0-or-later')
+ makedepends=(
+   'git'
+   'cmake'
 @@ -20,8 +20,6 @@ makedepends=(
    'nasm'
    'aom'
@@ -81,3 +87,30 @@ index 01554a8..eff5ddf 100644
      'lame' 'libmp3lame.so'
      'libass' 'libass.so'
      'libfdk-aac' 'libfdk-aac.so'
+@@ -291,7 +282,7 @@ package_avidemux-core-git() {
+ package_avidemux-qt5-git() {
+   pkgdesc="Qt5 GUI for Avidemux. (GIT version)"
+   depends=(
+-    "avidemux-core-git=${pkgver}"
++    "avidemux-core-git=${pkgver}-${pkgrel}"
+     'gcc-libs' # 'libgcc_s.so' 'libstdc++.so'
+     'glibc' # 'libc.so' 'libm.so'
+     'glu' # 'libGLU.so'
+@@ -331,7 +322,7 @@ package_avidemux-qt5-git() {
+ package_avidemux-qt6-git() {
+   pkgdesc="Qt6 GUI for Avidemux. (GIT version)"
+   depends=(
+-    "avidemux-core-git=${pkgver}"
++    "avidemux-core-git=${pkgver}-${pkgrel}"
+     'gcc-libs' # 'libgcc_s.so' 'libstdc++.so'
+     'glibc' # 'libc.so' 'libm.so'
+     'glu' # 'libGLU.so'
+@@ -373,7 +364,7 @@ package_avidemux-qt6-git() {
+ package_avidemux-cli-git() {
+   pkgdesc="CLI frontend for Avidemux. (GIT version)"
+   depends=(
+-    "avidemux-core-git=${pkgver}"
++    "avidemux-core-git=${pkgver}-${pkgrel}"
+     'gcc-libs' # 'libgcc_s.so' 'libstdc++.so'
+     'glibc' # 'libc.so' 'libm.so'
+     )

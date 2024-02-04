@@ -1,13 +1,13 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index d815972..d9afc96 100644
+index 3d6cb71..a2e66c3 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -6,16 +6,26 @@ pkgbase=linux-firmware-git
+@@ -6,11 +6,21 @@ pkgbase=linux-firmware-git
  pkgname=(linux-firmware-whence-git linux-firmware-git amd-ucode-git
           linux-firmware-{nfp,mellanox,marvell,qcom,liquidio,qlogic,bnx2x}-git
  )
--pkgver=20230814.0e048b06
-+pkgver=20231226.abfcad8b
+-pkgver=20231215.c156e6be
++pkgver=20240203.b4b04a5c
  pkgrel=1
  pkgdesc="Firmware files for Linux"
  url="https://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git;a=summary"
@@ -24,16 +24,9 @@ index d815972..d9afc96 100644
 +# The following SPDX identifers are listed in best effort attempt.
 +license=('BSD-3-Clause AND (BSD-3-Clause OR GPL-2.0-only) AND BSD-3-Clause-Clear AND BSD-4-Clause AND BSD-Source-Code AND GPL-2.0-only AND (GPL-2.0-only OR Linux-OpenIB) AND (GPL-2.0-only OR MPL-1.1) AND GPL-2.0-or-later AND GPL-2.0-or-later WITH eCos-exception-2.0 AND GPL-3.0-only AND ISC AND MIT AND LicenseRef-Redistributable AND LicenseRef-Unknown')
  arch=('any')
--makedepends=('git')
-+makedepends=('git' 'rdfind')
+ makedepends=('git' 'rdfind')
  options=(!strip)
- #branch=main
--source=("${pkgbase}::git+https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git?signed")
-+source=("${pkgbase}::git+https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git") # SSH keys are now used to sign commits :(
- sha256sums=('SKIP')
- validpgpkeys=('4CDE8575E547BF835FE15807A31B6BD72486CFD6') # Josh Boyer <jwboyer@fedoraproject.org>
- 
-@@ -56,7 +66,7 @@ package_linux-firmware-whence-git() {
+@@ -61,7 +71,7 @@ package_linux-firmware-whence-git() {
    provides=("${pkgname%-git}=$pkgver")
    pkgdesc+=" - contains the WHENCE license file which documents the vendor license details"
  
@@ -42,7 +35,7 @@ index d815972..d9afc96 100644
  }
  
  package_linux-firmware-git() {
-@@ -68,7 +78,7 @@ package_linux-firmware-git() {
+@@ -73,7 +83,7 @@ package_linux-firmware-git() {
  
    ZSTD_CLEVEL=19 make DESTDIR="${pkgdir}" FIRMWAREDIR=/usr/lib/firmware install-zst
  
@@ -51,9 +44,12 @@ index d815972..d9afc96 100644
  
    cd "${pkgdir}"
  
-@@ -77,21 +87,21 @@ package_linux-firmware-git() {
+@@ -81,22 +91,24 @@ package_linux-firmware-git() {
+   rm usr/lib/firmware/mrvl/prestera/mvsw_prestera_fw_arm64-v4.1.img.zst
  
    # split
++  _pick amd-ucode usr/lib/firmware/amd-ucode
++
    _pick linux-firmware-nfp usr/lib/firmware/netronome
 -  _pick linux-firmware-nfp usr/share/licenses/${pkgname%-git}/LICENCE.Netronome
 +  _pick linux-firmware-nfp usr/share/licenses/${pkgname}/LICENCE.Netronome
@@ -78,12 +74,14 @@ index d815972..d9afc96 100644
  
    _pick linux-firmware-bnx2x usr/lib/firmware/bnx2x*
  }
-@@ -100,17 +110,18 @@ package_amd-ucode-git() {
+@@ -105,17 +117,20 @@ package_amd-ucode-git() {
    conflicts=("${pkgname%-git}")
    provides=("${pkgname%-git}=$pkgver")
    pkgdesc="Microcode update image for AMD CPUs"
 -  license=(custom)
 +  license=('LicenseRef-Redistributable')
++
++  mv -v amd-ucode/* "${pkgdir}"
  
    install -Dt "${pkgdir}/boot" -m644 amd-ucode.img
  
@@ -99,7 +97,7 @@ index d815972..d9afc96 100644
    depends=('linux-firmware-whence')
  
    mv -v linux-firmware-nfp/* "${pkgdir}"
-@@ -120,6 +131,7 @@ package_linux-firmware-mellanox-git() {
+@@ -125,6 +140,7 @@ package_linux-firmware-mellanox-git() {
    conflicts=("${pkgname%-git}" 'linux-firmware<=20211216.f682ecb')
    provides=("${pkgname%-git}=$pkgver")
    pkgdesc+=" - mellanox / Firmware for Mellanox Spectrum switches"
@@ -107,7 +105,7 @@ index d815972..d9afc96 100644
    depends=('linux-firmware-whence')
  
    mv -v linux-firmware-mellanox/* "${pkgdir}"
-@@ -129,6 +141,7 @@ package_linux-firmware-marvell-git() {
+@@ -134,6 +150,7 @@ package_linux-firmware-marvell-git() {
    conflicts=("${pkgname%-git}" 'linux-firmware<=20211216.f682ecb')
    provides=("${pkgname%-git}=$pkgver")
    pkgdesc+=" - marvell / Firmware for Marvell devices"
@@ -115,7 +113,7 @@ index d815972..d9afc96 100644
    depends=('linux-firmware-whence')
  
    mv -v linux-firmware-marvell/* "${pkgdir}"
-@@ -138,6 +151,7 @@ package_linux-firmware-qcom-git() {
+@@ -143,6 +160,7 @@ package_linux-firmware-qcom-git() {
    conflicts=("${pkgname%-git}" 'linux-firmware<=20211216.f682ecb')
    provides=("${pkgname%-git}=$pkgver")
    pkgdesc+=" - qcom / Firmware for Qualcomm SoCs"
@@ -123,7 +121,7 @@ index d815972..d9afc96 100644
    depends=('linux-firmware-whence')
  
    mv -v linux-firmware-qcom/* "${pkgdir}"
-@@ -147,6 +161,7 @@ package_linux-firmware-liquidio-git() {
+@@ -152,6 +170,7 @@ package_linux-firmware-liquidio-git() {
    conflicts=("${pkgname%-git}" 'linux-firmware<=20211216.f682ecb')
    provides=("${pkgname%-git}=$pkgver")
    pkgdesc+=" - liquidio / Firmware for Cavium LiquidIO server adapters"
@@ -131,7 +129,7 @@ index d815972..d9afc96 100644
    depends=('linux-firmware-whence')
  
    mv -v linux-firmware-liquidio/* "${pkgdir}"
-@@ -156,6 +171,7 @@ package_linux-firmware-qlogic-git() {
+@@ -161,6 +180,7 @@ package_linux-firmware-qlogic-git() {
    conflicts=("${pkgname%-git}" 'linux-firmware<=20211216.f682ecb')
    provides=("${pkgname%-git}=$pkgver")
    pkgdesc+=" - qlogic / Firmware for QLogic devices"
@@ -139,7 +137,7 @@ index d815972..d9afc96 100644
    depends=('linux-firmware-whence')
  
    mv -v linux-firmware-qlogic/* "${pkgdir}"
-@@ -165,6 +181,7 @@ package_linux-firmware-bnx2x-git() {
+@@ -170,6 +190,7 @@ package_linux-firmware-bnx2x-git() {
    conflicts=("${pkgname%-git}" 'linux-firmware<=20211216.f682ecb')
    provides=("${pkgname%-git}=$pkgver")
    pkgdesc+=" - bnx2x / Firmware for Broadcom NetXtreme II 10Gb ethernet adapters"

@@ -1,15 +1,8 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index b65a7b2..809113d 100644
+index d2b0f1b..809113d 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -8,19 +8,19 @@ pkgdesc="Service and tools for management of snap packages."
- depends=('squashfs-tools' 'libseccomp' 'libsystemd' 'apparmor')
- optdepends=('bash-completion: bash completion support'
-             'xdg-desktop-portal: desktop integration')
--pkgver=2.61
--pkgrel=2
-+pkgver=2.61.1
-+pkgrel=1
+@@ -13,7 +13,7 @@ pkgrel=1
  arch=('x86_64' 'i686' 'armv7h' 'aarch64')
  url="https://github.com/snapcore/snapd"
  license=('GPL3')
@@ -18,11 +11,3 @@ index b65a7b2..809113d 100644
  conflicts=('snap-confine')
  options=('!strip' 'emptydirs' '!lto')
  install=snapd.install
- source=(
-     "$pkgname-$pkgver.tar.xz::https://github.com/snapcore/${pkgname}/releases/download/${pkgver}/${pkgname}_${pkgver}.vendor.tar.xz"
- )
--sha256sums=('af30dc20c09872bf42faedb8f5306abc85faf9e3b010cb2388086cbc42a0909a')
-+sha256sums=('775b7a250f5241b3bfcebcb3df5055b9c9304c4520502b7abf12438a1cdd771d')
- 
- 
- _gourl=github.com/snapcore/snapd

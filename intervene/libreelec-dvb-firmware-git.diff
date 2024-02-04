@@ -1,12 +1,29 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 36e1d12..ddc756f 100644
+index 36e1d12..728b616 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -6,7 +6,6 @@ _reponame=dvb-firmware
+@@ -4,13 +4,12 @@
+ 
+ _reponame=dvb-firmware
  pkgname=libreelec-dvb-firmware-git
- pkgver=1.4.2.r1.g0eaf5b3
+-pkgver=1.4.2.r1.g0eaf5b3
++pkgver=1.5.0.r0.ga68fb22
  pkgrel=1
 -epoch=1
  pkgdesc="DVB firmware from LibreELEC project (git)"
  arch=('any')
  url="https://github.com/LibreELEC/${_reponame}"
+-license=('GPL3')
++license=('LicenseRef-Redistributable')
+ conflicts=('libreelec-dvb-firmware' 'openelec-dvb-firmware')
+ replaces=('openelec-dvb-firmware')
+ provides=('libreelec-dvb-firmware')
+@@ -30,4 +29,8 @@ package() {
+       install -Dm644 "$_file" "${pkgdir}/usr/lib/firmware/$_file"
+     fi
+   done
++
++  install -d "${pkgdir}/usr/share/licenses/${pkgname}"
++  mv -f "${pkgdir}/usr/lib/firmware/dvb-usb-SkyStar_USB_HD_FW_v17_63.HEX.fw.license.txt" \
++    "${pkgdir}/usr/share/licenses/${pkgname}/"
+ }

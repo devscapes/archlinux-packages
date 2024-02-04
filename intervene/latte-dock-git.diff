@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 711d5e1..aec1fe7 100644
+index 711d5e1..435388d 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -3,24 +3,28 @@
@@ -7,7 +7,7 @@ index 711d5e1..aec1fe7 100644
  pkgname=latte-dock-git
  _gitname=latte-dock
 -pkgver=r6036.e1e8c47a
-+pkgver=0.10.8.r6111.g8ae05c72d
++pkgver=0.10.8.r6120.g131ee4d39
  pkgrel=1
 -pkgdesc='Latte is a dock based on plasma frameworks that provides an elegant and intuitive experience for your tasks and plasmoids'
 +pkgdesc='A dock based on Plasma Frameworks (git version)'
@@ -15,7 +15,7 @@ index 711d5e1..aec1fe7 100644
  url='https://invent.kde.org/plasma/latte-dock'
 -license=('GPL')
 -depends=('plasma-framework' 'plasma-workspace' 'kirigami2' 'knewstuff' 'hicolor-icon-theme' 'plasma-wayland-protocols')
-+license=('GPL-2.0-or-later AND LGPL-2.0-or-later AND (LGPL-2.1-only OR LGPL-3.0-only OR LicenseRef-KDE-Accepted-LGPL)')
++license=('GPL-2.0-or-later AND LGPL-2.0-or-later AND (LGPL-2.1-only OR LGPL-3.0-only OR LicenseRef-scancode-kde-licensed-lgpl)')
 +depends=('gcc-libs' 'glibc' 'plasma-framework5' 'plasma-workspace' 'kirigami2' 'knewstuff5' 'hicolor-icon-theme' 'plasma-wayland-protocols')
  optdepends=('libunity: quicklists, counters, and progress bars for apps using libunity')
  makedepends=('git' 'cmake' 'extra-cmake-modules' 'python')
@@ -36,13 +36,18 @@ index 711d5e1..aec1fe7 100644
     
  }
  
-@@ -35,7 +39,7 @@ build() {
+@@ -31,6 +35,7 @@ build() {
+    cmake -DCMAKE_INSTALL_PREFIX=/usr \
+          -DCMAKE_BUILD_TYPE=Master ..
+ 
++   make
+   
  }
  
- package() {
--  
+@@ -38,4 +43,6 @@ package() {
+   
     make -C ${_gitname}/build DESTDIR=${pkgdir} install
--
+ 
 +   install -Dm644 -t "${pkgdir}/usr/share/licenses/${pkgname}" \
 +      "${_gitname}/LICENSES/LicenseRef-KDE-Accepted-LGPL.txt"
  }

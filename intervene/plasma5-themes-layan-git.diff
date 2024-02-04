@@ -1,18 +1,17 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 751d578..dbdca1a 100644
+index 27d3f48..976529d 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -1,36 +1,48 @@
+@@ -1,44 +1,54 @@
  # Maintainer: ChinaNuke <chinanuke@nuke666.cn>
  # Contributor: Shayne Hartford <shayneehartford@gmail.com>
  
 -pkgname=plasma5-themes-layan-git
--pkgver=r73.7ab7cd7
--pkgrel=2
+-pkgver=r75.c4cce9d
 +pkgbase=plasma5-themes-layan-git
-+pkgname=('plasma5-themes-layan-git' 'kvantum-theme-layan-git')
-+pkgver=r74.e4cd64a
-+pkgrel=1
++pkgname=('plasma5-themes-layan-git' 'sddm-theme-layan-git' 'kvantum-theme-layan-git')
++pkgver=r75.gc4cce9d
+ pkgrel=1
  pkgdesc="A flat Design theme for KDE Plasma desktop"
  arch=(any)
  url="https://github.com/vinceliuice/Layan-kde"
@@ -31,31 +30,46 @@ index 751d578..dbdca1a 100644
  
  pkgver() {
 -    cd "$srcdir/${pkgname%-git}"
+-    printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 +    cd "$srcdir/${pkgbase%-git}"
-     printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
++    printf "r%s.g%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
  }
  
- prepare() {
+-prepare() {
 -    cd "$srcdir/${pkgname%-git}"
-+    cd "$srcdir/${pkgbase%-git}"
-     sed -i "s#/usr/share#$pkgdir/usr/share#" install.sh
- }
- 
--package() {
--    cd "$srcdir/${pkgname%-git}"
+-    sed -i "s#/usr/share#$pkgdir/usr/share#" install.sh
+-    cd "$srcdir/${pkgname%-git}/sddm"
+-    sed -i "s#/usr/share#$pkgdir/usr/share#" install.sh
+-}
 +package_plasma5-themes-layan-git() {
 +    optdepends=('tela-icon-theme: Matching icon theme')
 +    provides=("${pkgname%-git}")
 +    replaces=('layan-kde-git')
 +    conflicts=('layan-kde-git')
-+
-+    cd "$srcdir/${pkgbase%-git}"
  
+-package() {
+     # Install aurorae themes, kvantum themes, plasma color schemes, 
+     # plasma desktop themes, plasma look-and-feel packages.
+-    cd "$srcdir/${pkgname%-git}"
++    cd "$srcdir/${pkgbase%-git}"
      install -d "$pkgdir/usr/share"
-     ./install.sh
+-    ./install.sh
++    sed "s#/usr/share#$pkgdir/usr/share#" install.sh | bash -
 +
 +    # Kvantum themes should belong to separate package
-+    mv "$pkgdir/usr/share/Kvantum" ../
++    mv "$pkgdir/usr/share/Kvantum" "$srcdir/"
++}
++
++package_sddm-theme-layan-git() {
++    depends=('sddm')
++    provides=("${pkgname%-git}")
+ 
+     # Install sddm themes.
+-    cd "$srcdir/${pkgname%-git}/sddm"
++    cd "$srcdir/${pkgbase%-git}/sddm"
+     install -d "$pkgdir/usr/share/sddm/themes"
+-    ./install.sh
++    sed "s#/usr/share#$pkgdir/usr/share#" install.sh | bash -
 +}
 +
 +package_kvantum-theme-layan-git() {

@@ -1,13 +1,8 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index dfcec81..8355d16 100644
+index 5e87cb5..1778fef 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -26,10 +26,11 @@ pkgname=(
-   gstreamer-docs
- )
- pkgver=1.22.8
--pkgrel=1
-+pkgrel=1.1
+@@ -30,6 +30,7 @@ pkgrel=2
  pkgdesc="Multimedia graph framework"
  url="https://gstreamer.freedesktop.org/"
  arch=(x86_64)
@@ -59,3 +54,8 @@ index dfcec81..8355d16 100644
    )
  
    cd root; local files=(
+@@ -779,3 +787,4 @@ package_gstreamer-docs() {
+ }
+ 
+ # vim:set sw=2 sts=-1 et tw=80:
++pkgrel=${pkgrel}.1

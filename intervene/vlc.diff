@@ -1,13 +1,8 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index c7102e2..8a1f725 100644
+index e4c5f99..76a70ec 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -8,10 +8,11 @@ _vlcver=3.0.20
- # optional fixup version including hyphen
- _vlcfixupver=
- pkgver=${_vlcver}${_vlcfixupver//-/.r}
--pkgrel=4
-+pkgrel=4.1
+@@ -12,6 +12,7 @@ pkgrel=7
  pkgdesc='Multi-platform MPEG, VCD/DVD, and DivX player'
  url='https://www.videolan.org/vlc/'
  arch=('x86_64')
@@ -15,3 +10,8 @@ index c7102e2..8a1f725 100644
  license=(
    'GPL-2.0-or-later'
    'LGPL-2.1-or-later'
+@@ -356,3 +357,4 @@ package() {
+ }
+ 
+ # vim: ts=2 sw=2 et:
++pkgrel=${pkgrel}.1

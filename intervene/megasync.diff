@@ -1,20 +1,54 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index d7e0779..4856247 100644
+index 8476ccc..976a70e 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -11,13 +11,13 @@ pkgver=4.11.0.0
+@@ -11,14 +11,35 @@ pkgver=4.12.2.0
  pkgrel=1
  pkgdesc='Official MEGA desktop application for syncing with MEGA Cloud Drive'
  arch=('x86_64')
 -url='https://github.com/meganz/MEGAsync/'
+-license=('custom')
+-depends=('c-ares' 'crypto++' 'curl' 'ffmpeg' 'freeimage' 'icu' 'libmediainfo'
+-         'libpdfium' 'libsodium' 'libudev.so' 'libuv' 'libxcb' 'libzen' 'openssl'
+-         'qt5-base' 'qt5-quickcontrols' 'qt5-svg' 'qt5-x11extras' 'sqlite' 'zlib'
+-         'hicolor-icon-theme')
 +url='https://mega.nz/desktop'
- license=('custom')
- depends=('c-ares' 'crypto++' 'curl' 'ffmpeg' 'freeimage' 'icu' 'libmediainfo'
-          'libpdfium' 'libsodium' 'libudev.so' 'libuv' 'libxcb' 'libzen' 'openssl'
-          'qt5-base' 'qt5-svg' 'qt5-x11extras' 'sqlite' 'zlib'  'hicolor-icon-theme')
++license=('LicenseRef-MEGA-LIMITED-CODE-LICENCE')
++depends=(
++    'c-ares' 'libcares.so'
++    'crypto++'
++    'curl' 'libcurl.so'
++    'ffmpeg' 'libavcodec.so' 'libavformat.so' 'libavutil.so' 'libswscale.so'
++    'freeimage'
++    'gcc-libs'
++    'glibc'
++    'hicolor-icon-theme'
++    'icu' 'libicuuc.so'
++    'libmediainfo'
++    'libpdfium'
++    'libsodium' 'libsodium.so'
++    'libuv'
++    'libxcb'
++    'libzen'
++    'openssl' 'libcrypto.so' 'libssl.so'
++    'qt5-base'
++    'qt5-quickcontrols'
++    'qt5-svg'
++    'qt5-x11extras'
++    'sqlite' 'libsqlite3.so'
++    'systemd-libs' 'libudev.so'
++    'zlib' 'libz.so'
++)
  makedepends=('git' 'doxygen' 'lsb-release' 'qt5-tools' 'swig')
 -source=("git+https://github.com/meganz/MEGAsync.git#tag=v${pkgver}_OSX"
-+source=("git+https://github.com/meganz/MEGAsync.git#tag=v${pkgver}_Linux"
++source=("git+https://github.com/meganz/MEGAsync.git#tag=v${pkgver}_Win"
          'meganz-sdk'::'git+https://github.com/meganz/sdk.git'
          '010-megasync-libpdfium.patch'
          '020-megasync-ffmpeg.patch')
+@@ -76,6 +97,5 @@ package () {
+     install -D -m755 MEGAsync/src/MEGASync/megasync -t "${pkgdir}/usr/bin"
+     install -D -m644 MEGAsync/LICENCE.md -t "${pkgdir}/usr/share/licenses/megasync"
+     install -D -m644 MEGAsync/installer/terms.txt -t "${pkgdir}/usr/share/licenses/megasync"
+-    install -D -m644 MEGAsync/src/MEGASync/mega/LICENSE "${pkgdir}/usr/share/licenses/megasync/SDK-LICENCE"
+     rm -r "${pkgdir}/usr/share/icons/ubuntu-mono-dark"
+ }
