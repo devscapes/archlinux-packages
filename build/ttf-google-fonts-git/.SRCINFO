@@ -1,10 +1,10 @@
 pkgbase = ttf-google-fonts-git
 	pkgdesc = TrueType fonts from the Google Fonts project (git version)
-	pkgver = r6737.gb81989291
+	pkgver = r7118.g55001b2ef
 	pkgrel = 1
 	url = https://fonts.google.com
 	arch = any
-	license = Apache-2.0 AND OFL-1.0-RFN AND OFL-1.1 AND OFL-1.1-RFN AND OFL-1.1-no-RFN AND LicenseRef-UFL-1.0
+	license = Apache-2.0 AND OFL-1.0-RFN AND OFL-1.1 AND OFL-1.1-RFN AND OFL-1.1-no-RFN AND LicenseRef-scancode-ubuntu-font-1.0
 	makedepends = fontconfig
 	makedepends = git
 	depends = adobe-source-code-pro-fonts

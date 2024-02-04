@@ -10,12 +10,12 @@
 # Contributor: Alexander De Sousa <archaur.xandy21@spamgourmet.com>
 
 pkgname=ttf-google-fonts-git
-pkgver=r6737.gb81989291
+pkgver=r7118.g55001b2ef
 pkgrel=1
 pkgdesc='TrueType fonts from the Google Fonts project (git version)'
 arch=('any')
 url='https://fonts.google.com'
-license=('Apache-2.0 AND OFL-1.0-RFN AND OFL-1.1 AND OFL-1.1-RFN AND OFL-1.1-no-RFN AND LicenseRef-UFL-1.0')
+license=('Apache-2.0 AND OFL-1.0-RFN AND OFL-1.1 AND OFL-1.1-RFN AND OFL-1.1-no-RFN AND LicenseRef-scancode-ubuntu-font-1.0')
 # pull these fonts from [extra], and exclude from this package
 depends=(
     'adobe-source-code-pro-fonts'

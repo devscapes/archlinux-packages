@@ -5,28 +5,76 @@
 # Maintainer: Albert I <kras@raphielgang.org>
 
 # Only bump if changelog explicitly says a TDesktop version
-_tdesktop_ver=4.12.2
+_tdesktop_ver=4.14.12
 # We need to fetch our own cppgir copy here *shrugs*
-_cppgir_commit=69ef481cba38e848554cc5403b8d4141d3c51335
+_cppgir_commit=748a04795616f792f6fe91edf24620f78a2ef65c
 _expected_lite_ver=0.6.3
 
 pkgname=64gram-desktop
-pkgver=1.1.5
+pkgver=1.1.12
 _pkgver=${pkgver/.beta}
 pkgrel=1
 pkgdesc='Unofficial 64-bit Telegram Desktop build with some enhancements'
 arch=('x86_64')
 url="https://64gr.am"
-license=('GPL3')
-depends=('abseil-cpp' 'ffmpeg' 'glib2' 'glibmm-2.68' 'hicolor-icon-theme' 'hunspell' 'jemalloc'
-         'libdispatch' 'libsigc++-3.0' 'libxcomposite' 'libxrandr' 'libxtst' 'lz4' 'minizip'
-         'openal' 'openssl' 'pipewire' 'protobuf' 'qt6-imageformats' 'qt6-svg' 'qt6-wayland'
-         'rnnoise' 'ttf-opensans' 'xxhash' 'xz')
-makedepends=('boost' 'cmake' 'extra-cmake-modules' 'fmt' 'git' 'gobject-introspection' 'libtg_owt'
-             'meson' 'microsoft-gsl' 'mm-common' 'ninja' 'perl-xml-parser'
-             'plasma-wayland-protocols' 'python' 'range-v3' 'tl-expected' 'wayland-protocols')
-optdepends=('webkit2gtk: embedded browser features'
-            'xdg-desktop-portal: desktop integration')
+license=('GPL-3.0-or-later WITH cryptsetup-OpenSSL-exception')
+depends=(
+    'abseil-cpp'
+    'ffmpeg' 'libavcodec.so' 'libavfilter.so' 'libavformat.so' 'libavutil.so' 'libswresample.so' 'libswscale.so'
+    'gcc-libs'
+    'glib2' 'libgio-2.0.so' 'libglib-2.0.so' 'libgobject-2.0.so'
+    'glibc'
+    'glibmm-2.68' 'libglibmm-2.68.so'
+    'hicolor-icon-theme'
+    'hunspell'
+    'libdispatch'
+    'libjpeg-turbo' 'libjpeg.so'
+    'libpipewire' 'libpipewire-0.3.so'
+    'libsigc++-3.0' 'libsigc-3.0.so'
+    'libxcomposite'
+    'libxrandr'
+    'libxtst'
+    'libvpx' 'libvpx.so'
+    'lz4'
+    'minizip'
+    'openal' 'libopenal.so'
+    'openssl' 'libcrypto.so' 'libssl.so'
+    'opus' 'libopus.so'
+    'pipewire'
+    'protobuf' 'libprotobuf-lite.so'
+    'qt6-imageformats'
+    'qt6-svg'
+    'qt6-wayland'
+    'rnnoise'
+    'ttf-opensans'
+    'wayland' 'libwayland-client.so'
+    'xxhash'
+    'xz' 'liblzma.so'
+    'zlib' 'libz.so'
+)
+makedepends=(
+    'boost'
+    'cmake'
+    'extra-cmake-modules'
+    'fmt'
+    'git'
+    'gobject-introspection'
+    'libtg_owt'
+    'meson'
+    'microsoft-gsl'
+    'mm-common'
+    'ninja'
+    'perl-xml-parser'
+    'plasma-wayland-protocols'
+    'python'
+    'range-v3'
+    'tl-expected'
+    'wayland-protocols'
+)
+optdepends=(
+    'webkit2gtk: embedded browser features'
+    'xdg-desktop-portal: desktop integration'
+)
 provides=("telegram-desktop=${_tdesktop_ver}")
 replaces=('tdesktop-x64' '64gram<1.0.93')
 conflicts=('telegram-desktop')
@@ -36,13 +84,13 @@ source=("https://github.com/TDesktop-x64/tdesktop/releases/download/v${_pkgver}/
         "${pkgname}-fix-lzma-link.patch::https://aur.archlinux.org/cgit/aur.git/plain/fix-lzma-link.patch?h=64gram-desktop&id=480c0d51d97e2810610869e6c1349c1b3f26fdb5")
 noextract=("expected-lite-${_expected_lite_ver}.tar.gz"
            "cppgir-${_cppgir_commit}.tar.bz2")
-sha384sums=('e23d66ab1f97c3a776a00f8a9b06d23d82b5b8c44265c22599e1818a2ca7f6896456ffad23309cbab248f106af3be37d'
+sha384sums=('9c561a3641e7bdf1e995c7c8971d2fd239db891640b378e9d7ad53b3f459c328b7e1075cff84f7a1f339989c351bc866'
             '6454e7b41a8319d7bef88352539ae11d6e050e4bef9379890fa53697fe83996b18d6f9681b0e079c64253f85a571d619'
-            '04b272d85c9a9796c617053dc752f48f483f2441979e4d02e8f4d48a3f1b63e68f31000e9bbd972397137555a29de89d'
+            '53aa419289c1844be2b4235d1ae654d565bcde091ce3add86972a1c6db4fa1a18bab64de3407c2c459f6d47d570c9700'
             'fc99bc01e59380551939787c62afdced8cf3818a82d080f61c3d91fdee7146251bb52ece03acf04d25098118272e5a8e')
-b2sums=('67937bce7348870fa184a8ca51f7098134d0b6aaeef888520214ef9c4b5f6eba385dfa5d1ff5a34c36d2fbee6f806af0c967b3d0dd494fe53678a36fb3f6a258'
+b2sums=('4887b67811f32f9304f15a931a94786249c920b4c7b45c96ac0da4bef9cec3be0fb30078f05cff168213dfacc265b5a6d75f9540c0dba35261b05e756931d89d'
         '7b9eb948d674d4fb4904c6deb4f2c8c2d578d73d8401dc386a49c5f09cc75c6fd70e0c6aa72cd1e1fb9d82cf55917c8a6d60868190ba063340eda4f3191ebc56'
-        'b34386e6beb76c68f4f52395fcca80583e56ef3fd4a327724bc19253e64fab3419b064d4e7371213e9e80c6ab233ad3d6290e07271c1dcdf90b5ae00d23bd481'
+        'bc9d40833385322a90d9e6c20095e83ff5db64408463e7d639bb632b4fc77f089f4ade7098cd28e9cfa8b2e39e9247e1d39d6297149faacd63b5855621f35f4c'
         '184f9e72e2092b4f7e28490adf94472729b75973daa607c1033d79ddc3416d16670acedfb5e6ea66d9299211fe1b10b7deba34e9edc79198fbccfc98d2555730')
 
 prepare() {
@@ -75,5 +123,6 @@ build() {
 
 package() {
     DESTDIR="${pkgdir}" cmake --install build
-    install -Dm644 /dev/null "$pkgdir/etc/tdesktop/externalupdater"
+    install -Dm644 /dev/null "${pkgdir}/etc/tdesktop/externalupdater"
+    install -Dm644 -t "${pkgdir}/usr/share/licenses/${pkgname}" "64Gram-${_pkgver}-full/LICENSE"
 }
