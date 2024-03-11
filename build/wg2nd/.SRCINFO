@@ -1,0 +1,20 @@
+pkgbase = wg2nd
+	pkgdesc = Convert wg-quick configs to networkd
+	pkgver = 0.2.0
+	pkgrel = 3
+	url = https://www.git.flu0r1ne.net/wg2nd/about/
+	arch = aarch64
+	arch = armv6h
+	arch = armv7h
+	arch = i686
+	arch = x86_64
+	license = GPL-2.0-only OR MIT
+	depends = gcc-libs
+	depends = glibc
+	depends = libcap
+	depends = libcap.so
+	source = https://www.git.flu0r1ne.net/wg2nd/snapshot/wg2nd-0.2.0.tar.xz
+	sha384sums = 9181fc1cd91c8dd36937c2a1b6282aa4d9390149330896c25a738827159c588a4a6b06fe5447f554070453838481f847
+	b2sums = d8441183fc01502b6bf973a24efcc4bd64f10022aba7e7d16c4a3199ade1b92b4f8776941aaf6ab2707453e13719edb9b5c80a90abf21971028ccc1b11996e89
+
+pkgname = wg2nd

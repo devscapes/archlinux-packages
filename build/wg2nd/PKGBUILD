@@ -1,0 +1,43 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+# Contributor: Alex David <flu0r1ne@flu0r1ne.net>
+
+pkgname=wg2nd
+pkgver=0.2.0
+pkgrel=3
+pkgdesc='Convert wg-quick configs to networkd'
+arch=(
+    'aarch64'
+    'armv6h'
+    'armv7h'
+    'i686'
+    'x86_64'
+)
+url='https://www.git.flu0r1ne.net/wg2nd/about/'
+license=('GPL-2.0-only OR MIT')
+depends=(
+    'gcc-libs'
+    'glibc'
+    'libcap' 'libcap.so'
+)
+source=("https://www.git.flu0r1ne.net/${pkgname}/snapshot/${pkgname}-${pkgver}.tar.xz")
+sha384sums=('9181fc1cd91c8dd36937c2a1b6282aa4d9390149330896c25a738827159c588a4a6b06fe5447f554070453838481f847')
+b2sums=('d8441183fc01502b6bf973a24efcc4bd64f10022aba7e7d16c4a3199ade1b92b4f8776941aaf6ab2707453e13719edb9b5c80a90abf21971028ccc1b11996e89')
+
+build() {
+    local _build_flags=(
+        # We have to force our build flags the hard way
+        '-Wno-unused-function'
+        '-Isrc'
+        '-DHAVE_LIBCAP'
+    )
+
+    make -C "${pkgname}-${pkgver}" \
+        CFLAGS="${CFLAGS} ${_build_flags[*]}" \
+        CXXFLAGS="${CXXFLAGS} ${_build_flags[*]} -std=c++20" \
+        LDFLAGS="${LDFLAGS} -lcap -lrt"
+}
+
+package() {
+    BINDIR=/bin DESTDIR="${pkgdir}" PREFIX=/usr make -C "${pkgname}-${pkgver}" install
+    install -Dt "${pkgdir}/usr/share/licenses/${pkgname}" -m644 "${pkgname}-${pkgver}/LICENSE-MIT"
+}
