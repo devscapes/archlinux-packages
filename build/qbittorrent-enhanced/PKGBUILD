@@ -12,7 +12,7 @@
 pkgbase=qbittorrent-enhanced
 pkgname=("${pkgbase}"{,-nox,-qt5})
 pkgver=4.6.3.10
-pkgrel=1
+pkgrel=2
 pkgdesc='An advanced BitTorrent client programmed in C++, based on Qt toolkit and libtorrent-rasterbar (Enhanced Edition)'
 arch=('x86_64')
 url='https://github.com/c0re100/qBittorrent-Enhanced-Edition'

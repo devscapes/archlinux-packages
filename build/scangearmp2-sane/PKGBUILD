@@ -3,15 +3,31 @@
 
 pkgname=scangearmp2-sane
 pkgver=4.70a
-pkgrel=1
+pkgrel=2
 pkgdesc='Canon ScanGear MP v2 scanner utility and sane backend'
 arch=('x86_64')
 url='https://github.com/ThierryHFR/scangearmp2'
-license=('GPL2' 'custom:canon')
-depends=('glib2' 'gtk3' 'libusb')
-makedepends=('cmake' 'libjpeg-turbo' 'sane' 'intltool')
-optdepends=('libjpeg-turbo: sane backend plug-in'
-            'sane: sane backend plug-in')
+license=(
+    'GPL-2.0-only'
+    'LicenseRef-Canon'
+)
+depends=(
+    'gcc-libs'
+    'glib2' 'libglib-2.0.so' 'libgobject-2.0.so'
+    'glibc'
+    'gtk3' 'libgdk-3.so' 'libgtk-3.so'
+    'libusb' 'libusb-1.0.so'
+)
+makedepends=(
+    'cmake'
+    'intltool'
+    'libjpeg'
+    'sane'
+)
+optdepends=(
+    'libjpeg: sane backend plug-in'
+    'sane: sane backend plug-in'
+)
 provides=('scangearmp2')
 conflicts=('scangearmp2')
 _srcname="${pkgname%-sane}"

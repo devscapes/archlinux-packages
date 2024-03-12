@@ -1,44 +1,83 @@
 pkgbase = compiz
 	pkgdesc = Composite manager for Aiglx and Xgl, with plugins and CCSM
 	pkgver = 0.9.14.2
-	pkgrel = 4
+	pkgrel = 5
 	epoch = 1
 	url = https://launchpad.net/compiz
 	arch = i686
 	arch = x86_64
-	license = GPL
-	license = LGPL
+	license = GPL-2.0-or-later
+	license = LGPL-2.1-or-later
 	license = MIT
 	makedepends = boost
 	makedepends = cmake
 	makedepends = cython
-	makedepends = intltool
 	makedepends = git
+	makedepends = intltool
+	makedepends = python-setuptools
+	depends = at-spi2-core
+	depends = libatk-1.0.so
+	depends = bash
 	depends = boost-libs
+	depends = cairo
+	depends = libcairo.so
 	depends = dconf
 	depends = dbus
+	depends = libdbus-1.so
 	depends = fuse2
+	depends = gcc-libs
+	depends = gdk-pixbuf2
+	depends = libgdk_pixbuf-2.0.so
 	depends = glib2
+	depends = libgio-2.0.so
+	depends = libglib-2.0.so
+	depends = libgobject-2.0.so
+	depends = glibc
 	depends = glibmm
+	depends = libglibmm-2.4.so
 	depends = glu
+	depends = gtk3
+	depends = libgdk-3.so
+	depends = libgtk-3.so
 	depends = hicolor-icon-theme
+	depends = libglvnd
+	depends = libGLX.so
+	depends = libOpenGL.so
+	depends = libjpeg
+	depends = libjpeg.so
+	depends = libnotify
+	depends = libnotify.so
+	depends = libpng
+	depends = libpng16.so
+	depends = librsvg
+	depends = librsvg-2.so
+	depends = libsigc++
+	depends = libsigc-2.0.so
 	depends = libwnck3
 	depends = libxml2
+	depends = libxml2.so
 	depends = libxslt
 	depends = metacity
+	depends = pango
+	depends = libpango-1.0.so
+	depends = libpangocairo-1.0.so
 	depends = protobuf
+	depends = libprotobuf.so
 	depends = python
 	depends = python-cairo
 	depends = python-gobject
 	depends = xorg-server
 	optdepends = xorg-xprop: grab various window properties for use in window matching rules
-	provides = compiz-core=0.9.14.2
-	provides = compiz-bcop=0.9.14.2
 	provides = ccsm=0.9.14.2
-	provides = compiz-plugins-main=0.9.14.2
+	provides = compiz-bcop=0.9.14.2
+	provides = compiz-core=0.9.14.2
+	provides = libcompiz_core.so
 	provides = compiz-plugins-extra=0.9.14.2
+	provides = compiz-plugins-main=0.9.14.2
 	provides = compizconfig-python=0.9.14.2
 	provides = libcompizconfig=0.9.14.2
+	provides = libcompizconfig.so
+	provides = libdecoration.so
 	conflicts = compiz-core
 	conflicts = compiz-gtk
 	conflicts = compiz-bcop

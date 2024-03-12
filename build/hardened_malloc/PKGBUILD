@@ -3,19 +3,25 @@
 
 pkgname=hardened_malloc
 pkgver=12.r1.g8d5c631
-pkgrel=1
+pkgrel=2
 epoch=2
 pkgdesc='Hardened allocator designed for modern systems'
 arch=('aarch64' 'x86_64')
 url='https://github.com/GrapheneOS/hardened_malloc'
 license=('MIT')
-# https://github.com/GrapheneOS/hardened_malloc#dependencies
-depends=('gcc-libs>=12.2.0' 'glibc>=2.36')
-makedepends=('gcc>=12.2.0' 'git' 'linux-api-headers>=6.1')
-# https://github.com/GrapheneOS/hardened_malloc#compatibility; not really required
-optdepends=('openssh: mprotect PROT_READ|PROT_WRITE syscalls in seccomp-bpf filter')
+depends=(
+  'gcc-libs'
+  'glibc'
+)
+makedepends=(
+  'git'
+)
+optdepends=(
+  # https://github.com/GrapheneOS/hardened_malloc#compatibility; not really required
+  'openssh: mprotect PROT_READ|PROT_WRITE syscalls in seccomp-bpf filter'
+)
 checkdepends=('python')
-provides=(libhardened_malloc{,-light}.so="${pkgver%%.*}")
+provides=(libhardened_malloc{,-light}="${pkgver%%.*}")
 # use latest commit that passes CI tests: https://github.com/GrapheneOS/hardened_malloc/actions
 source=("git+${url}.git#commit=8d5c63122499169df5fd9ed6e91fb116512a4745")
 sha256sums=('SKIP')
@@ -23,12 +29,18 @@ validpgpkeys=('65EEFE022108E2B708CBFCF7F9E712E59AF5F22A') # Daniel Micay <daniel
 
 pkgver() {
   # Avoid matching GrapheneOS Android release tags
-  git -C "${pkgname}" describe --long --match '[0-9]*' HEAD | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
+  git -C "${pkgname}" describe --long --match '[0-9][! -]' HEAD | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
 }
 
 build() {
-  make -C "${pkgname}" CONFIG_EXAMPLE=false CONFIG_NATIVE=false VARIANT=default
-  make -C "${pkgname}" CONFIG_EXAMPLE=false CONFIG_NATIVE=false VARIANT=light
+  local _common_flags=(
+    'CONFIG_EXAMPLE=false'
+    'CONFIG_NATIVE=false'
+    'CONFIG_WERROR=false'
+  )
+
+  make -C "${pkgname}" "${_common_flags[@]}" VARIANT=default
+  make -C "${pkgname}" "${_common_flags[@]}" VARIANT=light
 }
 
 check() {

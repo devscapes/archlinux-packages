@@ -10,7 +10,7 @@
 # Contributor: Giusy Digital <kurmikon at libero dot it>
 
 pkgname=brave-beta-bin
-pkgver=1.63.142
+pkgver=1.64.102
 pkgrel=1
 pkgdesc='Web browser that blocks ads and trackers by default (beta binary release)'
 url='https://brave.com/download-beta'
@@ -49,7 +49,7 @@ source=("${pkgname}-${pkgver}-x86_64.zip::https://github.com/brave/brave-browser
         'brave-browser-beta.desktop')
 noextract=("${pkgname}-${pkgver}-x86_64.zip")
 # https://github.com/brave/brave-browser/releases/download/v${pkgver}/brave-browser-beta-${pkgver}-linux-amd64.zip.sha256
-sha256sums=('0fbb13bde26fed696c96fe864c1e7a97f4c7fcd062fa160d8cb7bf71807cdd89'
+sha256sums=('976ce2f2e35fa9a508d86f7b25cb2988f68f3b86b14126e91dec3680add0a7c6'
             '9129fca8e31302096e71fa81023f90dd7b6590c44a023690865b9fc3daa74bcb'
             '589a1d06a2f0fe7df6ba3c8e808565ef33e0884ca7f66bbd953d3541a180ce96')
 

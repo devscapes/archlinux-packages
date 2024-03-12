@@ -3,8 +3,8 @@
 
 _pkgname=ion
 pkgname=${_pkgname}-git
-pkgver=r2185.gd7a9e795
-pkgrel=1
+pkgver=r2189.g7928da27
+pkgrel=2
 pkgdesc='The Ion Shell. Compatible with Redox and Linux. (git version)'
 arch=('i686' 'x86_64')
 url='https://gitlab.redox-os.org/redox-os/ion'
@@ -42,7 +42,7 @@ check() {
     cargo check --frozen --features=piston
 
     bash/version.sh
-    RUSTUP=0 VENDORED=1 make tests
+    RUSTUP=0 make tests
 }
 
 package() {

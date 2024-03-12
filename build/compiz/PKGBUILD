@@ -1,26 +1,84 @@
 # Maintainer: Charles Bos <charlesbos1 AT gmail>
 # Contributor: Rob McCathie <archaur at rmcc dot com dot au
-# Contributor: /dev/rs0 <rs0@secretco.de.com>
-# Contributor: Iven Hsu <ivenvd AT gmail>
-# Contributor: Nathan Hulse <nat.hulse@gmail.com>
 
 pkgname=compiz
 pkgver=0.9.14.2
-pkgrel=4
+pkgrel=5
 epoch=1
 pkgdesc="Composite manager for Aiglx and Xgl, with plugins and CCSM"
 arch=('i686' 'x86_64')
 url="https://launchpad.net/compiz"
-license=('GPL' 'LGPL' 'MIT')
-depends=('boost-libs' 'dconf' 'dbus' 'fuse2' 'glib2' 'glibmm' 'glu'
-         'hicolor-icon-theme' 'libwnck3' 'libxml2' 'libxslt' 'metacity'
-         'protobuf' 'python' 'python-cairo' 'python-gobject' 'xorg-server')
-makedepends=('boost' 'cmake' 'cython' 'intltool' 'git')
+license=(
+  'GPL-2.0-or-later'
+  'LGPL-2.1-or-later'
+  'MIT'
+)
+depends=(
+  'at-spi2-core' 'libatk-1.0.so'
+  'bash'
+  'boost-libs'
+  'cairo' 'libcairo.so'
+  'dconf'
+  'dbus' 'libdbus-1.so'
+  'fuse2'
+  'gcc-libs'
+  'gdk-pixbuf2' 'libgdk_pixbuf-2.0.so'
+  'glib2' 'libgio-2.0.so' 'libglib-2.0.so' 'libgobject-2.0.so'
+  'glibc'
+  'glibmm' 'libglibmm-2.4.so'
+  'glu'
+  'gtk3' 'libgdk-3.so' 'libgtk-3.so'
+  'hicolor-icon-theme'
+  'libglvnd' 'libGLX.so' 'libOpenGL.so'
+  'libjpeg' 'libjpeg.so'
+  'libnotify' 'libnotify.so'
+  'libpng' 'libpng16.so'
+  'librsvg' 'librsvg-2.so'
+  'libsigc++' 'libsigc-2.0.so'
+  'libwnck3'
+  'libxml2' 'libxml2.so'
+  'libxslt'
+  'metacity'
+  'pango' 'libpango-1.0.so' 'libpangocairo-1.0.so'
+  'protobuf' 'libprotobuf.so'
+  'python'
+  'python-cairo'
+  'python-gobject'
+  'xorg-server'
+)
+makedepends=(
+  'boost'
+  'cmake'
+  'cython'
+  'git'
+  'intltool'
+  'python-setuptools'
+)
 optdepends=(
   'xorg-xprop: grab various window properties for use in window matching rules'
 )
-conflicts=('compiz-core' 'compiz-gtk' 'compiz-bcop' 'ccsm' 'compiz-fusion-plugins-main' 'compiz-fusion-plugins-extra' 'compiz-fusion-plugins-experimental' 'compizconfig-python' 'libcompizconfig' 'simple-ccsm')
-provides=("compiz-core=${pkgver:0:8}" "compiz-bcop=${pkgver:0:8}" "ccsm=${pkgver:0:8}" "compiz-plugins-main=${pkgver:0:8}" "compiz-plugins-extra=${pkgver:0:8}" "compizconfig-python=${pkgver:0:8}" "libcompizconfig=${pkgver:0:8}")
+conflicts=(
+  'compiz-core'
+  'compiz-gtk'
+  'compiz-bcop'
+  'ccsm'
+  'compiz-fusion-plugins-main'
+  'compiz-fusion-plugins-extra'
+  'compiz-fusion-plugins-experimental'
+  'compizconfig-python'
+  'libcompizconfig'
+  'simple-ccsm'
+)
+provides=(
+  "ccsm=${pkgver:0:8}"
+  "compiz-bcop=${pkgver:0:8}"
+  "compiz-core=${pkgver:0:8}" 'libcompiz_core.so'
+  "compiz-plugins-extra=${pkgver:0:8}"
+  "compiz-plugins-main=${pkgver:0:8}"
+  "compizconfig-python=${pkgver:0:8}"
+  "libcompizconfig=${pkgver:0:8}" 'libcompizconfig.so'
+  'libdecoration.so'
+)
 source=("git+https://git.launchpad.net/${pkgname}#commit=0c09cfca25cd19af50f6918528849172ef53120f" # release-0.9.14.2
         "focus-prevention-disable.patch"
         "gtk-extents.patch"

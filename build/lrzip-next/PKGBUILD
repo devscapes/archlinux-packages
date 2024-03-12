@@ -7,7 +7,7 @@
 
 pkgname=lrzip-next
 pkgver=0.12.6
-pkgrel=1
+pkgrel=2
 pkgdesc='Next generation of multi-threaded compression based on rzip'
 url='https://github.com/pete4abw/lrzip-next'
 license=('GPL-2.0-or-later')
@@ -26,7 +26,6 @@ depends=(
 )
 provides=('lrzip')
 conflicts=('lrzip')
-options=('lto')
 source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
 sha384sums=('d60561b7870e726f5d6cb1bc59236774b00f1a1a7492aadd6464be2c1a42a2dd41802584c582d6f03b91feff73f93e15')
 b2sums=('952b3aefcf424b4626f14caaefc7b160a271330903227207cec249306750dfd24097abfdae159d82dc86e08711f51789ca72bcc66b6d7f4bdd9b892133759dae')

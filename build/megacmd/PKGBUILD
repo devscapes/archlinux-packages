@@ -3,21 +3,36 @@
 pkgname=megacmd
 pkgver=1.6.3
 _sdkver=4.17.1d
-pkgrel=4
+pkgrel=5
 pkgdesc='MEGA Command Line Interactive and Scriptable Application'
 arch=('x86_64')
 url='https://mega.nz/cmd'
-license=('BSD' 'GPL3')
+license=(
+  'BSD-2-Clause'
+  'GPL-3.0-only'
+)
 depends=(
-    'crypto++' 'freeimage' 'libmediainfo' 'libpdfium'
-    'libsodium' 'libuv' 'openssl' 'pcre' 'sqlite' 'zlib'
-    'libavcodec.so' 'libavformat.so' 'libavutil.so' 'libcares.so'
-    'libcurl.so' 'libreadline.so' 'libswscale.so'
+    'bash'
+    'c-ares' 'libcares.so'
+    'crypto++'
+    'curl' 'libcurl.so'
+    'ffmpeg' 'libavcodec.so' 'libavformat.so' 'libavutil.so' 'libswscale.so'
+    'freeimage'
+    'gcc-libs'
+    'glibc'
+    'libmediainfo'
+    'libpdfium'
+    'libsodium' 'libsodium.so'
+    'libuv'
+    'openssl' 'libcrypto.so' 'libssl.so'
+    'pcre' 'libpcre.so' 'libpcrecpp.so'
+    'readline' 'libreadline.so'
+    'sqlite' 'libsqlite3.so'
+    'zlib' 'libz.so'
 )
 optdepends=('bash-completion: for completion script')
 provides=("mega-sdk=${_sdkver}" 'libmega.so')
-replaces=('megacmd-dynamic')
-conflicts=('megacmd-dynamic' 'mega-sdk')
+conflicts=('mega-sdk')
 source=(
     "MEGAcmd::git+https://github.com/meganz/MEGAcmd.git#tag=${pkgver}_Linux"
     "meganz-sdk::git+https://github.com/meganz/sdk.git#tag=v${_sdkver}"
