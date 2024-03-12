@@ -121,20 +121,22 @@ index ae33d27..060f4a9 100644
 +   2. https://www.sgi.com/
 +   3. https://www.sgi.com/
 diff --git a/PKGBUILD b/PKGBUILD
-index 1ebe9e9..8bb2026 100644
+index d885928..3d6720e 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -13,7 +13,7 @@
+@@ -13,8 +13,8 @@
  pkgbase=mesa-minimal-git
  pkgname=(mesa-minimal-git opencl-rusticl-mesa-minimal-git)
  pkgdesc="an open-source implementation of the OpenGL specification, stripped down git version"
--pkgver=24.0.0_devel.181605.fde43e44e9f
-+pkgver=24.0.0_rc3.r183197.g808f056688b
- pkgrel=1
+-pkgver=24.1.0_devel.185149.642b12baef6
+-pkgrel=2
++pkgver=24.1.0_devel.r185987.gc91bd82b4b0
++pkgrel=1
  arch=('x86_64')
  makedepends=(git meson ninja libglvnd python-mako xorgproto libxml2 libx11  libva elfutils libxrandr
-@@ -21,18 +21,21 @@ makedepends=(git meson ninja libglvnd python-mako xorgproto libxml2 libx11  libv
-                             rust rust-bindgen spirv-tools-git spirv-llvm-translator-minimal-git libvdpau systemd-libs)
+                             wayland-protocols glslang llvm-minimal-git libdrm libclc-minimal-git clang-minimal-git
+@@ -22,19 +22,22 @@ makedepends=(git meson ninja libglvnd python-mako xorgproto libxml2 libx11  libv
+                             python-ply)
  # In order to keep the package simple and ease troubleshooting only use one llvm implementation
  optdepends=('opengl-man-pages: for the OpenGL API man pages')
 -provides=(mesa vulkan-intel vulkan-radeon vulkan-mesa-layer libva-mesa-driver vulkan-swrast mesa-vdpau vulkan-driver opengl-driver)
@@ -146,10 +148,9 @@ index 1ebe9e9..8bb2026 100644
  # mixing components from different mesa versions is a bad idea, conflict with everything unique provided by extra/mesa
  url="https://www.mesa3d.org"
 -license=('custom')
--source=("mesa::git+https://gitlab.freedesktop.org/mesa/mesa.git"
 +license=('MIT AND BSD-3-Clause AND SGI-B-2.0')
 +groups=("${pkgbase%%-git}")
-+source=("mesa::git+https://gitlab.freedesktop.org/mesa/mesa.git#branch=24.0" # amdgpu broken
+ source=("mesa::git+https://gitlab.freedesktop.org/mesa/mesa.git"
                  'LICENSE'
  )
  md5sums=('SKIP'
@@ -157,11 +158,13 @@ index 1ebe9e9..8bb2026 100644
 +         '1eff81373cde4b3d7b0ea7590431c962')
  sha512sums=('SKIP'
 -            '25da77914dded10c1f432ebcbf29941124138824ceecaf1367b3deedafaecabc082d463abcfa3d15abff59f177491472b505bcb5ba0c4a51bb6b93b4721a23c2')
+-options=(!emptydirs !lto)
 +            'f9f0d0ccf166fe6cb684478b6f1e1ab1f2850431c06aa041738563eb1808a004e52cdec823c103c9e180f03ffc083e95974d291353f0220fe52ae6d4897fecc7')
- options=(!emptydirs)
++options=(!emptydirs)
  
  # ninja grabs all available cores and leaves almost nothing for other processes.
-@@ -44,7 +47,7 @@ pkgver() {
+ # this package uses the environment variable NINJAFLAGS to allow the user to change this behaviour
+@@ -45,14 +48,14 @@ pkgver() {
      cd mesa
      local _ver
      read -r _ver < VERSION || [ -n "_ver" ]
@@ -170,7 +173,15 @@ index 1ebe9e9..8bb2026 100644
  }
  
  build() {
-@@ -94,11 +97,29 @@ build() {
+     
+     meson setup mesa _build \
+        -D b_ndebug=true \
+-       -D b_lto=false \
++       -D b_lto=true \
+        -D b_pie=true \
+        -D buildtype=plain \
+        --wrap-mode=nofallback \
+@@ -95,11 +98,29 @@ build() {
  }
  
  package_mesa-minimal-git() {
@@ -205,17 +216,18 @@ index 1ebe9e9..8bb2026 100644
      )
  
      DESTDIR="${pkgdir}" ninja $NINJAFLAGS -C _build install
-@@ -124,9 +145,21 @@ package_opencl-rusticl-mesa-minimal-git() {
+@@ -125,9 +146,22 @@ package_opencl-rusticl-mesa-minimal-git() {
      pkgdesc="OpenCL support in rust for mesa drivers (git version)"
      conflicts=(opencl-clover-mesa opencl-rusticl-mesa)
      provides=(opencl-rusticl-mesa opencl-driver)
 -    depends=(libdrm spirv-llvm-translator-minimal-git libclc-minimal-git spirv-tools-git
 -                    mesa-minimal-git=$pkgver-$pkgrel llvm-libs-minimal-git clang-libs-minimal-git
--                    expat libelf zstd lm_sensors zlib gcc-libs glibc
+-                    expat libelf zstd lm_sensors zlib gcc-libs glibc clang-opencl-headers-minimal-git
 +    replaces=('rusticl-mesa-minimal-git')
 +    depends=(
 +        "mesa-minimal-git=${pkgver}-${pkgrel}"
 +        'clang-libs-minimal-git'
++        'clang-opencl-headers-minimal-git'
 +        'expat' 'libexpat.so'
 +        'gcc-libs'
 +        'glibc'

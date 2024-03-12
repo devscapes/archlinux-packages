@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index e4c5f99..76a70ec 100644
+index e4c5f99..845671a 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -12,6 +12,7 @@ pkgrel=7
@@ -10,8 +10,20 @@ index e4c5f99..76a70ec 100644
  license=(
    'GPL-2.0-or-later'
    'LGPL-2.1-or-later'
+@@ -230,9 +231,9 @@ prepare() {
+ build() {
+   cd ${pkgname}-${_vlcver}
+ 
+-  export CFLAGS+=" -I/usr/include/samba-4.0 -ffat-lto-objects"
++  export CFLAGS="${CFLAGS/FORTIFY_SOURCE=3/FORTIFY_SOURCE=2} -I/usr/include/samba-4.0 -ffat-lto-objects"
+   export CPPFLAGS+=" -I/usr/include/samba-4.0"
+-  export CXXFLAGS+=" -std=c++17"
++  export CXXFLAGS="${CXXFLAGS/FORTIFY_SOURCE=3/FORTIFY_SOURCE=2} -std=c++17"
+   export PKG_CONFIG_PATH="/usr/lib/ffmpeg4.4/pkgconfig"
+   export LUAC=/usr/bin/luac
+   export LUA_LIBS="$(pkg-config --libs lua)"
 @@ -356,3 +357,4 @@ package() {
  }
  
  # vim: ts=2 sw=2 et:
-+pkgrel=${pkgrel}.1
++pkgrel=${pkgrel}.2

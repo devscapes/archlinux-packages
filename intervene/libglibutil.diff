@@ -1,14 +1,13 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index b7625bd..7d54b47 100644
+index 99099d5..fd80075 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -1,15 +1,19 @@
- # Maintainer: Danct12 <danct12@disroot.org>
+@@ -2,12 +2,16 @@
  
  pkgname=libglibutil
--pkgver=1.0.74
-+pkgver=1.0.76
- pkgrel=1
+ pkgver=1.0.76
+-pkgrel=1
++pkgrel=2
  pkgdesc="Library of glib utilities"
  arch=('x86_64' 'i686' 'armv7h' 'aarch64')
  url="https://github.com/sailfishos/libglibutil"
@@ -21,11 +20,8 @@ index b7625bd..7d54b47 100644
 +)
 +provides=('libglibutil.so')
  source=("$pkgname-$pkgver.tar.gz::https://github.com/sailfishos/libglibutil/archive/refs/tags/${pkgver}.tar.gz")
--sha512sums=('39d6230944cccc08f61fd421e4fde2c9d19a575197919d114cb9151088445376250bc251e6a8106e7cbe8a98f0847047ff9e36aaed44d4c28667898f48f5bb15')
-+sha512sums=('f0b35f0366889b6a4c83d73e416a50022f2f0efc08f0fd34b6458c2e8c8b4cabeda6ebbcd3ce9682ab7b92640d956a534683aa2d6773771914ed5dbfb1ad99ee')
+ sha512sums=('f0b35f0366889b6a4c83d73e416a50022f2f0efc08f0fd34b6458c2e8c8b4cabeda6ebbcd3ce9682ab7b92640d956a534683aa2d6773771914ed5dbfb1ad99ee')
  
- build() {
-   cd $pkgname-$pkgver
 @@ -19,4 +23,5 @@ build() {
  package() {
    cd $pkgname-$pkgver

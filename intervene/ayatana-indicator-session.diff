@@ -1,17 +1,18 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 86bbc21..6c82304 100644
+index 0edb6ee..8844b7c 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -6,9 +6,10 @@ pkgrel="1"
+@@ -5,10 +5,11 @@ pkgver="24.2.0"
+ pkgrel="1"
  pkgdesc="Ayatana Indicator showing session management, status and user switching"
  arch=("i686" "x86_64" "pentium4")
++groups=('ayatana-indicators')
  url="https://github.com/AyatanaIndicators/ayatana-indicator-session"
 -license=("GPL2" "GPL3")
-+groups=('ayatana-indicators')
-+license=("GPL-2.0-only OR GPL-3.0-only")
++license=("GPL-2.0-only" "GPL-3.0-only")
  makedepends=("cmake-extras" "intltool")
 -depends=("glib2" "systemd" "dconf" "libayatana-common>=0.9.5" "hicolor-icon-theme" "librda")
-+depends=("glib2" "libgio-2.0.so" "libglib-2.0.so" "libgobject-2.0.so" "systemd" "dconf" "libayatana-common>=0.9.5" "libayatana-common.so" "hicolor-icon-theme" "librda" "glibc")
++depends=("glibc" "glib2" "libgio-2.0.so" "libglib-2.0.so" "libgobject-2.0.so" "systemd" "dconf" "libayatana-common>=0.9.5" "libayatana-common.so" "hicolor-icon-theme" "librda" "librda.so")
  source=("${pkgname}-${pkgver}.tar.gz::https://github.com/AyatanaIndicators/${pkgname}/archive/${pkgver}.tar.gz")
- md5sums=("fbc6700d7af19d149440fad4f52b0261")
+ md5sums=("965fa9036aa89615e5ef3bfb8b20b86b")
  

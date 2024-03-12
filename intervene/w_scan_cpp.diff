@@ -1,8 +1,38 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index d3e1a7a..30e0cfe 100644
+index d3e1a7a..87471ad 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -20,11 +20,13 @@ source=("$pkgname-$pkgver.tar.gz::https://github.com/wirbel-at-vdr-portal/w_scan
+@@ -3,7 +3,7 @@
+ 
+ pkgname=w_scan_cpp
+ pkgver=20231015
+-pkgrel=1
++pkgrel=2
+ 
+ # These are versions of dependencies used by w_scan_cpp
+ _wirbelscan_version=2023.10.15
+@@ -13,18 +13,32 @@ _vdr_gitver=5f136032a2cf9ce979c3ec81556a9c3164820baf
+ pkgdesc="A dtv channel scanner based on VDR. Successor of w_scan"
+ arch=('i686' 'x86_64' 'armv6h' 'armv7h')
+ url="https://www.gen2vdr.de/wirbel/w_scan_cpp/index2.html"
+-license=('GPL')
+-depends=('freetype2' 'fontconfig' 'pugixml' 'librepfunc' 'libjpeg' 'curl')
++license=(
++    'GPL-2.0-only'
++    'GPL-2.0-or-later'
++)
++depends=(
++    'curl' 'libcurl.so'
++    'freetype2' 'libfreetype.so'
++    'fontconfig' 'libfontconfig.so'
++    'gcc-libs'
++    'glibc'
++    'libjpeg' 'libjpeg.so'
++    'librepfunc' 'librepfunc.so'
++    'pugixml'
++)
+ makedepends=('git' 'pango')
+ source=("$pkgname-$pkgver.tar.gz::https://github.com/wirbel-at-vdr-portal/w_scan_cpp/archive/refs/tags/$pkgver.tar.gz"
          "vdr-wirbelscan-$_wirbelscan_version.tar.gz::https://github.com/wirbel-at-vdr-portal/wirbelscan-dev/archive/refs/tags/$_wirbelscan_version.tar.gz"
          "git://git.tvdr.de/vdr.git#commit=$_vdr_gitver"
          "vdr-plugin-satip-wirbel::git+https://github.com/wirbel-at-vdr-portal/vdr-plugin-satip.git#commit=$_satip_gitver"
@@ -17,7 +47,7 @@ index d3e1a7a..30e0cfe 100644
  
  prepare() {
    cd "$srcdir/$pkgname-$pkgver"
-@@ -40,6 +42,8 @@ prepare() {
+@@ -40,6 +54,8 @@ prepare() {
    ln -s "vdr-plugin-satip-wirbel" "vdr/PLUGINS/src/satip"
    cp -a "$srcdir/wirbelscan-dev-$_wirbelscan_version" "vdr/PLUGINS/src"
    ln -s "wirbelscan-dev-$_wirbelscan_version" "vdr/PLUGINS/src/wirbelscan"

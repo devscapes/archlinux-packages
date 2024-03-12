@@ -1,37 +1,49 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 2f1bc61..f590a88 100644
+index 2f1bc61..b9a195b 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -1,37 +1,38 @@
+@@ -1,37 +1,48 @@
  # Maintainer: Emanuel Couto <unit73e@gmail.com>
  pkgname=cnijfilter2
 -pkgver=6.60
+-pkgrel=1
 +pkgver=6.70a
-+_pkgver=${pkgver%[a-z]}
- pkgrel=1
++_pkgver=${pkgver%[a-z]}-1
++pkgrel=2
  pkgdesc="Canon IJ Printer Driver for Linux"
  arch=('i686' 'x86_64')
  url="https://www.canon.com.au/home-printers"
- license=('GPL' 'custom:canon')
+-license=('GPL' 'custom:canon')
 -depends=('cups' 'libxml2' 'ghostscript')
-+depends=('cups' 'libxml2' 'ghostscript' 'libusb' 'libusb-1.0.so')
++license=(
++  'GPL-2.0-only'
++  'LicenseRef-Canon'
++)
++depends=(
++  'cups'
++  'gcc-libs'
++  'ghostscript'
++  'glibc'
++  'libusb' 'libusb-1.0.so'
++  'libxml2' 'libxml2.so'
++)
  makedepends=('automake' 'autoconf')
  provides=('tocanonij' 'tocnpwg' 'cnijlgmon3')
  conflicts=('cnijfilter' 'cnijfilter-mg3600')
 -source=("https://gdlp01.c-wss.com/gds/3/0100011753/01/$pkgname-source-$pkgver-1.tar.gz")
 -sha256sums=('997119d67897d2b6405555bc6baa4cf7727bf0ecc6467f86df408831b1dab6d0')
-+source=("https://gdlp01.c-wss.com/gds/7/0100012137/01/$pkgname-source-${_pkgver}-1.tar.gz")
++source=("https://gdlp01.c-wss.com/gds/7/0100012137/01/$pkgname-source-${_pkgver}.tar.gz")
 +sha256sums=('8c4e8c047fc3ed0848ecc315b3101d30fce0c1256c88844ba248b3cf9aec9e3e')
  
  prepare() {
 -	cd "$pkgname-source-$pkgver-1"
-+	cd "${pkgname}-source-${_pkgver}-1"
++	cd "${pkgname}-source-${_pkgver}"
  	sed -e '/GET_PROTOCOL/ s:^int:extern &:g' -i 'lgmon3/src/cnijlgmon3.c'
  }
  
  build() {
 -	cd "$pkgname-source-$pkgver-1"
-+	cd "${pkgname}-source-${_pkgver}-1"
++	cd "${pkgname}-source-${_pkgver}"
  
  	pushd cmdtocanonij2
  	./autogen.sh --prefix=/usr \
@@ -49,7 +61,7 @@ index 2f1bc61..f590a88 100644
  	make
  	popd
  
-@@ -46,7 +47,7 @@ build() {
+@@ -46,7 +57,7 @@ build() {
  		     --enable-libpath=/usr/lib/bjlib2 \
  		     --enable-progpath=/usr/bin \
  		     --datadir=/usr/share \
@@ -58,21 +70,21 @@ index 2f1bc61..f590a88 100644
  	make #CFLAGS="${CFLAGS} -fcommon"
  	popd
  
-@@ -68,7 +69,7 @@ build() {
+@@ -68,7 +79,7 @@ build() {
  }
  
  check() {
 -	cd "$pkgname-source-$pkgver-1"
-+	cd "${pkgname}-source-${_pkgver}-1"
++	cd "${pkgname}-source-${_pkgver}"
  
  	pushd cmdtocanonij2
  	make check
-@@ -106,7 +107,7 @@ package() {
+@@ -106,7 +117,7 @@ package() {
  	mkdir -p "$pkgdir/usr/lib/cups/backend"
  	mkdir -p "$pkgdir/usr/share/cups/model"
  
 -	cd "$pkgname-source-$pkgver-1"
-+	cd "${pkgname}-source-${_pkgver}-1"
++	cd "${pkgname}-source-${_pkgver}"
  
  	install -m644 com/ini/cnnet.ini "$pkgdir/usr/lib/bjlib2"
  	install -sm755 com/libs_bin_$CARCH/*.so.* "$pkgdir/usr/lib"

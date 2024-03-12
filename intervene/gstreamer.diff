@@ -1,8 +1,15 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 5e87cb5..1778fef 100644
+index 1aa0cf5..a5b38cd 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -30,6 +30,7 @@ pkgrel=2
+@@ -23,13 +23,13 @@ pkgname=(
+   gst-editing-services
+   gstreamer-vaapi
+   gst-python
+-  gstreamer-docs
+ )
+ pkgver=1.24.0
+ pkgrel=1
  pkgdesc="Multimedia graph framework"
  url="https://gstreamer.freedesktop.org/"
  arch=(x86_64)
@@ -10,22 +17,34 @@ index 5e87cb5..1778fef 100644
  license=(LGPL-2.1-or-later)
  makedepends=(
    # superproject
-@@ -60,7 +61,7 @@ makedepends=(
-   webrtc-audio-processing wildmidi wpewebkit zbar zvbi zxing-cpp
+@@ -60,7 +60,7 @@ makedepends=(
+   webrtc-audio-processing-1 wildmidi wpewebkit zbar zvbi zxing-cpp
  
    # gst-plugins-ugly
--  a52dec libcdio libdvdread libmpeg2 opencore-amr x264
-+  a52dec libcdio libdvdread libmpeg2 opencore-amr x264 libx264.so
+-  a52dec libcdio libdvdread libmpeg2 x264
++  a52dec libcdio libdvdread libmpeg2 x264 libx264.so
  
    # gst-libav
    ffmpeg
-@@ -90,9 +91,16 @@ prepare() {
+@@ -85,6 +85,17 @@ validpgpkeys=(
+   D637032E45B8C6585B9456565D2EEE6F6F349D7C # Tim Müller <tim@gstreamer-foundation.org>
+ )
  
-   # Disable broken tests
-   git apply -3 ../0001-HACK-meson-Disable-broken-tests.patch
++# Exclude gstreamer-docs from sources, as rebuilding doesn't change anything
++for _num in $(seq 0 $((${#source[@]} - 1))); do
++  [[ ${source[${_num}]} =~ "gstreamer-docs" ]] && continue
++  source_nodocs+=("${source[${_num}]}")
++  b2sums_nodocs+=("${b2sums[${_num}]}")
++done
 +
-+  # This test is failing 90% of the time
-+  sed '/netsim/d' -i subprojects/gst-plugins-bad/tests/check/meson.build
++source=("${source_nodocs[@]}")
++b2sums=("${b2sums_nodocs[@]}")
++unset source_nodocs b2sums_nodocs
++
+ prepare() {
+   cd gstreamer
+ 
+@@ -93,6 +104,10 @@ prepare() {
  }
  
  build() {
@@ -36,25 +55,25 @@ index 5e87cb5..1778fef 100644
    local meson_options=(
      # Superproject options
      -D devtools=disabled
-@@ -482,7 +490,7 @@ package_gst-plugins-bad() {
+@@ -486,7 +501,7 @@ package_gst-plugins-bad() {
      libmpcdec libopenmpt librsvg libsndfile libsrtp libwebp libxml2 lilv
      mjpegtools neon nettle openal openexr openjpeg2 openssl opus pango qrencode
-     rtmpdump sbc soundtouch spandsp srt svt-hevc webrtc-audio-processing
--    wildmidi x265 zbar zvbi zxing-cpp
-+    wildmidi x265 libx265.so zbar zvbi zxing-cpp
+     rtmpdump sbc soundtouch spandsp srt svt-av1 svt-hevc
+-    webrtc-audio-processing-1 wildmidi x265 zbar zvbi zxing-cpp
++    webrtc-audio-processing-1 wildmidi x265 libx265.so zbar zvbi zxing-cpp
    )
  
    cd root; local files=(
-@@ -653,7 +661,7 @@ package_gst-plugins-ugly() {
+@@ -661,7 +676,7 @@ package_gst-plugins-ugly() {
    pkgdesc+=" - ugly plugins"
    depends=(
      "gst-plugins-base-libs=$pkgver"
--    a52dec libcdio libdvdread libmpeg2 opencore-amr x264
-+    a52dec libcdio libdvdread libmpeg2 opencore-amr x264 libx264.so
+-    a52dec libcdio libdvdread libmpeg2 x264
++    a52dec libcdio libdvdread libmpeg2 x264 libx264.so
    )
  
    cd root; local files=(
-@@ -779,3 +787,4 @@ package_gstreamer-docs() {
+@@ -785,3 +800,4 @@ package_gstreamer-docs() {
  }
  
  # vim:set sw=2 sts=-1 et tw=80:

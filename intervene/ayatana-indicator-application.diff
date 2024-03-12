@@ -1,14 +1,22 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 965a626..e18e0a2 100644
+index 965a626..fef270b 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -7,8 +7,8 @@ pkgdesc="Ayatana Application Indicators"
+@@ -2,13 +2,14 @@
+ 
+ pkgname="ayatana-indicator-application"
+ pkgver="22.2.0"
+-pkgrel="1"
++pkgrel="4"
+ pkgdesc="Ayatana Application Indicators"
  arch=("i686" "x86_64" "pentium4")
++groups=('ayatana-indicators')
  url="https://github.com/AyatanaIndicators/ayatana-indicator-application"
- license=("GPL3")
+-license=("GPL3")
 -depends=("libayatana-appindicator" "dbus-glib")
 -makedepends=("cmake-extras" "glib2" "libayatana-indicator>=0.9.0" "gtk3" "libdbusmenu-gtk3" "systemd" "intltool")
-+depends=("libayatana-appindicator" "dbus-glib" "glib2")
++license=("GPL-3.0-only")
++depends=("glibc" "libayatana-appindicator" "dbus-glib" "glib2" "libgio-2.0.so" "libglib-2.0.so" "libgobject-2.0.so")
 +makedepends=("cmake-extras" "libayatana-indicator>=0.9.0" "gtk3" "libdbusmenu-gtk3" "systemd" "intltool")
  source=("${pkgname}-${pkgver}.tar.gz::https://github.com/AyatanaIndicators/${pkgname}/archive/${pkgver}.tar.gz")
  md5sums=("83b373f6934f1865e307e19020fcc44b")

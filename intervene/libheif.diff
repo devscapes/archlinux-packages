@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index e450a78..775f97b 100644
+index e450a78..25b13ed 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -7,7 +7,8 @@ pkgrel=3
@@ -25,4 +25,4 @@ index e450a78..775f97b 100644
  package() {
    DESTDIR="$pkgdir" cmake --install build
  }
-+pkgrel=${pkgrel}.1
++pkgrel=${pkgrel}.2

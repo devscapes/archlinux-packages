@@ -1,19 +1,27 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 3746ea4..b11b2a8 100644
+index 84c68ec..477e570 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -10,8 +10,9 @@ pkgrel=3
+@@ -10,6 +10,7 @@ pkgrel=6
  epoch=2
  pkgdesc='Complete solution to record, convert and stream audio and video'
  arch=(x86_64)
 +groups=('extra-rebuild')
- url=https://ffmpeg.org/
--license=(GPL3)
-+license=('GPL-3.0-or-later')
+ url=https://ffmpeg.org
+ license=(GPL-3.0-only)
  depends=(
-   alsa-lib
-   aom
-@@ -113,9 +114,6 @@ provides=(
+@@ -73,8 +74,8 @@ depends=(
+   vid.stab
+   vmaf
+   vulkan-icd-loader
+-  x264
+-  x265
++  x264 libx264.so
++  x265 libx265.so
+   xvidcore
+   xz
+   zimg
+@@ -111,9 +112,6 @@ provides=(
    libswresample.so
    libswscale.so
  )
@@ -23,8 +31,17 @@ index 3746ea4..b11b2a8 100644
  _tag=6f4048827982a8f48f71f551a6e1ed2362816eec
  source=(
    git+https://git.ffmpeg.org/ffmpeg.git?signed#tag=${_tag}
-@@ -227,3 +225,4 @@ package() {
+@@ -138,6 +136,8 @@ prepare() {
+   # Fix bug in av_fft_end
+   git cherry-pick -n a562cfee2e214252f8b3f516527272ae32ef9532
+   git cherry-pick -n 250471ea1745fc703eb346a2a662304536a311b1
++  # Fix building with latest vulkan-headers
++  git cherry-pick -n e06ce6d2b45edac4a2df04f304e18d4727417d24
+ }
+ 
+ pkgver() {
+@@ -252,3 +252,4 @@ package() {
  }
  
  # vim: ts=2 sw=2 et:
-+pkgrel=${pkgrel}.1
++pkgrel=${pkgrel}.2

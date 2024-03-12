@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index f417b48..6386047 100644
+index f417b48..1580c94 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -1,17 +1,22 @@
@@ -10,8 +10,9 @@ index f417b48..6386047 100644
 +
  pkgname=x265-git
 -pkgver=3.5.r103.g34532bda1
+-pkgrel=1
 +pkgver=3.5.r155.g74abf80c7
- pkgrel=1
++pkgrel=3
  pkgdesc='Open source H.265/HEVC video encoder (git version)'
  arch=('x86_64')
  url='https://bitbucket.org/multicoreware/x265_git'
@@ -25,7 +26,7 @@ index f417b48..6386047 100644
  provides=('x265' 'libx265.so')
  conflicts=('x265')
 -source=('git+https://bitbucket.org/multicoreware/x265_git.git')
-+options=('!lto')
++options=('!lto') # don't include our lto flags
 +source=('git+https://bitbucket.org/multicoreware/x265_git')
  sha256sums=('SKIP')
  

@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 92032ee..3058a12 100644
+index 92032ee..2ec7932 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -2,13 +2,14 @@
@@ -7,16 +7,17 @@ index 92032ee..3058a12 100644
  pkgname="ayatana-indicator-sound"
  pkgver="23.10.3"
 -pkgrel="1"
-+pkgrel="2"
++pkgrel="3"
  pkgdesc="Ayatana system sound indicator"
  arch=("i686" "x86_64" "pentium4")
 +groups=('ayatana-indicators')
  url="https://github.com/AyatanaIndicators/ayatana-indicator-sound"
- license=("GPL3")
+-license=("GPL3")
 -makedepends=("cmake-extras" "intltool" "vala" "systemd" "glib2" "libxml2" "gobject-introspection")
 -depends=("accountsservice" "libpulse" "libgee" "libnotify" "libayatana-common>=0.9.9")
++license=("GPL-3.0-only")
 +makedepends=("cmake-extras" "intltool" "vala" "systemd" "libxml2" "gobject-introspection")
-+depends=("accountsservice" "libpulse" "libgee" "libnotify" "libayatana-common>=0.9.9" "dconf" "glib2")
++depends=("glibc" "accountsservice" "libaccountsservice.so" "libpulse" "libpulse.so" "libpulse-mainloop-glib.so" "libgee" "libgee-0.8.so" "libnotify" "libnotify.so" "libayatana-common>=0.9.9" "libayatana-common.so" "dconf" "glib2" "libgio-2.0.so" "libglib-2.0.so" "libgobject-2.0.so")
  source=("${pkgname}-${pkgver}.tar.gz::https://github.com/AyatanaIndicators/${pkgname}/archive/${pkgver}.tar.gz")
  md5sums=("c5178d9eeac100083e6f225dee6a9278")
  

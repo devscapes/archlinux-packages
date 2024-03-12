@@ -1,21 +1,27 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 8512fa9..d25f443 100644
+index 8512fa9..549e164 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -2,13 +2,13 @@
+@@ -2,16 +2,17 @@
  
  pkgname="ayatana-indicator-messages"
  pkgver="23.10.0"
 -pkgrel="1"
-+pkgrel="2"
++pkgrel="3"
  pkgdesc="Ayatana Indicator that collects messages that need a response"
  arch=("i686" "x86_64" "pentium4")
++groups=('ayatana-indicators')
  url="https://github.com/AyatanaIndicators/ayatana-indicator-messages"
- license=("GPL3")
+-license=("GPL3")
 -makedepends=("cmake-extras" "glib2" "gobject-introspection" "gtk-doc" "intltool" "vala" "systemd")
 -depends=("accountsservice" "hicolor-icon-theme" "dconf")
++license=("GPL-3.0-only")
 +makedepends=("cmake-extras" "gobject-introspection" "gtk-doc" "intltool" "vala" "systemd")
-+depends=("accountsservice" "hicolor-icon-theme" "dconf" "glib2")
++depends=("glibc" "accountsservice" "libaccountsservice.so" "hicolor-icon-theme" "dconf" "glib2" "libgio-2.0.so" "libglib-2.0.so" "libgobject-2.0.so")
  source=("${pkgname}-${pkgver}.tar.gz::https://github.com/AyatanaIndicators/${pkgname}/archive/${pkgver}.tar.gz")
  md5sums=("b051c879e5cdf5911343ac12ed00a857")
- provides=("indicator-messages")
+-provides=("indicator-messages")
++provides=("libmessaging-menu.so" "indicator-messages")
+ conflicts=("indicator-messages")
+ 
+ build()

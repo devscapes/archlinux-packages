@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 27d3f48..976529d 100644
+index 27d3f48..25099a7 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -1,44 +1,54 @@
@@ -10,7 +10,7 @@ index 27d3f48..976529d 100644
 -pkgver=r75.c4cce9d
 +pkgbase=plasma5-themes-layan-git
 +pkgname=('plasma5-themes-layan-git' 'sddm-theme-layan-git' 'kvantum-theme-layan-git')
-+pkgver=r75.gc4cce9d
++pkgver=r76.g0909676
  pkgrel=1
  pkgdesc="A flat Design theme for KDE Plasma desktop"
  arch=(any)

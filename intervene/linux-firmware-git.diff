@@ -1,17 +1,18 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 3d6cb71..a2e66c3 100644
+index a98ac3f..acb039f 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -6,11 +6,21 @@ pkgbase=linux-firmware-git
+@@ -6,21 +6,41 @@ pkgbase=linux-firmware-git
  pkgname=(linux-firmware-whence-git linux-firmware-git amd-ucode-git
           linux-firmware-{nfp,mellanox,marvell,qcom,liquidio,qlogic,bnx2x}-git
  )
--pkgver=20231215.c156e6be
-+pkgver=20240203.b4b04a5c
+-pkgver=20240220.97b693d2
++pkgver=20240308.92010357
  pkgrel=1
  pkgdesc="Firmware files for Linux"
- url="https://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git;a=summary"
+-url="https://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git;a=summary"
 -license=('GPL2' 'GPL3' 'custom')
++url="https://gitlab.com/kernel-firmware/linux-firmware"
 +# Many firmware files are licensed under a variant of BSD-style license that only permits unmodified
 +# binary redistribution for use in officially licensed or authorized products by the manufacturer.
 +# Some others in particular are licensed under a version of Intel Simplified License or its
@@ -22,11 +23,38 @@ index 3d6cb71..a2e66c3 100644
 +# under open source license or allegedly so, but may not be considered fully free either.
 +#
 +# The following SPDX identifers are listed in best effort attempt.
-+license=('BSD-3-Clause AND (BSD-3-Clause OR GPL-2.0-only) AND BSD-3-Clause-Clear AND BSD-4-Clause AND BSD-Source-Code AND GPL-2.0-only AND (GPL-2.0-only OR Linux-OpenIB) AND (GPL-2.0-only OR MPL-1.1) AND GPL-2.0-or-later AND GPL-2.0-or-later WITH eCos-exception-2.0 AND GPL-3.0-only AND ISC AND MIT AND LicenseRef-Redistributable AND LicenseRef-Unknown')
++license=(
++  'BSD-3-Clause'
++  'BSD-3-Clause-Clear'
++  'BSD-3-Clause OR GPL-2.0-only'
++  'BSD-4-Clause'
++  'BSD-Source-Code'
++  'GPL-2.0-only'
++  'GPL-2.0-only OR Linux-OpenIB'
++  'GPL-2.0-only OR MPL-1.1'
++  'GPL-2.0-or-later'
++  'GPL-2.0-or-later WITH eCos-exception-2.0'
++  'GPL-3.0-only'
++  'ISC'
++  'MIT'
++  'LicenseRef-Redistributable'
++  'LicenseRef-unknown'
++)
  arch=('any')
  makedepends=('git' 'rdfind')
  options=(!strip)
-@@ -61,7 +71,7 @@ package_linux-firmware-whence-git() {
+-#source=("${pkgbase}::git+https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git?signed")
+-# NOTE: upstream doesn't sign most commits anymore, but still signs all tags.
+-# Packages in the official repos package tags.
+-# You can check signatures with the following commands:
+-#git log --format=raw --show-signature main
+-#git tag -v $(git tag)
+-source=("${pkgbase}::git+https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git")
++source=("${pkgbase}::git+${url}.git")
+ sha256sums=('SKIP')
+ validpgpkeys=('4CDE8575E547BF835FE15807A31B6BD72486CFD6') # Josh Boyer <jwboyer@fedoraproject.org>
+ 
+@@ -61,7 +81,7 @@ package_linux-firmware-whence-git() {
    provides=("${pkgname%-git}=$pkgver")
    pkgdesc+=" - contains the WHENCE license file which documents the vendor license details"
  
@@ -35,7 +63,7 @@ index 3d6cb71..a2e66c3 100644
  }
  
  package_linux-firmware-git() {
-@@ -73,7 +83,7 @@ package_linux-firmware-git() {
+@@ -73,7 +93,7 @@ package_linux-firmware-git() {
  
    ZSTD_CLEVEL=19 make DESTDIR="${pkgdir}" FIRMWAREDIR=/usr/lib/firmware install-zst
  
@@ -44,12 +72,9 @@ index 3d6cb71..a2e66c3 100644
  
    cd "${pkgdir}"
  
-@@ -81,22 +91,24 @@ package_linux-firmware-git() {
-   rm usr/lib/firmware/mrvl/prestera/mvsw_prestera_fw_arm64-v4.1.img.zst
+@@ -84,21 +104,21 @@ package_linux-firmware-git() {
+   _pick amd-ucode usr/lib/firmware/amd-ucode
  
-   # split
-+  _pick amd-ucode usr/lib/firmware/amd-ucode
-+
    _pick linux-firmware-nfp usr/lib/firmware/netronome
 -  _pick linux-firmware-nfp usr/share/licenses/${pkgname%-git}/LICENCE.Netronome
 +  _pick linux-firmware-nfp usr/share/licenses/${pkgname}/LICENCE.Netronome
@@ -74,14 +99,14 @@ index 3d6cb71..a2e66c3 100644
  
    _pick linux-firmware-bnx2x usr/lib/firmware/bnx2x*
  }
-@@ -105,17 +117,20 @@ package_amd-ucode-git() {
+@@ -107,19 +127,20 @@ package_amd-ucode-git() {
    conflicts=("${pkgname%-git}")
    provides=("${pkgname%-git}=$pkgver")
    pkgdesc="Microcode update image for AMD CPUs"
 -  license=(custom)
 +  license=('LicenseRef-Redistributable')
-+
-+  mv -v amd-ucode/* "${pkgdir}"
+ 
+   mv -v amd-ucode/* "${pkgdir}"
  
    install -Dt "${pkgdir}/boot" -m644 amd-ucode.img
  
@@ -97,7 +122,7 @@ index 3d6cb71..a2e66c3 100644
    depends=('linux-firmware-whence')
  
    mv -v linux-firmware-nfp/* "${pkgdir}"
-@@ -125,6 +140,7 @@ package_linux-firmware-mellanox-git() {
+@@ -129,6 +150,7 @@ package_linux-firmware-mellanox-git() {
    conflicts=("${pkgname%-git}" 'linux-firmware<=20211216.f682ecb')
    provides=("${pkgname%-git}=$pkgver")
    pkgdesc+=" - mellanox / Firmware for Mellanox Spectrum switches"
@@ -105,7 +130,7 @@ index 3d6cb71..a2e66c3 100644
    depends=('linux-firmware-whence')
  
    mv -v linux-firmware-mellanox/* "${pkgdir}"
-@@ -134,6 +150,7 @@ package_linux-firmware-marvell-git() {
+@@ -138,6 +160,7 @@ package_linux-firmware-marvell-git() {
    conflicts=("${pkgname%-git}" 'linux-firmware<=20211216.f682ecb')
    provides=("${pkgname%-git}=$pkgver")
    pkgdesc+=" - marvell / Firmware for Marvell devices"
@@ -113,15 +138,18 @@ index 3d6cb71..a2e66c3 100644
    depends=('linux-firmware-whence')
  
    mv -v linux-firmware-marvell/* "${pkgdir}"
-@@ -143,6 +160,7 @@ package_linux-firmware-qcom-git() {
+@@ -147,6 +170,10 @@ package_linux-firmware-qcom-git() {
    conflicts=("${pkgname%-git}" 'linux-firmware<=20211216.f682ecb')
    provides=("${pkgname%-git}=$pkgver")
    pkgdesc+=" - qcom / Firmware for Qualcomm SoCs"
-+  license=('BSD-3-Clause AND LicenseRef-Redistributable')
++  license=(
++    'BSD-3-Clause'
++    'LicenseRef-Redistributable'
++  )
    depends=('linux-firmware-whence')
  
    mv -v linux-firmware-qcom/* "${pkgdir}"
-@@ -152,6 +170,7 @@ package_linux-firmware-liquidio-git() {
+@@ -156,6 +183,7 @@ package_linux-firmware-liquidio-git() {
    conflicts=("${pkgname%-git}" 'linux-firmware<=20211216.f682ecb')
    provides=("${pkgname%-git}=$pkgver")
    pkgdesc+=" - liquidio / Firmware for Cavium LiquidIO server adapters"
@@ -129,15 +157,18 @@ index 3d6cb71..a2e66c3 100644
    depends=('linux-firmware-whence')
  
    mv -v linux-firmware-liquidio/* "${pkgdir}"
-@@ -161,6 +180,7 @@ package_linux-firmware-qlogic-git() {
+@@ -165,6 +193,10 @@ package_linux-firmware-qlogic-git() {
    conflicts=("${pkgname%-git}" 'linux-firmware<=20211216.f682ecb')
    provides=("${pkgname%-git}=$pkgver")
    pkgdesc+=" - qlogic / Firmware for QLogic devices"
-+  license=('BSD-3-Clause AND LicenseRef-Redistributable')
++  license=(
++    'BSD-3-Clause'
++    'LicenseRef-Redistributable'
++  )
    depends=('linux-firmware-whence')
  
    mv -v linux-firmware-qlogic/* "${pkgdir}"
-@@ -170,6 +190,7 @@ package_linux-firmware-bnx2x-git() {
+@@ -174,6 +206,7 @@ package_linux-firmware-bnx2x-git() {
    conflicts=("${pkgname%-git}" 'linux-firmware<=20211216.f682ecb')
    provides=("${pkgname%-git}=$pkgver")
    pkgdesc+=" - bnx2x / Firmware for Broadcom NetXtreme II 10Gb ethernet adapters"

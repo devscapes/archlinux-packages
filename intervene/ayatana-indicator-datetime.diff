@@ -1,17 +1,19 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 0553844..dceac25 100644
+index 3a4d4c5..49f22cc 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -6,9 +6,10 @@ pkgrel="1"
+@@ -5,10 +5,11 @@ pkgver="24.2.0"
+ pkgrel="1"
  pkgdesc="Ayatana Indicator providing clock and calendar"
  arch=("i686" "x86_64" "pentium4")
++groups=('ayatana-indicators')
  url="https://github.com/AyatanaIndicators/ayatana-indicator-datetime"
 -license=("GPL3")
-+groups=('ayatana-indicators')
-+license=('GPL-3.0-only')
- makedepends=("cmake-extras" "ayatana-indicator-messages>=0.9.0" "intltool" "properties-cpp")
+-makedepends=("cmake-extras" "ayatana-indicator-messages>=0.9.0" "intltool" "properties-cpp")
 -depends=("libayatana-common>=0.9.9" "evolution-data-server" "libaccounts-glib" "libical" "glib2" "dconf" "gcc-libs" "glibc" "libnotify")
-+depends=("libayatana-common>=0.9.9" "evolution-data-server" "libecal-2.0.so" "libedataserver-1.2.so" "libaccounts-glib" "libical" "glib2" "libgio-2.0.so" "libglib-2.0.so" "libgobject-2.0.so" "dconf" "gcc-libs" "glibc" "libnotify")
++license=("GPL-3.0-only")
++makedepends=("cmake-extras" "intltool" "properties-cpp")
++depends=("gcc-libs" "glibc" "ayatana-indicator-messages>=0.9.0" "libmessaging-menu.so" "libayatana-common>=0.9.9" "libayatana-common.so" "evolution-data-server" "libecal-2.0.so" "libedataserver-1.2.so" "libaccounts-glib" "libical" "glib2" "libgio-2.0.so" "libglib-2.0.so" "libgobject-2.0.so" "dconf" "libnotify" "libnotify.so" "util-linux-libs" "libuuid.so")
  source=("${pkgname}-${pkgver}.tar.gz::https://github.com/AyatanaIndicators/${pkgname}/archive/${pkgver}.tar.gz")
- md5sums=("281e0941038a8edf807c31d74848909d")
+ md5sums=("ba23a4909f54acdf604d1cd0dd524d6c")
  

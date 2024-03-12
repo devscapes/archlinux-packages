@@ -1,21 +1,23 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 7c4f249..3890a28 100644
+index 7c4f249..1c517b6 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -2,13 +2,13 @@
+@@ -2,13 +2,14 @@
  
  pkgname="ayatana-indicator-bluetooth"
  pkgver="23.10.0"
 -pkgrel="1"
-+pkgrel="2"
++pkgrel="3"
  pkgdesc="Ayatana system bluetooth indicator"
  arch=("i686" "x86_64" "pentium4")
++groups=('ayatana-indicators')
  url="https://github.com/AyatanaIndicators/ayatana-indicator-bluetooth"
- license=("GPL3")
+-license=("GPL3")
 -makedepends=("cmake-extras" "intltool" "glib2" "systemd" "vala" )
 -depends=("bluez" "blueman" "libayatana-common>=0.9.9")
++license=("GPL-3.0-only")
 +makedepends=("cmake-extras" "intltool" "systemd" "vala" )
-+depends=("bluez" "blueman" "libayatana-common>=0.9.9" "dconf" "glib2")
++depends=("glibc" "bluez" "blueman" "libayatana-common>=0.9.9" "libayatana-common.so" "dconf" "glib2" "libgio-2.0.so" "libglib-2.0.so" "libgobject-2.0.so")
  source=("${pkgname}-${pkgver}.tar.gz::https://github.com/AyatanaIndicators/${pkgname}/archive/${pkgver}.tar.gz")
  md5sums=("3a622c799f175472416e9be64cc409e6")
  options=("!emptydirs")

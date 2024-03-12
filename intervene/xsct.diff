@@ -1,13 +1,14 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 8be0c66..bc36e28 100644
+index 8be0c66..94a48eb 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -1,20 +1,22 @@
+@@ -1,20 +1,24 @@
  # Mainteiner: Perseo <perseo.gi98@gmail.com>
  pkgname=xsct
 -pkgver=2.0
+-pkgrel=1
 +pkgver=2.2
- pkgrel=1
++pkgrel=2
  gitname=sct
  
  pkgdesc="Improved sct (set screen color temperature)"
@@ -15,11 +16,14 @@ index 8be0c66..bc36e28 100644
  url="https://github.com/faf0/${gitname}"
 -license=('Public Domain')
 -depends=()
-+license=('Unlicense')
-+depends=('glibc')
- makedepends=('git' 'libx11' 'libxrandr')
+-makedepends=('git' 'libx11' 'libxrandr')
 -source=("https://github.com/faf0/sct/archive/refs/tags/${pkgver}.tar.gz")
 -md5sums=('43caee9b0bff464178b714d68e214b3d')
++license=('Unlicense')
++depends=(
++    'glibc'
++    'libxrandr'
++)
 +source=("${gitname}-${pkgver}.tar.gz::${url}/archive/refs/tags/${pkgver}.tar.gz")
 +sha384sums=('5ab5c041de181be3326977dbebd466524896d8b02bf70bdfbf66ed6f6ff7679ba641559942a30c03c1a05b6d00b3f196')
 +

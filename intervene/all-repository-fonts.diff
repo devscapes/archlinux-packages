@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 3ccf5a8..4fd2cb9 100644
+index 3ccf5a8..8910348 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -2,8 +2,8 @@
@@ -8,7 +8,7 @@ index 3ccf5a8..4fd2cb9 100644
  pkgname=all-repository-fonts
 -pkgver=20231210
 -pkgrel=2
-+pkgver=20231226
++pkgver=20240310
 +pkgrel=1
  pkgdesc='Meta package for all fonts in the official repositories.'
  arch=('any')
@@ -21,7 +21,15 @@ index 3ccf5a8..4fd2cb9 100644
  	'adobe-source-han-serif-jp-fonts'
  	'adobe-source-han-serif-kr-fonts'
  	'adobe-source-han-serif-otc-fonts'
-@@ -34,12 +35,15 @@ depends=(
+@@ -24,7 +25,6 @@ depends=(
+ 	'adobe-source-serif-fonts'
+ 	'awesome-terminal-fonts'
+ 	'cantarell-fonts'
+-	'gentium-plus-font'
+ 	'gnu-free-fonts'
+ 	'gsfonts'
+ 	'inter-font'
+@@ -34,12 +34,15 @@ depends=(
  	'noto-fonts-emoji'
  	'noto-fonts-extra'
  	'opendesktop-fonts'
@@ -37,7 +45,7 @@ index 3ccf5a8..4fd2cb9 100644
  	'otf-droid-nerd'
  	'otf-fantasque-sans-mono'
  	'otf-fira-mono'
-@@ -48,6 +52,7 @@ depends=(
+@@ -48,6 +51,7 @@ depends=(
  	'otf-font-awesome'
  	'otf-geist-mono-nerd'
  	'otf-hasklig-nerd'
@@ -45,6 +53,14 @@ index 3ccf5a8..4fd2cb9 100644
  	'otf-hermit-nerd'
  	'otf-ipaexfont'
  	'otf-ipafont'
+@@ -124,6 +128,7 @@ depends=(
+ 	'ttf-fira-sans'
+ 	'ttf-firacode-nerd'
+ 	'ttf-font-awesome'
++	'ttf-gentium-plus'
+ 	'ttf-go-nerd'
+ 	'ttf-hack'
+ 	'ttf-hack-nerd'
 @@ -165,7 +170,6 @@ depends=(
  	'ttf-mononoki-nerd'
  	'ttf-mplus-nerd'

@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 0eadd94..83eb3c5 100644
+index 0eadd94..92762db 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -10,7 +10,8 @@ pkgrel=4
@@ -16,4 +16,4 @@ index 0eadd94..83eb3c5 100644
  }
  
  # vim:set sw=2 et:
-+pkgrel=${pkgrel}.1
++pkgrel=${pkgrel}.2

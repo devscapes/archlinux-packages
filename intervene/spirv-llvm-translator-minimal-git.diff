@@ -1,14 +1,14 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 147339e..f453186 100644
+index 147339e..9223a57 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -3,15 +3,16 @@
+@@ -3,26 +3,44 @@
  _srcname=SPIRV-LLVM-Translator
  pkgname=spirv-llvm-translator-minimal-git
  pkgdesc="Tool and a library for bi-directional translation between SPIR-V and LLVM IR, trunk version"
 -epoch=1
 -pkgver=r1929.8e6f467
-+pkgver=19.0.0.r1960.g8c357de0
++pkgver=19.0.0.r2000.gd54f77c5
  pkgrel=1
  arch=('x86_64')
  url="https://github.com/KhronosGroup/SPIRV-LLVM-Translator"
@@ -25,8 +25,14 @@ index 147339e..f453186 100644
  provides=(spirv-llvm-translator)
  conflicts=(spirv-llvm-translator)
  source=("git+$url.git"
-@@ -20,9 +21,20 @@ md5sums=('SKIP')
- sha512sums=('SKIP')
++        'dbginstptr-get-instruction.patch'
+ )
+-md5sums=('SKIP')
+-sha512sums=('SKIP')
++md5sums=('SKIP'
++         '88de61da0168ac03eab61ad00304c60e')
++sha512sums=('SKIP'
++            '9c2887171734d0c62d92e306c327beec0f13ca28d2b2d3f8703a4177ea5dd8bf71d12636e6b57e8d5516f93a9aad8d72e7a9e797f0dc882d146e05557483ecbf')
  
  
 +prepare() {
@@ -35,6 +41,9 @@ index 147339e..f453186 100644
 +    ver2=$(pacman -Si llvm-minimal-git | grep Version | cut -d: -f2 | cut -d. -f-3 | sed 's/[[:space:]]//')
 +
 +    [[ ${ver1} == ${ver2} ]] || sed "s|${ver1}|${ver2}|" -i SPIRV-LLVM-Translator/CMakeLists.txt
++
++    # https://github.com/llvm/llvm-project/commit/9997e0397156ff7e01aecbd17bdeb7bfe5fb15b0
++    patch -d SPIRV-LLVM-Translator -Np1 <"${srcdir}/dbginstptr-get-instruction.patch"
 +}
 +
  pkgver() {
@@ -47,7 +56,7 @@ index 147339e..f453186 100644
  }
  
  build() {
-@@ -31,13 +43,19 @@ build() {
+@@ -31,13 +49,19 @@ build() {
          -B _build \
          -S "$srcdir"/$_srcname  \
          -G "Unix Makefiles" \
@@ -67,7 +76,7 @@ index 147339e..f453186 100644
          -D BUILD_SHARED_LIBS=ON \
          -Wno-dev
  
-@@ -49,6 +67,8 @@ check() {
+@@ -49,6 +73,8 @@ check() {
  }
  
  package() {
@@ -76,3 +85,52 @@ index 147339e..f453186 100644
  
      make -C _build DESTDIR="${pkgdir}" install
      install -Dm755 _build/tools/llvm-spirv/llvm-spirv -t "$pkgdir"/usr/bin
+diff --git a/dbginstptr-get-instruction.patch b/dbginstptr-get-instruction.patch
+new file mode 100644
+index 0000000..468624c
+--- /dev/null
++++ b/dbginstptr-get-instruction.patch
+@@ -0,0 +1,43 @@
++diff --git a/lib/SPIRV/SPIRVToLLVMDbgTran.cpp b/lib/SPIRV/SPIRVToLLVMDbgTran.cpp
++index 6a089cc4..a2af5cc6 100644
++--- a/lib/SPIRV/SPIRVToLLVMDbgTran.cpp
+++++ b/lib/SPIRV/SPIRVToLLVMDbgTran.cpp
++@@ -1565,22 +1565,22 @@ SPIRVToLLVMDbgTran::transDebugIntrinsic(const SPIRVExtInst *DebugInst,
++       // parameter. To work around this limitation we create a dummy temp
++       // alloca, use it to create llvm.dbg.declare, and then remove the alloca.
++       auto *AI = new AllocaInst(Type::getInt8Ty(M->getContext()), 0, "tmp", BB);
++-      auto *DbgDeclare = getDIBuilder(DebugInst).insertDeclare(
+++      auto DbgDeclare = getDIBuilder(DebugInst).insertDeclare(
++           AI, LocalVar.first, GetExpression(Ops[ExpressionIdx]),
++           LocalVar.second, BB);
++       AI->eraseFromParent();
++-      return DbgDeclare;
+++      return DbgDeclare.get<Instruction *>();
++     }
++     return getDIBuilder(DebugInst).insertDeclare(
++         GetValue(Ops[VariableIdx]), LocalVar.first,
++-        GetExpression(Ops[ExpressionIdx]), LocalVar.second, BB);
+++        GetExpression(Ops[ExpressionIdx]), LocalVar.second, BB).get<Instruction *>();
++   }
++   case SPIRVDebug::Value: {
++     using namespace SPIRVDebug::Operand::DebugValue;
++     auto LocalVar = GetLocalVar(Ops[DebugLocalVarIdx]);
++     Value *Val = GetValue(Ops[ValueIdx]);
++     DIExpression *Expr = GetExpression(Ops[ExpressionIdx]);
++-    auto *DbgValIntr = getDIBuilder(DebugInst).insertDbgValueIntrinsic(
+++    auto DbgValIntr = getDIBuilder(DebugInst).insertDbgValueIntrinsic(
++         Val, LocalVar.first, Expr, LocalVar.second, BB);
++ 
++     std::vector<ValueAsMetadata *> MDs;
++@@ -1589,9 +1589,9 @@ SPIRVToLLVMDbgTran::transDebugIntrinsic(const SPIRVExtInst *DebugInst,
++     }
++     if (!MDs.empty()) {
++       DIArgList *AL = DIArgList::get(M->getContext(), MDs);
++-      cast<DbgVariableIntrinsic>(DbgValIntr)->setRawLocation(AL);
+++      cast<DbgVariableIntrinsic>(DbgValIntr.get<Instruction *>())->setRawLocation(AL);
++     }
++-    return DbgValIntr;
+++    return DbgValIntr.get<Instruction *>();
++   }
++   default:
++     llvm_unreachable("Unknown debug intrinsic!");

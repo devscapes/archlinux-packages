@@ -1,9 +1,13 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 2632bbe..bdcaf44 100644
+index 2632bbe..7d56a88 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -5,10 +5,11 @@ pkgver="23.10.3"
- pkgrel="1"
+@@ -2,13 +2,14 @@
+ 
+ pkgname="ayatana-indicator-a11y"
+ pkgver="23.10.3"
+-pkgrel="1"
++pkgrel="2"
  pkgdesc="Ayatana Indicator for Accessibility Settings"
  arch=("i686" "x86_64" "pentium4")
 +groups=('ayatana-indicators')

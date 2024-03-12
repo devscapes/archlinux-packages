@@ -1,14 +1,14 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 5010468..99cfaf9 100644
+index 5010468..49f4407 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -3,30 +3,24 @@
+@@ -3,36 +3,30 @@
  # Contributor: Solomon Choina <shlomochoina@gmail.com>
  
  pkgname=libclc-minimal-git
 -pkgver=17.0.0_r462218.51572c2cd720
 -pkgrel=2
-+pkgver=19.0.0.r487623.g1f8c3c3ab132
++pkgver=19.0.0.r492423.g261e5648e70b
 +pkgrel=1
  pkgdesc="companion package to llvm-minimal-git,  Library requirements of the OpenCL C programming language"
  arch=('any')
@@ -40,12 +40,19 @@ index 5010468..99cfaf9 100644
  
    git reset --hard $_commit_hash
  }
+ 
+ pkgver() {
+-    cd llvm-project/llvm
++    cd llvm-project/cmake/Modules
+ 
+     # This will almost match the output of `llvm-config --version` when the
+     # LLVM_APPEND_VC_REV cmake flag is turned on. The only difference is
 @@ -41,7 +35,7 @@ pkgver() {
              'BEGIN { ORS="." ; i=0 } \
               /set\(LLVM_VERSION_/ { print $2 ; i++ ; if (i==2) ORS="" } \
               END { print "\n" }' \
 -             CMakeLists.txt)_r$(git rev-list --count HEAD).$(git rev-parse --short HEAD)
-+             CMakeLists.txt).r$(git rev-list --count HEAD).g$(git rev-parse --short HEAD)
++             LLVMVersion.cmake).r$(git rev-list --count HEAD).g$(git rev-parse --short HEAD)
      echo "${_pkgver}"
  }
  

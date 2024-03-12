@@ -1,13 +1,9 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 53755e7..8d7fb75 100644
+index 53755e7..852b1f5 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -7,9 +7,10 @@ pkgname=mpv
- epoch=1
- _tag='807b9343ef911d138950411cdb83c16a151d2018' # git rev-parse v${pkgver}
- pkgver=0.37.0
--pkgrel=2
-+pkgrel=2.1
+@@ -10,6 +10,7 @@ pkgver=0.37.0
+ pkgrel=2
  pkgdesc='a free, open source, and cross-platform media player'
  arch=('x86_64')
 +groups=('extra-rebuild')
@@ -22,3 +18,9 @@ index 53755e7..8d7fb75 100644
  provides=('libmpv.so')
  options=('!emptydirs')
  validpgpkeys=('145077D82501AA20152CACCE8D769208D5E31419') # sfan5 <sfan5@live.de>
+@@ -67,3 +69,5 @@ package() {
+   install -m0644 "${pkgname}"/TOOLS/{umpv,mpv_identify.sh,stats-conv.py,idet.sh,lua/*} \
+     -D -t "${pkgdir}"/usr/share/mpv/scripts
+ }
++
++pkgrel=${pkgrel}.2

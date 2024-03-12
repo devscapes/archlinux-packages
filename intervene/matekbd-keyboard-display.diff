@@ -1,12 +1,21 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 34fd5bc..05ad8b8 100644
+index 34fd5bc..09e2cfe 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -9,7 +9,7 @@ arch=("i686" "x86_64" "pentium4")
+@@ -3,13 +3,13 @@
+ 
+ pkgname="matekbd-keyboard-display"
+ pkgver="23.11.1"
+-pkgrel="1"
++pkgrel="2"
+ pkgdesc="Preview keyboard layouts on MATE desktop"
+ arch=("i686" "x86_64" "pentium4")
  url="https://tari.in/www/software/matekbd-keyboard-display"
- license=("LGPL3")
- depends=("libxklavier" "hicolor-icon-theme" "gtk3" "libmatekbd" "glib2" "glibc")
+-license=("LGPL3")
+-depends=("libxklavier" "hicolor-icon-theme" "gtk3" "libmatekbd" "glib2" "glibc")
 -makedepends=("at-spi2-core")
++license=("LGPL-3.0-or-later")
++depends=("libxklavier" "hicolor-icon-theme" "gtk3" "libgdk-3.so" "libgtk-3.so" "libmatekbd" "glib2" "libglib-2.0.so" "libgobject-2.0.so" "glibc")
 +makedepends=("at-spi2-core" "cmake")
  source=("${pkgname}-${pkgver}.tar.gz::https://github.com/tari01/${pkgname}/archive/${pkgver}.tar.gz")
  md5sums=("49770d03f61a3c6509d13d3e2f405d3d")

@@ -1,9 +1,13 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 8476ccc..976a70e 100644
+index 8476ccc..faae420 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -11,14 +11,35 @@ pkgver=4.12.2.0
- pkgrel=1
+@@ -8,17 +8,38 @@
+ 
+ pkgname=megasync
+ pkgver=4.12.2.0
+-pkgrel=1
++pkgrel=2
  pkgdesc='Official MEGA desktop application for syncing with MEGA Cloud Drive'
  arch=('x86_64')
 -url='https://github.com/meganz/MEGAsync/'
@@ -41,7 +45,7 @@ index 8476ccc..976a70e 100644
 +)
  makedepends=('git' 'doxygen' 'lsb-release' 'qt5-tools' 'swig')
 -source=("git+https://github.com/meganz/MEGAsync.git#tag=v${pkgver}_OSX"
-+source=("git+https://github.com/meganz/MEGAsync.git#tag=v${pkgver}_Win"
++source=("git+https://github.com/meganz/MEGAsync.git#tag=v${pkgver}_Linux"
          'meganz-sdk'::'git+https://github.com/meganz/sdk.git'
          '010-megasync-libpdfium.patch'
          '020-megasync-ffmpeg.patch')

@@ -1,13 +1,8 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index e4f10f8..3fb55b0 100644
+index 43f9ab3..6147a81 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -2,11 +2,12 @@
- 
- pkgbase=linux
- pkgver=6.7.3.arch1
--pkgrel=1
-+pkgrel=1.1
+@@ -6,7 +6,8 @@ pkgrel=1
  pkgdesc='Linux'
  url='https://github.com/archlinux/linux'
  arch=(x86_64)
@@ -17,18 +12,18 @@ index e4f10f8..3fb55b0 100644
  makedepends=(
    bc
    cpio
-@@ -49,6 +50,15 @@ b2sums=('2dea0685e5c9b279beb7661f4efa91ccd662d55eb7c5a69aff52fc74bbb574fcb490a9a
+@@ -49,6 +50,15 @@ b2sums=('2a5990e067439dcb3a6e7647832c85a2ce7faf28c48f414ebcb4d33ea37f870204c4b6b
          'SKIP'
-         '526e6a5dc674218466d7596c8b96e219bb8a17b8a1e676c95e8d67ff3c507cc9a91e5e0c624d86ae207753f66525eaed77ce526d06186cb9d9e448116cb1bacb')
+         '21083151bdcd0fc2bcc0475b9cd73bab5666a71f043eedd67b19a3a4c09c8253a5a06794ce9270215782f5885e05e70b5e424123f1bded7aa7a6d3f30d02a4b3')
  
 +# Update .config checksum separately
-+sha256sums[4]='2c4ee925858478dbd2a587d2fbc8c09b788fe20952576dcda0a633781ab80b7a'
-+b2sums[4]='03a25305fdd5c8a2fdd55f672148e548bc78fa6600b3969b37fef6a350430777cfef5f1529b3b95ebbf1a3384a6f74d167209c83c637ef340511d614f1f2b0db'
++sha256sums[4]='51458ba8f21af102286a94ef60baf07cb0ce7688255ade1e91cf4581bd88eea9'
++b2sums[4]='42ff08c7f1caac1e0f2b5f320afa5d787e73bb09ee75037006c365b0d2b78a679d73bdc0d343d1c5804589aae7091c3b657d60f7b101d387663f63d526df4326'
 +
 +# Additional patches
-+source+=("0100-more-uarches-for-kernel-5.17+-20230105.patch::https://raw.githubusercontent.com/graysky2/kernel_compiler_patch/48eccba759279c53f206f7e5d7534b623d25c382/more-uarches-for-kernel-5.17+.patch")
-+sha256sums+=('81ad663925a0aa5b5332a69bae7227393664bb81ee2e57a283e7f16e9ff75efe')
-+b2sums+=('508ff463d936e07e0c3ac2017da12bda52d3db5d98d45fe908f35c4d9fadb253cc9d5c17b8915ec600b5024fcecc2746a04d32096e7ebf691438d4ab8bd067a8')
++source+=("0100-more-uarches-for-kernel-6.1.79-6.8-rc3-20240221.patch::https://raw.githubusercontent.com/graysky2/kernel_compiler_patch/c409515574bd4d69af45ad74d4e7ba7151010516/more-uarches-for-kernel-6.1.79-6.8-rc3.patch")
++sha256sums+=('1a3825b790413d09806c9a2115f679be28e434cfcc69c01dc069b634d1e8007a')
++b2sums+=('e6768ae66c876256d3f781e9b0c8eb5c58e0c010c511bfd0f2064e48861e21d39d2478cf09576523d140839b96b9a63fe32a8c6f12ec6ead8ee8d2367576e75a')
 +
  export KBUILD_BUILD_HOST=archlinux
  export KBUILD_BUILD_USER=$pkgbase
@@ -42,15 +37,15 @@ index e4f10f8..3fb55b0 100644
    echo "${pkgbase#linux}" > localversion.20-pkgname
  
    local src
-@@ -82,7 +92,6 @@ prepare() {
- build() {
+@@ -83,7 +93,6 @@ build() {
    cd $_srcname
    make all
+   make -C tools/bpf/bpftool vmlinux.h feature-clang-bpf-co-re=1
 -  make htmldocs
  }
  
  _package() {
-@@ -164,6 +173,9 @@ _package-headers() {
+@@ -165,6 +174,9 @@ _package-headers() {
    # https://bugs.archlinux.org/task/71392
    install -Dt "$builddir/drivers/iio/common/hid-sensors" -m644 drivers/iio/common/hid-sensors/*.h
  
@@ -60,7 +55,7 @@ index e4f10f8..3fb55b0 100644
    echo "Installing KConfig files..."
    find . -name 'Kconfig*' -exec install -Dm644 {} "$builddir/{}" \;
  
-@@ -229,7 +241,6 @@ _package-docs() {
+@@ -230,7 +242,6 @@ _package-docs() {
  pkgname=(
    "$pkgbase"
    "$pkgbase-headers"
@@ -68,11 +63,24 @@ index e4f10f8..3fb55b0 100644
  )
  for _p in "${pkgname[@]}"; do
    eval "package_$_p() {
+@@ -240,3 +251,4 @@ for _p in "${pkgname[@]}"; do
+ done
+ 
+ # vim:set ts=8 sts=2 sw=2 et:
++pkgrel=${pkgrel}.1
 diff --git a/config b/config
-index 2d63c0b..f309265 100644
+index 62b52a2..f5699ee 100644
 --- a/config
 +++ b/config
-@@ -401,10 +401,50 @@ CONFIG_JAILHOUSE_GUEST=y
+@@ -1,6 +1,6 @@
+ #
+ # Automatically generated file; DO NOT EDIT.
+-# Linux/x86 6.7.7-arch1 Kernel Configuration
++# Linux/x86 6.7.9-arch1 Kernel Configuration
+ #
+ CONFIG_CC_VERSION_TEXT="gcc (GCC) 13.2.1 20230801"
+ CONFIG_CC_IS_GCC=y
+@@ -402,12 +402,55 @@ CONFIG_JAILHOUSE_GUEST=y
  CONFIG_ACRN_GUEST=y
  CONFIG_INTEL_TDX_GUEST=y
  # CONFIG_MK8 is not set
@@ -123,8 +131,13 @@ index 2d63c0b..f309265 100644
 +# CONFIG_MNATIVE_AMD is not set
  CONFIG_X86_INTERNODE_CACHE_SHIFT=6
  CONFIG_X86_L1_CACHE_SHIFT=6
++CONFIG_X86_INTEL_USERCOPY=y
++CONFIG_X86_USE_PPRO_CHECKSUM=y
++CONFIG_X86_P6_NOP=y
  CONFIG_X86_TSC=y
-@@ -947,9 +987,9 @@ CONFIG_MODULE_SIG_FORMAT=y
+ CONFIG_X86_CMPXCHG64=y
+ CONFIG_X86_CMOV=y
+@@ -948,9 +991,9 @@ CONFIG_MODULE_SIG_FORMAT=y
  CONFIG_MODULES=y
  CONFIG_MODULE_DEBUGFS=y
  # CONFIG_MODULE_DEBUG is not set
@@ -136,7 +149,7 @@ index 2d63c0b..f309265 100644
  CONFIG_MODULE_UNLOAD_TAINT_TRACKING=y
  # CONFIG_MODVERSIONS is not set
  CONFIG_MODULE_SRCVERSION_ALL=y
-@@ -958,17 +998,17 @@ CONFIG_MODULE_SIG=y
+@@ -959,17 +1002,17 @@ CONFIG_MODULE_SIG=y
  CONFIG_MODULE_SIG_ALL=y
  # CONFIG_MODULE_SIG_SHA256 is not set
  # CONFIG_MODULE_SIG_SHA384 is not set
@@ -158,7 +171,7 @@ index 2d63c0b..f309265 100644
  CONFIG_MODPROBE_PATH="/sbin/modprobe"
  CONFIG_MODULES_TREE_LOOKUP=y
  CONFIG_BLOCK=y
-@@ -10202,7 +10242,10 @@ CONFIG_USB4=m
+@@ -10200,7 +10243,10 @@ CONFIG_USB4=m
  #
  # Android
  #
@@ -169,4 +182,17 @@ index 2d63c0b..f309265 100644
 +# CONFIG_ANDROID_BINDER_IPC_SELFTEST is not set
  # end of Android
  
- CONFIG_LIBNVDIMM=y
+ CONFIG_LIBNVDIMM=m
+@@ -10794,9 +10840,9 @@ CONFIG_INTEGRITY_AUDIT=y
+ # CONFIG_DEFAULT_SECURITY_SELINUX is not set
+ # CONFIG_DEFAULT_SECURITY_SMACK is not set
+ # CONFIG_DEFAULT_SECURITY_TOMOYO is not set
+-# CONFIG_DEFAULT_SECURITY_APPARMOR is not set
+-CONFIG_DEFAULT_SECURITY_DAC=y
+-CONFIG_LSM="landlock,lockdown,yama,integrity,bpf"
++CONFIG_DEFAULT_SECURITY_APPARMOR=y
++# CONFIG_DEFAULT_SECURITY_DAC is not set
++CONFIG_LSM="landlock,lockdown,yama,integrity,apparmor,bpf"
+ 
+ #
+ # Kernel hardening options

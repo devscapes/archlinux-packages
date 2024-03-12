@@ -1,16 +1,17 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index fc9dca7..3b2d76e 100644
+index 247c5a1..30a06a8 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -6,8 +6,9 @@ pkgrel="1"
+@@ -5,9 +5,10 @@ pkgver="24.1.1"
+ pkgrel="1"
  pkgdesc="Ayatana Indicator Display"
  arch=("i686" "x86_64" "pentium4")
++groups=('ayatana-indicators')
  url="https://github.com/AyatanaIndicators/ayatana-indicator-display"
 -license=("GPL3")
 -depends=("xsct" "libayatana-common>=0.9.8" "geoclue" "hicolor-icon-theme" "glib2" "gcc-libs" "glibc" "dconf" "accountsservice")
-+groups=('ayatana-indicators')
 +license=("GPL-3.0-only")
-+depends=("xsct" "libayatana-common>=0.9.8" "libayatana-common.so" "geoclue" "hicolor-icon-theme" "glib2" "libgio-2.0.so" "libglib-2.0.so" "libgobject-2.0.so" "gcc-libs" "glibc" "dconf" "accountsservice" "libaccountsservice.so")
++depends=("gcc-libs" "glibc" "xsct" "libayatana-common>=0.9.8" "libayatana-common.so" "geoclue" "hicolor-icon-theme" "glib2" "libgio-2.0.so" "libglib-2.0.so" "libgobject-2.0.so" "dconf" "accountsservice" "libaccountsservice.so")
  makedepends=("intltool" "cmake" "cmake-extras" "systemd" "properties-cpp")
  source=("${pkgname}-${pkgver}.tar.gz::https://github.com/AyatanaIndicators/${pkgname}/archive/${pkgver}.tar.gz")
- md5sums=("5d3b53511cffb719a7d912d05df31127")
+ md5sums=("70c547021450b1c15ec47f42579ad806")

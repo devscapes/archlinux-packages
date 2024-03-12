@@ -1,0 +1,52 @@
+diff --git a/LICENSE b/LICENSE
+new file mode 100644
+index 0000000..8615f11
+--- /dev/null
++++ b/LICENSE
+@@ -0,0 +1,9 @@
++You may only use this Speedtest software and information generated
++from it for personal, non-commercial use, through a command line
++interface on a personal computer. Your use of this software is subject
++to the End User License Agreement, Terms of Use and Privacy Policy at
++these URLs:
++
++        https://www.speedtest.net/about/eula
++        https://www.speedtest.net/about/terms
++        https://www.speedtest.net/about/privacy
+diff --git a/PKGBUILD b/PKGBUILD
+index f222258..181a2e1 100644
+--- a/PKGBUILD
++++ b/PKGBUILD
+@@ -2,15 +2,16 @@
+ 
+ pkgname=ookla-speedtest-bin
+ pkgver=1.2.0
+-pkgrel=1
++pkgrel=2
+ pkgdesc="Speedtest CLI by Ookla"
+ depends=("ca-certificates")
+ conflicts=("speedtest-cli")
+ arch=("x86_64" "i686" "aarch64" "arm" "armv6h" "armv7h")
+ options=(!strip)
+ url="https://www.speedtest.net/apps/cli"
+-license=("custom:Ookla EULA")
++license=('LicenseRef-Ookla')
+ 
++source=('LICENSE')
+ source_x86_64=("https://install.speedtest.net/app/cli/ookla-speedtest-${pkgver}-linux-x86_64.tgz")
+ source_i686=("https://install.speedtest.net/app/cli/ookla-speedtest-${pkgver}-linux-i386.tgz")
+ source_aarch64=("https://install.speedtest.net/app/cli/ookla-speedtest-${pkgver}-linux-aarch64.tgz")
+@@ -18,6 +19,7 @@ source_arm=("https://install.speedtest.net/app/cli/ookla-speedtest-${pkgver}-lin
+ source_armv6h=("https://install.speedtest.net/app/cli/ookla-speedtest-${pkgver}-linux-armel.tgz")
+ source_armv7h=("https://install.speedtest.net/app/cli/ookla-speedtest-${pkgver}-linux-armhf.tgz")
+ 
++sha256sums=('84c3f7b167bc1ba0e9035a4fff52464cea92af484c81e48dcb73e954d355328d')
+ sha256sums_x86_64=('5690596c54ff9bed63fa3732f818a05dbc2db19ad36ed68f21ca5f64d5cfeeb7')
+ sha256sums_i686=('9ff7e18dbae7ee0e03c66108445a2fb6ceea6c86f66482e1392f55881b772fe8')
+ sha256sums_aarch64=('3953d231da3783e2bf8904b6dd72767c5c6e533e163d3742fd0437affa431bd3')
+@@ -28,4 +30,5 @@ sha256sums_armv7h=('e45fcdebbd8a185553535533dd032d6b10bc8c64eee4139b1147b9c09835
+ package() {
+   install -Dm755 "${srcdir}/speedtest" "${pkgdir}/usr/bin/speedtest"
+   install -Dm644 "${srcdir}/speedtest.5" "${pkgdir}/usr/share/man/man5/speedtest.5"
++  install -Dm644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+ }

@@ -1,17 +1,22 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 3bb3dd3..4805ea8 100644
+index 3bb3dd3..e154068 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -6,9 +6,10 @@ pkgrel="1"
+@@ -2,13 +2,14 @@
+ 
+ pkgname="ayatana-indicator-power"
+ pkgver="24.1.0"
+-pkgrel="1"
++pkgrel="2"
  pkgdesc="Ayatana Indicator showing power state"
  arch=("i686" "x86_64" "pentium4")
++groups=('ayatana-indicators')
  url="https://github.com/AyatanaIndicators/ayatana-indicator-power"
 -license=("GPL3")
-+groups=('ayatana-indicators')
 +license=("GPL-3.0-only")
  makedepends=("cmake-extras" "intltool")
 -depends=("glib2" "systemd" "libayatana-common>=0.9.9" "libnotify" "dconf" "librda")
-+depends=("glib2" "libgio-2.0.so" "libglib-2.0.so" "libgobject-2.0.so" "systemd" "libayatana-common>=0.9.9" "libayatana-common.so" "libnotify" "libnotify.so" "dconf" "librda" "glibc")
++depends=("glibc" "glib2" "libgio-2.0.so" "libglib-2.0.so" "libgobject-2.0.so" "systemd" "libayatana-common>=0.9.9" "libayatana-common.so" "libnotify" "libnotify.so" "dconf" "librda" "librda.so")
  source=("${pkgname}-${pkgver}.tar.gz::https://github.com/AyatanaIndicators/${pkgname}/archive/${pkgver}.tar.gz")
  md5sums=("652b61ff6408718918a0e0f9feb90602")
  

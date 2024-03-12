@@ -1,20 +1,22 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 19f4408..d95cca2 100644
+index 19f4408..fe36e31 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -2,13 +2,13 @@
+@@ -2,13 +2,14 @@
  
  pkgname="ayatana-indicator-printers"
  pkgver="23.10.0"
 -pkgrel="1"
-+pkgrel="2"
++pkgrel="3"
  pkgdesc="Ayatana Indicator showing active print jobs"
  arch=("i686" "x86_64" "pentium4")
++groups=('ayatana-indicators')
  url="https://github.com/AyatanaIndicators/ayatana-indicator-printers"
- license=("GPL3")
+-license=("GPL3")
 -depends=("cups" "libayatana-common>=0.9.9")
 -makedepends=("intltool" "cmake-extras" "glib2" "libcups" "systemd")
-+depends=("cups" "libayatana-common>=0.9.9" "glib2")
++license=("GPL-3.0-only")
++depends=("glibc" "cups" "libayatana-common>=0.9.9" "libayatana-common.so" "glib2" "libgio-2.0.so" "libglib-2.0.so" "libgobject-2.0.so")
 +makedepends=("intltool" "cmake-extras" "systemd")
  optdepends=("system-config-printer")
  source=("${pkgname}-${pkgver}.tar.gz::https://github.com/AyatanaIndicators/${pkgname}/archive/${pkgver}.tar.gz")

@@ -1,13 +1,13 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 01554a8..036254d 100644
+index 70b40ca..2040b5e 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -7,12 +7,12 @@ pkgname=(
    'avidemux-qt6-git'
    'avidemux-cli-git'
  )
--pkgver=2.8.2.230910.dd023f161
-+pkgver=2.8.2.r10016.g13d62ae05
+-pkgver=2.8.2.240125.cdbfa6956
++pkgver=2.8.2.r10039.ge652233d4
  pkgrel=1
  pkgdesc="A graphical/cli tool to edit video (filter/re-encode/split). (GIT version)"
  arch=('x86_64')
@@ -36,19 +36,8 @@ index 01554a8..036254d 100644
    'sqlite'
    'glu'
    'qt5-script'
-@@ -61,7 +61,6 @@ source=(
-   'opus_check.patch'
-   'fix_mpeg-ts_typo.patch'
-   'fix_ugly_slider.patch'
--  'https://github.com/FFmpeg/FFmpeg/commit/effadce6c756247ea8bae32dc13bb3e6f464f0eb.patch'
- )
- sha256sums=(
-   'SKIP'
-@@ -71,15 +70,12 @@ sha256sums=(
-   'ae6d2c93163b7b760591688c7811dfdd4a952ed9074d8cbdf4953b701f0fa7db'
-   'a11452a93c993bdf71f0c29d686badec1c50231bc9d3c6f02f280e06cd8add7a'
+@@ -72,12 +72,10 @@ sha256sums=(
    '3c91ddefadfad5f43d514941ddfa1942ea2c618525aaae36bde5a5d18f8e2067'
--  '206f4d8437b21f6197ffc444c86d0504892a5c2137cb227b4af1c1e8bf2c426c'
  )
  
 -options=('debug')
@@ -61,17 +50,7 @@ index 01554a8..036254d 100644
  }
  
  prepare() {
-@@ -89,9 +85,6 @@ prepare() {
-   git -c protocol.file.allow=always submodule update --init \
-     avidemux/qt4/i18n
- 
--  # fix build ffmpeg about ASM encode
--  cp "${srcdir}/effadce6c756247ea8bae32dc13bb3e6f464f0eb.patch" avidemux_core/ffmpeg_package/patches/upstream/effadce6c756247ea8bae32dc13bb3e6f464f0eb.patch
--
-   # http://avidemux.org/smif/index.php/topic,16301.0.html
-   patch -p1 -i "${srcdir}/fix_verbose.patch"
- 
-@@ -233,14 +226,12 @@ package_avidemux-core-git() {
+@@ -228,14 +226,12 @@ package_avidemux-core-git() {
      'a52dec' # 'liba52.so'
      'alsa-lib' 'libasound.so'
      'aom' 'libaom.so'
@@ -87,7 +66,7 @@ index 01554a8..036254d 100644
      'lame' 'libmp3lame.so'
      'libass' 'libass.so'
      'libfdk-aac' 'libfdk-aac.so'
-@@ -291,7 +282,7 @@ package_avidemux-core-git() {
+@@ -286,7 +282,7 @@ package_avidemux-core-git() {
  package_avidemux-qt5-git() {
    pkgdesc="Qt5 GUI for Avidemux. (GIT version)"
    depends=(
@@ -96,7 +75,7 @@ index 01554a8..036254d 100644
      'gcc-libs' # 'libgcc_s.so' 'libstdc++.so'
      'glibc' # 'libc.so' 'libm.so'
      'glu' # 'libGLU.so'
-@@ -331,7 +322,7 @@ package_avidemux-qt5-git() {
+@@ -326,7 +322,7 @@ package_avidemux-qt5-git() {
  package_avidemux-qt6-git() {
    pkgdesc="Qt6 GUI for Avidemux. (GIT version)"
    depends=(
@@ -105,7 +84,7 @@ index 01554a8..036254d 100644
      'gcc-libs' # 'libgcc_s.so' 'libstdc++.so'
      'glibc' # 'libc.so' 'libm.so'
      'glu' # 'libGLU.so'
-@@ -373,7 +364,7 @@ package_avidemux-qt6-git() {
+@@ -368,7 +364,7 @@ package_avidemux-qt6-git() {
  package_avidemux-cli-git() {
    pkgdesc="CLI frontend for Avidemux. (GIT version)"
    depends=(
