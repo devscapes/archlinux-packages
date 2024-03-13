@@ -1,6 +1,6 @@
 pkgbase = brave-beta-bin
 	pkgdesc = Web browser that blocks ads and trackers by default (beta binary release)
-	pkgver = 1.64.102
+	pkgver = 1.64.103
 	pkgrel = 1
 	url = https://brave.com/download-beta
 	arch = x86_64
@@ -31,15 +31,15 @@ pkgbase = brave-beta-bin
 	optdepends = pipewire: WebRTC desktop sharing under Wayland
 	optdepends = qt5-base: enable Qt5 with --enable-features=AllowQt --qt-version=5
 	optdepends = qt6-base: enable Qt6 with --enable-features=AllowQt --qt-version=6
-	provides = brave-beta=1.64.102
+	provides = brave-beta=1.64.103
 	provides = brave-browser-beta
 	conflicts = brave-beta
-	noextract = brave-beta-bin-1.64.102-x86_64.zip
+	noextract = brave-beta-bin-1.64.103-x86_64.zip
 	options = !strip
-	source = brave-beta-bin-1.64.102-x86_64.zip::https://github.com/brave/brave-browser/releases/download/v1.64.102/brave-browser-beta-1.64.102-linux-amd64.zip
+	source = brave-beta-bin-1.64.103-x86_64.zip::https://github.com/brave/brave-browser/releases/download/v1.64.103/brave-browser-beta-1.64.103-linux-amd64.zip
 	source = brave-beta-bin.sh
 	source = brave-browser-beta.desktop
-	sha256sums = 976ce2f2e35fa9a508d86f7b25cb2988f68f3b86b14126e91dec3680add0a7c6
+	sha256sums = 4c821836a36b6ea517bc8475b13d8c370ab624767f99bc95caea3763ddd74fe5
 	sha256sums = 9129fca8e31302096e71fa81023f90dd7b6590c44a023690865b9fc3daa74bcb
 	sha256sums = 589a1d06a2f0fe7df6ba3c8e808565ef33e0884ca7f66bbd953d3541a180ce96
 

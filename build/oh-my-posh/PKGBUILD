@@ -2,14 +2,19 @@
 # Contributor: Jan0660 <jan0660@tutanota.com>
 
 pkgname=oh-my-posh
-pkgver=19.15.0
+pkgver=19.16.1
 pkgrel=1
 pkgdesc='A prompt theme engine for any shell'
 arch=('x86_64')
 url='https://ohmyposh.dev'
 license=('MIT')
-depends=('glibc')
-makedepends=('git' 'go')
+depends=(
+  'glibc'
+)
+makedepends=(
+  'git'
+  'go'
+)
 source=("git+https://github.com/JanDeDobbeleer/oh-my-posh.git#tag=v${pkgver}")
 sha256sums=('SKIP')
 
@@ -43,12 +48,11 @@ package() {
   cd oh-my-posh
 
   # Install binary
-  install -Dm755 "src/${pkgname}" "${pkgdir}/usr/bin/${pkgname}"
+  install -Dt "${pkgdir}/usr/bin" "src/${pkgname}"
 
   # Install default themes
-  install -d "${pkgdir}/usr/share/${pkgname}"
-  cp -r themes "${pkgdir}/usr/share/${pkgname}/themes"
+  install -Dt "${pkgdir}/usr/share/${pkgname}/themes" -m644 themes/*.omp.*
 
   # Copy license
-  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+  install -Dt "${pkgdir}/usr/share/licenses/${pkgname}" -m644 COPYING
 }
