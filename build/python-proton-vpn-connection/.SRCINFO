@@ -1,0 +1,22 @@
+pkgbase = python-proton-vpn-connection
+	pkgdesc = Proton Technologies VPN connector for Linux
+	pkgver = 0.14.2
+	pkgrel = 1
+	url = https://github.com/ProtonVPN/python-proton-vpn-connection
+	arch = any
+	groups = ProtonVPN
+	license = GPL-3.0-or-later
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-setuptools
+	makedepends = python-wheel
+	depends = python
+	depends = python-jinja
+	depends = python-proton-core
+	depends = python-proton-vpn-killswitch
+	depends = python-proton-vpn-logger
+	source = python-proton-vpn-connection-0.14.2.tar.gz::https://github.com/ProtonVPN/python-proton-vpn-connection/archive/refs/tags/v0.14.2.tar.gz
+	sha384sums = 389a2097cb62dca4aa17e8c64a25a77c8a07f2b28e01dcd8265187da289d5155318e33817cc5aff6fe0ca09b9da8a794
+	b2sums = d15e3adbd151227ae1a6c84d168f932732d7836f003efcf0b3d3071a4c365e24ea5d24c6417257aea7217f5c2a1276aa5c032575550067a862e51afa8ff42c9d
+
+pkgname = python-proton-vpn-connection

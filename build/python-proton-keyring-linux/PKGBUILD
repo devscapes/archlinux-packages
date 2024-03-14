@@ -1,0 +1,34 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+# Contributor: Ali Molaei <ali dot molaei at protonmail dot com>
+
+pkgname=python-proton-keyring-linux
+pkgver=0.0.1
+pkgrel=1
+pkgdesc='Proton Technologies keyring plugins for Linux'
+arch=('any')
+url='https://github.com/ProtonVPN/python-proton-keyring-linux'
+license=('GPL-3.0-or-later')
+groups=('ProtonVPN')
+depends=(
+    'python'
+    'python-keyring'
+)
+makedepends=(
+    'python-build'
+    'python-installer'
+    'python-setuptools'
+    'python-wheel'
+)
+source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
+sha384sums=('1f09f4244518500a454de4973d01b4af641708896846df5fcfec8f7d23fbe9f4a0f4b461bf9e2edcf4fa33d2f4cef358')
+b2sums=('1c5f0edfb0267c7df7fb2bd659b38d312459d2714aae72b1ae5f89fcd3277cdde81d72ed7076ba0735dde52bcdf52de58af33f4a8aa7ba845e476aaeafd06a44')
+
+build() {
+    cd "${pkgname}-${pkgver}"
+    python -m build -w -n
+}
+
+package() {
+    cd "${pkgname}-${pkgver}"
+    python -m installer -d "${pkgdir}" dist/*.whl
+}

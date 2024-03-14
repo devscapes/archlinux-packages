@@ -1,0 +1,35 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+# Contributor: Ali Molaei <ali dot molaei at protonmail dot com>
+
+pkgname=python-proton-keyring-linux-secretservice
+pkgver=0.0.1
+pkgrel=1
+pkgdesc='Proton Technologies keyring SecretService implementation for Linux'
+arch=('any')
+url='https://github.com/ProtonVPN/python-proton-keyring-linux-secretservice'
+license=('GPL-3.0-or-later')
+groups=('ProtonVPN')
+depends=(
+    'org.freedesktop.secrets'
+    'python'
+    'python-proton-keyring-linux'
+)
+makedepends=(
+    'python-build'
+    'python-installer'
+    'python-setuptools'
+    'python-wheel'
+)
+source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/refs/tags/${pkgver}.tar.gz")
+sha384sums=('1a4d3d3e532bbdfd22ac898c2115ef30b5c9d1d7285d282ae8ddc6fac18ae21932d51307cdb483e8abf62a812185740b')
+b2sums=('703ce986df3684f7190baea1d977fac79349a38a80b9ff167be003b2661c354b3af8d9b5f2f39908359a537045452f25b1c8b3d3c8e9eb0b35c3f459166cf6e6')
+
+build() {
+    cd "${pkgname}-${pkgver}"
+    python -m build -w -n
+}
+
+package() {
+    cd "${pkgname}-${pkgver}"
+    python -m installer -d "${pkgdir}" dist/*.whl
+}

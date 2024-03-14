@@ -22,7 +22,6 @@ optdepends=('python: needed for torrent search tab')
 _commit=64ba2276813c79d59d825d1d99c31155f10dc913  # refs/tags/release-4.6.3.10
 source=("${pkgbase}::git+${url}.git#commit=${_commit}?signed")
 sha256sums=('SKIP')
-# gpg --import <(curl -s https://github.com/c0re100.gpg)
 validpgpkeys=('1BF487001BD0390EE94458427C3B3004FE745AAF') # c0re100 <corehusky@gmail.com>
 
 build() {

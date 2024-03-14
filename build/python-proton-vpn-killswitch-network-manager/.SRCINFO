@@ -1,0 +1,24 @@
+pkgbase = python-proton-vpn-killswitch-network-manager
+	pkgdesc = Proton Technologies VPN NetworkManager kill switch plugin for Linux
+	pkgver = 0.4.3
+	pkgrel = 1
+	url = https://github.com/ProtonVPN/python-proton-vpn-killswitch-network-manager
+	arch = any
+	groups = ProtonVPN
+	license = GPL-3.0-or-later
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-setuptools
+	makedepends = python-wheel
+	depends = libnm
+	depends = python
+	depends = python-gobject
+	depends = python-packaging
+	depends = python-proton-vpn-connection
+	depends = python-proton-vpn-killswitch
+	depends = python-proton-vpn-logger
+	source = python-proton-vpn-killswitch-network-manager-0.4.3.tar.gz::https://github.com/ProtonVPN/python-proton-vpn-killswitch-network-manager/archive/refs/tags/v0.4.3.tar.gz
+	sha384sums = b0749de34447d55d92513ed8d8ade2adf1f41d48fc2d854cd6d8fdc4db6c763104ef2aa782ee654943cda963353bc535
+	b2sums = 5376ae2606b95d295abe29ee0cfa15dc4b0556a17dce84cad4668917d9979cb49372cf3287f3b4a19ead6c1cee6c8e7a28d940a6a59ecc7f4fadc655d46db867
+
+pkgname = python-proton-vpn-killswitch-network-manager

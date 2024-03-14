@@ -1,0 +1,39 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+# Contributor: Ali Molaei <ali dot molaei at protonmail dot com>
+
+pkgname=python-proton-vpn-killswitch-network-manager
+pkgver=0.4.3
+pkgrel=1
+pkgdesc='Proton Technologies VPN NetworkManager kill switch plugin for Linux'
+arch=('any')
+url='https://github.com/ProtonVPN/python-proton-vpn-killswitch-network-manager'
+license=('GPL-3.0-or-later')
+groups=('ProtonVPN')
+depends=(
+    'libnm'
+    'python'
+    'python-gobject'
+    'python-packaging'
+    'python-proton-vpn-connection'
+    'python-proton-vpn-killswitch'
+    'python-proton-vpn-logger'
+)
+makedepends=(
+    'python-build'
+    'python-installer'
+    'python-setuptools'
+    'python-wheel'
+)
+source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
+sha384sums=('b0749de34447d55d92513ed8d8ade2adf1f41d48fc2d854cd6d8fdc4db6c763104ef2aa782ee654943cda963353bc535')
+b2sums=('5376ae2606b95d295abe29ee0cfa15dc4b0556a17dce84cad4668917d9979cb49372cf3287f3b4a19ead6c1cee6c8e7a28d940a6a59ecc7f4fadc655d46db867')
+
+build() {
+    cd "${pkgname}-${pkgver}"
+    python -m build -w -n
+}
+
+package() {
+    cd "${pkgname}-${pkgver}"
+    python -m installer -d "${pkgdir}" dist/*.whl
+}

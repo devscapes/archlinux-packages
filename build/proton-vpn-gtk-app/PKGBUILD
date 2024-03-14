@@ -1,0 +1,78 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+# Contributor: Ali Molaei <ali dot molaei at protonmail dot com>
+
+pkgname=proton-vpn-gtk-app
+pkgver=4.2.0
+pkgrel=1
+pkgdesc='Official Proton VPN Linux app'
+arch=('any')
+url='https://protonvpn.com/download-linux'
+license=('GPL-3.0-or-later')
+groups=('ProtonVPN')
+depends=(
+    'at-spi2-core'
+    'dbus-python'
+    'gdk-pixbuf2'
+    'gtk3'
+    'hicolor-icon-theme'
+    'networkmanager'
+    'pango'
+    'python'
+    'python-cairo'
+    'python-gobject'
+    'python-packaging'
+    'python-proton-core'
+    'python-proton-keyring-linux-secretservice'
+    'python-proton-vpn-api-core'
+    'python-proton-vpn-connection'
+    'python-proton-vpn-killswitch-network-manager'
+    'python-proton-vpn-logger'
+    'python-proton-vpn-network-manager-openvpn'
+    'python-proton-vpn-session'
+)
+optdepends=(
+    'libappindicator-gtk3: display tray icon'
+    'libayatana-appindicator: display tray icon'
+)
+makedepends=(
+    'git'
+    'python-build'
+    'python-installer'
+    'python-setuptools'
+    'python-wheel'
+)
+conflicts=(
+    'protonvpn-gui'
+    'python-proton-client'
+)
+_commit=2323032283015494dddf8b8dd6d0372ee1f05698  # refs/tags/v4.2.0
+source=("git+https://github.com/ProtonVPN/proton-vpn-gtk-app.git#commit=${_commit}?signed"
+        'fix-startup-wm-class.patch')
+sha384sums=('SKIP'
+            '0e687df7882041c4af50a4de1dcf1ac0f6723e5a66d52575a708891fbbfd7625a6e7690664ec3b730d7364c0fb6a7af8')
+b2sums=('SKIP'
+        'cd677b1c1dbf71415df2c127030b5185597e28b4a78aa9e4c99ee67f5b53318c1c9cacf3751e9236f41f21e313cd5cd74eaaabf83f10ed17cdf7932d2ed3e99e')
+validpgpkeys=('3DEF8AAF4E4379A665EB31F355F2D687A9C0C999')  # Alexandru Cheltuitor (Gitlab Protontech) <alexandru.cheltuitor@proton.ch>
+
+prepare() {
+    cd "${pkgname}"
+    patch -N -p1 <"${srcdir}/fix-startup-wm-class.patch"
+}
+
+build() {
+    cd "${pkgname}"
+    python -m build -w -n
+}
+
+package() {
+    cd "${pkgname}"
+
+    # Extract created wheel package
+    python -m installer -d "${pkgdir}" dist/*.whl
+
+    # Install desktop entry
+    install -Dt "${pkgdir}/usr/share/applications" \
+        -m644 rpmbuild/SOURCES/protonvpn-app.desktop
+    install -Dt "${pkgdir}/usr/share/icons/hicolor/scalable/apps" \
+        -m644 rpmbuild/SOURCES/proton-vpn-logo.svg
+}

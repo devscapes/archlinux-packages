@@ -1,0 +1,19 @@
+pkgbase = python-proton-keyring-linux
+	pkgdesc = Proton Technologies keyring plugins for Linux
+	pkgver = 0.0.1
+	pkgrel = 1
+	url = https://github.com/ProtonVPN/python-proton-keyring-linux
+	arch = any
+	groups = ProtonVPN
+	license = GPL-3.0-or-later
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-setuptools
+	makedepends = python-wheel
+	depends = python
+	depends = python-keyring
+	source = python-proton-keyring-linux-0.0.1.tar.gz::https://github.com/ProtonVPN/python-proton-keyring-linux/archive/refs/tags/v0.0.1.tar.gz
+	sha384sums = 1f09f4244518500a454de4973d01b4af641708896846df5fcfec8f7d23fbe9f4a0f4b461bf9e2edcf4fa33d2f4cef358
+	b2sums = 1c5f0edfb0267c7df7fb2bd659b38d312459d2714aae72b1ae5f89fcd3277cdde81d72ed7076ba0735dde52bcdf52de58af33f4a8aa7ba845e476aaeafd06a44
+
+pkgname = python-proton-keyring-linux

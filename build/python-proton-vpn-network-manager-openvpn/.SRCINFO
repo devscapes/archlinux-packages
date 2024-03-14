@@ -1,0 +1,21 @@
+pkgbase = python-proton-vpn-network-manager-openvpn
+	pkgdesc = Proton Technologies VPN NetworkManager OpenVPN plugin for Linux
+	pkgver = 0.0.4
+	pkgrel = 1
+	url = https://github.com/ProtonVPN/python-proton-vpn-network-manager-openvpn
+	arch = any
+	groups = ProtonVPN
+	license = GPL-3.0-or-later
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-setuptools
+	makedepends = python-wheel
+	depends = networkmanager-openvpn
+	depends = python
+	depends = python-proton-vpn-connection
+	depends = python-proton-vpn-network-manager
+	source = python-proton-vpn-network-manager-openvpn-0.0.4.tar.gz::https://github.com/ProtonVPN/python-proton-vpn-network-manager-openvpn/archive/refs/tags/v0.0.4.tar.gz
+	sha384sums = 8dc2f2486ba3896a4fa2a485f1471e5a0e4e684b6b9ce8d9bc289438948746cb190a107c888aaff711377966666f4c8b
+	b2sums = bc8ef7c8580d9b83ac79aff11ecb40fc303fbe8682c89ea67de5d67dbabb2b6b0f053aaccc05092e86ec01998a29705df468b439cdfb6b5e4ddf4d6a62925713
+
+pkgname = python-proton-vpn-network-manager-openvpn

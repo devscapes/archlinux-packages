@@ -1,0 +1,24 @@
+pkgbase = python-proton-vpn-api-core
+	pkgdesc = Proton Technologies VPN core API
+	pkgver = 0.21.0
+	pkgrel = 1
+	url = https://github.com/ProtonVPN/python-proton-vpn-api-core
+	arch = any
+	groups = ProtonVPN
+	license = GPL-3.0-or-later
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-setuptools
+	makedepends = python-wheel
+	depends = python
+	depends = python-distro
+	depends = python-proton-core
+	depends = python-proton-vpn-connection
+	depends = python-proton-vpn-killswitch
+	depends = python-proton-vpn-logger
+	depends = python-proton-vpn-session
+	source = python-proton-vpn-api-core-0.21.0.tar.gz::https://github.com/ProtonVPN/python-proton-vpn-api-core/archive/refs/tags/v0.21.0.tar.gz
+	sha384sums = 2bb9925528101e4688c1785c57a6bb884a586fe8a8036c7a96b54f5b9ea79cc63816085cf18062be25774a9bb890c546
+	b2sums = 525d9e82b4c00adb924c3ac7b568948993c3f99c3cfa01e7734cc3049c02be73f24749f1717e1034131a674d9dd04cd8692c27bf2d2733b6718c37d5112c39ff
+
+pkgname = python-proton-vpn-api-core

@@ -1,0 +1,34 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+# Contributor: Ali Molaei <ali dot molaei at protonmail dot com>
+
+pkgname=python-proton-vpn-logger
+pkgver=0.2.1
+pkgrel=1
+pkgdesc='Proton Technologies VPN logging library'
+arch=('any')
+url='https://github.com/ProtonVPN/python-proton-vpn-logger'
+license=('GPL-3.0-or-later')
+groups=('ProtonVPN')
+depends=(
+    'python'
+    'python-proton-core'
+)
+makedepends=(
+    'python-build'
+    'python-installer'
+    'python-setuptools'
+    'python-wheel'
+)
+source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
+sha384sums=('1266e77b3d6c6da191cb2861d4f664a1f769dadcb6654c9e3bf64d8c1e706bee2792d89dd0a264319fe64af666500c46')
+b2sums=('6c11ed6c4c891d59efb21f61fbe05f1491fcb088c583d0e934d2bcc136e00e5cc30b4afd4987db35cbbe9dabe44b3be4b8ba7dc5c69d132d6053fdb144289e2c')
+
+build() {
+    cd "${pkgname}-${pkgver}"
+    python -m build -w -n
+}
+
+package() {
+    cd "${pkgname}-${pkgver}"
+    python -m installer -d "${pkgdir}" dist/*.whl
+}

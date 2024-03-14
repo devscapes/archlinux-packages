@@ -1,0 +1,37 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+# Contributor: Ali Molaei <ali dot molaei at protonmail dot com>
+
+pkgname=python-proton-vpn-connection
+pkgver=0.14.2
+pkgrel=1
+pkgdesc='Proton Technologies VPN connector for Linux'
+arch=('any')
+url='https://github.com/ProtonVPN/python-proton-vpn-connection'
+license=('GPL-3.0-or-later')
+groups=('ProtonVPN')
+depends=(
+    'python'
+    'python-jinja'
+    'python-proton-core'
+    'python-proton-vpn-killswitch'
+    'python-proton-vpn-logger'
+)
+makedepends=(
+    'python-build'
+    'python-installer'
+    'python-setuptools'
+    'python-wheel'
+)
+source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
+sha384sums=('389a2097cb62dca4aa17e8c64a25a77c8a07f2b28e01dcd8265187da289d5155318e33817cc5aff6fe0ca09b9da8a794')
+b2sums=('d15e3adbd151227ae1a6c84d168f932732d7836f003efcf0b3d3071a4c365e24ea5d24c6417257aea7217f5c2a1276aa5c032575550067a862e51afa8ff42c9d')
+
+build() {
+    cd "${pkgname}-${pkgver}"
+    python -m build -w -n
+}
+
+package() {
+    cd "${pkgname}-${pkgver}"
+    python -m installer -d "${pkgdir}" dist/*.whl
+}

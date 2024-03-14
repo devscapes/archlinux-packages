@@ -1,0 +1,20 @@
+pkgbase = python-proton-keyring-linux-secretservice
+	pkgdesc = Proton Technologies keyring SecretService implementation for Linux
+	pkgver = 0.0.1
+	pkgrel = 1
+	url = https://github.com/ProtonVPN/python-proton-keyring-linux-secretservice
+	arch = any
+	groups = ProtonVPN
+	license = GPL-3.0-or-later
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-setuptools
+	makedepends = python-wheel
+	depends = org.freedesktop.secrets
+	depends = python
+	depends = python-proton-keyring-linux
+	source = python-proton-keyring-linux-secretservice-0.0.1.tar.gz::https://github.com/ProtonVPN/python-proton-keyring-linux-secretservice/archive/refs/tags/0.0.1.tar.gz
+	sha384sums = 1a4d3d3e532bbdfd22ac898c2115ef30b5c9d1d7285d282ae8ddc6fac18ae21932d51307cdb483e8abf62a812185740b
+	b2sums = 703ce986df3684f7190baea1d977fac79349a38a80b9ff167be003b2661c354b3af8d9b5f2f39908359a537045452f25b1c8b3d3c8e9eb0b35c3f459166cf6e6
+
+pkgname = python-proton-keyring-linux-secretservice

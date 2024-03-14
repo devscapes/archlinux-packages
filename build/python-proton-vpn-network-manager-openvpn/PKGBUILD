@@ -1,0 +1,36 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+# Contributor: Ali Molaei <ali dot molaei at protonmail dot com>
+
+pkgname=python-proton-vpn-network-manager-openvpn
+pkgver=0.0.4
+pkgrel=1
+pkgdesc='Proton Technologies VPN NetworkManager OpenVPN plugin for Linux'
+arch=('any')
+url='https://github.com/ProtonVPN/python-proton-vpn-network-manager-openvpn'
+license=('GPL-3.0-or-later')
+groups=('ProtonVPN')
+depends=(
+    'networkmanager-openvpn'
+    'python'
+    'python-proton-vpn-connection'
+    'python-proton-vpn-network-manager'
+)
+makedepends=(
+    'python-build'
+    'python-installer'
+    'python-setuptools'
+    'python-wheel'
+)
+source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
+sha384sums=('8dc2f2486ba3896a4fa2a485f1471e5a0e4e684b6b9ce8d9bc289438948746cb190a107c888aaff711377966666f4c8b')
+b2sums=('bc8ef7c8580d9b83ac79aff11ecb40fc303fbe8682c89ea67de5d67dbabb2b6b0f053aaccc05092e86ec01998a29705df468b439cdfb6b5e4ddf4d6a62925713')
+
+build() {
+    cd "${pkgname}-${pkgver}"
+    python -m build -w -n
+}
+
+package() {
+    cd "${pkgname}-${pkgver}"
+    python -m installer -d "${pkgdir}" dist/*.whl
+}

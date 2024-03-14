@@ -1,0 +1,39 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+# Contributor: Ali Molaei <ali dot molaei at protonmail dot com>
+
+pkgname=python-proton-core
+pkgver=0.1.16
+pkgrel=1
+pkgdesc='Proton Technologies API wrapper'
+arch=('any')
+url='https://github.com/ProtonVPN/python-proton-core'
+license=('GPL-3.0-or-later')
+groups=('ProtonVPN')
+depends=(
+    'python'
+    'python-aiohttp'
+    'python-bcrypt'
+    'python-gnupg'
+    'python-pyopenssl'
+    'python-pyxdg'
+    'python-requests'
+)
+makedepends=(
+    'python-build'
+    'python-installer'
+    'python-setuptools'
+    'python-wheel'
+)
+source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
+sha384sums=('241e84bbc8ae13278dcccf9d96099a4583785bee3ddaaae2d24ee2f5486142c9017ea4afcf4b607b063d96cfa51f90f8')
+b2sums=('8924388e8e4f346092d3f4c02b100e2dbbab94b2091695c93b91593b48a2e8830efc8fa30142fec1611c4f040ee124efb682f03f7be8255d40de502da3c3b92a')
+
+build() {
+    cd "${pkgname}-${pkgver}"
+    python -m build -w -n
+}
+
+package() {
+    cd "${pkgname}-${pkgver}"
+    python -m installer -d "${pkgdir}" dist/*.whl
+}

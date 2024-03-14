@@ -1,0 +1,38 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+# Contributor: Ali Molaei <ali dot molaei at protonmail dot com>
+
+pkgname=python-proton-vpn-session
+pkgver=0.6.5
+pkgrel=1
+pkgdesc='Proton VPN session wrapper'
+arch=('any')
+url='https://github.com/ProtonVPN/python-proton-vpn-session'
+license=('GPL-3.0-or-later')
+groups=('ProtonVPN')
+depends=(
+    'python'
+    'python-cryptography'
+    'python-distro'
+    'python-proton-core'
+    'python-proton-vpn-logger'
+    'python-pynacl'
+)
+makedepends=(
+    'python-build'
+    'python-installer'
+    'python-setuptools'
+    'python-wheel'
+)
+source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
+sha384sums=('c4665d37b6caa32ab333861a9a3501afa93b73d636cea94412d7aa99fa88186b30bea8334bc86d4cd1348eb193f8c3ad')
+b2sums=('01a00785b2583650f54030dce4be20df15bb61e90ff2023a11fe06b32720f80b9eb4aa9dc074f35b2c5a14373c796df0bfb3dfb9937c1136af320eaaf127e797')
+
+build() {
+    cd "${pkgname}-${pkgver}"
+    python -m build -w -n
+}
+
+package() {
+    cd "${pkgname}-${pkgver}"
+    python -m installer -d "${pkgdir}" dist/*.whl
+}
