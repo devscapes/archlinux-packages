@@ -17,21 +17,26 @@ depends=(
     'python-proton-vpn-logger'
 )
 makedepends=(
+    'git'
     'python-build'
     'python-installer'
     'python-setuptools'
     'python-wheel'
 )
-source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
-sha384sums=('389a2097cb62dca4aa17e8c64a25a77c8a07f2b28e01dcd8265187da289d5155318e33817cc5aff6fe0ca09b9da8a794')
-b2sums=('d15e3adbd151227ae1a6c84d168f932732d7836f003efcf0b3d3071a4c365e24ea5d24c6417257aea7217f5c2a1276aa5c032575550067a862e51afa8ff42c9d')
+_commit=6a365aeaf3e8f02df00aed1bd04a59512c2da174  # refs/tags/v0.14.2
+source=("git+https://github.com/ProtonVPN/python-proton-vpn-connection.git#commit=${_commit}?signed")
+sha256sums=('SKIP')
+validpgpkeys=(
+    '221CF155560AB2BA835FEAFADAC1874414C1A367'  # Pep Llaneras <josep.llaneras@proton.ch>
+    '3DEF8AAF4E4379A665EB31F355F2D687A9C0C999'  # Alexandru Cheltuitor (Gitlab Protontech) <alexandru.cheltuitor@proton.ch>
+)
 
 build() {
-    cd "${pkgname}-${pkgver}"
+    cd "${pkgname}"
     python -m build -w -n
 }
 
 package() {
-    cd "${pkgname}-${pkgver}"
+    cd "${pkgname}"
     python -m installer -d "${pkgdir}" dist/*.whl
 }

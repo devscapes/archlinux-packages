@@ -6,6 +6,7 @@ pkgbase = python-proton-vpn-network-manager
 	arch = any
 	groups = ProtonVPN
 	license = GPL-3.0-or-later
+	makedepends = git
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-setuptools
@@ -18,8 +19,8 @@ pkgbase = python-proton-vpn-network-manager
 	optdepends = network-manager-applet: password prompt on other DEs
 	optdepends = plasma-nm: password prompt on KDE Plasma
 	conflicts = python-protonvpn-nm-lib
-	source = python-proton-vpn-network-manager-0.4.0.tar.gz::https://github.com/ProtonVPN/python-proton-vpn-network-manager/archive/refs/tags/v0.4.0.tar.gz
-	sha384sums = 73872bc60c4f8451370098f9a14140b5df3051614c448d4ffdb9d45f878fa48e066beb476577e80e426261afdb9cd01a
-	b2sums = 30141a569c6e6ca3b7851c76dd850298a55f156abec182185d382d52fc96b2456f1f6ca641e6a79b619aed22d642bbfcb860865788e1246d944180ab74bd19cb
+	source = git+https://github.com/ProtonVPN/python-proton-vpn-network-manager.git#commit=357b68a904e51dc1f4565b9a5e519445baa71a35?signed
+	validpgpkeys = 221CF155560AB2BA835FEAFADAC1874414C1A367
+	sha256sums = SKIP
 
 pkgname = python-proton-vpn-network-manager

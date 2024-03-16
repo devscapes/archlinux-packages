@@ -6,6 +6,7 @@ pkgbase = python-proton-vpn-session
 	arch = any
 	groups = ProtonVPN
 	license = GPL-3.0-or-later
+	makedepends = git
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-setuptools
@@ -16,8 +17,8 @@ pkgbase = python-proton-vpn-session
 	depends = python-proton-core
 	depends = python-proton-vpn-logger
 	depends = python-pynacl
-	source = python-proton-vpn-session-0.6.5.tar.gz::https://github.com/ProtonVPN/python-proton-vpn-session/archive/refs/tags/v0.6.5.tar.gz
-	sha384sums = c4665d37b6caa32ab333861a9a3501afa93b73d636cea94412d7aa99fa88186b30bea8334bc86d4cd1348eb193f8c3ad
-	b2sums = 01a00785b2583650f54030dce4be20df15bb61e90ff2023a11fe06b32720f80b9eb4aa9dc074f35b2c5a14373c796df0bfb3dfb9937c1136af320eaaf127e797
+	source = git+https://github.com/ProtonVPN/python-proton-vpn-session.git#commit=5864beddfc638d802d388dfefafb414afbdedd61?signed
+	validpgpkeys = 3DEF8AAF4E4379A665EB31F355F2D687A9C0C999
+	sha256sums = SKIP
 
 pkgname = python-proton-vpn-session

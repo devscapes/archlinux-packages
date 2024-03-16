@@ -17,6 +17,7 @@ depends=(
     'python-proton-vpn-connection'
 )
 makedepends=(
+    'git'
     'python-build'
     'python-installer'
     'python-setuptools'
@@ -27,16 +28,17 @@ optdepends=(
     'plasma-nm: password prompt on KDE Plasma'
 )
 conflicts=('python-protonvpn-nm-lib')
-source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
-sha384sums=('73872bc60c4f8451370098f9a14140b5df3051614c448d4ffdb9d45f878fa48e066beb476577e80e426261afdb9cd01a')
-b2sums=('30141a569c6e6ca3b7851c76dd850298a55f156abec182185d382d52fc96b2456f1f6ca641e6a79b619aed22d642bbfcb860865788e1246d944180ab74bd19cb')
+_commit=357b68a904e51dc1f4565b9a5e519445baa71a35  # refs/tags/v0.4.0
+source=("git+https://github.com/ProtonVPN/python-proton-vpn-network-manager.git#commit=${_commit}?signed")
+sha256sums=('SKIP')
+validpgpkeys=('221CF155560AB2BA835FEAFADAC1874414C1A367')  # Pep Llaneras <josep.llaneras@proton.ch>
 
 build() {
-    cd "${pkgname}-${pkgver}"
+    cd "${pkgname}"
     python -m build -w -n
 }
 
 package() {
-    cd "${pkgname}-${pkgver}"
+    cd "${pkgname}"
     python -m installer -d "${pkgdir}" dist/*.whl
 }

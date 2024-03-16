@@ -6,14 +6,15 @@ pkgbase = python-proton-vpn-killswitch
 	arch = any
 	groups = ProtonVPN
 	license = GPL-3.0-or-later
+	makedepends = git
 	makedepends = python-build
 	makedepends = python-installer
 	makedepends = python-setuptools
 	makedepends = python-wheel
 	depends = python
 	depends = python-proton-core
-	source = python-proton-vpn-killswitch-0.4.0.tar.gz::https://github.com/ProtonVPN/python-proton-vpn-killswitch/archive/refs/tags/v0.4.0.tar.gz
-	sha384sums = b30b31ecb01046c926ee6ad7c54317e230138b46eb6aea1a121a947c882f8c5399acefdd70c4fbe62ff7ff94031d023d
-	b2sums = e1427bbff5e1e4b09be8ff6d6ce1708a9a9c7b8604470a06d2bf46656f54339b01694c2fee4ec836f027fe88b2192b61639b0adab687c9d759b352d5472b72b3
+	source = git+https://github.com/ProtonVPN/python-proton-vpn-killswitch.git#commit=3e59f286fa429c1dd9afcca1f4a6ae89d16c1e4e?signed
+	validpgpkeys = 221CF155560AB2BA835FEAFADAC1874414C1A367
+	sha256sums = SKIP
 
 pkgname = python-proton-vpn-killswitch

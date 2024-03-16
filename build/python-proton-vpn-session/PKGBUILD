@@ -18,21 +18,23 @@ depends=(
     'python-pynacl'
 )
 makedepends=(
+    'git'
     'python-build'
     'python-installer'
     'python-setuptools'
     'python-wheel'
 )
-source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
-sha384sums=('c4665d37b6caa32ab333861a9a3501afa93b73d636cea94412d7aa99fa88186b30bea8334bc86d4cd1348eb193f8c3ad')
-b2sums=('01a00785b2583650f54030dce4be20df15bb61e90ff2023a11fe06b32720f80b9eb4aa9dc074f35b2c5a14373c796df0bfb3dfb9937c1136af320eaaf127e797')
+_commit=5864beddfc638d802d388dfefafb414afbdedd61  # refs/tags/v0.6.5
+source=("git+https://github.com/ProtonVPN/python-proton-vpn-session.git#commit=${_commit}?signed")
+sha256sums=('SKIP')
+validpgpkeys=('3DEF8AAF4E4379A665EB31F355F2D687A9C0C999')  # Alexandru Cheltuitor (Gitlab Protontech) <alexandru.cheltuitor@proton.ch>
 
 build() {
-    cd "${pkgname}-${pkgver}"
+    cd "${pkgname}"
     python -m build -w -n
 }
 
 package() {
-    cd "${pkgname}-${pkgver}"
+    cd "${pkgname}"
     python -m installer -d "${pkgdir}" dist/*.whl
 }
