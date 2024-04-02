@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 7698751..cde04e9 100644
+index b29138f..4fcd165 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -22,7 +22,7 @@ pkgver=${major}_${minor}
@@ -7,7 +7,7 @@ index 7698751..cde04e9 100644
  arch=('x86_64')
  url=https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-22-40
 -license=('custom: multiple')
-+license=('LicenseRef-AMDGPU-PRO-EULA')
++license=('LicenseRef-AMDGPU-PRO')
  groups=('Radeon_Software_for_Linux')
  
  source=(progl::https://raw.githubusercontent.com/Ashark/archlinux-amdgpu-pro/master/progl

@@ -1,12 +1,13 @@
 pkgbase = 64gram-desktop
 	pkgdesc = Unofficial 64-bit Telegram Desktop build with some enhancements
 	pkgver = 1.1.15
-	pkgrel = 2
+	pkgrel = 3
 	url = https://64gr.am
 	arch = x86_64
 	license = GPL-3.0-or-later WITH cryptsetup-OpenSSL-exception
 	makedepends = boost
 	makedepends = cmake
+	makedepends = dos2unix
 	makedepends = extra-cmake-modules
 	makedepends = fmt
 	makedepends = git
@@ -83,21 +84,13 @@ pkgbase = 64gram-desktop
 	provides = telegram-desktop=4.15.1
 	conflicts = telegram-desktop
 	replaces = tdesktop-x64
-	noextract = expected-lite-0.6.3.tar.gz
-	noextract = cppgir-83d94749d94fdb9b9e97a3e942f73a587a6ef253.tar.bz2
 	source = https://github.com/TDesktop-x64/tdesktop/releases/download/v1.1.15/64Gram-1.1.15-full.tar.gz
-	source = expected-lite-0.6.3.tar.gz::https://github.com/martinmoene/expected-lite/archive/refs/tags/v.tar.gz
-	source = https://gitlab.com/mnauw/cppgir/-/archive/83d94749d94fdb9b9e97a3e942f73a587a6ef253/cppgir-83d94749d94fdb9b9e97a3e942f73a587a6ef253.tar.bz2
 	source = 64gram-desktop-fix-lzma-link.patch::https://aur.archlinux.org/cgit/aur.git/plain/fix-lzma-link.patch?h=64gram-desktop&id=480c0d51d97e2810610869e6c1349c1b3f26fdb5
 	source = disable-register-custom-scheme.patch
 	sha384sums = f77c99fda1cee2a2b69cbd990c89088b8db3fd1acd9d5deb355857949e2540bd73277299d6b4262733c298b49571d210
-	sha384sums = 6454e7b41a8319d7bef88352539ae11d6e050e4bef9379890fa53697fe83996b18d6f9681b0e079c64253f85a571d619
-	sha384sums = 083bf566ece5162e2781322b326eab155a4fafb25d0a2329b326b32a9d8e6e0a86f6fc3239a761b0537a214c46df7217
 	sha384sums = fc99bc01e59380551939787c62afdced8cf3818a82d080f61c3d91fdee7146251bb52ece03acf04d25098118272e5a8e
 	sha384sums = 632186ac35579713297d0593e7e7541b7f6f6125b77dc6afb2214f3c3a68c8225ba782d214e030db6ed5079d155b656e
 	b2sums = 4c80eec83d625b8591cd4361ec19488b705d2a2297bede7a62f42535a5db4c7b963e7b1ebc1d508e364315b040f23426238722149cd3cfa220601c4f42e92863
-	b2sums = 7b9eb948d674d4fb4904c6deb4f2c8c2d578d73d8401dc386a49c5f09cc75c6fd70e0c6aa72cd1e1fb9d82cf55917c8a6d60868190ba063340eda4f3191ebc56
-	b2sums = 3a88da30cb0a7df33df2abfc72e2a00d39edc7781eda2b776ee344d7d094b753ab08b8bab41f495be98ef6111c6e08d576a18f8c4e32a5a5439d1556c1f3dd28
 	b2sums = 184f9e72e2092b4f7e28490adf94472729b75973daa607c1033d79ddc3416d16670acedfb5e6ea66d9299211fe1b10b7deba34e9edc79198fbccfc98d2555730
 	b2sums = 94748bc9af6da57fc9121b9563bae2be17ecb8193c499ef85dada8450c4e4e4d246b0c0e721e65e9f4afa7971032d4a4d400fed0fccbfa859aaff3377291a02e
 

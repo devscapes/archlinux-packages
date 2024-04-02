@@ -4,7 +4,7 @@
 
 _pkgname=nerd-fonts
 pkgname=${_pkgname}-git
-pkgver=3.1.1.r164.g17426690d
+pkgver=3.1.1.r177.gde477f234
 pkgrel=1
 pkgdesc="Iconic font aggregator, collection, and patcher (git version, super package)"
 arch=('any')

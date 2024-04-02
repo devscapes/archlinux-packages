@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index f417b48..e141fad 100644
+index f417b48..b16b2ce 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -1,17 +1,22 @@
@@ -10,7 +10,7 @@ index f417b48..e141fad 100644
 +
  pkgname=x265-git
 -pkgver=3.5.r103.g34532bda1
-+pkgver=3.5.r157.g5a6d85d76
++pkgver=3.5.r159.g7f67d23c1
  pkgrel=1
  pkgdesc='Open source H.265/HEVC video encoder (git version)'
  arch=('x86_64')

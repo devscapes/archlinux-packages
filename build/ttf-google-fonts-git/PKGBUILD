@@ -11,7 +11,7 @@
 
 pkgname=ttf-google-fonts-git
 pkgver=r7433.g1dc77bd6e
-pkgrel=1
+pkgrel=2
 pkgdesc='TrueType fonts from the Google Fonts project (git version)'
 arch=('any')
 url='https://fonts.google.com'
@@ -47,6 +47,7 @@ depends=(
     'ttf-inconsolata'
     'ttf-jetbrains-mono'
     'ttf-lato'
+    'ttf-montserrat'
     'ttf-opensans'
     'ttf-overpass'
     'ttf-roboto'
@@ -99,6 +100,7 @@ pkgver() {
 prepare() {
   local variable_fonts_only=(
     inconsolata
+    montserrat
     roboto
   )
 
@@ -149,6 +151,7 @@ package() {
     [gentium-book-plus]=1
     [gentium-plus]=1
     [lato]=1
+    [montserrat-alternates]=1
     [roboto-mono]=1
     [source-code-pro]=1
     [source-sans-3]=1
@@ -160,6 +163,7 @@ package() {
     # [fira-code]=1
     # [inter]=1
     # [jetbrains-mono]=1
+    # [montserrat]=1
     # [open-sans]=1
     # [overpass]=1
   )
