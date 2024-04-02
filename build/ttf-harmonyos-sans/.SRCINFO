@@ -1,10 +1,10 @@
 pkgbase = ttf-harmonyos-sans
 	pkgdesc = HarmonyOS Sans Fonts
 	pkgver = 20220704
-	pkgrel = 1
-	url = https://developer.harmonyos.com/en/docs/design/des-resources/general-0000001157315901
+	pkgrel = 2
+	url = https://developer.huawei.com/consumer/cn/design/resource/?catalogVersion=V1
 	arch = any
-	license = custom:HarmonyOS Sans Fonts License Agreement
+	license = LicenseRef-HarmonyOS-Sans-Fonts
 	provides = harmonyos-sans-git
 	conflicts = harmonyos-sans-git
 	replaces = harmonyos-sans-git

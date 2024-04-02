@@ -18,7 +18,7 @@
 # Contributor: Tomas Wilhelmsson <tomas.wilhelmsson@gmail.com>
 
 pkgname=llvm18-opt
-pkgver=18.1.1
+pkgver=18.1.2
 pkgrel=1
 epoch=1
 pkgdesc='LLVM compiler suite stable version 18 (installs to /opt)'
@@ -77,10 +77,10 @@ options=(
 _tagver=llvmorg-${pkgver/rc/-rc}
 source=("https://github.com/llvm/llvm-project/releases/download/${_tagver}/llvm-project-${pkgver}.src.tar.xz"{,.sig}
         'llvm-config.h')
-sha384sums=('3de1c7db1f89b8b72d3360a3110cd29857589a6467e3807d2b93e63b7472ccbc851e2e0453d8b90ba8bc7b996d271b0c'
+sha384sums=('8ee8e5f8be4af7fccac008e963b243ed908b5bdbb039f5c57bd35de438ac4df966facc29e963577c32a89f42b264a67c'
             'SKIP'
             '3065a1f344a5a5bebeb0fd9fcc95bb325ebf63b20d9871d0f49bfbfd7a5434e3d5e8bdadac5a2d8033bb7fe2ebe3d7bb')
-b2sums=('ce070519e2c2eb191923bc1102117376c269604efedb718baa1cc6f86e57b46210a899b8027862b570ed4477abd070f355a048cc56add0bea146e0193532f638'
+b2sums=('f21fca02fe9e02a3d440595aafbe0572be318ce69cc6285c1bf3dc9187b37ebf4c76f3ea60b6870c441675288f46e5597b069ec451d5026c5161f84daef6b4b2'
         'SKIP'
         'c7e56bfbb9983bc30977fed8d6e028d007dcce2bce03e91c38070fa4d5eb261919ab85f77a150cc31a857195586922b7bafb43070555da0194846fd1f6d1f515')
 validpgpkeys=('474E22316ABF4785A88C6E8EA2C794A986419D8A'   # Tom Stellard <tstellar@redhat.com>

@@ -13,7 +13,7 @@ _expected_lite_ver=0.6.3
 pkgname=64gram-desktop
 pkgver=1.1.15
 _pkgver=${pkgver/.beta}
-pkgrel=1
+pkgrel=2
 pkgdesc='Unofficial 64-bit Telegram Desktop build with some enhancements'
 arch=('x86_64')
 url="https://64gr.am"
@@ -33,6 +33,7 @@ depends=(
     'libpipewire' 'libpipewire-0.3.so'
     'libsigc++-3.0' 'libsigc-3.0.so'
     'libxcomposite'
+    'libxdamage'
     'libxrandr'
     'libxtst'
     'libvpx' 'libvpx.so'
@@ -67,7 +68,7 @@ makedepends=(
     'ninja'
     'perl-xml-parser'
     'plasma-wayland-protocols'
-    'python'
+    'python-packaging'
     'range-v3'
     'tl-expected'
     'wayland-protocols'
@@ -77,22 +78,25 @@ optdepends=(
     'xdg-desktop-portal: desktop integration'
 )
 provides=("telegram-desktop=${_tdesktop_ver}")
-replaces=('tdesktop-x64' '64gram<1.0.93')
+replaces=('tdesktop-x64')
 conflicts=('telegram-desktop')
 source=("https://github.com/TDesktop-x64/tdesktop/releases/download/v${_pkgver}/64Gram-${_pkgver}-full.tar.gz"
         "expected-lite-${_expected_lite_ver}.tar.gz::https://github.com/martinmoene/expected-lite/archive/refs/tags/v${expected_lite_ver}.tar.gz"
         "https://gitlab.com/mnauw/cppgir/-/archive/${_cppgir_commit}/cppgir-${_cppgir_commit}.tar.bz2"
-        "${pkgname}-fix-lzma-link.patch::https://aur.archlinux.org/cgit/aur.git/plain/fix-lzma-link.patch?h=64gram-desktop&id=480c0d51d97e2810610869e6c1349c1b3f26fdb5")
+        "${pkgname}-fix-lzma-link.patch::https://aur.archlinux.org/cgit/aur.git/plain/fix-lzma-link.patch?h=64gram-desktop&id=480c0d51d97e2810610869e6c1349c1b3f26fdb5"
+        "disable-register-custom-scheme.patch")
 noextract=("expected-lite-${_expected_lite_ver}.tar.gz"
            "cppgir-${_cppgir_commit}.tar.bz2")
 sha384sums=('f77c99fda1cee2a2b69cbd990c89088b8db3fd1acd9d5deb355857949e2540bd73277299d6b4262733c298b49571d210'
             '6454e7b41a8319d7bef88352539ae11d6e050e4bef9379890fa53697fe83996b18d6f9681b0e079c64253f85a571d619'
             '083bf566ece5162e2781322b326eab155a4fafb25d0a2329b326b32a9d8e6e0a86f6fc3239a761b0537a214c46df7217'
-            'fc99bc01e59380551939787c62afdced8cf3818a82d080f61c3d91fdee7146251bb52ece03acf04d25098118272e5a8e')
+            'fc99bc01e59380551939787c62afdced8cf3818a82d080f61c3d91fdee7146251bb52ece03acf04d25098118272e5a8e'
+            '632186ac35579713297d0593e7e7541b7f6f6125b77dc6afb2214f3c3a68c8225ba782d214e030db6ed5079d155b656e')
 b2sums=('4c80eec83d625b8591cd4361ec19488b705d2a2297bede7a62f42535a5db4c7b963e7b1ebc1d508e364315b040f23426238722149cd3cfa220601c4f42e92863'
         '7b9eb948d674d4fb4904c6deb4f2c8c2d578d73d8401dc386a49c5f09cc75c6fd70e0c6aa72cd1e1fb9d82cf55917c8a6d60868190ba063340eda4f3191ebc56'
         '3a88da30cb0a7df33df2abfc72e2a00d39edc7781eda2b776ee344d7d094b753ab08b8bab41f495be98ef6111c6e08d576a18f8c4e32a5a5439d1556c1f3dd28'
-        '184f9e72e2092b4f7e28490adf94472729b75973daa607c1033d79ddc3416d16670acedfb5e6ea66d9299211fe1b10b7deba34e9edc79198fbccfc98d2555730')
+        '184f9e72e2092b4f7e28490adf94472729b75973daa607c1033d79ddc3416d16670acedfb5e6ea66d9299211fe1b10b7deba34e9edc79198fbccfc98d2555730'
+        '94748bc9af6da57fc9121b9563bae2be17ecb8193c499ef85dada8450c4e4e4d246b0c0e721e65e9f4afa7971032d4a4d400fed0fccbfa859aaff3377291a02e')
 
 prepare() {
     # Replace bundled cppgir with external revision that works for us
@@ -103,6 +107,9 @@ prepare() {
 
     # Fix linking with LZMA if auto-update is disabled
     patch -d "64Gram-${_pkgver}-full" -N -p1 --binary <"${pkgname}-fix-lzma-link.patch"
+
+    # Skip URL scheme registration to prevent creation of new user desktop entries
+    patch -d "64Gram-${_pkgver}-full" -N -p1 --binary <"disable-register-custom-scheme.patch"
 }
 
 build() {
@@ -124,6 +131,11 @@ build() {
 
 package() {
     DESTDIR="${pkgdir}" cmake --install build
-    install -Dm644 /dev/null "${pkgdir}/etc/tdesktop/externalupdater"
+
+    # Tell that an external updater is being used
+    echo "/usr/bin/telegram-desktop" |
+        install -Dm644 /dev/stdin "${pkgdir}/usr/share/64Gram/externalupdater.d/${pkgname}.conf"
+
+    # Install license file
     install -Dm644 -t "${pkgdir}/usr/share/licenses/${pkgname}" "64Gram-${_pkgver}-full/LICENSE"
 }

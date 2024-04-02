@@ -1,23 +1,22 @@
 # Maintainer: Albert I <kras@raphielgang.org>
 # Contributor: zxp19821005 <zxp19821005 at 163 dot com>
 
-# To check if there's a new update to the font family, use the Chinese site:
-#   https://developer.harmonyos.com/cn/design/resource
-#
-# Any of the download links currently don't work outside of Mainland China, so
-# we use one from the English site that uses Huawei Mobile Cloud.
-
 pkgname=ttf-harmonyos-sans
 pkgver=20220704
-pkgrel=1
+pkgrel=2
 pkgdesc='HarmonyOS Sans Fonts'
-url='https://developer.harmonyos.com/en/docs/design/des-resources/general-0000001157315901'
+url='https://developer.huawei.com/consumer/cn/design/resource/?catalogVersion=V1'
 arch=('any')
-license=('custom:HarmonyOS Sans Fonts License Agreement')
+license=('LicenseRef-HarmonyOS-Sans-Fonts')
 provides=('harmonyos-sans-git') # kept for compatibility
 conflicts=('harmonyos-sans-git')
 replaces=('harmonyos-sans-git')
+# The following URL was obtained from HarmonyOS developer site in English prior
+# to being repurposed to a site offering free courses for newcomers of this
+# Chinese Google-in-lieu ecosystem from Huawei.
 source=("${pkgname}-${pkgver}.zip::https://communityfile-drcn.op.hicloud.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20211021123007.91332882255322976480431998412500:50521020071939:2800:2F2427839D50E5D948AF9D30BBFEDFE8001166EEEF5C75177277FD3619712289.zip")
+# The following URL from Huawei's main site is geo-restricted to Mainland China.
+#source=("${pkgname}-${pkgver}.zip::https://developer.huawei.com/images/download/general/HarmonyOS-Sans.zip")
 sha384sums=('6602d7fb5e5919d217b8f6d9e789ba8d7f98daf786dc4c1d02aaad47d91352bd98c93eb34ac21a9ae0db9df4d8f7f86d')
 b2sums=('22c62526b0b4c1db8edca75f4ae4819b4f4f612f416c101df8b70fb48b7756b60d19bdc5c9ecef2921ab7a85c46d984f576fe57bfa5b5820c50463bda38ecf24')
 
