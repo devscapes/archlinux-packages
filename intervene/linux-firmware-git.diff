@@ -1,18 +1,17 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index a98ac3f..acb039f 100644
+index 60f8eac..21b31f1 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -6,21 +6,41 @@ pkgbase=linux-firmware-git
+@@ -6,20 +6,40 @@ pkgbase=linux-firmware-git
  pkgname=(linux-firmware-whence-git linux-firmware-git amd-ucode-git
           linux-firmware-{nfp,mellanox,marvell,qcom,liquidio,qlogic,bnx2x}-git
  )
--pkgver=20240220.97b693d2
-+pkgver=20240308.92010357
+-pkgver=20240312.3b128b60
++pkgver=20240322.e068ccf0
  pkgrel=1
  pkgdesc="Firmware files for Linux"
--url="https://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git;a=summary"
+ url="https://gitlab.com/kernel-firmware/linux-firmware"
 -license=('GPL2' 'GPL3' 'custom')
-+url="https://gitlab.com/kernel-firmware/linux-firmware"
 +# Many firmware files are licensed under a variant of BSD-style license that only permits unmodified
 +# binary redistribution for use in officially licensed or authorized products by the manufacturer.
 +# Some others in particular are licensed under a version of Intel Simplified License or its
@@ -43,17 +42,15 @@ index a98ac3f..acb039f 100644
  arch=('any')
  makedepends=('git' 'rdfind')
  options=(!strip)
--#source=("${pkgbase}::git+https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git?signed")
+-#source=("${pkgbase}::git+${url}.git?signed")
 -# NOTE: upstream doesn't sign most commits anymore, but still signs all tags.
 -# Packages in the official repos package tags.
 -# You can check signatures with the following commands:
 -#git log --format=raw --show-signature main
 -#git tag -v $(git tag)
--source=("${pkgbase}::git+https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git")
-+source=("${pkgbase}::git+${url}.git")
+ source=("${pkgbase}::git+${url}.git")
  sha256sums=('SKIP')
  validpgpkeys=('4CDE8575E547BF835FE15807A31B6BD72486CFD6') # Josh Boyer <jwboyer@fedoraproject.org>
- 
 @@ -61,7 +81,7 @@ package_linux-firmware-whence-git() {
    provides=("${pkgname%-git}=$pkgver")
    pkgdesc+=" - contains the WHENCE license file which documents the vendor license details"

@@ -1,13 +1,17 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 70b40ca..2040b5e 100644
+index 70b40ca..368999b 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -7,12 +7,12 @@ pkgname=(
+@@ -3,16 +3,15 @@
+ pkgbase=avidemux-git
+ pkgname=(
+   'avidemux-core-git'
+-  'avidemux-qt5-git'
    'avidemux-qt6-git'
    'avidemux-cli-git'
  )
 -pkgver=2.8.2.240125.cdbfa6956
-+pkgver=2.8.2.r10039.ge652233d4
++pkgver=2.8.2.r10042.g337aee485
  pkgrel=1
  pkgdesc="A graphical/cli tool to edit video (filter/re-encode/split). (GIT version)"
  arch=('x86_64')
@@ -17,7 +21,7 @@ index 70b40ca..2040b5e 100644
  makedepends=(
    'git'
    'cmake'
-@@ -20,8 +20,6 @@ makedepends=(
+@@ -20,8 +19,6 @@ makedepends=(
    'nasm'
    'aom'
    'a52dec'
@@ -26,7 +30,7 @@ index 70b40ca..2040b5e 100644
    'faac'
    'faad2'
    'fribidi'
-@@ -41,7 +39,9 @@ makedepends=(
+@@ -41,11 +38,13 @@ makedepends=(
    'twolame'
    'xvidcore'
    'x264'
@@ -35,8 +39,14 @@ index 70b40ca..2040b5e 100644
 +  'libx265.so'
    'sqlite'
    'glu'
-   'qt5-script'
-@@ -72,12 +72,10 @@ sha256sums=(
+-  'qt5-script'
+-  'qt5-tools'
++  #'qt5-script'
++  #'qt5-tools'
+   'qt6-base'
+   'qt6-tools'
+   'libxv'
+@@ -72,12 +71,10 @@ sha256sums=(
    '3c91ddefadfad5f43d514941ddfa1942ea2c618525aaae36bde5a5d18f8e2067'
  )
  
@@ -50,7 +60,77 @@ index 70b40ca..2040b5e 100644
  }
  
  prepare() {
-@@ -228,14 +226,12 @@ package_avidemux-core-git() {
+@@ -128,34 +125,35 @@ build() {
+   cmake --build build_core_plugins
+   DESTDIR="${srcdir}/fakeroot" cmake --install build_core_plugins
+ 
+-  msg2 "Build Qt5 GUI"
+-  cmake -B build_qt5 -S avidemux/avidemux/qt4 \
+-    -DCMAKE_BUILD_TYPE=Release \
+-    -DCMAKE_INSTALL_PREFIX=/usr \
+-    -DOpenGL_GL_PREFERENCE=GLVND \
+-    -DENABLE_QT5=ON \
+-    -DFAKEROOT="${srcdir}/fakeroot"
+-
+-  cmake --build build_qt5
+-  DESTDIR="${srcdir}/fakeroot" cmake --install build_qt5
+-
+-  msg2 "Build Qt5 GUI Plugins"
+-  cmake -B build_qt5_plugins -S avidemux/avidemux_plugins \
+-    -DCMAKE_BUILD_TYPE=Release \
+-    -DCMAKE_INSTALL_PREFIX=/usr \
+-    -DOpenGL_GL_PREFERENCE=GLVND \
+-    -DENABLE_QT5=ON \
+-    -DPLUGIN_UI=QT4 \
+-    -DUSE_EXTERNAL_LIBA52=ON \
+-    -DUSE_EXTERNAL_LIBASS=ON \
+-    -DUSE_EXTERNAL_LIBMAD=ON \
+-    -DUSE_EXTERNAL_MP4V2=ON \
+-    -DFAKEROOT="${srcdir}/fakeroot"
+-
+-  cmake --build build_qt5_plugins
+-  DESTDIR="${srcdir}/fakeroot" cmake --install build_qt5_plugins
++  #msg2 "Build Qt5 GUI"
++  #cmake -B build_qt5 -S avidemux/avidemux/qt4 \
++  #  -DCMAKE_BUILD_TYPE=Release \
++  #  -DCMAKE_INSTALL_PREFIX=/usr \
++  #  -DOpenGL_GL_PREFERENCE=GLVND \
++  #  -DENABLE_QT5=ON \
++  #  -DFAKEROOT="${srcdir}/fakeroot"
++
++  #cmake --build build_qt5
++  #DESTDIR="${srcdir}/fakeroot" cmake --install build_qt5
++
++  #msg2 "Build Qt5 GUI Plugins"
++  #cmake -B build_qt5_plugins -S avidemux/avidemux_plugins \
++  #  -DCMAKE_BUILD_TYPE=Release \
++  #  -DCMAKE_INSTALL_PREFIX=/usr \
++  #  -DOpenGL_GL_PREFERENCE=GLVND \
++  #  -DENABLE_QT5=ON \
++  #  -DPLUGIN_UI=QT4 \
++  #  -DUSE_EXTERNAL_LIBA52=ON \
++  #  -DUSE_EXTERNAL_LIBASS=ON \
++  #  -DUSE_EXTERNAL_LIBMAD=ON \
++  #  -DUSE_EXTERNAL_MP4V2=ON \
++  #  -DFAKEROOT="${srcdir}/fakeroot"
++
++  #cmake --build build_qt5_plugins
++  #DESTDIR="${srcdir}/fakeroot" cmake --install build_qt5_plugins
+ 
+   msg2 "Build Qt6 GUI"
++  PATH="/usr/lib/qt6/bin:$PATH" \
+   CXXFLAGS+=" -fPIC" \
+   cmake -B build_qt6 -S avidemux/avidemux/qt4 \
+     -DCMAKE_BUILD_TYPE=Release \
+@@ -168,6 +166,7 @@ build() {
+   DESTDIR="${srcdir}/fakeroot" cmake --install build_qt6
+ 
+   msg2 "Build Qt6 GUI Plugins"
++  PATH="/usr/lib/qt6/bin:$PATH" \
+   CXXFLAGS+=" -fPIC" \
+   cmake -B build_qt6_plugins -S avidemux/avidemux_plugins \
+     -DCMAKE_BUILD_TYPE=Release \
+@@ -228,14 +227,12 @@ package_avidemux-core-git() {
      'a52dec' # 'liba52.so'
      'alsa-lib' 'libasound.so'
      'aom' 'libaom.so'
@@ -66,7 +146,7 @@ index 70b40ca..2040b5e 100644
      'lame' 'libmp3lame.so'
      'libass' 'libass.so'
      'libfdk-aac' 'libfdk-aac.so'
-@@ -286,7 +282,7 @@ package_avidemux-core-git() {
+@@ -286,7 +283,7 @@ package_avidemux-core-git() {
  package_avidemux-qt5-git() {
    pkgdesc="Qt5 GUI for Avidemux. (GIT version)"
    depends=(
@@ -75,7 +155,7 @@ index 70b40ca..2040b5e 100644
      'gcc-libs' # 'libgcc_s.so' 'libstdc++.so'
      'glibc' # 'libc.so' 'libm.so'
      'glu' # 'libGLU.so'
-@@ -326,7 +322,7 @@ package_avidemux-qt5-git() {
+@@ -326,7 +323,7 @@ package_avidemux-qt5-git() {
  package_avidemux-qt6-git() {
    pkgdesc="Qt6 GUI for Avidemux. (GIT version)"
    depends=(
@@ -84,7 +164,7 @@ index 70b40ca..2040b5e 100644
      'gcc-libs' # 'libgcc_s.so' 'libstdc++.so'
      'glibc' # 'libc.so' 'libm.so'
      'glu' # 'libGLU.so'
-@@ -368,7 +364,7 @@ package_avidemux-qt6-git() {
+@@ -368,7 +365,7 @@ package_avidemux-qt6-git() {
  package_avidemux-cli-git() {
    pkgdesc="CLI frontend for Avidemux. (GIT version)"
    depends=(

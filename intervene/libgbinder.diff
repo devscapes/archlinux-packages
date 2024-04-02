@@ -1,14 +1,8 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index af8bcc5..75276fe 100644
+index 54fcfa7..75276fe 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -1,15 +1,20 @@
- # Maintainer: Danct12 <danct12@disroot.org>
- 
- pkgname=libgbinder
--pkgver=1.1.36
-+pkgver=1.1.38
- pkgrel=1
+@@ -6,8 +6,13 @@ pkgrel=1
  pkgdesc="GLib-style interface to binder"
  arch=('x86_64' 'i686' 'armv7h' 'aarch64')
  url="https://github.com/mer-hybris/libgbinder.git"
@@ -22,11 +16,8 @@ index af8bcc5..75276fe 100644
 +)
 +provides=('libgbinder.so')
  source=("${pkgname}-${pkgver}.tar.gz::https://github.com/mer-hybris/libgbinder/archive/refs/tags/${pkgver}.tar.gz")
--sha512sums=('5727b25299286e8238a9b526fec9f72d631f584cabb21021d9f12e550059fe746e1165d5bb47ba79db52e2ccb5a3ce96dbd97761df78f13cf7e9a1554d1c3876')
-+sha512sums=('610dbe962287278de0e3549b4f7d15f6af0017afa0da356f6a72550c8d5c9925960527a30fd4d4e66c64f9cfd63915ba60b990220e350fee935bef5bf5a17710')
+ sha512sums=('610dbe962287278de0e3549b4f7d15f6af0017afa0da356f6a72550c8d5c9925960527a30fd4d4e66c64f9cfd63915ba60b990220e350fee935bef5bf5a17710')
  
- build() {
-   cd $pkgname-$pkgver
 @@ -19,4 +24,5 @@ build() {
  package() {
    cd $pkgname-$pkgver

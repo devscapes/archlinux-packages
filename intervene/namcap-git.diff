@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index e0d6163..8f4f5d2 100644
+index e0d6163..34b28ab 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -8,18 +8,19 @@
@@ -7,7 +7,7 @@ index e0d6163..8f4f5d2 100644
  
  pkgname=namcap-git
 -pkgver=3.4.0.r28.g57d1463
-+pkgver=3.5.2.r20.g1073233
++pkgver=3.5.2.r24.gfae71be
  pkgrel=1
 -pkgdesc="A Pacman package analyzer"
 +pkgdesc="A Pacman package analyzer (git version)"

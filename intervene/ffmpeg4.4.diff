@@ -1,8 +1,8 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 0eadd94..92762db 100644
+index c59bac1..f43726d 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -10,7 +10,8 @@ pkgrel=4
+@@ -10,7 +10,8 @@ pkgrel=5
  pkgdesc='Complete solution to record, convert and stream audio and video'
  arch=(x86_64)
  url=https://ffmpeg.org/
@@ -12,8 +12,17 @@ index 0eadd94..92762db 100644
  depends=(
    alsa-lib
    aom
+@@ -95,7 +96,7 @@ provides=(
+ _tag=71fb6132637a2a430375c24afc381fff8b854fe7
+ source=(git+https://git.ffmpeg.org/ffmpeg.git#tag=${_tag}
+         binutils-2.41.patch)
+-b2sums=('SKIP'
++b2sums=('87d63165eb2cde4e0702f6217cb93f171e2f57139b7251cbcfc32c1465e1753e6de7f3e49f1602ac980fbb7ec279edcc5938255a8a95a328c9c6d3882ef96fdb'
+         'b656a17dd3996c6871d322ba1fcf25410ed580d9600348cda087d705660601d06070492300d31c12d54b0e9914cb92bb9d997e51462c0577e1a90539bf0b76ee')
+ 
+ pkgver() {
 @@ -201,3 +202,4 @@ package() {
  }
  
  # vim:set sw=2 et:
-+pkgrel=${pkgrel}.2
++pkgrel=${pkgrel}.1

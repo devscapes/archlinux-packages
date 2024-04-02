@@ -1,8 +1,8 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index e450a78..25b13ed 100644
+index 16a2de2..d45763a 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -7,7 +7,8 @@ pkgrel=3
+@@ -7,7 +7,8 @@ pkgrel=5
  pkgdesc='An HEIF and AVIF file format decoder and encoder'
  arch=(x86_64)
  url='https://github.com/strukturag/libheif'
@@ -21,8 +21,8 @@ index e450a78..25b13ed 100644
  optdepends=('libjpeg: for heif-convert and heif-enc'
              'libpng: for heif-convert and heif-enc'
              'dav1d: dav1d encoder'
-@@ -45,3 +46,4 @@ build() {
+@@ -54,3 +55,4 @@ build() {
  package() {
    DESTDIR="$pkgdir" cmake --install build
  }
-+pkgrel=${pkgrel}.2
++pkgrel=${pkgrel}.1

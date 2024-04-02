@@ -1,8 +1,8 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index e4c5f99..845671a 100644
+index e847be9..2a2d546 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -12,6 +12,7 @@ pkgrel=7
+@@ -12,6 +12,7 @@ pkgrel=8
  pkgdesc='Multi-platform MPEG, VCD/DVD, and DivX player'
  url='https://www.videolan.org/vlc/'
  arch=('x86_64')
@@ -10,20 +10,19 @@ index e4c5f99..845671a 100644
  license=(
    'GPL-2.0-or-later'
    'LGPL-2.1-or-later'
-@@ -230,9 +231,9 @@ prepare() {
+@@ -230,8 +231,10 @@ prepare() {
  build() {
    cd ${pkgname}-${_vlcver}
  
--  export CFLAGS+=" -I/usr/include/samba-4.0 -ffat-lto-objects"
-+  export CFLAGS="${CFLAGS/FORTIFY_SOURCE=3/FORTIFY_SOURCE=2} -I/usr/include/samba-4.0 -ffat-lto-objects"
++  export CFLAGS="${CFLAGS/FORTIFY_SOURCE=3/FORTIFY_SOURCE=2}"
+   export CFLAGS+=" -I/usr/include/samba-4.0 -ffat-lto-objects"
    export CPPFLAGS+=" -I/usr/include/samba-4.0"
--  export CXXFLAGS+=" -std=c++17"
-+  export CXXFLAGS="${CXXFLAGS/FORTIFY_SOURCE=3/FORTIFY_SOURCE=2} -std=c++17"
++  export CXXFLAGS="${CXXFLAGS/FORTIFY_SOURCE=3/FORTIFY_SOURCE=2}"
+   export CXXFLAGS+=" -std=c++17"
    export PKG_CONFIG_PATH="/usr/lib/ffmpeg4.4/pkgconfig"
    export LUAC=/usr/bin/luac
-   export LUA_LIBS="$(pkg-config --libs lua)"
-@@ -356,3 +357,4 @@ package() {
+@@ -356,3 +359,4 @@ package() {
  }
  
  # vim: ts=2 sw=2 et:
-+pkgrel=${pkgrel}.2
++pkgrel=${pkgrel}.1

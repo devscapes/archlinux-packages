@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 5fdd819..8c5251a 100644
+index 5fdd819..5c185d9 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -1,20 +1,32 @@
@@ -7,7 +7,7 @@ index 5fdd819..8c5251a 100644
  
  pkgname=libpdfium-nojs
 -pkgver=6261.r0.4c4f9ab25d
-+pkgver=6261.r0.g4c4f9ab25d
++pkgver=6312.r0.g812acaddb5
  pkgrel=1
  pkgdesc="Open-source PDF rendering engine."
  arch=('x86_64')

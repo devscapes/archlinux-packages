@@ -1,14 +1,8 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index d91db90..177dce3 100644
+index 534cff5..17ec679 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -2,15 +2,20 @@
- # Contributor: Manuel Reimer <manuel.reimer@gmx.de>
- 
- pkgname=librepfunc
--pkgver=1.8.1
-+pkgver=1.9.1
- pkgrel=1
+@@ -7,8 +7,13 @@ pkgrel=1
  pkgdesc="a collection of common functions, classes and tools. Mainly used by w_scan_cpp"
  arch=('i686' 'x86_64' 'armv6h' 'armv7h')
  url="https://github.com/wirbel-at-vdr-portal/librepfunc"
@@ -22,8 +16,5 @@ index d91db90..177dce3 100644
 +provides=('librepfunc.so')
 +options=('!emptydirs')
  source=("$pkgname-$pkgver.tar.gz::https://github.com/wirbel-at-vdr-portal/librepfunc/archive/refs/tags/$pkgver.tar.gz")
--sha256sums=('ea0c68fd698aa4660fe870906ce2128e7925135d5abaaf19cd80f5054d177148')
-+sha256sums=('197399d8173ddee819f66d9deb433b496cf9f28fe0e1608a70f81b629ea4eafd')
+ sha256sums=('cf44d9c2e70b06318eda5a6f9e0449f70d1ac71de577c3cc92f513893952a896')
  
- build() {
-   cd "$srcdir/$pkgname-$pkgver"

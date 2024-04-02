@@ -1,5 +1,5 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 1aa0cf5..a5b38cd 100644
+index 9948e15..0c34bdf 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
 @@ -23,13 +23,13 @@ pkgname=(
@@ -8,8 +8,8 @@ index 1aa0cf5..a5b38cd 100644
    gst-python
 -  gstreamer-docs
  )
- pkgver=1.24.0
- pkgrel=1
+ pkgver=1.24.1
+ pkgrel=2
  pkgdesc="Multimedia graph framework"
  url="https://gstreamer.freedesktop.org/"
  arch=(x86_64)
@@ -55,7 +55,7 @@ index 1aa0cf5..a5b38cd 100644
    local meson_options=(
      # Superproject options
      -D devtools=disabled
-@@ -486,7 +501,7 @@ package_gst-plugins-bad() {
+@@ -488,7 +503,7 @@ package_gst-plugins-bad() {
      libmpcdec libopenmpt librsvg libsndfile libsrtp libwebp libxml2 lilv
      mjpegtools neon nettle openal openexr openjpeg2 openssl opus pango qrencode
      rtmpdump sbc soundtouch spandsp srt svt-av1 svt-hevc
@@ -64,7 +64,7 @@ index 1aa0cf5..a5b38cd 100644
    )
  
    cd root; local files=(
-@@ -661,7 +676,7 @@ package_gst-plugins-ugly() {
+@@ -663,7 +678,7 @@ package_gst-plugins-ugly() {
    pkgdesc+=" - ugly plugins"
    depends=(
      "gst-plugins-base-libs=$pkgver"
@@ -73,7 +73,7 @@ index 1aa0cf5..a5b38cd 100644
    )
  
    cd root; local files=(
-@@ -785,3 +800,4 @@ package_gstreamer-docs() {
+@@ -787,3 +802,4 @@ package_gstreamer-docs() {
  }
  
  # vim:set sw=2 sts=-1 et tw=80:
