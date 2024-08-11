@@ -1,0 +1,269 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+
+# This PKGBUILD is heavily based on llvm-git maintained by these contributors:
+# Contributor: Reza Jahanbakhshi <reza.jahanbakhshi at gmail dot com
+# Contributor: Lone_Wolf <lone_wolf@klaas-de-kat.nl>
+# Contributor: yurikoles <root@yurikoles.com>
+# Contributor: bearoso <bearoso@gmail.com>
+# Contributor: Luchesar V. ILIEV <luchesar%2eiliev%40gmail%2ecom>
+# Contributor: Anders Bergh <anders@archlinuxppc.org>
+# Contributor: Armin K. <krejzi at email dot com>
+# Contributor: Christian Babeux <christian.babeux@0x80.ca>
+# Contributor: Jan "heftig" Steffens <jan.steffens@gmail.com>
+# Contributor: Evangelos Foutras <evangelos@foutrelis.com>
+# Contributor: Hesiod (https://github.com/hesiod)
+# Contributor: Roberto Alsina <ralsina@kde.org>
+# Contributor: Thomas Dziedzic < gostrc at gmail >
+# Contributor: Tomas Lindquist Olsen <tomas@famolsen.dk>
+# Contributor: Tomas Wilhelmsson <tomas.wilhelmsson@gmail.com>
+
+pkgname=llvm19-opt
+_pkgver=19.1.0-rc2
+pkgver=${_pkgver/-/_}
+pkgrel=1
+epoch=  # reserved
+pkgdesc='LLVM compiler suite stable version 19 (installs to /opt)'
+arch=('x86_64')
+url='https://llvm.org/'
+license=('Apache-2.0 WITH LLVM-exception')
+depends=(
+    'gcc-libs'
+    'glibc'
+    'libedit' 'libedit.so'
+    'libffi' 'libffi.so'
+    'libxml2' 'libxml2.so'
+    'lua53'
+    'ncurses' 'libncursesw.so' 'libpanelw.so'
+    'perl'
+    'xz' 'liblzma.so'
+    'z3' 'libz3.so'
+    'zlib' 'libz.so'
+    'zstd' 'libzstd.so'
+)
+makedepends=(
+    'cmake'
+    'jsoncpp'
+    'lldb'
+    'ninja'
+    'ocl-icd'
+    'opencl-headers'
+    'python-myst-parser'
+    'python-recommonmark'
+    'python-setuptools'
+    'python-six'
+    'python-sphinx-automodapi'
+    'swig'
+)
+checkdepends=(
+    'python-pexpect'
+    'python-psutil'
+)
+optdepends=(
+    'openmp: OpenMP support in clang with -fopenmp'
+    'python: for scan-view and git-clang-format'
+)
+_major=${pkgver%%.*}
+provides=(
+    # Provides but doesn't replace as we install it on /opt
+    "clang${_major}"
+    "compiler-rt${_major}"
+    "lld${_major}"
+    "lldb${_major}"
+    "${pkgname%-opt}"
+    "llvm${_major}-libs"
+    "polly${_major}"
+)
+options=(
+    'staticlibs'
+    '!lto'  # use ThinLTO instead
+)
+source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${_pkgver}/llvm-project-${_pkgver}.src.tar.xz"{,.sig}
+        'llvm-config.h')
+sha384sums=('97763c19e1c38607b582912974818a5a46976eebf9c849afc59632e7a444afd7feb9e8d309f8da5854f612b7fec96cd7'
+            'SKIP'
+            '3065a1f344a5a5bebeb0fd9fcc95bb325ebf63b20d9871d0f49bfbfd7a5434e3d5e8bdadac5a2d8033bb7fe2ebe3d7bb')
+b2sums=('690b4912d9e4a8019b7990934dd6486362337ccb303dca119c0e75aa1063ad452222be1ee965e43b160dfcea20e491a20c289344152666b618712a1d76dc4780'
+        'SKIP'
+        'c7e56bfbb9983bc30977fed8d6e028d007dcce2bce03e91c38070fa4d5eb261919ab85f77a150cc31a857195586922b7bafb43070555da0194846fd1f6d1f515')
+validpgpkeys=('474E22316ABF4785A88C6E8EA2C794A986419D8A'   # Tom Stellard <tstellar@redhat.com>
+              'D574BD5D1D0E98895E3BF90044F2485E45D59042')  # Tobias Hieta <tobias@hieta.se>
+
+# Utilizing LLVM_DISTRIBUTION_COMPONENTS to avoid
+# installing static libraries; inspired by Gentoo
+_get_distribution_components() {
+    local target
+    ninja -t targets | grep -Po 'install-\K.*(?=-stripped:)' | while read -r target; do
+        case $target in
+            clang-libraries|llvm-libraries|distribution)
+                continue
+                ;;
+            # shared libraries
+            LLVM|LLVMgold)
+                ;;
+            # libraries needed for clang-tblgen
+            LLVMDemangle|LLVMSupport|LLVMTableGen)
+                ;;
+            # exclude static libraries
+            LLVM*)
+                continue
+                ;;
+            # exclude llvm-exegesis (doesn't seem useful without libpfm)
+            llvm-exegesis)
+                continue
+                ;;
+            clang-tidy-headers)
+                continue
+                ;;
+            clang|clangd|clang-*)
+                ;;
+            clang*|findAllSymbols)
+                continue
+                ;;
+        esac
+        echo $target
+    done
+}
+
+_python_optimize() {
+    python3 -m compileall "${@}"
+    python3 -O -m compileall "${@}"
+    python3 -OO -m compileall "${@}"
+}
+
+_python_version() {
+    python3 <(\
+        cat << 'EOF'
+import sys
+vi = sys.version_info
+print(f"{vi.major}.{vi.minor}")
+EOF
+    )
+}
+
+prepare() {
+    # Attempt to convert script to Python 3
+    2to3 -w -n --no-diffs \
+        "${srcdir}/llvm-project-${_pkgver}.src/clang-tools-extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py"
+}
+
+build() {
+    local _install="opt/${pkgbase%-opt}"
+    local _cmake_args=(
+        "-S" "${srcdir}/llvm-project-${_pkgver}.src/llvm"
+        "-G" "Ninja"
+        "-DCMAKE_BUILD_TYPE=Release"
+        "-DCMAKE_INSTALL_PREFIX=/${_install}"
+        "-DLLVM_BINUTILS_INCDIR=/${_install}/include"
+        "-DLLVM_APPEND_VC_REV=OFF"
+        "-DLLVM_VERSION_SUFFIX="
+        "-DLLVM_HOST_TRIPLE=${CHOST}"
+        "-DLLVM_ENABLE_RTTI=ON"
+        "-DLLVM_ENABLE_FFI=ON"
+        "-DFFI_INCLUDE_DIR:PATH=$(pkg-config --variable=includedir libffi)"
+        "-DLLVM_ENABLE_Z3_SOLVER=ON"
+        "-DLLVM_BUILD_LLVM_DYLIB=ON"
+        "-DLLVM_LINK_LLVM_DYLIB=ON"
+        "-DLLVM_INSTALL_UTILS=ON"
+        "-DLLVM_BUILD_DOCS=ON"
+        "-DLLVM_ENABLE_DOXYGEN=OFF"
+        "-DLLVM_ENABLE_SPHINX=ON"
+        "-DSPHINX_OUTPUT_HTML:BOOL=OFF"
+        "-DSPHINX_WARNINGS_AS_ERRORS=OFF"
+        "-DLLVM_ENABLE_PROJECTS=polly;lldb;lld;compiler-rt;clang-tools-extra;clang"
+        "-DLLVM_ENABLE_DUMP=ON"
+        "-DLLVM_ENABLE_BINDINGS=OFF"
+        "-DLLVM_POLLY_LINK_INTO_TOOLS=OFF"
+    )
+    local _bootstrap_options=(
+        "-DCMAKE_AR=/${_install}/bin/llvm-ar"
+        "-DCMAKE_C_COMPILER=clang"
+        "-DCMAKE_CXX_COMPILER=clang++"
+        "-DCMAKE_RANLIB=/${_install}/bin/llvm-ranlib"
+        "-DLLVM_ENABLE_LTO=Thin"
+        "-DLLVM_USE_LINKER=lld"
+    )
+
+    export CFLAGS+=" ${CPPFLAGS}"
+    export CXXFLAGS+=" ${CPPFLAGS}"
+    if [[ -n ${_bootstrap} ]]; then
+        export OLD_PATH="${PATH}"
+        export PATH="/${_install}/bin:${PATH}"
+        export LD_LIBRARY_PATH="/${_install}/lib"
+    fi
+
+    [[ -n ${_bootstrap} ]] && _cmake_args+=("${_bootstrap_options[@]}")
+    cmake -B _build "${_cmake_args[@]}"
+
+    pushd _build
+    local distribution_components=$(_get_distribution_components | paste -sd\;)
+    test -n "${distribution_components}"
+    _cmake_args+=("-DLLVM_DISTRIBUTION_COMPONENTS=${distribution_components}")
+    popd
+
+    cmake -B _build "${_cmake_args[@]}" \
+        -D LLVM_LIT_ARGS="-sv --ignore-fail" \
+        -Wno-dev
+    ninja -C _build
+}
+
+check() {
+    # Arch does this for Clang/LLVM tests
+    export LD_LIBRARY_PATH="${srcdir}/_build/lib"
+    if [[ -n ${_bootstrap} ]]; then
+        export PATH="${OLD_PATH}"
+        unset OLD_PATH
+    fi
+
+    # Test failures are expected for LLDB
+    # For most of LLDB tests to work, one needs ptrace() to be unrestricted
+    for _project in llvm clang{,-tools} polly lld{,b}; do
+        ninja -C _build "check-${_project}"
+    done
+}
+
+package() {
+    local _install="opt/${pkgbase%%-opt}"
+
+    DESTDIR="${pkgdir}" ninja -C _build install
+
+    # Include lit for running lit-based tests in other projects
+    pushd "${srcdir}/llvm-project-${_pkgver}.src/llvm/utils/lit"
+    python3 setup.py install --root="${pkgdir}" --prefix="/${_install}" -O1
+    popd
+
+    # Move analyzer scripts out of libexec
+    mv "${pkgdir}/${_install}"/libexec/{ccc,c++}-analyzer "${pkgdir}/${_install}/lib/clang/"
+    mv "${pkgdir}/${_install}"/libexec/analyze-{cc,c++} "${pkgdir}/${_install}/lib/clang/"
+    mv "${pkgdir}/${_install}"/libexec/intercept-{cc,c++} "${pkgdir}/${_install}/lib/clang/"
+    rmdir "$pkgdir/${_install}/libexec"
+    sed -i 's|libexec|lib/clang|' "${pkgdir}/${_install}/bin/scan-build"
+
+    # Symlink LLVMgold.so from lib/bfd-plugins
+    # https://bugs.archlinux.org/task/28479
+    install -d "${pkgdir}/${_install}/lib/bfd-plugins"
+    ln -s ../LLVMgold.so "${pkgdir}/${_install}/lib/bfd-plugins/LLVMgold.so"
+
+    if [[ ${CARCH} == x86_64 ]]; then
+        # Needed for multilib (https://bugs.archlinux.org/task/29951)
+        # Header stub is taken from Fedora
+        mv "${pkgdir}/${_install}"/include/llvm/Config/llvm-config{,-64}.h
+        cp "${srcdir}/llvm-config.h" "${pkgdir}/${_install}/include/llvm/Config/llvm-config.h"
+    fi
+
+    pushd "${srcdir}/llvm-project-${_pkgver}.src"
+
+    local _py=$(_python_version)
+    # Install Python bindings and optimize them
+    cp -a clang/bindings/python/clang "${pkgdir}/${_install}/lib/python${_py}/site-packages/"
+    _python_optimize "${pkgdir}/${_install}/lib/python${_py}/site-packages"
+
+    # Optimize other Python files except 2 problem cases
+    _python_optimize "${pkgdir}/${_install}/share" -x 'clang-include-fixer|run-find-all-symbols'
+
+    for _project in llvm clang{,-tools-extra} compiler-rt lld{,b} polly; do
+        install -Dm644 "${_project}/LICENSE.TXT" \
+            "${pkgdir}/usr/share/licenses/${pkgname}/${_project}-LICENSE"
+    done
+
+    popd
+}
