@@ -18,7 +18,8 @@
 # Contributor: Tomas Wilhelmsson <tomas.wilhelmsson@gmail.com>
 
 pkgname=llvm18-opt
-pkgver=18.1.2
+_pkgver=18.1.8
+pkgver=${_pkgver/-/_}
 pkgrel=1
 epoch=1
 pkgdesc='LLVM compiler suite stable version 18 (installs to /opt)'
@@ -60,27 +61,27 @@ optdepends=(
     'openmp: OpenMP support in clang with -fopenmp'
     'python: for scan-view and git-clang-format'
 )
+_major=${pkgver%%.*}
 provides=(
-    # Provides but not replace as we install it on /opt
-    'clang18'
-    'compiler-rt18'
-    'lld18'
-    'lldb18'
-    'llvm18'
-    'llvm18-libs'
-    'polly18'
+    # Provides but doesn't replace as we install it on /opt
+    "clang${_major}"
+    "compiler-rt${_major}"
+    "lld${_major}"
+    "lldb${_major}"
+    "${pkgname%-opt}"
+    "llvm${_major}-libs"
+    "polly${_major}"
 )
 options=(
     'staticlibs'
     '!lto'  # use ThinLTO instead
 )
-_tagver=llvmorg-${pkgver/rc/-rc}
-source=("https://github.com/llvm/llvm-project/releases/download/${_tagver}/llvm-project-${pkgver}.src.tar.xz"{,.sig}
+source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${_pkgver}/llvm-project-${_pkgver}.src.tar.xz"{,.sig}
         'llvm-config.h')
-sha384sums=('8ee8e5f8be4af7fccac008e963b243ed908b5bdbb039f5c57bd35de438ac4df966facc29e963577c32a89f42b264a67c'
+sha384sums=('1b8a2ae401dde9e662954a34aa29a2440d0dc2553974c3c9e20d67ea2bc2011a96f22efcfc4446b498dfb5c60484e6a6'
             'SKIP'
             '3065a1f344a5a5bebeb0fd9fcc95bb325ebf63b20d9871d0f49bfbfd7a5434e3d5e8bdadac5a2d8033bb7fe2ebe3d7bb')
-b2sums=('f21fca02fe9e02a3d440595aafbe0572be318ce69cc6285c1bf3dc9187b37ebf4c76f3ea60b6870c441675288f46e5597b069ec451d5026c5161f84daef6b4b2'
+b2sums=('a950492f1dbfb874dff63b1ffef86468169ba2f211a9733ec2d4cf30040f7f277ef00f048bb44dee9f97d7d762f0f241f19e5a2a7b0b49217d3821ddfc8c354f'
         'SKIP'
         'c7e56bfbb9983bc30977fed8d6e028d007dcce2bce03e91c38070fa4d5eb261919ab85f77a150cc31a857195586922b7bafb43070555da0194846fd1f6d1f515')
 validpgpkeys=('474E22316ABF4785A88C6E8EA2C794A986419D8A'   # Tom Stellard <tstellar@redhat.com>
@@ -141,13 +142,13 @@ EOF
 prepare() {
     # Attempt to convert script to Python 3
     2to3 -w -n --no-diffs \
-        "${srcdir}/llvm-project-${pkgver}.src/clang-tools-extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py"
+        "${srcdir}/llvm-project-${_pkgver}.src/clang-tools-extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py"
 }
 
 build() {
-    local _install="opt/${pkgbase%%-opt}"
+    local _install="opt/${pkgbase%-opt}"
     local _cmake_args=(
-        "-S" "${srcdir}/llvm-project-${pkgver}.src/llvm"
+        "-S" "${srcdir}/llvm-project-${_pkgver}.src/llvm"
         "-G" "Ninja"
         "-DCMAKE_BUILD_TYPE=Release"
         "-DCMAKE_INSTALL_PREFIX=/${_install}"
@@ -225,7 +226,7 @@ package() {
     DESTDIR="${pkgdir}" ninja -C _build install
 
     # Include lit for running lit-based tests in other projects
-    pushd "${srcdir}/llvm-project-${pkgver}.src/llvm/utils/lit"
+    pushd "${srcdir}/llvm-project-${_pkgver}.src/llvm/utils/lit"
     python3 setup.py install --root="${pkgdir}" --prefix="/${_install}" -O1
     popd
 
@@ -248,7 +249,7 @@ package() {
         cp "${srcdir}/llvm-config.h" "${pkgdir}/${_install}/include/llvm/Config/llvm-config.h"
     fi
 
-    pushd "${srcdir}/llvm-project-${pkgver}.src"
+    pushd "${srcdir}/llvm-project-${_pkgver}.src"
 
     local _py=$(_python_version)
     # Install Python bindings and optimize them
