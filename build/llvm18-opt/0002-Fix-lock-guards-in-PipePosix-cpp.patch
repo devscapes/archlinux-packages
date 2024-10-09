@@ -1,0 +1,32 @@
+From 29dda26c65fc50066792f558e95f9603a7d7effc Mon Sep 17 00:00:00 2001
+From: Danial Klimkin <dklimkin@google.com>
+Date: Tue, 30 Apr 2024 10:06:28 +0200
+Subject: [PATCH] Fix lock guads in PipePosix.cpp (#90572)
+
+Guard object destroyed immediately after creation without naming.
+---
+ lldb/source/Host/posix/PipePosix.cpp | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/lldb/source/Host/posix/PipePosix.cpp b/lldb/source/Host/posix/PipePosix.cpp
+index afd3fe39059ac1..f35c348990df62 100644
+--- a/lldb/source/Host/posix/PipePosix.cpp
++++ b/lldb/source/Host/posix/PipePosix.cpp
+@@ -108,7 +108,7 @@ Status PipePosix::CreateNew(bool child_processes_inherit) {
+ }
+ 
+ Status PipePosix::CreateNew(llvm::StringRef name, bool child_process_inherit) {
+-  std::scoped_lock<std::mutex, std::mutex> (m_read_mutex, m_write_mutex);
++  std::scoped_lock<std::mutex, std::mutex> guard(m_read_mutex, m_write_mutex);
+   if (CanReadUnlocked() || CanWriteUnlocked())
+     return Status("Pipe is already opened");
+ 
+@@ -146,7 +146,7 @@ Status PipePosix::CreateWithUniqueName(llvm::StringRef prefix,
+ 
+ Status PipePosix::OpenAsReader(llvm::StringRef name,
+                                bool child_process_inherit) {
+-  std::scoped_lock<std::mutex, std::mutex> (m_read_mutex, m_write_mutex);
++  std::scoped_lock<std::mutex, std::mutex> guard(m_read_mutex, m_write_mutex);
+ 
+   if (CanReadUnlocked() || CanWriteUnlocked())
+     return Status("Pipe is already opened");

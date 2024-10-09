@@ -1,0 +1,23 @@
+From 7ae32bf7581e03d92c78346a72ea20798520b978 Mon Sep 17 00:00:00 2001
+From: Dmitry Vasilyev <dvassiliev@accesssoftek.com>
+Date: Tue, 30 Apr 2024 17:38:46 +0400
+Subject: [PATCH] [lldb] Fixed SyntaxWarning invalid escape sequence '\s' in
+ decorators.py (#90607)
+
+---
+ lldb/packages/Python/lldbsuite/test/decorators.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lldb/packages/Python/lldbsuite/test/decorators.py b/lldb/packages/Python/lldbsuite/test/decorators.py
+index 7fb88cef165356..79cc0a2aeacbeb 100644
+--- a/lldb/packages/Python/lldbsuite/test/decorators.py
++++ b/lldb/packages/Python/lldbsuite/test/decorators.py
+@@ -1098,7 +1098,7 @@ def is_feature_enabled():
+                 ).decode("utf-8")
+                 # If 'feature: 1' was output, then this feature is available and
+                 # the test should not be skipped.
+-                if re.match("%s: 1\s*" % feature, output):
++                if re.match(r"%s: 1\s*" % feature, output):
+                     return None
+                 else:
+                     return "%s is not supported on this system." % feature

@@ -1,0 +1,31 @@
+From 675791335285fa86434dc46e5c92f543e0e79d19 Mon Sep 17 00:00:00 2001
+From: Jordan Rupprecht <rupprecht@google.com>
+Date: Wed, 21 Feb 2024 22:59:03 -0800
+Subject: [PATCH] [lldb][test] Fix PythonDataObjectsTest
+
+This is using `FileSystem::Instance()` w/o calling `FileSystem::Initialize()`. Use `SubsystemRAII` to do that.
+---
+ .../Python/PythonDataObjectsTests.cpp | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/lldb/unittests/ScriptInterpreter/Python/PythonDataObjectsTests.cpp b/lldb/unittests/ScriptInterpreter/Python/PythonDataObjectsTests.cpp
+index a4db4627f935b4..b90fbb7830995f 100644
+--- a/lldb/unittests/ScriptInterpreter/Python/PythonDataObjectsTests.cpp
++++ b/lldb/unittests/ScriptInterpreter/Python/PythonDataObjectsTests.cpp
+@@ -11,6 +11,7 @@
+ 
+ #include "Plugins/ScriptInterpreter/Python/PythonDataObjects.h"
+ #include "Plugins/ScriptInterpreter/Python/ScriptInterpreterPython.h"
++#include "TestingSupport/SubsystemRAII.h"
+ #include "lldb/Host/File.h"
+ #include "lldb/Host/FileSystem.h"
+ #include "lldb/Host/HostInfo.h"
+@@ -26,6 +27,8 @@ using namespace lldb_private::python;
+ using llvm::Expected;
+ 
+ class PythonDataObjectsTest : public PythonTestSuite {
++  SubsystemRAII<FileSystem> subsystems;
++
+ public:
+   void SetUp() override {
+     PythonTestSuite::SetUp();

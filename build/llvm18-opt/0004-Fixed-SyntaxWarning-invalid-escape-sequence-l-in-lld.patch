@@ -1,0 +1,23 @@
+From c106abfe9f3d3ed78a946009f7625088f28e9065 Mon Sep 17 00:00:00 2001
+From: Dmitry Vasilyev <dvassiliev@accesssoftek.com>
+Date: Tue, 30 Apr 2024 18:15:14 +0400
+Subject: [PATCH] [lldb] Fixed SyntaxWarning invalid escape sequence '\l' in
+ lldbtest.py (#90609)
+
+---
+ lldb/packages/Python/lldbsuite/test/lldbtest.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lldb/packages/Python/lldbsuite/test/lldbtest.py b/lldb/packages/Python/lldbsuite/test/lldbtest.py
+index 376d4ac..9fed3d5 100644
+--- a/lldb/packages/Python/lldbsuite/test/lldbtest.py
++++ b/lldb/packages/Python/lldbsuite/test/lldbtest.py
+@@ -1589,7 +1589,7 @@ class Base(unittest2.TestCase):
+                 "DYLIB_NAME": lib_name,
+                 "CFLAGS_EXTRAS": "%s -I%s "
+                 % (stdflag, os.path.join(os.environ["LLDB_SRC"], "include")),
+-                "LD_EXTRAS": "-shared -l%s\liblldb.lib" % lib_dir,
++                "LD_EXTRAS": "-shared -l%s\\liblldb.lib" % lib_dir,
+             }
+         else:
+             d = {
