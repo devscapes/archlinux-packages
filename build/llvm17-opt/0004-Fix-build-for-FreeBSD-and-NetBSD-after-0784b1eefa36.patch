@@ -1,0 +1,65 @@
+From 042bb2850dcdd0b8a519f51678f2e40d0a97f548 Mon Sep 17 00:00:00 2001
+From: Dimitry Andric <dimitry@andric.com>
+Date: Tue, 23 Jan 2024 00:06:07 +0100
+Subject: [PATCH] [tsan] Fix build for FreeBSD and NetBSD after 0784b1eefa36
+ (#79019)
+
+In 0784b1eefa36 some code for re-execution was moved to
+`ReExecIfNeeded()`, but also extended with a few Linux-only features.
+This leads to compile errors on FreeBSD, or other non-Linux platforms:
+
+compiler-rt/lib/tsan/rtl/tsan_platform_linux.cpp:247:25: error: use of
+undeclared identifier 'personality'
+      247 |   int old_personality = personality(0xffffffff);
+          |                         ^
+compiler-rt/lib/tsan/rtl/tsan_platform_linux.cpp:249:54: error: use of
+undeclared identifier 'ADDR_NO_RANDOMIZE'
+249 | (old_personality != -1) && ((old_personality & ADDR_NO_RANDOMIZE)
+== 0);
+          |                                                      ^
+compiler-rt/lib/tsan/rtl/tsan_platform_linux.cpp:281:46: error: use of
+undeclared identifier 'ADDR_NO_RANDOMIZE'
+281 | CHECK_NE(personality(old_personality | ADDR_NO_RANDOMIZE), -1);
+          |                                              ^
+
+Surround the affected part with a `#if SANITIZER_LINUX` block for now.
+---
+ compiler-rt/lib/tsan/rtl/tsan_platform_linux.cpp | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/compiler-rt/lib/tsan/rtl/tsan_platform_linux.cpp b/compiler-rt/lib/tsan/rtl/tsan_platform_linux.cpp
+index 9a66a7feb5b395..0d0b1aba1f852a 100644
+--- a/compiler-rt/lib/tsan/rtl/tsan_platform_linux.cpp
++++ b/compiler-rt/lib/tsan/rtl/tsan_platform_linux.cpp
+@@ -243,12 +243,13 @@ static void ReExecIfNeeded() {
+     reexec = true;
+   }
+ 
++#    if SANITIZER_LINUX
+   // ASLR personality check.
+   int old_personality = personality(0xffffffff);
+   bool aslr_on =
+       (old_personality != -1) && ((old_personality & ADDR_NO_RANDOMIZE) == 0);
+ 
+-#    if SANITIZER_ANDROID && (defined(__aarch64__) || defined(__x86_64__))
++#      if SANITIZER_ANDROID && (defined(__aarch64__) || defined(__x86_64__))
+   // After patch "arm64: mm: support ARCH_MMAP_RND_BITS." is introduced in
+   // linux kernel, the random gap between stack and mapped area is increased
+   // from 128M to 36G on 39-bit aarch64. As it is almost impossible to cover
+@@ -261,7 +262,7 @@ static void ReExecIfNeeded() {
+     CHECK_NE(personality(old_personality | ADDR_NO_RANDOMIZE), -1);
+     reexec = true;
+   }
+-#    endif
++#      endif
+ 
+   if (reexec) {
+     // Don't check the address space since we're going to re-exec anyway.
+@@ -288,6 +289,7 @@ static void ReExecIfNeeded() {
+       Die();
+     }
+   }
++#    endif  // SANITIZER_LINUX
+ 
+   if (reexec)
+     ReExec();

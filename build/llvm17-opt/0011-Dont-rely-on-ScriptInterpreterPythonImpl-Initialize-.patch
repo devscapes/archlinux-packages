@@ -1,0 +1,80 @@
+From 5c96e71d0d49dd55711ccdb57a22d033fe7a8fae Mon Sep 17 00:00:00 2001
+From: Jonas Devlieghere <jonas@devlieghere.com>
+Date: Sat, 17 Feb 2024 20:55:33 -0800
+Subject: [PATCH] [lldb] Don't rely on ScriptInterpreterPythonImpl::Initialize
+ in the unit tests (#82096)
+
+The unit tests only test the Python objects and don't actually use
+anything from the LLDB module. That means that all the additional
+complexity in ScriptInterpreterPythonImpl::Initialize is overkill.
+
+By doing the initialization by hand, we avoid the annoying
+ModuleNotFoundError.
+
+  Traceback (most recent call last):
+    File "<string>", line 1, in <module>
+  ModuleNotFoundError: No module named 'lldb'
+
+The error is the result of us stubbing out the SWIG (specifically
+`PyInit__lldb`) because we cannot link against libLLDB from the unit
+tests.
+
+The downside of doing the initialization manually is that we do lose a
+bit of test coverage. For example, issue #70453 also manifested itself
+in the unit tests.
+---
+ .../Python/PythonTestSuite.cpp                | 24 ++++---------------
+ 1 file changed, 4 insertions(+), 20 deletions(-)
+
+diff --git a/lldb/unittests/ScriptInterpreter/Python/PythonTestSuite.cpp b/lldb/unittests/ScriptInterpreter/Python/PythonTestSuite.cpp
+index 5f0cc4c23db7b2..23162436d42c94 100644
+--- a/lldb/unittests/ScriptInterpreter/Python/PythonTestSuite.cpp
++++ b/lldb/unittests/ScriptInterpreter/Python/PythonTestSuite.cpp
+@@ -9,43 +9,27 @@
+ #include "gtest/gtest.h"
+ 
+ #include "Plugins/ScriptInterpreter/Python/SWIGPythonBridge.h"
+-#include "Plugins/ScriptInterpreter/Python/ScriptInterpreterPython.h"
+-#include "Plugins/ScriptInterpreter/Python/ScriptInterpreterPythonImpl.h"
+ #include "Plugins/ScriptInterpreter/Python/lldb-python.h"
+ 
+-#include "lldb/Host/FileSystem.h"
+-#include "lldb/Host/HostInfo.h"
+-
+ #include "PythonTestSuite.h"
+ #include <optional>
+ 
+-using namespace lldb_private;
+-class TestScriptInterpreterPython : public ScriptInterpreterPythonImpl {
+-public:
+-  using ScriptInterpreterPythonImpl::Initialize;
+-};
+-
+ void PythonTestSuite::SetUp() {
+-  FileSystem::Initialize();
+-  HostInfoBase::Initialize();
+-  // ScriptInterpreterPython::Initialize() depends on HostInfo being
+-  // initializedso it can compute the python directory etc.
+-  TestScriptInterpreterPython::Initialize();
+-
+   // Although we don't care about concurrency for the purposes of running
+   // this test suite, Python requires the GIL to be locked even for
+   // deallocating memory, which can happen when you call Py_DECREF or
+   // Py_INCREF.  So acquire the GIL for the entire duration of this
+   // test suite.
++  Py_InitializeEx(0);
+   m_gil_state = PyGILState_Ensure();
++  PyRun_SimpleString("import sys");
+ }
+ 
+ void PythonTestSuite::TearDown() {
+   PyGILState_Release(m_gil_state);
+ 
+-  TestScriptInterpreterPython::Terminate();
+-  HostInfoBase::Terminate();
+-  FileSystem::Terminate();
++  // We could call Py_FinalizeEx here, but initializing and finalizing Python is
++  // pretty slow, so just keep Python initialized across tests.
+ }
+ 
+ // The following functions are the Pythonic implementations of the required

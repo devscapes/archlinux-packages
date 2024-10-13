@@ -1,0 +1,91 @@
+From 939ee549a2c40a356137a404464039c9a5691cb3 Mon Sep 17 00:00:00 2001
+From: Fangrui Song <i@maskray.me>
+Date: Fri, 1 Mar 2024 11:17:22 -0800
+Subject: [PATCH] [ELF] Internalize enum
+
+g++ -flto has a diagnostic `-Wodr` about mismatched redeclarations,
+which even apply to `enum`.
+
+Fix #83529
+
+Reviewers: thesamesam
+
+Reviewed By: thesamesam
+
+Pull Request: https://github.com/llvm/llvm-project/pull/83604
+
+(cherry picked from commit 4a3f7e798a31072a80a0731b8fb1da21b9c626ed)
+---
+ lld/ELF/Arch/LoongArch.cpp | 2 ++
+ lld/ELF/Arch/PPC64.cpp     | 3 ++-
+ lld/ELF/Arch/RISCV.cpp     | 2 ++
+ 3 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/lld/ELF/Arch/LoongArch.cpp b/lld/ELF/Arch/LoongArch.cpp
+index 05fd38fb753fda..1dab98115d9dea 100644
+--- a/lld/ELF/Arch/LoongArch.cpp
++++ b/lld/ELF/Arch/LoongArch.cpp
+@@ -41,6 +41,7 @@ class LoongArch final : public TargetInfo {
+ };
+ } // end anonymous namespace
+ 
++namespace {
+ enum Op {
+   SUB_W = 0x00110000,
+   SUB_D = 0x00118000,
+@@ -65,6 +66,7 @@ enum Reg {
+   R_T2 = 14,
+   R_T3 = 15,
+ };
++} // namespace
+ 
+ // Mask out the input's lowest 12 bits for use with `pcalau12i`, in sequences
+ // like `pcalau12i + addi.[wd]` or `pcalau12i + {ld,st}.*` where the `pcalau12i`
+diff --git a/lld/ELF/Arch/PPC64.cpp b/lld/ELF/Arch/PPC64.cpp
+index de52f6a79a40b9..019c073bd541b6 100644
+--- a/lld/ELF/Arch/PPC64.cpp
++++ b/lld/ELF/Arch/PPC64.cpp
+@@ -26,6 +26,7 @@ using namespace lld::elf;
+ constexpr uint64_t ppc64TocOffset = 0x8000;
+ constexpr uint64_t dynamicThreadPointerOffset = 0x8000;
+ 
++namespace {
+ // The instruction encoding of bits 21-30 from the ISA for the Xform and Dform
+ // instructions that can be used as part of the initial exec TLS sequence.
+ enum XFormOpcd {
+@@ -139,6 +140,7 @@ enum class PPCPrefixedInsn : uint64_t {
+   PSTXV = PREFIX_8LS | 0xd8000000,
+   PSTXVP = PREFIX_8LS | 0xf8000000
+ };
++
+ static bool checkPPCLegacyInsn(uint32_t encoding) {
+   PPCLegacyInsn insn = static_cast<PPCLegacyInsn>(encoding);
+   if (insn == PPCLegacyInsn::NOINSN)
+@@ -164,7 +166,6 @@ enum class LegacyToPrefixMask : uint64_t {
+       0x8000000003e00000, // S/T (6-10) - The [S/T]X bit moves from 28 to 5.
+ };
+ 
+-namespace {
+ class PPC64 final : public TargetInfo {
+ public:
+   PPC64();
+diff --git a/lld/ELF/Arch/RISCV.cpp b/lld/ELF/Arch/RISCV.cpp
+index 5fcab4d39d43a8..4798c86f7d1b61 100644
+--- a/lld/ELF/Arch/RISCV.cpp
++++ b/lld/ELF/Arch/RISCV.cpp
+@@ -57,6 +57,7 @@ class RISCV final : public TargetInfo {
+ 
+ const uint64_t dtpOffset = 0x800;
+ 
++namespace {
+ enum Op {
+   ADDI = 0x13,
+   AUIPC = 0x17,
+@@ -78,6 +79,7 @@ enum Reg {
+   X_A0 = 10,
+   X_T3 = 28,
+ };
++} // namespace
+ 
+ static uint32_t hi20(uint32_t val) { return (val + 0x800) >> 12; }
+ static uint32_t lo12(uint32_t val) { return val & 4095; }

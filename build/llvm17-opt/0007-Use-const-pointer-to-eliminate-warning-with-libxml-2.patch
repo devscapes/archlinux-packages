@@ -1,0 +1,47 @@
+From f9e2e85b07ee2c19bbef8fda50b3f664d6f5193e Mon Sep 17 00:00:00 2001
+From: FantasqueX <fantasquex@gmail.com>
+Date: Sun, 21 Jan 2024 17:34:29 +0800
+Subject: [PATCH] [Clang] Use const pointer to eliminate warning with libxml
+ 2.12.0 (#76719)
+
+Currently, if `CLANG_HAVE_LIBXML` is defined, and the version of libxml2
+is above 2.12.0, there will be two warnings when building clang.
+
+warning: initializing 'xmlErrorPtr' (aka 'struct _xmlError *') with an
+expression of type 'const xmlError *' (aka 'const struct _xmlError *')
+discards qualifiers
+
+Since this commit
+
+https://gitlab.gnome.org/GNOME/libxml2/-/commit/45470611b047db78106dcb2fdbd4164163c15ab7,
+libxml2 makes cmlGetLastError return a const error. This patch follows
+libxml2. Making the result a const pointer should be compatible with
+versions before 2.12.0.
+
+Tested on ArchLinux with libxml2 2.12.3 installed.
+---
+ clang/tools/c-index-test/c-index-test.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/clang/tools/c-index-test/c-index-test.c b/clang/tools/c-index-test/c-index-test.c
+index 25235eb7f06d6b..21619888cfa5f3 100644
+--- a/clang/tools/c-index-test/c-index-test.c
++++ b/clang/tools/c-index-test/c-index-test.c
+@@ -707,7 +707,7 @@ static void ValidateCommentXML(const char *Str, const char *CommentSchemaFile) {
+   Doc = xmlParseDoc((const xmlChar *) Str);
+ 
+   if (!Doc) {
+-    xmlErrorPtr Error = xmlGetLastError();
++    const xmlError *Error = xmlGetLastError();
+     printf(" CommentXMLInvalid [not well-formed XML: %s]", Error->message);
+     return;
+   }
+@@ -717,7 +717,7 @@ static void ValidateCommentXML(const char *Str, const char *CommentSchemaFile) {
+   if (!status)
+     printf(" CommentXMLValid");
+   else if (status > 0) {
+-    xmlErrorPtr Error = xmlGetLastError();
++    const xmlError *Error = xmlGetLastError();
+     printf(" CommentXMLInvalid [not valid XML: %s]", Error->message);
+   } else
+     printf(" libXMLError");

@@ -20,13 +20,14 @@
 pkgname=llvm17-opt
 _pkgver=17.0.6
 pkgver=${_pkgver/-/_}
-pkgrel=1
+pkgrel=2
 epoch=1
 pkgdesc='LLVM compiler suite stable version 17 (installs to /opt)'
 arch=('x86_64')
 url='https://llvm.org/'
 license=('Apache-2.0 WITH LLVM-exception')
 depends=(
+    'curl' 'libcurl.so'
     'gcc-libs'
     'glibc'
     'libedit' 'libedit.so'
@@ -35,6 +36,7 @@ depends=(
     'lua53'
     'ncurses' 'libncursesw.so' 'libpanelw.so'
     'perl'
+    'python'
     'xz' 'liblzma.so'
     'z3' 'libz3.so'
     'zlib' 'libz.so'
@@ -43,22 +45,23 @@ depends=(
 makedepends=(
     'cmake'
     'jsoncpp'
-    'lldb'
     'ninja'
     'ocl-icd'
     'opencl-headers'
-    'python-recommonmark'
     'python-setuptools'
-    'python-six'
-    'python-sphinx-automodapi'
     'swig'
 )
 checkdepends=(
     'python-psutil'
 )
 optdepends=(
-    'openmp: OpenMP support in clang with -fopenmp'
-    'python: for scan-view and git-clang-format'
+    'cuda: for OpenMP offloading to NVIDIA GPUs'
+    'hsa-rocr: for OpenMP offloading to AMD GPUs'
+    'python-guppy3: for opt-stats tool to show memory consumption'
+    'python-psutil: for LLVM Integrated Tester'
+    'python-pygments: for opt-viewer module'
+    'python-yaml: for opt-viewer module'
+    'sublime-text: for clang-format-sublime tool'
 )
 _major=${pkgver%%.*}
 provides=(
@@ -69,6 +72,7 @@ provides=(
     "lldb${_major}"
     "${pkgname%-opt}"
     "llvm${_major}-libs"
+    "openmp${_major}"
     "polly${_major}"
 )
 options=(
@@ -76,22 +80,73 @@ options=(
     '!lto'  # use ThinLTO instead
 )
 source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${_pkgver}/llvm-project-${_pkgver}.src.tar.xz"{,.sig}
-        'llvm-config.h')
+        '0001-Replace-the-usage-of-module-imp-with-module-importli.patch'
+        '0002-Call-Import_AppendInittab-before-Py_Initialize.patch'
+        '0003-Re-exec-TSan-with-no-ASLR-if-memory-layout-is-incomp.patch'
+        '0004-Fix-build-for-FreeBSD-and-NetBSD-after-0784b1eefa36.patch'
+        '0005-Add-MappingDesc-ALLOCATOR-type-and-check-it-is-avail.patch'
+        '0006-msan-Re-exec-with-no-ASLR-if-memory-layout-is-incomp.patch'
+        '0007-Use-const-pointer-to-eliminate-warning-with-libxml-2.patch'
+        '0008-Fixed-SyntaxWarning-invalid-escape-sequence-s-in-dec.patch'
+        '0009-Fixed-SyntaxWarning-invalid-escape-sequence-l-in-lld.patch'
+        '0010-fix-clang-tools-extra-py-fix-invalid-escape-sequence.patch'
+        '0011-Dont-rely-on-ScriptInterpreterPythonImpl-Initialize-.patch'
+        '0012-Use-PyBytes-and-PyByteArray-in-Python-Data-Objects-u.patch'
+        '0013-Fix-PythonDataObjectsTest.patch'
+        '0101-clangd-handle-missing-ending-brace.patch'
+        '0102-lld-internalize-enum.patch'
+        '0103-clang-disable-float128-diagnostics-for-device-compil.patch'
+        '0201-enable-fstack-protector-strong-by-default.patch')
 sha384sums=('d3041f9f42f8d251699543ca71e339bbea90cda63cab893e786dd087a681d6ec535135668c0e2f4f06184d4879bd908f'
             'SKIP'
-            '3065a1f344a5a5bebeb0fd9fcc95bb325ebf63b20d9871d0f49bfbfd7a5434e3d5e8bdadac5a2d8033bb7fe2ebe3d7bb')
+            '2b7379e266a483a1fd511eafa36016493e2eedca2cc22a66b618d0161eb0f055b2445e8cbfabec9654d2ede1f810b3d4'
+            'ad59f58e280f0edcd5b2205b8e9d2bf483060497f4d74885685a93cedc6a057c9ada405cfda6120922bf26221d632fba'
+            'c948a29c9caf874d09c852014875c626b447503815423665356ecfa5797e74cc749830dbee122a9feefad8cfe9130771'
+            '4708e1426be05efe471729b3296330b2fc1d06ce2528cb8c333c83a3ecc07c9233299139d3037ddd91123269005254d2'
+            '81395a43250d93aa9d7ce152bda592af3790c3244284f8a6da0ac97cd68996775e285a1dca5fd2d46d9c180b07d47124'
+            'c7da58be0ec1031af55f3deb81513f6a273f142fa9949d8961d763b18f4ce5e5e848954c90b5317aaa1cd90f7b8a3828'
+            '69aa0ac207c7693f99a9c6aee368d59f49fabf40424dd0f66907f5cfc01f9193b8ebb831849a489087cb51c58f96815c'
+            '929b98b996cfc909c65c91525e8b6e7b0b5521adf083c8d515816f4387e9887a3e6a48b6a01f9478771cbea698330581'
+            'a44adbcdefe07fcfb88e32de7628bf887c9f23e14aae6fd2b9ddd8a2c72c01de521ca23d0adb4076d3aa0a7eed53fab3'
+            'a98e52620645d1b7da97de5b0f9bb1107f82c4804de652af13f9cea4128fc83dd247179076ad86a4a7f0ccaac6551416'
+            '94e3fca369ce1776207160a48271340fb4bf1a09f6f711b30d39a284edd0b312e7d6f5fac565eb6a28867f4dc708ad90'
+            'ae701ead08edeb688cb9a3a377ba4a530eee564b51ec9439bf3dc762e6a4d790112ea39cc7df75a231bef16ab42a6dd5'
+            'cb2fa926ffa31562caf5e63faedcc0e9718c491ea6007c2ff6e39151f42adca754675c20e99fc1822cf23edaad438b68'
+            'd2df1d70158104d70d4b510c13525b6660de9a535c2fc79bc595e908857907d94401de07d226b733eb4fb493180df3ea'
+            '3d6c6e66e3600b452aaeee9072f7b81a9e3cc05b00ce4a55be98dcb49afd3d47432d98b2d76d4394b9230be8e73d8e9a'
+            '2c771e429d57d620f7ac7f4d7200e594366d66dc9e63de7700f74a90c444b5ee3ccf4205b85424efbce0646bcb8b4afc'
+            '83f7478ee8c7589259b3580d0c80c68631de0804e96c108db16145450703edba655d2c5ffbb517db89ed793824993d0e')
 b2sums=('d6ede1a9fda8756995c3e0654111941649e15794179641806f18919f1dc68c41ca0cabd5693b5096d05dccc3a391cd20d34af1137bf8af92ed3117a1ce84d1b2'
         'SKIP'
-        'c7e56bfbb9983bc30977fed8d6e028d007dcce2bce03e91c38070fa4d5eb261919ab85f77a150cc31a857195586922b7bafb43070555da0194846fd1f6d1f515')
+        '05a98bf2c48811d2ced460beeceaed18a65b718594c52e190c2169ee91f2b088e98b5391812b4baca46f63e9e175ae7ff611732030669f57c25a370c914d7af0'
+        '6ff78903104a6d6c5583597958e54b310218d8836b8405b0c04d476c89f25b803f1a4b07e68e156701a43f3d2c30d5b2a2f8a0f855f1685e3cb62baefb1d2ad1'
+        'aef6c3f33a66304b00d7840c5bd2701d24373dc879d3b520e0f124fe797a4cf640a9d1ef7de27bcde57604f478092781c05a07c691906f3be2c68984a9dce1cd'
+        '0f147acc9fc2fcabaaa704d31fb67360e1f721936e760a2ae9252e7046e97d27e4594c16aab2f4573962269e4e94e0b426b1191f748905d2a17c08ed32c74fbc'
+        'ef6f4027ad44ddf34ccef5885f1c95d7a54c207b97c7f8e63df88f3604a50cdd31674e221f5d45ceef19af78fb9d3160d520dafd3fbe979ee675e790f97f578a'
+        '2b067d4ab9092db88b9f129964e27599d6a2b8174c12ca7074000877efdfd9b5a0ca630740126122aa813210b42de8133929b7244c995fab798decf7eeb3ebd8'
+        '01020b564d10ac7a65f8a778feda9b728864c9bfedd7cb3549084bf0e8ef750bcf624519fb94a183e5a887a19fd9d5d486d68d148db814e789e52c0e97909b16'
+        'ea0a009dae6dadc8f571e492799182eda83c6784d0892d9ccceccee68a6c9db1050fb53adfb365703fc64bf648db3a56e21114a4d2a8b5006e114a1cab9e61c0'
+        '09cca0dd3778f226c40ae73fc9ea2425d5b3464feb6821cb5f7d64c15e6601766ca08dca2e7e8dd04a43e5cedfe711a40f9389f5baed8d46db0f29dac60cdadb'
+        '78fd2762ee7199effef4aeaf69f89642647a0ec7c6234f21a94938210cb0260bf2cbdcfe8863b5072ea01dd878977320105402c2e9f470e81afe039dbc8756a5'
+        'd05a9499603baa63e19f65022443d69ad3a070c255a0249db17757b578b5b16c38479324152dc737bda3f7f838f538fca1cc8a0b2b829a5ba2ebef644e947cef'
+        '1985ca58983e724d5262a03c5777f036d287c083be29ccac703ab336457035ae23c3f098448626ec209d2d50b2f913cb6b51ed50ec5698497c413f51af9ce531'
+        'a0980c6a05cf5ce6b24df2bc7a7b098223ebcf7aca254d42eda1075bd33fdf972acc94580c6b66aec533c441d1108f805651abdd3d93893c79a62fedbf2dbab8'
+        'd3ffa7e43daa5c3f1d3a6b962a8b4317595a087129a2283e67bf53dead52c05d1f22b5abd4948533a66e8aa449a722a2260a1b142e86b53c6695892713103e68'
+        '55d1f31e8da2c0693d810b173e47db5c80c4e46a4b1efdba0eafe339483bf3770a9a11678086b557699c689a188537d98f58561f6ddc37e9ffd0d8f611620a7f'
+        'e6742b4dab1246d3580ee6a91acb45a6224653c6d9c17c3c24fd698cf95dfab06ca73afafcd9e2f2272d0e31ae0de59244a57d4888c5079eadf63e2aa5aef16f'
+        '3a3cffdd7c706014eb930d0d85a4a2db83dfd245a05f743da337255bed7b150a1308d17229d223f1b9f5944369e4be4236ee3816925faae63b0a41534bf0c01d')
 validpgpkeys=('474E22316ABF4785A88C6E8EA2C794A986419D8A'   # Tom Stellard <tstellar@redhat.com>
               'D574BD5D1D0E98895E3BF90044F2485E45D59042')  # Tobias Hieta <tobias@hieta.se>
+
+# TODO: Avoid adding LLVM into checkdepends just for LIT
+[[ -n ${_bootstrap} ]] || checkdepends+=('llvm')
 
 # Utilizing LLVM_DISTRIBUTION_COMPONENTS to avoid
 # installing static libraries; inspired by Gentoo
 _get_distribution_components() {
     local target
-    ninja -t targets | grep -Po 'install-\K.*(?=-stripped:)' | while read -r target; do
-        case $target in
+    ninja -C build-llvm -t targets | grep -Po 'install-\K.*(?=-stripped:)' | while read -r target; do
+        case "${target}" in
             clang-libraries|llvm-libraries|distribution)
                 continue
                 ;;
@@ -109,16 +164,13 @@ _get_distribution_components() {
             llvm-exegesis)
                 continue
                 ;;
-            clang-tidy-headers)
-                continue
-                ;;
             clang|clangd|clang-*)
                 ;;
             clang*|findAllSymbols)
                 continue
                 ;;
         esac
-        echo $target
+        echo "${target}"
     done
 }
 
@@ -139,38 +191,85 @@ EOF
 }
 
 prepare() {
+    cd "llvm-project-${_pkgver}.src"
+
+    # Allow LLDB to be compatible with Python 3.12+
+    patch -p1 <../0001-Replace-the-usage-of-module-imp-with-module-importli.patch
+    patch -p1 <../0002-Call-Import_AppendInittab-before-Py_Initialize.patch
+
+    # Linux ASLR workarounds - https://github.com/google/sanitizers/issues/1716
+    # Lowering vm.mmap_rnd_bits value from 32 to 30 is preferred by upstream, however
+    patch -p1 <../0003-Re-exec-TSan-with-no-ASLR-if-memory-layout-is-incomp.patch
+    patch -p1 <../0004-Fix-build-for-FreeBSD-and-NetBSD-after-0784b1eefa36.patch
+    patch -p1 <../0005-Add-MappingDesc-ALLOCATOR-type-and-check-it-is-avail.patch
+    patch -p1 <../0006-msan-Re-exec-with-no-ASLR-if-memory-layout-is-incomp.patch
+
+    # Eliminate as many warnings as possible when built with newer dependencies
+    patch -p1 <../0007-Use-const-pointer-to-eliminate-warning-with-libxml-2.patch
+    patch -p1 <../0008-Fixed-SyntaxWarning-invalid-escape-sequence-s-in-dec.patch
+    patch -p1 <../0009-Fixed-SyntaxWarning-invalid-escape-sequence-l-in-lld.patch
+    patch -p1 <../0010-fix-clang-tools-extra-py-fix-invalid-escape-sequence.patch
+
+    # This further fixes LLDB test failures with Python 3.12+
+    patch -p1 <../0011-Dont-rely-on-ScriptInterpreterPythonImpl-Initialize-.patch
+    patch -p1 <../0012-Use-PyBytes-and-PyByteArray-in-Python-Data-Objects-u.patch
+    patch -p1 <../0013-Fix-PythonDataObjectsTest.patch
+
+    # https://github.com/clangd/clangd/issues/1559
+    patch -p1 <../0101-clangd-handle-missing-ending-brace.patch
+
+    # https://github.com/llvm/llvm-project/issues/83529
+    patch -p1 <../0102-lld-internalize-enum.patch
+
+    # https://github.com/llvm/llvm-project/issues/88695
+    patch -p1 <../0103-clang-disable-float128-diagnostics-for-device-compil.patch
+
+    # [extra]/clang additions: enable -fstack-protector-strong by default
+    patch -p1 <../0201-enable-fstack-protector-strong-by-default.patch
+
+    # Remove CMake find module for zstd; breaks if out of sync with upstream zstd
+    rm llvm/cmake/modules/Findzstd.cmake
+
     # Attempt to convert script to Python 3
     2to3 -w -n --no-diffs \
-        "${srcdir}/llvm-project-${_pkgver}.src/clang-tools-extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py"
+        clang-tools-extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py
 }
 
 build() {
     local _install="opt/${pkgbase%-opt}"
-    local _cmake_args=(
-        "-S" "${srcdir}/llvm-project-${_pkgver}.src/llvm"
+    local _common_options=(
         "-G" "Ninja"
         "-DCMAKE_BUILD_TYPE=Release"
         "-DCMAKE_INSTALL_PREFIX=/${_install}"
-        "-DLLVM_BINUTILS_INCDIR=/${_install}/include"
         "-DLLVM_APPEND_VC_REV=OFF"
-        "-DLLVM_VERSION_SUFFIX="
-        "-DLLVM_HOST_TRIPLE=${CHOST}"
-        "-DLLVM_ENABLE_RTTI=ON"
-        "-DLLVM_ENABLE_FFI=ON"
-        "-DFFI_INCLUDE_DIR:PATH=$(pkg-config --variable=includedir libffi)"
-        "-DLLVM_ENABLE_Z3_SOLVER=ON"
+    )
+    local _llvm_options=(
+        "-DCMAKE_SKIP_RPATH=ON"
+        "-DCLANG_DEFAULT_PIE_ON_LINUX=ON"
+        "-DCLANG_LINK_CLANG_DYLIB=ON"
+        "-DENABLE_LINKER_BUILD_ID=ON"
+        "-DLLVM_BINUTILS_INCDIR=/usr/include"
         "-DLLVM_BUILD_LLVM_DYLIB=ON"
-        "-DLLVM_LINK_LLVM_DYLIB=ON"
-        "-DLLVM_INSTALL_UTILS=ON"
-        "-DLLVM_BUILD_DOCS=ON"
-        "-DLLVM_ENABLE_DOXYGEN=OFF"
-        "-DLLVM_ENABLE_SPHINX=ON"
-        "-DSPHINX_OUTPUT_HTML:BOOL=OFF"
-        "-DSPHINX_WARNINGS_AS_ERRORS=OFF"
-        "-DLLVM_ENABLE_PROJECTS=polly;lldb;lld;compiler-rt;clang-tools-extra;clang"
-        "-DLLVM_ENABLE_DUMP=ON"
         "-DLLVM_ENABLE_BINDINGS=OFF"
+        "-DLLVM_ENABLE_CURL=ON"
+        "-DLLVM_ENABLE_FFI=ON"
+        "-DLLVM_ENABLE_PROJECTS=clang;clang-tools-extra;compiler-rt;lld;lldb;polly"
+        "-DLLVM_ENABLE_RTTI=ON"
+        "-DLLVM_ENABLE_Z3_SOLVER=ON"
+        "-DLLVM_HOST_TRIPLE=${CHOST}"
+        "-DLLVM_INCLUDE_BENCHMARKS=OFF"
+        "-DLLVM_INCLUDE_DOCS=OFF"
+        "-DLLVM_INCLUDE_EXAMPLES=OFF"
+        "-DLLVM_INSTALL_UTILS=ON"
+        "-DLLVM_LINK_LLVM_DYLIB=ON"
         "-DLLVM_POLLY_LINK_INTO_TOOLS=OFF"
+        "-DLLVM_USE_PERF=ON"
+    )
+    local _openmp_options=(
+        "-DCMAKE_MODULE_PATH=${srcdir}/build-llvm/lib/cmake"
+        "-DLIBOMP_INSTALL_ALIASES=OFF"
+        # Ignore OpenMP test failures and don't allow tests to stall for too long
+        "-DOPENMP_LIT_ARGS=-sv --ignore-fail --time-tests --timeout=300"
     )
     local _bootstrap_options=(
         "-DCMAKE_AR=/${_install}/bin/llvm-ar"
@@ -183,85 +282,107 @@ build() {
 
     export CFLAGS+=" ${CPPFLAGS}"
     export CXXFLAGS+=" ${CPPFLAGS}"
+    export LD_LIBRARY_PATH="${srcdir}/build-llvm/lib"
     if [[ -n ${_bootstrap} ]]; then
         export OLD_PATH="${PATH}"
         export PATH="/${_install}/bin:${PATH}"
-        export LD_LIBRARY_PATH="/${_install}/lib"
+        export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/${_install}/lib"
     fi
+    export PATH="${srcdir}/build-llvm/bin:${PATH}"
 
+    _cmake_args=("${_common_options[@]}" "${_llvm_options[@]}")
     [[ -n ${_bootstrap} ]] && _cmake_args+=("${_bootstrap_options[@]}")
-    cmake -B _build "${_cmake_args[@]}"
+    cmake -B build-llvm -S "llvm-project-${_pkgver}.src/llvm" "${_cmake_args[@]}"
 
-    pushd _build
     local distribution_components=$(_get_distribution_components | paste -sd\;)
     test -n "${distribution_components}"
     _cmake_args+=("-DLLVM_DISTRIBUTION_COMPONENTS=${distribution_components}")
-    popd
 
-    cmake -B _build "${_cmake_args[@]}" \
-        -D LLVM_LIT_ARGS="-sv --ignore-fail" \
-        -Wno-dev
-    ninja -C _build
+    cmake -B build-llvm -S "llvm-project-${_pkgver}.src/llvm" "${_cmake_args[@]}"
+    ninja -C build-llvm
+
+    # Build OpenMP separate from LLVM, but combine them later during packaging
+    _cmake_args=("${_common_options[@]}" "${_openmp_options[@]}")
+    [[ -n ${_bootstrap} ]] && _cmake_args+=("${_bootstrap_options[@]}")
+    cmake -B build-openmp -S "llvm-project-${_pkgver}.src/openmp" "${_cmake_args[@]}"
+    ninja -C build-openmp
 }
 
 check() {
-    # Arch does this for Clang/LLVM tests
-    export LD_LIBRARY_PATH="${srcdir}/_build/lib"
+    local _install="opt/${pkgbase%%-opt}"
+    local _py="$(_python_version)"
+
+    export LD_LIBRARY_PATH="${srcdir}/build-llvm/lib"
     if [[ -n ${_bootstrap} ]]; then
         export PATH="${OLD_PATH}"
+        # Allow LLVM Integrated Tester to be found for testing OpenMP
+        export PYTHONPATH="/${_install}/lib/python${_py}/site-packages"
         unset OLD_PATH
     fi
+    export PATH="${srcdir}/build-llvm/bin:${PATH}"
 
-    # Test failures are expected for LLDB
-    # For most of LLDB tests to work, one needs ptrace() to be unrestricted
-    for _project in llvm clang{,-tools} polly lld{,b}; do
-        ninja -C _build "check-${_project}"
-    done
+    ninja -C build-llvm check-llvm
+    ninja -C build-llvm check-clang
+    ninja -C build-llvm check-clang-tools
+    # Disable until buildgo.sh script is actually working for us
+    #ninja -C build-llvm check-compiler-rt || true
+    ninja -C build-llvm check-polly
+    ninja -C build-llvm check-lld
+    # Arch Linux upstream doesn't check LLDB they built, so don't allow LLDB
+    # test failures to block us from packaging the toolchain; tripping test(s)
+    # should be fixed with upstream commit(s). ptrace() must be unrestricted.
+    ninja -C build-llvm check-lldb || true
+
+    # Arch Linux upstream doesn't check OpenMP as well
+    ninja -C build-openmp check-libarcher
+    ninja -C build-openmp check-libomp
+    # All supported libomptarget tests fail to run
+    #ninja -C build-openmp check-libomptarget
+    ninja -C build-openmp check-ompt-multiplex
 }
 
 package() {
     local _install="opt/${pkgbase%%-opt}"
+    local _py="$(_python_version)"
 
-    DESTDIR="${pkgdir}" ninja -C _build install
+    DESTDIR="${pkgdir}" ninja -C build-llvm install-distribution
+    DESTDIR="${pkgdir}" ninja -C build-openmp install
+    cd "llvm-project-${_pkgver}.src"
 
     # Include lit for running lit-based tests in other projects
-    pushd "${srcdir}/llvm-project-${_pkgver}.src/llvm/utils/lit"
+    pushd llvm/utils/lit
     python3 setup.py install --root="${pkgdir}" --prefix="/${_install}" -O1
     popd
 
-    # Move analyzer scripts out of libexec
-    mv "${pkgdir}/${_install}"/libexec/{ccc,c++}-analyzer "${pkgdir}/${_install}/lib/clang/"
-    mv "${pkgdir}/${_install}"/libexec/analyze-{cc,c++} "${pkgdir}/${_install}/lib/clang/"
-    mv "${pkgdir}/${_install}"/libexec/intercept-{cc,c++} "${pkgdir}/${_install}/lib/clang/"
-    rmdir "$pkgdir/${_install}/libexec"
-    sed -i 's|libexec|lib/clang|' "${pkgdir}/${_install}/bin/scan-build"
+    # Move scanbuild-py into site-packages and install Python bindings
+    mv "${pkgdir}/${_install}"/lib/{libear,libscanbuild} \
+        "${pkgdir}/${_install}/lib/python${_py}/site-packages/"
+    cp -a clang/bindings/python/clang "${pkgdir}/${_install}/lib/python${_py}/site-packages/"
 
     # Symlink LLVMgold.so from lib/bfd-plugins
     # https://bugs.archlinux.org/task/28479
     install -d "${pkgdir}/${_install}/lib/bfd-plugins"
     ln -s ../LLVMgold.so "${pkgdir}/${_install}/lib/bfd-plugins/LLVMgold.so"
 
-    if [[ ${CARCH} == x86_64 ]]; then
-        # Needed for multilib (https://bugs.archlinux.org/task/29951)
-        # Header stub is taken from Fedora
-        mv "${pkgdir}/${_install}"/include/llvm/Config/llvm-config{,-64}.h
-        cp "${srcdir}/llvm-config.h" "${pkgdir}/${_install}/include/llvm/Config/llvm-config.h"
-    fi
+    # Move analyzer scripts out of /usr/libexec
+    mv "${pkgdir}/${_install}"/libexec/* "${pkgdir}/${_install}/lib/clang/"
+    rmdir "$pkgdir/${_install}/libexec"
+    sed -i 's|libexec|lib/clang|' \
+        "${pkgdir}/${_install}/bin/scan-build" \
+        "${pkgdir}/${_install}/lib/python${_py}/site-packages/libscanbuild/analyze.py"
 
-    pushd "${srcdir}/llvm-project-${_pkgver}.src"
+    # Compile Python scripts
+    _python_optimize "${pkgdir}/${_install}/share" \
+        "${pkgdir}/${_install}/lib/python${_py}/site-packages"
 
-    local _py=$(_python_version)
-    # Install Python bindings and optimize them
-    cp -a clang/bindings/python/clang "${pkgdir}/${_install}/lib/python${_py}/site-packages/"
-    _python_optimize "${pkgdir}/${_install}/lib/python${_py}/site-packages"
+    # Follow Arch Linux upstream into removing this static library
+    rm "${pkgdir}/${_install}/lib/libarcher_static.a"
 
-    # Optimize other Python files except 2 problem cases
-    _python_optimize "${pkgdir}/${_install}/share" -x 'clang-include-fixer|run-find-all-symbols'
+    # Make sure there are no manpages if we don't package docs
+    rm -r "${pkgdir}/${_install}/share/man"
 
-    for _project in llvm clang{,-tools-extra} compiler-rt lld{,b} polly; do
+    for _project in clang clang-tools-extra compiler-rt lld lldb llvm openmp polly; do
         install -Dm644 "${_project}/LICENSE.TXT" \
             "${pkgdir}/usr/share/licenses/${pkgname}/${_project}-LICENSE"
     done
-
-    popd
 }
