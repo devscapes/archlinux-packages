@@ -1,0 +1,23 @@
+From 14d57545b261f0ad09b7b4c78e6509c6f585448d Mon Sep 17 00:00:00 2001
+From: Shilei Tian <i@tianshilei.me>
+Date: Sat, 5 Aug 2023 19:38:45 -0400
+Subject: [PATCH] [NFC][OpenMP] Fix compile warnings introduced in recent
+ patches
+
+---
+ .../plugins-nextgen/common/PluginInterface/PluginInterface.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/openmp/libomptarget/plugins-nextgen/common/PluginInterface/PluginInterface.cpp b/openmp/libomptarget/plugins-nextgen/common/PluginInterface/PluginInterface.cpp
+index d54982ea447091..0834c9f932db43 100644
+--- a/openmp/libomptarget/plugins-nextgen/common/PluginInterface/PluginInterface.cpp
++++ b/openmp/libomptarget/plugins-nextgen/common/PluginInterface/PluginInterface.cpp
+@@ -395,7 +395,7 @@ uint64_t GenericKernelTy::getNumBlocks(GenericDeviceTy &GenericDevice,
+       MinThreads = std::min(MinThreads, NumThreads);
+ 
+       // Honor the thread_limit clause; only lower the number of threads.
+-      auto OldNumThreads = NumThreads;
++      [[maybe_unused]] auto OldNumThreads = NumThreads;
+       if (LoopTripCount >= DefaultNumBlocks * NumThreads) {
+         // Enough parallelism for teams and threads.
+         TripCountNumBlocks = ((LoopTripCount - 1) / NumThreads) + 1;

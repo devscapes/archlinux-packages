@@ -20,7 +20,7 @@
 pkgname=llvm17-opt
 _pkgver=17.0.6
 pkgver=${_pkgver/-/_}
-pkgrel=2
+pkgrel=3
 epoch=1
 pkgdesc='LLVM compiler suite stable version 17 (installs to /opt)'
 arch=('x86_64')
@@ -86,13 +86,14 @@ source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${_pkgve
         '0004-Fix-build-for-FreeBSD-and-NetBSD-after-0784b1eefa36.patch'
         '0005-Add-MappingDesc-ALLOCATOR-type-and-check-it-is-avail.patch'
         '0006-msan-Re-exec-with-no-ASLR-if-memory-layout-is-incomp.patch'
-        '0007-Use-const-pointer-to-eliminate-warning-with-libxml-2.patch'
-        '0008-Fixed-SyntaxWarning-invalid-escape-sequence-s-in-dec.patch'
-        '0009-Fixed-SyntaxWarning-invalid-escape-sequence-l-in-lld.patch'
-        '0010-fix-clang-tools-extra-py-fix-invalid-escape-sequence.patch'
-        '0011-Dont-rely-on-ScriptInterpreterPythonImpl-Initialize-.patch'
-        '0012-Use-PyBytes-and-PyByteArray-in-Python-Data-Objects-u.patch'
-        '0013-Fix-PythonDataObjectsTest.patch'
+        '0007-OpenMP-Fix-compile-warnings-introduced-in-recent-pat.patch'
+        '0008-Use-const-pointer-to-eliminate-warning-with-libxml-2.patch'
+        '0009-Fixed-SyntaxWarning-invalid-escape-sequence-s-in-dec.patch'
+        '0010-Fixed-SyntaxWarning-invalid-escape-sequence-l-in-lld.patch'
+        '0011-fix-clang-tools-extra-py-fix-invalid-escape-sequence.patch'
+        '0012-Dont-rely-on-ScriptInterpreterPythonImpl-Initialize-.patch'
+        '0013-Use-PyBytes-and-PyByteArray-in-Python-Data-Objects-u.patch'
+        '0014-Fix-PythonDataObjectsTest.patch'
         '0101-clangd-handle-missing-ending-brace.patch'
         '0102-lld-internalize-enum.patch'
         '0103-clang-disable-float128-diagnostics-for-device-compil.patch'
@@ -105,6 +106,7 @@ sha384sums=('d3041f9f42f8d251699543ca71e339bbea90cda63cab893e786dd087a681d6ec535
             '4708e1426be05efe471729b3296330b2fc1d06ce2528cb8c333c83a3ecc07c9233299139d3037ddd91123269005254d2'
             '81395a43250d93aa9d7ce152bda592af3790c3244284f8a6da0ac97cd68996775e285a1dca5fd2d46d9c180b07d47124'
             'c7da58be0ec1031af55f3deb81513f6a273f142fa9949d8961d763b18f4ce5e5e848954c90b5317aaa1cd90f7b8a3828'
+            'b2c6e0968b3d1521ec633584da02bfaaec9f8b0c5315dbad1f3724d5b3fb83838bcbaea4ee31ca2c8ef49d7e4c64ad76'
             '69aa0ac207c7693f99a9c6aee368d59f49fabf40424dd0f66907f5cfc01f9193b8ebb831849a489087cb51c58f96815c'
             '929b98b996cfc909c65c91525e8b6e7b0b5521adf083c8d515816f4387e9887a3e6a48b6a01f9478771cbea698330581'
             'a44adbcdefe07fcfb88e32de7628bf887c9f23e14aae6fd2b9ddd8a2c72c01de521ca23d0adb4076d3aa0a7eed53fab3'
@@ -124,6 +126,7 @@ b2sums=('d6ede1a9fda8756995c3e0654111941649e15794179641806f18919f1dc68c41ca0cabd
         '0f147acc9fc2fcabaaa704d31fb67360e1f721936e760a2ae9252e7046e97d27e4594c16aab2f4573962269e4e94e0b426b1191f748905d2a17c08ed32c74fbc'
         'ef6f4027ad44ddf34ccef5885f1c95d7a54c207b97c7f8e63df88f3604a50cdd31674e221f5d45ceef19af78fb9d3160d520dafd3fbe979ee675e790f97f578a'
         '2b067d4ab9092db88b9f129964e27599d6a2b8174c12ca7074000877efdfd9b5a0ca630740126122aa813210b42de8133929b7244c995fab798decf7eeb3ebd8'
+        '3eab8d2a0d0c8dbefc6ba0186bc86f8f0df7750e28769b9edc98d2afe68f9a048b9dfaafc9f8a0b96ea8d84116da85960b7c28c24f2142d55456fb8fc2803bfa'
         '01020b564d10ac7a65f8a778feda9b728864c9bfedd7cb3549084bf0e8ef750bcf624519fb94a183e5a887a19fd9d5d486d68d148db814e789e52c0e97909b16'
         'ea0a009dae6dadc8f571e492799182eda83c6784d0892d9ccceccee68a6c9db1050fb53adfb365703fc64bf648db3a56e21114a4d2a8b5006e114a1cab9e61c0'
         '09cca0dd3778f226c40ae73fc9ea2425d5b3464feb6821cb5f7d64c15e6601766ca08dca2e7e8dd04a43e5cedfe711a40f9389f5baed8d46db0f29dac60cdadb'
@@ -205,15 +208,16 @@ prepare() {
     patch -p1 <../0006-msan-Re-exec-with-no-ASLR-if-memory-layout-is-incomp.patch
 
     # Eliminate as many warnings as possible when built with newer dependencies
-    patch -p1 <../0007-Use-const-pointer-to-eliminate-warning-with-libxml-2.patch
-    patch -p1 <../0008-Fixed-SyntaxWarning-invalid-escape-sequence-s-in-dec.patch
-    patch -p1 <../0009-Fixed-SyntaxWarning-invalid-escape-sequence-l-in-lld.patch
-    patch -p1 <../0010-fix-clang-tools-extra-py-fix-invalid-escape-sequence.patch
+    patch -p1 <../0007-OpenMP-Fix-compile-warnings-introduced-in-recent-pat.patch
+    patch -p1 <../0008-Use-const-pointer-to-eliminate-warning-with-libxml-2.patch
+    patch -p1 <../0009-Fixed-SyntaxWarning-invalid-escape-sequence-s-in-dec.patch
+    patch -p1 <../0010-Fixed-SyntaxWarning-invalid-escape-sequence-l-in-lld.patch
+    patch -p1 <../0011-fix-clang-tools-extra-py-fix-invalid-escape-sequence.patch
 
     # This further fixes LLDB test failures with Python 3.12+
-    patch -p1 <../0011-Dont-rely-on-ScriptInterpreterPythonImpl-Initialize-.patch
-    patch -p1 <../0012-Use-PyBytes-and-PyByteArray-in-Python-Data-Objects-u.patch
-    patch -p1 <../0013-Fix-PythonDataObjectsTest.patch
+    patch -p1 <../0012-Dont-rely-on-ScriptInterpreterPythonImpl-Initialize-.patch
+    patch -p1 <../0013-Use-PyBytes-and-PyByteArray-in-Python-Data-Objects-u.patch
+    patch -p1 <../0014-Fix-PythonDataObjectsTest.patch
 
     # https://github.com/clangd/clangd/issues/1559
     patch -p1 <../0101-clangd-handle-missing-ending-brace.patch
@@ -336,7 +340,7 @@ check() {
     # Arch Linux upstream doesn't check OpenMP as well
     ninja -C build-openmp check-libarcher
     ninja -C build-openmp check-libomp
-    # All supported libomptarget tests fail to run
+    # Many supported libomptarget tests fail inside chroot
     #ninja -C build-openmp check-libomptarget
     ninja -C build-openmp check-ompt-multiplex
 }
