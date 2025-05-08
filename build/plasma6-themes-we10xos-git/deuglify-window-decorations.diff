@@ -1,0 +1,40 @@
+diff --git a/aurorae/We10XOS-dark/We10XOS-darkrc b/aurorae/We10XOS-dark/We10XOS-darkrc
+index c6a6017..da6ce57 100644
+--- a/aurorae/We10XOS-dark/We10XOS-darkrc
++++ b/aurorae/We10XOS-dark/We10XOS-darkrc
+@@ -15,8 +15,8 @@ TitleEdgeTop=4
+ TitleEdgeBottom=4
+ TitleEdgeLeft=12
+ TitleEdgeRight=12
+-TitleBorderLeft=25
+-TitleBorderRight=50
++TitleBorderLeft=8
++TitleBorderRight=8
+ TitleHeight=20
+ 
+ ButtonWidth=28
+@@ -28,11 +28,10 @@ ButtonWidthKeepabove=43
+ ButtonWidthKeepbelow=43
+ ButtonWidthHelp=43
+ 
+-ButtonWidthAlldesktops=44
++ButtonWidthAlldesktops=0
+ 
+ ButtonHeight=28
+ ButtonSpacing=10
+-ButtonMarginTop=4
+ ExplicitButtonSpacer=10
+ 
+ PaddingTop=32
+@@ -41,7 +40,7 @@ PaddingRight=47
+ PaddingLeft=47
+ 
+ TitleHeightMaximized=28
+-TitleEdgeTopMaximized=0
+-TitleEdgeBottomMaximized=0
+-TitleEdgeLeftMaximized=0
+-TitleEdgeRightMaximized=0
++TitleEdgeTopMaximized=4
++TitleEdgeBottomMaximized=4
++TitleEdgeLeftMaximized=4
++TitleEdgeRightMaximized=4

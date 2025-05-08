@@ -1,0 +1,113 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+
+#
+# While it's supposed to have light and dark variants, only dark variant is
+# packaged because light variant hasn't been updated to support KDE Plasma 6.
+# Kvantum theme ships both light and dark variants, but we will depend on
+# kvantum-qt5 package for now due to obvious reasons (last updated in 2022).
+#
+# Unfortunately, this is also the case with many other themes from this author.
+#
+
+pkgbase=plasma6-themes-we10xos-git
+pkgname=(
+    plasma6-themes-we10xos-dark-git
+    kvantum-theme-we10xos-git
+    sddm-theme-we10xos-dark-git
+)
+pkgver=r79.g107a175
+pkgrel=1
+arch=(any)
+groups=(we10xos-theme)
+makedepends=(git)
+options=(!strip)
+source=(
+    git+https://github.com/yeyushengfan258/We10XOS-kde.git
+    deuglify-window-decorations.diff
+)
+sha384sums=('SKIP'
+            '184673b69ab33fa98b9e1eebd6564a49354af2b8d574be8405401f480fee79639512c7b4b0d7188b342c8ca80cc159af')
+b2sums=('SKIP'
+        'c560ca4ecf86ece671e04cedf6d0d9a07c561b95c675415d2da45c77471fadec3db84702ee76d0085415a7ab56c421d15523d141854a70f4e37ab1670b834283')
+
+pkgver() {
+    cd We10XOS-kde
+    printf 'r%s.g%s' "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+prepare() {
+    # Fix how window decorations are looking to make it far less ugly
+    patch -d We10XOS-kde -N -p 1 < deuglify-window-decorations.diff
+}
+
+package_plasma6-themes-we10xos-dark-git() {
+    pkgdesc='We10XOS Dark theme for KDE Plasma'
+    url='https://store.kde.org/p/1368860'
+    license=(
+        CC-BY-SA-4.0  # wallpaper only based on latest metadata
+        GPL-3.0-only
+    )
+    optdepends=(
+        'kvantum-theme-we10xos-git: matching Kvantum theme'
+        'sddm-theme-we10xos-dark-git: matching SDDM theme'
+        'we10x-icon-theme: matching icon theme'
+        'xcursor-win10os: matching cursor theme'
+    )
+    provides=("${pkgname%-git}")
+    conflicts=("${pkgname%-git}")
+
+    pushd We10XOS-kde
+
+    install -d -v "${pkgdir}/usr/share/aurorae/themes"
+    cp -r -v --no-preserve=all -t "${pkgdir}/usr/share/aurorae/themes" \
+        aurorae/We10XOS-dark
+
+    install -D -v -t "${pkgdir}/usr/share/color-schemes" \
+        -m 644 color-schemes/We10XOSDark.colors
+
+    install -d -v "${pkgdir}/usr/share/plasma/desktoptheme"
+    cp -r -v --no-preserve=all -t "${pkgdir}/usr/share/plasma/desktoptheme" \
+        plasma/desktoptheme/We10XOS-dark
+
+    install -d -v "${pkgdir}/usr/share/plasma/look-and-feel/com.github.yeyushengfan258.We10XOS-dark"
+    cp -r -v --no-preserve=all -t "${pkgdir}/usr/share/plasma/look-and-feel/com.github.yeyushengfan258.We10XOS-dark" \
+        plasma/look-and-feel/6.0/com.github.yeyushengfan258.We10XOS-dark/contents
+    install -v -t "${pkgdir}/usr/share/plasma/look-and-feel/com.github.yeyushengfan258.We10XOS-dark" \
+        -m 644 plasma/look-and-feel/6.0/com.github.yeyushengfan258.We10XOS-dark/metadata.json
+
+    install -d -v "${pkgdir}/usr/share/wallpapers/We10XOS-dark/contents"
+    cp -r -v --no-preserve=all -t "${pkgdir}/usr/share/wallpapers/We10XOS-dark/contents" \
+        wallpaper/We10XOS-dark/contents/images
+    install -v -t "${pkgdir}/usr/share/wallpapers/We10XOS-dark" \
+        -m 644 wallpaper/We10XOS-dark/metadata.json
+
+    popd
+}
+
+package_kvantum-theme-we10xos-git() {
+    pkgdesc='We10XOS theme for Kvantum'
+    url='https://github.com/yeyushengfan258/We10XOS-kde'
+    license=(GPL-3.0-only)
+    depends=(kvantum-qt5)
+    provides=("${pkgname%-git}")
+    conflicts=("${pkgname%-git}")
+
+    pushd We10XOS-kde
+    install -d -v "${pkgdir}/usr/share"
+    cp -r -v --no-preserve=all -t "${pkgdir}/usr/share" Kvantum
+    popd
+}
+
+package_sddm-theme-we10xos-dark-git() {
+    pkgdesc='We10XOS Dark theme for SDDM'
+    url='https://store.kde.org/p/1368854'
+    license=(GPL-3.0-only)
+    depends=(sddm)
+    provides=("${pkgname%-git}")
+    conflicts=("${pkgname%-git}")
+
+    pushd We10XOS-kde/sddm
+    install -d -v "${pkgdir}/usr/share/sddm/themes"
+    cp -r -v --no-preserve=all -t "${pkgdir}/usr/share/sddm/themes" 6.0/We10XOS-dark
+    popd
+}

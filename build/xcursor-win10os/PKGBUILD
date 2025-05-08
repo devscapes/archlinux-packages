@@ -1,0 +1,32 @@
+pkgname=xcursor-win10os
+pkgver=20200529
+pkgrel=1
+pkgdesc='An x-cursor theme inspired by WinOS and based on capitaine-cursors'
+arch=(any)
+url='https://store.kde.org/p/1383064'
+license=(GPL-3.0-only)  # CHECKME
+groups=(we10xos-theme)
+makedepends=(
+    git
+    inkscape
+    xorg-xcursorgen
+)
+source=(git+https://github.com/yeyushengfan258/Win10OS-cursors.git#commit=fb2d37a939dc33ebf0f434b6d1ef519d1846f3f1)
+sha384sums=('07f597efb5e7e911f61f1ff861fa0ce2afdf2b1a8a16807e839058b07cf7827a6be18361733ef3d6dadcd8e2584a0e30')
+b2sums=('4b79026cb29cfc0cc1d4ab8e963771443237c4cf1f02d7cd8561ead213a61807ed8ab355866938722a8a43036b98d36c28cca26488e9d03a561d7025f239e515')
+
+prepare() {
+    # Build cursor icons from scratch
+    rm -r Win10OS-cursors/{dist,src/{x{1,1_25,1_5,2},index.theme}}
+}
+
+build() {
+    pushd Win10OS-cursors
+    ./build.sh
+    popd
+}
+
+package() {
+    install -d -v "${pkgdir}/usr/share/icons"
+    cp -r -v --no-preserve=all Win10OS-cursors/dist "${pkgdir}/usr/share/icons/Win10OS-cursors"
+}

@@ -1,0 +1,24 @@
+pkgname=we10x-icon-theme
+pkgver=20250503
+pkgrel=1
+pkgdesc='A colorful design icon theme for Linux desktop'
+arch=(any)
+url='https://store.kde.org/p/1366371'
+license=(GPL-3.0-only)  # CHECKME
+groups=(we10xos-theme)
+makedepends=(git)
+options=(!strip)
+source=(git+https://github.com/yeyushengfan258/We10X-icon-theme.git#commit=c3a0f6b53a0819e290d55336d13dac7f94b39b6b)
+sha384sums=('502552198af2abe5149811a4d62f371aa2eb2683ba30bd97f3eebecd3c57ff3a4ae8fe4493fff0a7cefec06551df5c35')
+b2sums=('bae7472053a50ddbb6062b681ca1f62473f209f2bddc5f900333d2d0b9fb6d8a4659f67e3e3bbfb53439d7939ce647ec4f95d884429038fc21ffb0c97cedfcde')
+
+prepare() {
+    # Don't trigger icon cache update when installing
+    sed '/gtk-update-icon-cache/d' -i We10X-icon-theme/install.sh
+}
+
+package() {
+    pushd We10X-icon-theme
+    ./install.sh -d "${pkgdir}/usr/share/icons" -t all
+    popd
+}

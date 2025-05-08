@@ -1,0 +1,41 @@
+pkgbase = plasma6-themes-we10xos-git
+	pkgver = r79.g107a175
+	pkgrel = 1
+	arch = any
+	groups = we10xos-theme
+	makedepends = git
+	options = !strip
+	source = git+https://github.com/yeyushengfan258/We10XOS-kde.git
+	source = deuglify-window-decorations.diff
+	sha384sums = SKIP
+	sha384sums = 184673b69ab33fa98b9e1eebd6564a49354af2b8d574be8405401f480fee79639512c7b4b0d7188b342c8ca80cc159af
+	b2sums = SKIP
+	b2sums = c560ca4ecf86ece671e04cedf6d0d9a07c561b95c675415d2da45c77471fadec3db84702ee76d0085415a7ab56c421d15523d141854a70f4e37ab1670b834283
+
+pkgname = plasma6-themes-we10xos-dark-git
+	pkgdesc = We10XOS Dark theme for KDE Plasma
+	url = https://store.kde.org/p/1368860
+	license = CC-BY-SA-4.0
+	license = GPL-3.0-only
+	optdepends = kvantum-theme-we10xos-git: matching Kvantum theme
+	optdepends = sddm-theme-we10xos-dark-git: matching SDDM theme
+	optdepends = we10x-icon-theme: matching icon theme
+	optdepends = xcursor-win10os: matching cursor theme
+	provides = plasma6-themes-we10xos-dark
+	conflicts = plasma6-themes-we10xos-dark
+
+pkgname = kvantum-theme-we10xos-git
+	pkgdesc = We10XOS theme for Kvantum
+	url = https://github.com/yeyushengfan258/We10XOS-kde
+	license = GPL-3.0-only
+	depends = kvantum-qt5
+	provides = kvantum-theme-we10xos
+	conflicts = kvantum-theme-we10xos
+
+pkgname = sddm-theme-we10xos-dark-git
+	pkgdesc = We10XOS Dark theme for SDDM
+	url = https://store.kde.org/p/1368854
+	license = GPL-3.0-only
+	depends = sddm
+	provides = sddm-theme-we10xos-dark
+	conflicts = sddm-theme-we10xos-dark

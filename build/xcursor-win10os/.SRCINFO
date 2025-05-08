@@ -1,0 +1,16 @@
+pkgbase = xcursor-win10os
+	pkgdesc = An x-cursor theme inspired by WinOS and based on capitaine-cursors
+	pkgver = 20200529
+	pkgrel = 1
+	url = https://store.kde.org/p/1383064
+	arch = any
+	groups = we10xos-theme
+	license = GPL-3.0-only
+	makedepends = git
+	makedepends = inkscape
+	makedepends = xorg-xcursorgen
+	source = git+https://github.com/yeyushengfan258/Win10OS-cursors.git#commit=fb2d37a939dc33ebf0f434b6d1ef519d1846f3f1
+	sha384sums = 07f597efb5e7e911f61f1ff861fa0ce2afdf2b1a8a16807e839058b07cf7827a6be18361733ef3d6dadcd8e2584a0e30
+	b2sums = 4b79026cb29cfc0cc1d4ab8e963771443237c4cf1f02d7cd8561ead213a61807ed8ab355866938722a8a43036b98d36c28cca26488e9d03a561d7025f239e515
+
+pkgname = xcursor-win10os

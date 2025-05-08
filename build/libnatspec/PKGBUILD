@@ -1,0 +1,55 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+# Contributor: Natrio <natrio@list.ru>
+# Contributor: Aliaksandr Stelmachonak <mail.avatar@gmail.com>
+# Contributor: Evgeny Kurnevsky <kurnevsky@gmail.com>
+
+pkgname=libnatspec
+pkgver=0.3.3.alt1.r3.gb5219c2
+pkgrel=1
+pkgdesc='Library for national and language-specific issues'
+arch=(
+    aarch64
+    armv6h
+    armv7h
+    i686
+    x86_64
+)
+url='https://sourceforge.net/projects/natspec/'
+license=(LGPL-2.1-only)
+depends=(
+    glibc
+    popt
+)
+makedepends=(
+    doxygen
+    git
+)
+source=("${pkgname}::git+https://github.com/Etersoft/libnatspec.git#commit=b5219c28f5de776347b80ecb9bfd7a49c719ab3c")
+sha384sums=('0cce76702bd4f621925b194ddc5f507db6ee746cba78d0d3fbde4ca916fc63fea088046f752d5daa06574146766c32e2')
+b2sums=('836ef6555d7250d3e4eee0e08d831a95826e783de5bcb77e8d1668ed0f57c9b41414b4620145cd9d83c08c2f8a6744534e983a2c9ff101d34f71c423124f4283')
+
+pkgver() {
+    git -C "${pkgname}" describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
+}
+
+prepare() {
+    pushd "${pkgname}"
+    autoreconf -f -i -v
+    popd
+}
+
+build() {
+    pushd "${pkgname}"
+
+    ./configure \
+        --prefix=/usr \
+        --sysconfdir=/etc \
+        --localstatedir=/var
+    make
+
+    popd
+}
+
+package() {
+    DESTDIR="${pkgdir}" make -C "${pkgname}" install
+}
