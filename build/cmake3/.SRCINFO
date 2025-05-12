@@ -1,0 +1,43 @@
+pkgbase = cmake3
+	pkgdesc = A cross-platform open-source make system (release 3.x)
+	pkgver = 3.31.7
+	pkgrel = 1
+	url = https://www.cmake.org/
+	arch = x86_64
+	license = BSD-3-Clause
+	makedepends = emacs
+	makedepends = git
+	makedepends = nlohmann-json
+	makedepends = python-sphinx
+	makedepends = qt6-base
+	depends = bash
+	depends = cppdap
+	depends = curl
+	depends = libcurl.so
+	depends = expat
+	depends = libexpat.so
+	depends = gcc-libs
+	depends = glibc
+	depends = hicolor-icon-theme
+	depends = jsoncpp
+	depends = libjsoncpp.so
+	depends = libarchive
+	depends = libarchive.so
+	depends = libuv
+	depends = ncurses
+	depends = libformw.so
+	depends = libncursesw.so
+	depends = rhash
+	depends = zlib
+	depends = libz.so
+	optdepends = make: for unix Makefile generator
+	optdepends = ninja: for ninja generator
+	optdepends = qt6-base: cmake-gui
+	provides = cmake=3.31.7
+	conflicts = cmake
+	source = git+https://gitlab.kitware.com/cmake/cmake.git#tag=v3.31.7?signed
+	validpgpkeys = CBA23971357C2E6590D9EFD3EC8FEF3A7BFB4EDA
+	sha384sums = 7d6b01c48a04c7ea8a113baf41b1a8f13e3bde31803bbcd70093015ab8dfaad3967907be052f9a47a0693ae6b948719e
+	b2sums = 8de810c796c3233cc1e5a9c933e5ec4b09cc3a0a5feaa6da7cfd1cefe3da78882c7ce31623f4182e3652a4abd805d613286039d9371330e455c8ff6cf3216c01
+
+pkgname = cmake3

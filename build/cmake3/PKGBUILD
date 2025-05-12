@@ -1,0 +1,68 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+# Contributor: Felix Yan <felixonmars@archlinux.org>
+# Contributor: Andrea Scarpino <andrea@archlinux.org>
+# Contributor: Pierre Schmitz <pierre@archlinux.de>
+
+pkgname=cmake3
+pkgver=3.31.7
+pkgrel=1
+pkgdesc='A cross-platform open-source make system (release 3.x)'
+arch=(x86_64)
+url='https://www.cmake.org/'
+license=(BSD-3-Clause)
+depends=(
+    bash
+    cppdap
+    curl libcurl.so
+    expat libexpat.so
+    gcc-libs
+    glibc
+    hicolor-icon-theme
+    jsoncpp libjsoncpp.so
+    libarchive libarchive.so
+    libuv
+    ncurses libformw.so libncursesw.so
+    rhash
+    zlib libz.so
+)
+makedepends=(
+    emacs
+    git
+    nlohmann-json
+    python-sphinx
+    qt6-base
+)
+optdepends=(
+    'make: for unix Makefile generator'
+    'ninja: for ninja generator'
+    'qt6-base: cmake-gui'
+)
+provides=("cmake=${pkgver}")
+conflicts=(cmake)
+source=(git+https://gitlab.kitware.com/cmake/cmake.git#tag=v$pkgver?signed)
+sha384sums=('7d6b01c48a04c7ea8a113baf41b1a8f13e3bde31803bbcd70093015ab8dfaad3967907be052f9a47a0693ae6b948719e')
+b2sums=('8de810c796c3233cc1e5a9c933e5ec4b09cc3a0a5feaa6da7cfd1cefe3da78882c7ce31623f4182e3652a4abd805d613286039d9371330e455c8ff6cf3216c01')
+validpgpkeys=(CBA23971357C2E6590D9EFD3EC8FEF3A7BFB4EDA) # Brad King <brad.king@kitware.com>
+
+build() {
+    cd cmake
+    ./bootstrap \
+        --prefix=/usr \
+        --datadir=/share/cmake \
+        --docdir=/share/doc/cmake \
+        --mandir=/share/man \
+        --parallel="$(/usr/bin/getconf _NPROCESSORS_ONLN)" \
+        --qt-gui \
+        --sphinx-html \
+        --sphinx-man \
+        --system-libs
+    make
+}
+
+package() {
+    DESTDIR="${pkgdir}" make -C cmake install
+
+    rm -r -v "${pkgdir}/usr/share/doc/cmake/html/_sources"
+    emacs -batch -f batch-byte-compile "${pkgdir}/usr/share/emacs/site-lisp/cmake-mode.el"
+    install -D -v -m 644 cmake/Copyright.txt "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}

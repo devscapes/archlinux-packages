@@ -1,0 +1,38 @@
+pkgbase = gtk-theme-we10x
+	pkgver = 20250328
+	pkgrel = 1
+	url = https://www.gnome-look.org/s/Gnome/p/2275817
+	arch = any
+	groups = we10xos-theme
+	license = GPL-3.0-only
+	makedepends = git
+	makedepends = gnome-shell
+	makedepends = sassc
+	options = !strip
+	source = git+https://github.com/yeyushengfan258/We10X-gtk-theme.git#commit=4d36c8c79202ef8cf5d44128563a590be291ddf5
+	sha384sums = e1fd3c61d6d69d48ed6d1cc00159de6940e5809d6d270d81ac2b7d84418de23b6bf84f269562e58311ee4a1b1dc85223
+	b2sums = 0a6e63dfb3c818d15c87a350f9b53d798d2c9da54bf16cea7a9ac303690fe2e5aeedae0685c7c77432525d64bd869e8a6413d46e9b27b811c1022b7033fd9f81
+
+pkgname = cinnamon-theme-we10x
+	pkgdesc = Fluent design theme for Cinnamon desktop
+	depends = gtk-theme-we10x
+	depends = cinnamon
+	optdepends = we10x-icon-theme: matching icon theme
+	optdepends = xcursor-win10os: matching cursor theme
+
+pkgname = gnome-shell-theme-we10x
+	pkgdesc = Fluent design theme for GNOME Shell
+	depends = gtk-theme-we10x
+	depends = gnome-shell>=47
+	depends = gnome-themes-extra
+	optdepends = we10x-icon-theme: matching icon theme
+	optdepends = xcursor-win10os: matching cursor theme
+
+pkgname = gtk-theme-we10x
+	pkgdesc = Fluent design theme for GTK3/4-based desktops
+	depends = gtk3>=3.20
+	depends = gtk4
+	optdepends = cinnamon-theme-we10x: for use with Cinnamon desktop
+	optdepends = fluent-gtk-theme: for use with GNOME Flashback, MATE and Xfce desktops
+	optdepends = gnome-shell-theme-we10x: for use with GNOME Shell
+	optdepends = kde-gtk-config: for use as GTK Application Style with KDE Plasma

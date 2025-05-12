@@ -1,0 +1,22 @@
+# Upstream: https://gitlab.archlinux.org/archlinux/packaging/packages/x265
+
+# Trim some odd-placed whitespaces
+source <(sed 's|\\    |\\|' PKGBUILD)
+
+pkgname=libx265-stable
+pkgrel=1
+license=(GPL-2.0-or-later)
+depends+=(glibc)
+makedepends[0]='cmake<4'
+provides+=("x265=${pkgver}")
+conflicts=(x265)
+
+prepare() {
+    # Fix build with GCC 15
+     sed '/<cmath>/a #include <cstdint>' -i x265_git/source/dynamicHDR10/json11/json11.cpp
+}
+
+package() {
+    install -d -v "${pkgdir}/usr/lib"
+    cp -v --no-preserve=all build/libx265.so.* "${pkgdir}/usr/lib"
+}
