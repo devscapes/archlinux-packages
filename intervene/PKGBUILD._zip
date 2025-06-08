@@ -1,0 +1,26 @@
+# Upstream: https://gitlab.archlinux.org/archlinux/packaging/packages/zip
+
+# First sed fixes passing of LDFLAGS by quoting them all
+# Second sed adds patches for our custom build of zip
+source <(
+    sed -e 's/\$LDFLAGS/\\\x27\$LDFLAGS\\\x27/' \
+        -e '33s;$;\
+	patch -p1 -i ../zip-gnu89-build.patch\
+	patch -p1 -i ../zip-3.0-buffer_overflow.patch\
+;' PKGBUILD
+)
+
+pkgrel=$((${pkgrel} + 2))
+license=(Info-ZIP)
+depends=(
+    bzip2 libbz2.so
+    glibc
+)
+source+=(
+    # Force GNU C89 build because of the very old codebase
+    https://src.fedoraproject.org/rpms/zip/raw/rawhide/f/zip-gnu89-build.patch
+    # Buffer overflow fix from Fedora that Arch (still) doesn't include, very nice
+    zip-3.0-buffer_overflow.patch::https://src.fedoraproject.org/rpms/zip/raw/rawhide/f/buffer_overflow.patch
+)
+sha256sums+=('74c767b5c6699c0fbb1649c93182d6aa89d595e115444cb67a3d380009fe7c1c'
+             'd74384c0159662b83c9b8080e92c77c0816a763e926014c612e672835a1ad1f7')
