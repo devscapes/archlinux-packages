@@ -1,0 +1,285 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+
+pkgbase=slot-plasma-themes
+pkgname=(
+    gtk-theme-slot-dark
+    kvantum-theme-slot-dark
+    plasma5-themes-slot-dark  # keep packaging for time being
+    plasma6-themes-slot-dark
+    sddm-theme-slot
+    slot-icon-theme
+    slot-icon-theme-extra  # split up extra variants
+)
+pkgver=20250702
+pkgrel=1
+pkgdesc='Slot themes for Plasma desktop'
+arch=(any)
+url='https://github.com/L4ki/Slot-Plasma-Themes'
+license=(GPL-3.0-only)
+# We need these to tone down icon themes size a bit
+makedepends=(
+    rdfind
+    symlinks
+)
+options=(!strip !emptydirs)
+_commit=aec2d71df63f53c4fcdc3b39931466edd782d19b
+source=("${pkgbase}-${pkgver}.tar.gz::${url}/archive/${_commit}.tar.gz")
+noextract=("${pkgbase}-${pkgver}.tar.gz")
+sha384sums=('1d7a12b05296eb0ff5c0e5b781a3c23351ee2c2fa916392700d215e5ffa1fafe6e8007690e286082f7a5ec4ef60ce4fc')
+b2sums=('06eb0678f6bfa2e05aa48dbf8c5c764e3722d91a76c4cd63358ed36867cd4bdeecfeb5cd15e21c466c8337cfd8e78f7193d927df6ade8c3e19b1d72e671f213c')
+
+prepare() {
+    mkdir "${pkgbase}-${pkgver}"
+    tar xf "${pkgbase}-${pkgver}.tar.gz" -C "${pkgbase}-${pkgver}" --strip-components 1
+    cd "${srcdir}/${pkgbase}-${pkgver}"
+
+    # Remove junk files
+    find . \( -name 32.files -o -name 48.files -o -name 'Text File.txt' -o -name icon-theme.cache \
+        -o -name make-symlinks.sh \) -delete
+    rm -f 'Slot Plasma Themes/Slot-Dark-Plasma/'{AUTHORS,LICENSE}
+
+    cd "${srcdir}/${pkgbase}-${pkgver}/Slot Global Themes"
+
+    # Use correct window decoration theme for Gradient-Dark theme
+    sed 's/Gradient-Color-Dark-Aurorae/Slot-Dark-Aurorae-5/' \
+        -i Slot-Gradient-Dark-Global-5/contents/defaults
+    sed 's/Gradient-Color/Slot/' -i Slot-Gradient-Dark-Global-6/contents/defaults
+
+    cd "${srcdir}/${pkgbase}-${pkgver}/Slot Icons Themes"
+
+    # Symlink any @2x, @3x, ... to their original non-scaled icons
+    find . -type f \( -name 16 -o -name 22 -o -name 24 \) | while IFS= read -r _fixup; do
+        rm -r "$(dirname "${_fixup}")"
+        ln -s "$(basename "${_fixup}")" "$(dirname "${_fixup}")"
+    done
+
+    # Get rid of any incorrect files present on icon themes
+    find . -type f ! \( -iname '*.svg' -o -name index.theme \) -delete
+
+    # Move some icons to their proper place
+    mkdir Slot-Blue-Light-Icons/places
+    mv -t Slot-Blue-Light-Icons/places Slot-Blue-Light-Icons/{32,64}
+    mv Slot-Light-Icons/*.svg Slot-Light-Icons/mimetypes/64
+}
+
+package_gtk-theme-slot-dark() {
+    pkgdesc+=' - GTK+ themes'
+    depends=(gtk{3,4})
+    optdepends=('gtk-engine-murrine: for using GTK2 theme')
+
+    pushd "${pkgbase}-${pkgver}/Slot GTK Themes"
+    install -d "${pkgdir}/usr/share/themes"
+    cp -r -v --no-preserve=all Slot-Dark-GTK "${pkgdir}/usr/share/themes"
+    popd
+}
+
+package_kvantum-theme-slot-dark() {
+    pkgdesc+=' - Kvantum theme'
+    depends=(kvantum)
+
+    pushd "${pkgbase}-${pkgver}/Slot Kvantum Themes"
+    install -d "${pkgdir}/usr/share/Kvantum"
+    cp -r -v --no-preserve=all Slot-Dark-Kvantum "${pkgdir}/usr/share/Kvantum"
+    popd
+}
+
+package_plasma5-themes-slot-dark() {
+    pkgdesc+=' - for KDE Plasma 5'
+    optdepends=(
+        'gtk-theme-slot-dark: for matching GTK+ theme'
+        'kvantum-theme-slot-dark: for matching Kvantum theme'
+        'sddm-theme-slot: for matching SDDM theme'
+        'slot-icon-theme: for matching icon theme'
+    )
+    # Conflict with plasma6-themes due to shared components
+    conflicts=(plasma6-themes-slot-dark)
+
+    cd "${pkgbase}-${pkgver}"
+
+    pushd 'Slot Window Decorations'
+    install -d "${pkgdir}/usr/share/aurorae/themes"
+    cp -r -v --no-preserve=all -t "${pkgdir}/usr/share/aurorae/themes" Slot-{Blur-,}Dark-Aurorae-5
+    popd
+
+    pushd 'Slot Color Schemes'
+    install -d "${pkgdir}/usr/share/color-schemes"
+    cp -r -v --no-preserve=all SlotDarkColorscheme.colors "${pkgdir}/usr/share/color-schemes"
+    popd
+
+    pushd 'Slot Plasma Themes'
+    install -d "${pkgdir}/usr/share/plasma/desktoptheme"
+    cp -r -v --no-preserve=all Slot-Dark-Plasma "${pkgdir}/usr/share/plasma/desktoptheme"
+    rm -f "${pkgdir}/usr/share/plasma/desktoptheme/Slot-Dark-Plasma/metadata.json"
+    popd
+
+    pushd 'Slot Global Themes'
+    install -d "${pkgdir}/usr/share/plasma/look-and-feel"
+    cp -r -v --no-preserve=all -t "${pkgdir}/usr/share/plasma/look-and-feel" \
+        Slot-{,Gradient-}Dark-Global-5
+    popd
+
+    install -d "${pkgdir}/usr/share/wallpapers"
+    cp -r -v --no-preserve=all 'Slot Wallpapers' "${pkgdir}/usr/share/wallpapers/Slot-Wallpapers"
+}
+
+package_plasma6-themes-slot-dark() {
+    pkgdesc+=' - for KDE Plasma 6'
+    optdepends=(
+        'gtk-theme-slot-dark: for matching GTK+ theme'
+        'kvantum-theme-slot-dark: for matching Kvantum theme'
+        'sddm-theme-slot: for matching SDDM theme'
+        'slot-icon-theme: for matching icon theme'
+    )
+    # Conflict with plasma5-themes due to shared components
+    conflicts=(plasma5-themes-slot-dark)
+
+    cd "${pkgbase}-${pkgver}"
+
+    pushd 'Slot Window Decorations'
+    install -d "${pkgdir}/usr/share/aurorae/themes"
+    cp -r -v --no-preserve=all -t "${pkgdir}/usr/share/aurorae/themes" Slot-{Blur-,}Dark-Aurorae-6
+    popd
+
+    pushd 'Slot Color Schemes'
+    install -d "${pkgdir}/usr/share/color-schemes"
+    cp -r -v --no-preserve=all SlotDarkColorscheme.colors "${pkgdir}/usr/share/color-schemes"
+    popd
+
+    pushd 'Slot Plasma Themes'
+    install -d "${pkgdir}/usr/share/plasma/desktoptheme"
+    cp -r -v --no-preserve=all Slot-Dark-Plasma "${pkgdir}/usr/share/plasma/desktoptheme"
+    rm -f "${pkgdir}/usr/share/plasma/desktoptheme/Slot-Dark-Plasma/metadata.desktop"
+    popd
+
+    pushd 'Slot Global Themes'
+    install -d "${pkgdir}/usr/share/plasma/look-and-feel"
+    cp -r -v --no-preserve=all -t "${pkgdir}/usr/share/plasma/look-and-feel" \
+        Slot-{,Gradient-}Dark-Global-6
+    popd
+
+    install -d "${pkgdir}/usr/share/wallpapers"
+    cp -r -v --no-preserve=all "Slot Wallpapers" "${pkgdir}/usr/share/wallpapers/Slot-Wallpapers"
+}
+
+package_sddm-theme-slot() {
+    pkgdesc+=' - SDDM theme'
+    depends=(sddm)
+
+    pushd "${pkgbase}-${pkgver}/Slot SDDM Themes"
+    install -d "${pkgdir}/usr/share/sddm/themes"
+    cp -r -v --no-preserve=all Slot-SDDM-6 "${pkgdir}/usr/share/sddm/themes"
+    popd
+}
+
+package_slot-icon-theme() {
+    pkgdesc+=' - icon themes'
+    depends=(
+        breeze-icons
+        hicolor-icon-theme
+    )
+    optdepends=('slot-icon-theme-extra: additional icon theme variants')
+
+    local _iconsdir _rdfindargs
+    _iconsdir=${pkgdir}/usr/share/icons
+    _rdfindargs=(-checksum sha512 -makesymlinks true -makeresultsfile false)
+
+    pushd "${pkgbase}-${pkgver}/Slot Icons Themes"
+    install -d "${_iconsdir}"
+
+    echo "Installing Slot-Dark-Icons theme..."
+    cp -r -v --no-preserve=all Slot-Dark-Icons "${_iconsdir}"
+    rdfind "${_rdfindargs[@]}" "${_iconsdir}/Slot-Dark-Icons"
+    symlinks -c -r "${_iconsdir}/Slot-Dark-Icons"
+
+    echo "Installing Slot-Gradient-Dark-Icons theme..."
+    cp -r -v --no-preserve=all Slot-Gradient-Dark-Icons "${_iconsdir}"
+    rdfind "${_rdfindargs[@]}" "${_iconsdir}/Slot-Gradient-Dark-Icons"
+    symlinks -c -r "${_iconsdir}/Slot-Gradient-Dark-Icons"
+
+    popd
+}
+
+package_slot-icon-theme-extra() {
+    pkgdesc+=' - extra icon themes'
+    depends=(
+        breeze-icons
+        hicolor-icon-theme
+    )
+
+    local _iconsdir _rdfindargs
+    _iconsdir=${pkgdir}/usr/share/icons
+    _rdfindargs=(-checksum sha512 -makesymlinks true -makeresultsfile false)
+
+    pushd "${pkgbase}-${pkgver}/Slot Icons Themes"
+    install -d "${_iconsdir}"
+
+    echo "Installing Slot-Light-Icons theme..."
+    cp -r -v --no-preserve=all Slot-Light-Icons "${_iconsdir}"
+    rdfind "${_rdfindargs[@]}" "${_iconsdir}/Slot-Light-Icons"
+    symlinks -c -r "${_iconsdir}/Slot-Light-Icons"
+
+    echo "Installing Slot-Blue-Dark-Icons theme..."
+    cp -r -v --no-preserve=all Slot-Dark-Icons "${_iconsdir}/Slot-Blue-Dark-Icons"
+    cp -f -r -v --no-preserve=all Slot-Blue-Dark-Icons/places "${_iconsdir}/Slot-Blue-Dark-Icons/"
+    sed 's/Slot-Dark/Slot-Blue-Dark/g' -i "${_iconsdir}/Slot-Blue-Dark-Icons/index.theme"
+    rdfind "${_rdfindargs[@]}" "${_iconsdir}/Slot-Blue-Dark-Icons"
+    symlinks -c -r "${_iconsdir}/Slot-Blue-Dark-Icons"
+
+    echo "Installing Slot-Blue-Light-Icons theme..."
+    cp -r -v --no-preserve=all Slot-Light-Icons "${_iconsdir}/Slot-Blue-Light-Icons"
+    cp -f -r -v --no-preserve=all Slot-Blue-Light-Icons/places "${_iconsdir}/Slot-Blue-Light-Icons/"
+    sed 's/Slot-Light/Slot-Blue-Light/g' -i "${_iconsdir}/Slot-Blue-Light-Icons/index.theme"
+    rdfind "${_rdfindargs[@]}" "${_iconsdir}/Slot-Blue-Light-Icons"
+    symlinks -c -r "${_iconsdir}/Slot-Blue-Light-Icons"
+
+    echo "Installing Slot-Color-Dark-Icons theme..."
+    cp -r -v --no-preserve=all Slot-Dark-Icons "${_iconsdir}/Slot-Color-Dark-Icons"
+    cp -f -r -v --no-preserve=all Slot-Color-Dark-Icons/places "${_iconsdir}/Slot-Color-Dark-Icons/"
+    sed 's/Slot-Dark/Slot-Color-Dark/g' -i "${_iconsdir}/Slot-Color-Dark-Icons/index.theme"
+    rdfind "${_rdfindargs[@]}" "${_iconsdir}/Slot-Color-Dark-Icons"
+    symlinks -c -r "${_iconsdir}/Slot-Color-Dark-Icons"
+
+    echo "Installing Slot-Color-Light-Icons theme..."
+    cp -r -v --no-preserve=all Slot-Light-Icons "${_iconsdir}/Slot-Color-Light-Icons"
+    cp -f -r -v --no-preserve=all Slot-Color-Light-Icons/places "${_iconsdir}/Slot-Color-Light-Icons/"
+    sed 's/Slot-Light/Slot-Color-Light/g' -i "${_iconsdir}/Slot-Color-Light-Icons/index.theme"
+    rdfind "${_rdfindargs[@]}" "${_iconsdir}/Slot-Color-Light-Icons"
+    symlinks -c -r "${_iconsdir}/Slot-Color-Light-Icons"
+
+    echo "Installing Slot-Gradient-Light-Icons theme..."
+    cp -r -v --no-preserve=all Slot-Light-Icons "${_iconsdir}/Slot-Gradient-Light-Icons"
+    cp -f -r -v --no-preserve=all Slot-Gradient-Light-Icons/places "${_iconsdir}/Slot-Gradient-Light-Icons/"
+    sed 's/Slot-Light/Slot-Gradient-Light/g' -i "${_iconsdir}/Slot-Gradient-Light-Icons/index.theme"
+    rdfind "${_rdfindargs[@]}" "${_iconsdir}/Slot-Gradient-Light-Icons"
+    symlinks -c -r "${_iconsdir}/Slot-Gradient-Light-Icons"
+
+    echo "Installing Slot-Multicolor-Dark-Icons theme..."
+    cp -r -v --no-preserve=all Slot-Dark-Icons "${_iconsdir}/Slot-Multicolor-Dark-Icons"
+    cp -f -r -v --no-preserve=all Slot-Multicolor-Dark-Icons/places "${_iconsdir}/Slot-Multicolor-Dark-Icons/"
+    sed 's/Slot-Dark/Slot-Multicolor-Dark/g' -i "${_iconsdir}/Slot-Multicolor-Dark-Icons/index.theme"
+    rdfind "${_rdfindargs[@]}" "${_iconsdir}/Slot-Multicolor-Dark-Icons"
+    symlinks -c -r "${_iconsdir}/Slot-Multicolor-Dark-Icons"
+
+    echo "Installing Slot-Multicolor-Light-Icons theme..."
+    cp -r -v --no-preserve=all Slot-Light-Icons "${_iconsdir}/Slot-Multicolor-Light-Icons"
+    cp -f -r -v --no-preserve=all Slot-Multicolor-Light-Icons/places "${_iconsdir}/Slot-Multicolor-Light-Icons/"
+    sed 's/Slot-Light/Slot-Multicolor-Light/g' -i "${_iconsdir}/Slot-Multicolor-Light-Icons/index.theme"
+    rdfind "${_rdfindargs[@]}" "${_iconsdir}/Slot-Multicolor-Light-Icons"
+    symlinks -c -r "${_iconsdir}/Slot-Multicolor-Light-Icons"
+
+    echo "Installing Slot-Symbolic-Dark-Icons theme..."
+    cp -r -v --no-preserve=all Slot-Dark-Icons "${_iconsdir}/Slot-Symbolic-Dark-Icons"
+    cp -f -r -v --no-preserve=all Slot-Symbolic-Dark-Icons/categories "${_iconsdir}/Slot-Symbolic-Dark-Icons/"
+    sed 's/Slot-Dark/Slot-Symbolic-Dark/g' -i "${_iconsdir}/Slot-Symbolic-Dark-Icons/index.theme"
+    rdfind "${_rdfindargs[@]}" "${_iconsdir}/Slot-Symbolic-Dark-Icons"
+    symlinks -c -r "${_iconsdir}/Slot-Symbolic-Dark-Icons"
+
+    echo "Installing Slot-Symbolic-Light-Icons theme..."
+    cp -r -v --no-preserve=all Slot-Light-Icons "${_iconsdir}/Slot-Symbolic-Light-Icons"
+    cp -f -r -v --no-preserve=all Slot-Symbolic-Light-Icons/categories "${_iconsdir}/Slot-Symbolic-Light-Icons/"
+    sed 's/Slot-Light/Slot-Symbolic-Light/g' -i "${_iconsdir}/Slot-Symbolic-Light-Icons/index.theme"
+    rdfind "${_rdfindargs[@]}" "${_iconsdir}/Slot-Symbolic-Light-Icons"
+    symlinks -c -r "${_iconsdir}/Slot-Symbolic-Light-Icons"
+
+    popd
+}

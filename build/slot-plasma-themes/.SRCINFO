@@ -1,0 +1,56 @@
+pkgbase = slot-plasma-themes
+	pkgdesc = Slot themes for Plasma desktop
+	pkgver = 20250702
+	pkgrel = 1
+	url = https://github.com/L4ki/Slot-Plasma-Themes
+	arch = any
+	license = GPL-3.0-only
+	makedepends = rdfind
+	makedepends = symlinks
+	noextract = slot-plasma-themes-20250702.tar.gz
+	options = !strip
+	options = !emptydirs
+	source = slot-plasma-themes-20250702.tar.gz::https://github.com/L4ki/Slot-Plasma-Themes/archive/aec2d71df63f53c4fcdc3b39931466edd782d19b.tar.gz
+	sha384sums = 1d7a12b05296eb0ff5c0e5b781a3c23351ee2c2fa916392700d215e5ffa1fafe6e8007690e286082f7a5ec4ef60ce4fc
+	b2sums = 06eb0678f6bfa2e05aa48dbf8c5c764e3722d91a76c4cd63358ed36867cd4bdeecfeb5cd15e21c466c8337cfd8e78f7193d927df6ade8c3e19b1d72e671f213c
+
+pkgname = gtk-theme-slot-dark
+	pkgdesc = Slot themes for Plasma desktop - GTK+ themes
+	depends = gtk3
+	depends = gtk4
+	optdepends = gtk-engine-murrine: for using GTK2 theme
+
+pkgname = kvantum-theme-slot-dark
+	pkgdesc = Slot themes for Plasma desktop - Kvantum theme
+	depends = kvantum
+
+pkgname = plasma5-themes-slot-dark
+	pkgdesc = Slot themes for Plasma desktop - for KDE Plasma 5
+	optdepends = gtk-theme-slot-dark: for matching GTK+ theme
+	optdepends = kvantum-theme-slot-dark: for matching Kvantum theme
+	optdepends = sddm-theme-slot: for matching SDDM theme
+	optdepends = slot-icon-theme: for matching icon theme
+	conflicts = plasma6-themes-slot-dark
+
+pkgname = plasma6-themes-slot-dark
+	pkgdesc = Slot themes for Plasma desktop - for KDE Plasma 6
+	optdepends = gtk-theme-slot-dark: for matching GTK+ theme
+	optdepends = kvantum-theme-slot-dark: for matching Kvantum theme
+	optdepends = sddm-theme-slot: for matching SDDM theme
+	optdepends = slot-icon-theme: for matching icon theme
+	conflicts = plasma5-themes-slot-dark
+
+pkgname = sddm-theme-slot
+	pkgdesc = Slot themes for Plasma desktop - SDDM theme
+	depends = sddm
+
+pkgname = slot-icon-theme
+	pkgdesc = Slot themes for Plasma desktop - icon themes
+	depends = breeze-icons
+	depends = hicolor-icon-theme
+	optdepends = slot-icon-theme-extra: additional icon theme variants
+
+pkgname = slot-icon-theme-extra
+	pkgdesc = Slot themes for Plasma desktop - extra icon themes
+	depends = breeze-icons
+	depends = hicolor-icon-theme
