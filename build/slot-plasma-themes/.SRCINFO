@@ -1,18 +1,19 @@
 pkgbase = slot-plasma-themes
 	pkgdesc = Slot themes for Plasma desktop
-	pkgver = 20250702
+	pkgver = 4.0_20250730
 	pkgrel = 1
+	epoch = 1
 	url = https://github.com/L4ki/Slot-Plasma-Themes
 	arch = any
 	license = GPL-3.0-only
 	makedepends = rdfind
 	makedepends = symlinks
-	noextract = slot-plasma-themes-20250702.tar.gz
+	noextract = slot-plasma-themes-4.0_20250730.tar.gz
 	options = !strip
 	options = !emptydirs
-	source = slot-plasma-themes-20250702.tar.gz::https://github.com/L4ki/Slot-Plasma-Themes/archive/aec2d71df63f53c4fcdc3b39931466edd782d19b.tar.gz
-	sha384sums = 1d7a12b05296eb0ff5c0e5b781a3c23351ee2c2fa916392700d215e5ffa1fafe6e8007690e286082f7a5ec4ef60ce4fc
-	b2sums = 06eb0678f6bfa2e05aa48dbf8c5c764e3722d91a76c4cd63358ed36867cd4bdeecfeb5cd15e21c466c8337cfd8e78f7193d927df6ade8c3e19b1d72e671f213c
+	source = slot-plasma-themes-4.0_20250730.tar.gz::https://github.com/L4ki/Slot-Plasma-Themes/archive/f68e8b22bda123146bbaa52841d0bdba9bce68bc.tar.gz
+	sha384sums = 99da6ba3c05a912e2f97246ec5be611e90a409565e7dfe933fb3bbc01ecdbe3df6d1c359025994d4b529084537d5089a
+	b2sums = 4d5b582af8305154965084e99e2cb3eb741af82b40bff7c223dd0c14b13c6de96e4d1ae6f2017c05c66c0426dfaecb900e91aff29f27bac2287e9a6d34ed7197
 
 pkgname = gtk-theme-slot-dark
 	pkgdesc = Slot themes for Plasma desktop - GTK+ themes
