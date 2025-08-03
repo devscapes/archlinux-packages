@@ -1,5 +1,5 @@
 pkgname=we10x-icon-theme
-pkgver=20250503
+pkgver=20250716
 pkgrel=1
 pkgdesc='A colorful design icon theme for Linux desktop'
 arch=(any)
@@ -8,9 +8,10 @@ license=(GPL-3.0-only)  # CHECKME
 groups=(we10xos-theme)
 makedepends=(git)
 options=(!strip)
-source=(git+https://github.com/yeyushengfan258/We10X-icon-theme.git#commit=c3a0f6b53a0819e290d55336d13dac7f94b39b6b)
-sha384sums=('502552198af2abe5149811a4d62f371aa2eb2683ba30bd97f3eebecd3c57ff3a4ae8fe4493fff0a7cefec06551df5c35')
-b2sums=('bae7472053a50ddbb6062b681ca1f62473f209f2bddc5f900333d2d0b9fb6d8a4659f67e3e3bbfb53439d7939ce647ec4f95d884429038fc21ffb0c97cedfcde')
+_commit=51ade47e434cbfbd73a64d9a16c6fbc1319f0abf
+source=(git+https://github.com/yeyushengfan258/We10X-icon-theme.git#commit=${_commit})
+sha384sums=('e7dfa809289f8c599db302efb7f8e96420bd8420b2394be01decb8920784af56424f264c3323ed1c2279eebd0fa005ac')
+b2sums=('f31d500872c3211f752c795d8d2c5f2a0a6b7cfb3a31f6bbea9804326709f0be4a691a0f57298610be50ddee25d89fe9ab62e689f764a67d45efad74d3a4b334')
 
 prepare() {
     # Don't trigger icon cache update when installing
@@ -18,7 +19,9 @@ prepare() {
 }
 
 package() {
-    pushd We10X-icon-theme
+    cd We10X-icon-theme
     ./install.sh -d "${pkgdir}/usr/share/icons" -t all
-    popd
+    # This removes broken symlinks created by the script
+    find "${pkgdir}/usr/share/icons" -type l \
+        -exec sh -c 'for x; do [[ -e $x ]] || rm -v -f "$x"; done' _ {} +
 }

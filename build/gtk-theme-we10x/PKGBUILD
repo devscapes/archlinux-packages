@@ -6,21 +6,21 @@ pkgname=(
     gnome-shell-theme-we10x
     gtk-theme-we10x
 )
-pkgver=20250328
+pkgver=20250520
 pkgrel=1
 arch=(any)
 url='https://www.gnome-look.org/s/Gnome/p/2275817'
 license=(GPL-3.0-only)  # CHECKME
 groups=(we10xos-theme)
 makedepends=(
-    git
     gnome-shell
     sassc
 )
 options=(!strip)
-source=(git+https://github.com/yeyushengfan258/We10X-gtk-theme.git#commit=4d36c8c79202ef8cf5d44128563a590be291ddf5)
-sha384sums=('e1fd3c61d6d69d48ed6d1cc00159de6940e5809d6d270d81ac2b7d84418de23b6bf84f269562e58311ee4a1b1dc85223')
-b2sums=('0a6e63dfb3c818d15c87a350f9b53d798d2c9da54bf16cea7a9ac303690fe2e5aeedae0685c7c77432525d64bd869e8a6413d46e9b27b811c1022b7033fd9f81')
+_commit=ee2475ecbd35bb5b9f28407a21ce1c005b4db663
+source=("We10X-gtk-theme-${_commit}.tar.gz::https://github.com/yeyushengfan258/We10X-gtk-theme/archive/${_commit}.tar.gz")
+sha384sums=('ea50b1a75afa6ccc0939f77b3f2271a983ba89000740150f50a99611811bfce6e68ac3f3512ed705f1fb8efd263a1807')
+b2sums=('f90f7a27121c05c54d51ba87d024e0ec687ba3fda0274a8d09fd4423e37009d9ede1ae75c07a492d092995c2bb4ec07afcb9b9b7720aee478e3d5d264f501a74')
 
 _install() {
     local _height _heights _realpath _theme _type _variant _variants
@@ -39,7 +39,7 @@ _install() {
 }
 
 prepare() {
-    pushd We10X-gtk-theme
+    cd "We10X-gtk-theme-${_commit}"
 
     # DO NOT install GTK2, Metacity, Plank and Xfwm4 themes — use fluent-gtk-theme
     sed '/MetacityTheme/d;/gtk-2.0/d;/xfwm4/,/plank\/theme/d' -i install.sh
@@ -49,16 +49,13 @@ prepare() {
 
     # Regenerate fresh CSS files
     find . -iname 'cinnamon*.css' -o -iname 'gnome-shell*.css' -o -iname 'gtk*.css' -delete
-    sed '/install_package$/d' parse-sass.sh | bash
-
-    popd
+    sed '/which sassc/s/.*/if false; then/' parse-sass.sh | bash
 }
 
 build() {
-    pushd We10X-gtk-theme
+    cd "We10X-gtk-theme-${_commit}"
     # Install to a temporary path to allow creation of split packages
     ./install.sh -d "${srcdir}/tmp-install" -c standard dark
-    popd
 }
 
 package_cinnamon-theme-we10x() {
@@ -79,7 +76,7 @@ package_gnome-shell-theme-we10x() {
     pkgdesc='Fluent design theme for GNOME Shell'
     depends=(
         gtk-theme-we10x
-        'gnome-shell>=47'
+        'gnome-shell>=48'
         gnome-themes-extra
     )
     optdepends=(

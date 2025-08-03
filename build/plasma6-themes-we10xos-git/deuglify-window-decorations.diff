@@ -1,5 +1,5 @@
 diff --git a/aurorae/We10XOS-dark/We10XOS-darkrc b/aurorae/We10XOS-dark/We10XOS-darkrc
-index c6a6017..da6ce57 100644
+index e4826a2..da6ce57 100644
 --- a/aurorae/We10XOS-dark/We10XOS-darkrc
 +++ b/aurorae/We10XOS-dark/We10XOS-darkrc
 @@ -15,8 +15,8 @@ TitleEdgeTop=4
@@ -17,7 +17,7 @@ index c6a6017..da6ce57 100644
  ButtonWidthKeepbelow=43
  ButtonWidthHelp=43
  
--ButtonWidthAlldesktops=44
+-ButtonWidthAlldesktops=30
 +ButtonWidthAlldesktops=0
  
  ButtonHeight=28

@@ -1,0 +1,162 @@
+source <(
+    sed -e '/\.\.\/unzip-6.0-alt-iconv-utf8/d' \
+        -e '/\.\.\/unzip-6.0-heap-overflow/a\\tpatch -p1 -i \.\.\/unzip-6.0-natspec.patch' \
+        -e '/\.\.\/unzip-6.0-COVSCAN/s/COVSCAN-fix-unterminated-string/natspec-covscan/' \
+        -e 's/LDFLAGS/LDFLAGS -l natspec/' PKGBUILD
+)
+
+cat << EOF > unzip-6.0-natspec-covscan.patch
+diff --git a/unix/unix.c b/unix/unix.c
+index 6ae18ba..333e4a8 100644
+--- a/unix/unix.c
++++ b/unix/unix.c
+@@ -1922,12 +1922,14 @@ void init_conversion_charsets()
+     /* Make a guess only if OEM_CP not already set. */ 
+     if(*OEM_CP == '\0') {
+         const char * archive_charset = natspec_get_charset_by_locale(NATSPEC_DOSCS, "");
+-        strncpy(OEM_CP, archive_charset, sizeof(OEM_CP));
++        strncpy(OEM_CP, archive_charset, MAX_CP_NAME - 1);
++        OEM_CP[MAX_CP_NAME - 1] = '\0';
+     }
+ 
+     if(*ISO_CP == '\0') {
+         const char * archive_charset = natspec_get_charset_by_locale(NATSPEC_WINCS, "");
+-        strncpy(ISO_CP, archive_charset, sizeof(ISO_CP));
++        strncpy(ISO_CP, archive_charset, MAX_CP_NAME - 1);
++        ISO_CP[MAX_CP_NAME - 1] = '\0';
+     }
+ 
+ }
+diff --git a/unix/unxcfg.h b/unix/unxcfg.h
+index 8729de2..78ea60b 100644
+--- a/unix/unxcfg.h
++++ b/unix/unxcfg.h
+@@ -228,7 +228,7 @@ typedef struct stat z_stat;
+ /*    and notfirstcall are used by do_wild().                          */
+ 
+ 
+-#define MAX_CP_NAME 25 
++#define MAX_CP_NAME 25 + 1
+    
+ #ifdef SETLOCALE
+ #  undef SETLOCALE
+diff --git a/unzip.c b/unzip.c
+index 690e39f..9acf867 100644
+--- a/unzip.c
++++ b/unzip.c
+@@ -1545,7 +1545,8 @@ int uz_opts(__G__ pargc, pargv)
+         		                  "error:  a valid character encoding should follow the -I argument"));
+     	                        return(PK_PARAM); 
+     						}
+-    						strncpy(ISO_CP, s, sizeof(ISO_CP));
++						strncpy(ISO_CP, s, MAX_CP_NAME - 1);
++						ISO_CP[MAX_CP_NAME - 1] = '\0';
+     					} else { /* -I charset */
+     						++argv;
+     						if(!(--argc > 0 && *argv != NULL && **argv != '-')) {
+@@ -1554,7 +1555,8 @@ int uz_opts(__G__ pargc, pargv)
+     	                        return(PK_PARAM); 
+     						}
+     						s = *argv;
+-    						strncpy(ISO_CP, s, sizeof(ISO_CP));
++						strncpy(ISO_CP, s, MAX_CP_NAME - 1);
++						ISO_CP[MAX_CP_NAME - 1] = '\0';
+     					}
+     					while(*(++s)); /* No params straight after charset name */
+     				}
+@@ -1649,7 +1651,8 @@ int uz_opts(__G__ pargc, pargv)
+         		                  "error:  a valid character encoding should follow the -I argument"));
+     	                        return(PK_PARAM); 
+     						}
+-    						strncpy(OEM_CP, s, sizeof(OEM_CP));
++						strncpy(OEM_CP, s, MAX_CP_NAME - 1);
++						OEM_CP[MAX_CP_NAME - 1] = '\0';
+     					} else { /* -O charset */
+     						++argv;
+     						if(!(--argc > 0 && *argv != NULL && **argv != '-')) {
+@@ -1658,7 +1661,8 @@ int uz_opts(__G__ pargc, pargv)
+     	                        return(PK_PARAM); 
+     						}
+     						s = *argv;
+-    						strncpy(OEM_CP, s, sizeof(OEM_CP));
++						strncpy(OEM_CP, s, MAX_CP_NAME - 1);
++						OEM_CP[MAX_CP_NAME - 1] = '\0';
+     					}
+     					while(*(++s)); /* No params straight after charset name */
+     				}
+diff --git a/zipinfo.c b/zipinfo.c
+index accca2a..ecdb023 100644
+--- a/zipinfo.c
++++ b/zipinfo.c
+@@ -519,7 +519,8 @@ int zi_opts(__G__ pargc, pargv)
+         		                  "error:  a valid character encoding should follow the -I argument"));
+     	                        return(PK_PARAM); 
+     						}
+-    						strncpy(ISO_CP, s, sizeof(ISO_CP));
++						strncpy(ISO_CP, s, MAX_CP_NAME - 1);
++						ISO_CP[MAX_CP_NAME - 1] = '\0';
+     					} else { /* -I charset */
+     						++argv;
+     						if(!(--argc > 0 && *argv != NULL && **argv != '-')) {
+@@ -528,7 +529,8 @@ int zi_opts(__G__ pargc, pargv)
+     	                        return(PK_PARAM); 
+     						}
+     						s = *argv;
+-    						strncpy(ISO_CP, s, sizeof(ISO_CP));
++						strncpy(ISO_CP, s, MAX_CP_NAME - 1);
++						ISO_CP[MAX_CP_NAME - 1] = '\0';
+     					}
+     					while(*(++s)); /* No params straight after charset name */
+     				}
+@@ -568,7 +570,8 @@ int zi_opts(__G__ pargc, pargv)
+         		                  "error:  a valid character encoding should follow the -I argument"));
+     	                        return(PK_PARAM); 
+     						}
+-    						strncpy(OEM_CP, s, sizeof(OEM_CP));
++						strncpy(OEM_CP, s, MAX_CP_NAME - 1);
++						OEM_CP[MAX_CP_NAME - 1] = '\0';
+     					} else { /* -O charset */
+     						++argv;
+     						if(!(--argc > 0 && *argv != NULL && **argv != '-')) {
+@@ -577,7 +580,8 @@ int zi_opts(__G__ pargc, pargv)
+     	                        return(PK_PARAM); 
+     						}
+     						s = *argv;
+-    						strncpy(OEM_CP, s, sizeof(OEM_CP));
++						strncpy(OEM_CP, s, MAX_CP_NAME - 1);
++						OEM_CP[MAX_CP_NAME - 1] = '\0';
+     					}
+     					while(*(++s)); /* No params straight after charset name */
+     				}
+EOF
+
+pkgrel=$((${pkgrel} + 1))
+license=(Info-ZIP)
+depends=(
+    bash
+    bzip2 libbz2.so
+    glibc
+    libnatspec
+)
+
+for _num in $(seq 0 $((${#source[@]} - 1))); do
+    case "${source[${_num}]}" in
+        *alt-iconv*|*COVSCAN*)
+            ;;
+        *)
+            source_noiconv+=("${source[${_num}]}")
+            sha512sums_noiconv+=("${sha512sums[${_num}]}")
+            ;;
+    esac
+done
+
+source=("${source_noiconv[@]}")
+sha512sums=("${sha512sums_noiconv[@]}")
+unset source_noiconv sha512sums_noiconv
+
+source+=(
+    https://gitweb.gentoo.org/repo/gentoo.git/plain/app-arch/unzip/files/unzip-6.0-natspec.patch
+    unzip-6.0-natspec-covscan.patch
+)
+sha512sums+=('189ce2045430d2d04e27049672a3cfb205319edab1ac1522700a7f89344e5718235d8a15238390f6b4317af493796a65cac6a83f7dceb402bc736628d7a89cda'
+             '61f186190d1130d54e98c64bfcbf5431d7da79a6adb9772063cbb8d9f44282e1c81280fc8c642294a239782e9105256f1acabda8143c610bc22b9c1888e1294e')
