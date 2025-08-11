@@ -4,7 +4,7 @@ Operation = Remove
 Target = usr/lib/modules/*/pkgbase
 
 [Action]
-Description = Removing linux initcpios (dracut)...
+Description = Removing dracut-generated Unified Kernel Images...
 When = PreTransaction
-Exec = /usr/share/libalpm/scripts/dracut remove
+Exec = /usr/share/libalpm/scripts/dracut-uki remove
 NeedsTargets

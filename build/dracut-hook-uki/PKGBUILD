@@ -1,0 +1,33 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+
+pkgname=dracut-hook-uki
+pkgver=20250810
+pkgrel=1
+pkgdesc='Install/remove hooks for dracut (Unified Kernel Image)'
+url="https://github.com/devscapes/archlinux-packages/tree/main/build/${pkgname}"
+arch=(any)
+license=(Unlicense)
+depends=(
+    bash
+    dracut
+)
+provides=(dracut-hook-unified)
+conflicts=(dracut-hook-unified)
+replaces=(dracut-hook-unified)
+source=('60-dracut-remove.hook'
+        '90-dracut-install.hook'
+        'dracut')
+sha384sums=('4fa357d226938d38c1710a4b989e25947615df84859c4f90f2adc524c5f584ac65dd191b1c8de2c3ea7f93ee3affccb9'
+            '0045899695a0f269c89bfa23c574a93f2163b778697891de033236754dec35edf2792328782fc60527995ab388e5875f'
+            'f3dd5d06888b02ab6cc185e6f7d7a0756998e2e94c142ec26d0dcff5722ea2b3e6d325c4632b80cf92edf03b884792fa')
+b2sums=('836436187956d02847cc7c4b5f1b7633e5b2cc74de7366ba5adec2686894a571819e7d18ea6316739efc95f3837705da84b098cad586bd8282966866021e6c08'
+        'f98af61f80c49e7fe0c4b35dd1e4607e6cd3f4a32480259eef2aa2d951628ccbfc7ba9ddd9642122a9bf71ce0e3dfe71a7cb0683ea9afb60e5fbf5b72e54222c'
+        '729794d4dfee6e0e1cf34132f8055400c6c5d635b054e0d2fc5ee39f9ce28c7d43d71188deca0276f5dd49d0f1cb2923ce89b04cec4a7309de1872aee581f3f4')
+
+package() {
+    _libalpm_dir="${pkgdir}/usr/share/libalpm"
+
+    install -Dm644 60-dracut-remove.hook "${_libalpm_dir}/hooks/60-dracut-uki-remove.hook"
+    install -Dm644 90-dracut-install.hook "${_libalpm_dir}/hooks/90-dracut-uki-install.hook"
+    install -Dm755 dracut "${_libalpm_dir}/scripts/dracut-uki"
+}

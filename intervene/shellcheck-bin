@@ -1,0 +1,4 @@
+# Upstream: https://aur.archlinux.org/shellcheck-bin.git
+
+# -git packages are expected to provide non-git package
+source <(sed '/shellcheck-git/d' PKGBUILD)

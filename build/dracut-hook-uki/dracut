@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+# Copyright (C) 2023, 2025 Albert I (krasCGQ)
+#
+# SPDX-License-Identifier: Unlicense
+
+kernels=()
+build_all=false
+esp_directory=
+action=${1}
+
+dracut_install() {
+    local kernel parameters
+    kernel=${1}
+    parameters=(
+        '--force'
+        '--hostonly'
+        '--no-hostonly-cmdline'
+        '--stdlog=2' # dracut can get really noisy
+    )
+
+    read -r pkgbase <"/usr/lib/modules/${kernel}/pkgbase"
+    echo "==> Building unified kernel image for ${pkgbase}..."
+    dracut "${parameters[@]}" --kver "${kernel}" "${esp_directory}/Linux/arch-${pkgbase}.efi"
+}
+
+dracut_remove() {
+    local kernel
+    kernel=${1}
+
+    read -r pkgbase <"/usr/lib/modules/${kernel}/pkgbase"
+    echo "==> Removing unified kernel image for ${pkgbase}..."
+    rm -f "${esp_directory}/Linux/arch"{,linux}"-${pkgbase}.efi"
+}
+
+# Support for non-UKI configuration is dropped in favor of hooks shipped with dracut 108-1.
+# If you plan to continue running non-UKI configuration, uninstall dracut-hook-unified before
+# upgrading, then update your bootloader configuration to point to initramfs-<pkgbase>.img
+if ! grep -q -P '^uefi=(\")?yes(\")?' /etc/dracut.conf.d/*; then
+    echo "==> This hook requires uefi=\"yes\" to be present in config. Aborting."
+    exit 1
+fi
+
+while read -r line; do
+    case "${line}" in
+        usr/lib/modules/*/pkgbase)
+            # Build for this specific kernel only
+            kernels+=("$(basename "${line%/pkgbase}")")
+            continue
+        ;;
+        etc/dracut.conf.d/* | \
+        usr/bin/cryptsetup | \
+        usr/bin/dracut | \
+        usr/bin/lvm | \
+        usr/lib/dracut/* | \
+        usr/lib/firmware/* | \
+        usr/lib/modules/*/extramodules/ | \
+        usr/lib/systemd/systemd | \
+        usr/src/*/dkms.conf)
+            # Build for all kernels if dracut or module dependencies are updated
+            build_all=true
+            break
+        ;;
+    esac
+done
+
+if ${build_all}; then
+    unset kernels
+    # Recursive search of all available kernels
+    for kernel in /usr/lib/modules/*; do
+        # Only include kernel packages installed with pacman
+        pacman -Qo "${kernel}/pkgbase" >/dev/null 2>&1 || continue
+        kernels+=("$(basename "${kernel}")")
+    done
+fi
+
+# Attempt to determine ESP directory
+# vfat generally isn't case sensitive, so check /boot/efi/EFI before /boot/EFI
+if mountpoint -q /boot/efi && [[ -d /boot/efi/EFI ]]; then
+    esp_directory=/boot/efi/EFI
+# /boot/EFI should be default when nothing else matches, but blame systemd
+elif mountpoint -q /boot && [[ -d /boot/EFI ]]; then
+    esp_directory=/boot/EFI
+# Check for /efi/EFI last since systemd might mount ESP at /efi
+elif mountpoint -q /efi && [[ -d /efi/EFI ]]; then
+    esp_directory=/efi/EFI
+else
+    echo "==> Unable to determine ESP mount point; perhaps not mounted?"
+    exit 1
+fi
+
+
+for kernel in "${kernels[@]}"; do
+    eval "dracut_${action} ${kernel}"
+done
