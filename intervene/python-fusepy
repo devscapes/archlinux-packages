@@ -1,0 +1,14 @@
+# Upstream: https://aur.archlinux.org/python-fusepy.git
+
+source PKGBUILD
+
+pkgdesc="${pkgdesc% (no active development)}"
+pkgrel=1       # reset pkgrel
+license=(ISC)  # SPDX
+# Remove unnecessary version requirements
+for _dep in "${depends[@]}"; do
+    _depends+=("${_dep%>=*}")
+    unset _dep
+done
+depends=("${_depends[@]}")
+unset _depends

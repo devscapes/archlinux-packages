@@ -1,0 +1,87 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+# Contributor: Ben Westover <kwestover.kw@gmail.com>
+
+pkgname=mtkclient-git
+_pkgname=${pkgname%-git}
+pkgver=2.0.1.r114.g3093e65
+pkgrel=1
+pkgdesc='Unofficial MTK reverse engineering and flash tool'
+arch=(any)
+url='https://github.com/bkerler/mtkclient'
+license=(GPL-3.0-only)
+depends=(
+    android-udev
+    pyside6
+    python
+    python-colorama
+    python-fusepy
+    python-mock
+    python-pycryptodome
+    python-pycryptodomex
+    python-pyserial
+    python-pyusb
+)
+makedepends=(
+    git
+    python-build
+    python-capstone
+    python-hatchling
+    python-installer
+    python-keystone
+    python-setuptools
+)
+optdepends=(
+    'python-capstone: for using asmtools.py utility'
+    'python-keystone: for using asmtools.py utility'
+)
+conflicts=("${_pkgname}")
+provides=("${_pkgname}")
+options=(!strip)
+source=("${_pkgname}::git+${url}.git"
+        udev.patch)
+sha384sums=('SKIP'
+            '500a02e3ac31bacd07804f6fd6ee32614f5b60b0eec59b0ddc7b0bc2e1edd8489f0c72ea93b30dab54c503c37ab55c4d')
+b2sums=('SKIP'
+        '6e09943419d9ca7a1da5f4043b8a170a52955343061080c44808ae8e125e26341abbf40007eae8fc2573413232d046efbee4f1206942abd8b516b17b507e38b0')
+
+pkgver() {
+    git -C ${_pkgname} describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g;s/.freeze//'
+}
+
+prepare() {
+    cd ${_pkgname}
+
+    # Prevent LICENSE and README.md from being installed directly into /usr
+    sed '/^"LICENSE"/d;/^"README.md"/d' -i pyproject.toml
+
+    # Replace plugdev with uaccess and adbusers like upstream android-udev
+    patch -d mtkclient -p 1 <../udev.patch
+
+    # Don't include Windows DLLs in package
+    sed '/Windows/d' -i pyproject.toml
+}
+
+build() {
+    cd ${_pkgname}
+    python -m build -w -n
+}
+
+package() {
+    local _pyver
+    _pyver="$(python -c "import sys; vi = sys.version_info; print(f'{vi.major}.{vi.minor}')")"
+
+    cd ${_pkgname}
+
+    # Extract created wheel package
+    python -m installer -d "${pkgdir}" dist/*.whl
+
+    # Move additional udev rules to correct place and fix permissions
+    install -d "${pkgdir}/usr/lib/udev/rules.d"
+    mv "${pkgdir}/usr/lib/python${_pyver}/site-packages/${_pkgname}/Setup/Linux/51-edl.rules" \
+        "${pkgdir}/usr/lib/udev/rules.d/52-mtk-edl.rules"
+    chmod -x "${pkgdir}/usr/lib/udev/rules.d/52-mtk-edl.rules"
+
+    # Remove unwanted files
+    rm -f -r "${pkgdir}/usr/lib/python${_pyver}/site-packages/${_pkgname}/"{Setup,Windows,icon.ico}
+    find "${pkgdir}" -iname '*.sh' -delete
+}
