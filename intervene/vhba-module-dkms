@@ -1,0 +1,11 @@
+# Upstream: https://gitlab.archlinux.org/archlinux/packaging/packages/vhba-module.git
+
+source PKGBUILD
+
+pkgname=(vhba-module-dkms)
+pkgrel=1
+epoch=1
+arch=(any)
+makedepends=(git)
+
+unset -f build

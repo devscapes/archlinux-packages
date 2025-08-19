@@ -2,7 +2,7 @@
 # Contributor: Jan0660 <jan0660@tutanota.com>
 
 pkgname=oh-my-posh
-pkgver=26.19.0
+pkgver=26.19.1
 pkgrel=1
 pkgdesc='A prompt theme engine for any shell'
 arch=(
@@ -22,8 +22,8 @@ makedepends=(
     go
 )
 source=("${pkgname}::git+https://github.com/JanDeDobbeleer/oh-my-posh.git#tag=v${pkgver}")
-sha384sums=('3a372782df6719cdbfe8164cdcd5700fe27fc8c7a180e1b114d61fb5537aa930f03b5ab7456d514dbef517c03747bc75')
-b2sums=('ae2572dc792c96ec7ef867bd639a5f53946c03f18ff22c550dc32ace5a69565cd0b95b05b232e376694a8c11613f57dc86d42dd42d53c647a10259062d62f3ff')
+sha384sums=('43aa3aa6b59d741ab7a16e5a7fd76fffac8aa725cc7caae4a21ab70a118116a766b10d83e92c3acfb53829583f1be143')
+b2sums=('c6d01d4d596b25625cfb834c993342662bce5502928737625e8529b1c1ac596927da25b558f97dba05916725854828faa195a6129cc4865e32c65cbebbe4e1d6')
 
 prepare() {
     cd ${pkgname}/src

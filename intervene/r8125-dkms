@@ -1,0 +1,43 @@
+# Upstream: https://aur.archlinux.org/r8125-dkms.git
+
+source PKGBUILD
+
+sed -e '/^CLEAN/d' \
+    -e "/build modules/s|build modules|build EXTRA_CFLAGS='-DCONFIG_SOC_LAN=y \
+-DCONFIG_R8125_NAPI=y -DCONFIG_R8125_VLAN=y -DCONFIG_ASPM=y -DENABLE_S5WOL=y -DENABLE_EEE=y \
+-DENABLE_TX_NO_CLOSE=y -DENABLE_USE_FIRMWARE_FILE=y -DENABLE_GIGA_LITE=y' r8125-objs='r8125_n.o \
+rtl_eeprom.o rtltool.o r8125_firmware.o' modules|" \
+    -i dkms.conf
+
+cat << EOF > "${_pkgname}-linux-firmware.patch"
+--- r8125-9.016.01/src/r8125_n.c.orig	2025-07-28 22:08:00.000000000 +0800
++++ r8125-9.016.01/src/r8125_n.c	2025-08-20 00:57:45.876138377 +0800
+@@ -16589,8 +16589,10 @@
+ 
+         rtl8125_wait_phy_state_ready(tp, HW_PHY_STATUS_INI, 5000000);
+ 
++#ifndef ENABLE_USE_FIRMWARE_FILE
+         if (tp->mcfg == CFG_METHOD_10)
+                 rtl8125_set_phy_mcu_8125d_1_efuse(tp->dev);
++#endif
+ 
+         rtl8125_set_eth_phy_ocp_bit(tp, 0xA468, BIT_0);
+ 
+EOF
+
+pkgdesc='A kernel module for Realtek 8125 network cards'
+url='https://www.realtek.com/Download/List?cate_id=584'
+license=(GPL-2.0-or-later)
+depends+=(linux-firmware-realtek)
+source[0]="file://${_pkgname}-${pkgver}.tar.bz2"
+source+=("${_pkgname}-linux-firmware.patch")
+sha256sums=('5434b26500538a62541c55cd09eea099177f59bd9cc48d16969089a9bcdbbd41'
+            '6a100f817126d4ae1c8887f094b137aff8c9c58be12c5b3440243762202235f3'
+            '5fc861a12e41893aeba65a583f49d7584ea2f7f734c616fde15350046cb0630e')
+
+# Seems like these are no longer set even on Arch -dkms packages
+unset optdepends
+
+prepare() {
+    patch -d "${_pkgname}-${pkgver}" -p 1 <"${_pkgname}-linux-firmware.patch"
+}
