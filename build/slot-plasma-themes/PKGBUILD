@@ -10,7 +10,7 @@ pkgname=(
     slot-icon-theme
     slot-icon-theme-extra  # split up extra variants
 )
-pkgver=4.0_20250730
+pkgver=4.3_20250820
 pkgrel=1
 epoch=1
 pkgdesc='Slot themes for Plasma desktop'
@@ -23,11 +23,30 @@ makedepends=(
     symlinks
 )
 options=(!strip !emptydirs)
-_commit=f68e8b22bda123146bbaa52841d0bdba9bce68bc
+_commit=9532e97e3a4bfb4324d7e2a802bc78524edbcaec
 source=("${pkgbase}-${pkgver}.tar.gz::${url}/archive/${_commit}.tar.gz")
 noextract=("${pkgbase}-${pkgver}.tar.gz")
-sha384sums=('99da6ba3c05a912e2f97246ec5be611e90a409565e7dfe933fb3bbc01ecdbe3df6d1c359025994d4b529084537d5089a')
-b2sums=('4d5b582af8305154965084e99e2cb3eb741af82b40bff7c223dd0c14b13c6de96e4d1ae6f2017c05c66c0426dfaecb900e91aff29f27bac2287e9a6d34ed7197')
+sha384sums=('2359d48e14c41d4c86b0668a18ad2e74baf7ae66ffa380fe8a8ab3322247768d31dfef0322649d3130760c8cb642e7c9')
+b2sums=('b705346696089e0ddcf6cdd5f92e7d2d6f7b6abab568eb81f2912839050e8200fd9587e38a6c4625605a0f68d70ead32337068891e1dda25a51aa23a29cb66f1')
+
+_install_icons() {
+    local _base _iconsdir _path _theme
+    _iconsdir=${pkgdir}/usr/share/icons
+    _theme=$1
+    _base=$2
+
+    install -d "${_iconsdir}"
+    echo "Installing ${_theme} theme..."
+    cp -r -v --no-preserve=all "${_base:-${_theme}}" "${_iconsdir}/${_theme}"
+    if [[ -n ${_base} ]]; then
+        find "${_theme}" -mindepth 1 -maxdepth 1 -type d | while IFS= read -r _path; do
+            cp -f -r -v --no-preserve=all "${_path}" "${_iconsdir}/${_theme}/"
+        done
+        sed "s/${_base}/${_theme}/g" -i "${_iconsdir}/${_theme}/index.theme"
+    fi
+    rdfind -checksum sha512 -makesymlinks true -makeresultsfile false "${_iconsdir}/${_theme}"
+    symlinks -c -r "${_iconsdir}/${_theme}"
+}
 
 prepare() {
     mkdir "${pkgbase}-${pkgver}"
@@ -180,23 +199,9 @@ package_slot-icon-theme() {
     )
     optdepends=('slot-icon-theme-extra: additional icon theme variants')
 
-    local _iconsdir _rdfindargs
-    _iconsdir=${pkgdir}/usr/share/icons
-    _rdfindargs=(-checksum sha512 -makesymlinks true -makeresultsfile false)
-
     pushd "${pkgbase}-${pkgver}/Slot Icons Themes"
-    install -d "${_iconsdir}"
-
-    echo "Installing Slot-Dark-Icons theme..."
-    cp -r -v --no-preserve=all Slot-Dark-Icons "${_iconsdir}"
-    rdfind "${_rdfindargs[@]}" "${_iconsdir}/Slot-Dark-Icons"
-    symlinks -c -r "${_iconsdir}/Slot-Dark-Icons"
-
-    echo "Installing Slot-Gradient-Dark-Icons theme..."
-    cp -r -v --no-preserve=all Slot-Gradient-Dark-Icons "${_iconsdir}"
-    rdfind "${_rdfindargs[@]}" "${_iconsdir}/Slot-Gradient-Dark-Icons"
-    symlinks -c -r "${_iconsdir}/Slot-Gradient-Dark-Icons"
-
+    _install_icons Slot-Dark-Icons
+    _install_icons Slot-Gradient-Dark-Icons
     popd
 }
 
@@ -207,80 +212,16 @@ package_slot-icon-theme-extra() {
         hicolor-icon-theme
     )
 
-    local _iconsdir _rdfindargs
-    _iconsdir=${pkgdir}/usr/share/icons
-    _rdfindargs=(-checksum sha512 -makesymlinks true -makeresultsfile false)
-
     pushd "${pkgbase}-${pkgver}/Slot Icons Themes"
-    install -d "${_iconsdir}"
-
-    echo "Installing Slot-Light-Icons theme..."
-    cp -r -v --no-preserve=all Slot-Light-Icons "${_iconsdir}"
-    rdfind "${_rdfindargs[@]}" "${_iconsdir}/Slot-Light-Icons"
-    symlinks -c -r "${_iconsdir}/Slot-Light-Icons"
-
-    echo "Installing Slot-Blue-Dark-Icons theme..."
-    cp -r -v --no-preserve=all Slot-Dark-Icons "${_iconsdir}/Slot-Blue-Dark-Icons"
-    cp -f -r -v --no-preserve=all Slot-Blue-Dark-Icons/places "${_iconsdir}/Slot-Blue-Dark-Icons/"
-    sed 's/Slot-Dark/Slot-Blue-Dark/g' -i "${_iconsdir}/Slot-Blue-Dark-Icons/index.theme"
-    rdfind "${_rdfindargs[@]}" "${_iconsdir}/Slot-Blue-Dark-Icons"
-    symlinks -c -r "${_iconsdir}/Slot-Blue-Dark-Icons"
-
-    echo "Installing Slot-Blue-Light-Icons theme..."
-    cp -r -v --no-preserve=all Slot-Light-Icons "${_iconsdir}/Slot-Blue-Light-Icons"
-    cp -f -r -v --no-preserve=all Slot-Blue-Light-Icons/places "${_iconsdir}/Slot-Blue-Light-Icons/"
-    sed 's/Slot-Light/Slot-Blue-Light/g' -i "${_iconsdir}/Slot-Blue-Light-Icons/index.theme"
-    rdfind "${_rdfindargs[@]}" "${_iconsdir}/Slot-Blue-Light-Icons"
-    symlinks -c -r "${_iconsdir}/Slot-Blue-Light-Icons"
-
-    echo "Installing Slot-Color-Dark-Icons theme..."
-    cp -r -v --no-preserve=all Slot-Dark-Icons "${_iconsdir}/Slot-Color-Dark-Icons"
-    cp -f -r -v --no-preserve=all Slot-Color-Dark-Icons/places "${_iconsdir}/Slot-Color-Dark-Icons/"
-    sed 's/Slot-Dark/Slot-Color-Dark/g' -i "${_iconsdir}/Slot-Color-Dark-Icons/index.theme"
-    rdfind "${_rdfindargs[@]}" "${_iconsdir}/Slot-Color-Dark-Icons"
-    symlinks -c -r "${_iconsdir}/Slot-Color-Dark-Icons"
-
-    echo "Installing Slot-Color-Light-Icons theme..."
-    cp -r -v --no-preserve=all Slot-Light-Icons "${_iconsdir}/Slot-Color-Light-Icons"
-    cp -f -r -v --no-preserve=all Slot-Color-Light-Icons/places "${_iconsdir}/Slot-Color-Light-Icons/"
-    sed 's/Slot-Light/Slot-Color-Light/g' -i "${_iconsdir}/Slot-Color-Light-Icons/index.theme"
-    rdfind "${_rdfindargs[@]}" "${_iconsdir}/Slot-Color-Light-Icons"
-    symlinks -c -r "${_iconsdir}/Slot-Color-Light-Icons"
-
-    echo "Installing Slot-Gradient-Light-Icons theme..."
-    cp -r -v --no-preserve=all Slot-Light-Icons "${_iconsdir}/Slot-Gradient-Light-Icons"
-    cp -f -r -v --no-preserve=all Slot-Gradient-Light-Icons/places "${_iconsdir}/Slot-Gradient-Light-Icons/"
-    sed 's/Slot-Light/Slot-Gradient-Light/g' -i "${_iconsdir}/Slot-Gradient-Light-Icons/index.theme"
-    rdfind "${_rdfindargs[@]}" "${_iconsdir}/Slot-Gradient-Light-Icons"
-    symlinks -c -r "${_iconsdir}/Slot-Gradient-Light-Icons"
-
-    echo "Installing Slot-Multicolor-Dark-Icons theme..."
-    cp -r -v --no-preserve=all Slot-Dark-Icons "${_iconsdir}/Slot-Multicolor-Dark-Icons"
-    cp -f -r -v --no-preserve=all Slot-Multicolor-Dark-Icons/places "${_iconsdir}/Slot-Multicolor-Dark-Icons/"
-    sed 's/Slot-Dark/Slot-Multicolor-Dark/g' -i "${_iconsdir}/Slot-Multicolor-Dark-Icons/index.theme"
-    rdfind "${_rdfindargs[@]}" "${_iconsdir}/Slot-Multicolor-Dark-Icons"
-    symlinks -c -r "${_iconsdir}/Slot-Multicolor-Dark-Icons"
-
-    echo "Installing Slot-Multicolor-Light-Icons theme..."
-    cp -r -v --no-preserve=all Slot-Light-Icons "${_iconsdir}/Slot-Multicolor-Light-Icons"
-    cp -f -r -v --no-preserve=all Slot-Multicolor-Light-Icons/places "${_iconsdir}/Slot-Multicolor-Light-Icons/"
-    sed 's/Slot-Light/Slot-Multicolor-Light/g' -i "${_iconsdir}/Slot-Multicolor-Light-Icons/index.theme"
-    rdfind "${_rdfindargs[@]}" "${_iconsdir}/Slot-Multicolor-Light-Icons"
-    symlinks -c -r "${_iconsdir}/Slot-Multicolor-Light-Icons"
-
-    echo "Installing Slot-Symbolic-Dark-Icons theme..."
-    cp -r -v --no-preserve=all Slot-Dark-Icons "${_iconsdir}/Slot-Symbolic-Dark-Icons"
-    cp -f -r -v --no-preserve=all Slot-Symbolic-Dark-Icons/categories "${_iconsdir}/Slot-Symbolic-Dark-Icons/"
-    sed 's/Slot-Dark/Slot-Symbolic-Dark/g' -i "${_iconsdir}/Slot-Symbolic-Dark-Icons/index.theme"
-    rdfind "${_rdfindargs[@]}" "${_iconsdir}/Slot-Symbolic-Dark-Icons"
-    symlinks -c -r "${_iconsdir}/Slot-Symbolic-Dark-Icons"
-
-    echo "Installing Slot-Symbolic-Light-Icons theme..."
-    cp -r -v --no-preserve=all Slot-Light-Icons "${_iconsdir}/Slot-Symbolic-Light-Icons"
-    cp -f -r -v --no-preserve=all Slot-Symbolic-Light-Icons/categories "${_iconsdir}/Slot-Symbolic-Light-Icons/"
-    sed 's/Slot-Light/Slot-Symbolic-Light/g' -i "${_iconsdir}/Slot-Symbolic-Light-Icons/index.theme"
-    rdfind "${_rdfindargs[@]}" "${_iconsdir}/Slot-Symbolic-Light-Icons"
-    symlinks -c -r "${_iconsdir}/Slot-Symbolic-Light-Icons"
-
+    _install_icons Slot-Light-Icons
+    _install_icons Slot-Blue-Dark-Icons Slot-Dark-Icons
+    _install_icons Slot-Color-Dark-Icons Slot-Dark-Icons
+    _install_icons Slot-Multicolor-Dark-Icons Slot-Dark-Icons
+    _install_icons Slot-Symbolic-Dark-Icons Slot-Dark-Icons
+    _install_icons Slot-Blue-Light-Icons Slot-Light-Icons
+    _install_icons Slot-Color-Light-Icons Slot-Light-Icons
+    _install_icons Slot-Gradient-Light-Icons Slot-Light-Icons
+    _install_icons Slot-Multicolor-Light-Icons Slot-Light-Icons
+    _install_icons Slot-Symbolic-Light-Icons Slot-Light-Icons
     popd
 }

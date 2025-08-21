@@ -1,128 +1,90 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index 70b40ca..368999b 100644
+index dd57e45..462e6b5 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -3,16 +3,15 @@
+@@ -3,16 +3,16 @@
  pkgbase=avidemux-git
  pkgname=(
    'avidemux-core-git'
 -  'avidemux-qt5-git'
++# 'avidemux-qt5-git'
    'avidemux-qt6-git'
    'avidemux-cli-git'
  )
--pkgver=2.8.2.240125.cdbfa6956
-+pkgver=2.8.2.r10042.g337aee485
+-pkgver=2.8.2.250320.4b5c2a3d7
++pkgver=2.8.2.r10429.g85b0ac089
  pkgrel=1
  pkgdesc="A graphical/cli tool to edit video (filter/re-encode/split). (GIT version)"
  arch=('x86_64')
  url='http://www.avidemux.org'
 -license=('GPL2')
-+license=('GPL-2.0-or-later')
++license=(GPL-2.0-or-later)
  makedepends=(
    'git'
    'cmake'
-@@ -20,8 +19,6 @@ makedepends=(
+@@ -20,8 +20,8 @@ makedepends=(
    'nasm'
    'aom'
    'a52dec'
 -  'aften'
 -  'dcaenc'
++# 'aften'
++# 'dcaenc'
    'faac'
    'faad2'
    'fribidi'
-@@ -41,11 +38,13 @@ makedepends=(
+@@ -40,12 +40,12 @@ makedepends=(
+   'opencore-amr'
    'twolame'
    'xvidcore'
-   'x264'
+-  'x264'
+-  'x265'
 +  'libx264.so'
-   'x265'
 +  'libx265.so'
    'sqlite'
    'glu'
 -  'qt5-script'
 -  'qt5-tools'
-+  #'qt5-script'
-+  #'qt5-tools'
++# 'qt5-script'
++# 'qt5-tools'
    'qt6-base'
    'qt6-tools'
    'libxv'
-@@ -72,12 +71,10 @@ sha256sums=(
-   '3c91ddefadfad5f43d514941ddfa1942ea2c618525aaae36bde5a5d18f8e2067'
+@@ -74,12 +74,12 @@ sha256sums=(
+   '26cd6c80d230c35992fe064d7a2e1b9e997a207f1d24bd8c9755b3ab9605c57b'
  )
  
 -options=('debug')
--
++#options=('debug')
+ 
  pkgver() {
    cd avidemux
-   _ver="$(cat cmake/avidemuxVersion.cmake | grep -m3 -e CPACK_PACKAGE_VERSION_MAJOR -e CPACK_PACKAGE_VERSION_MINOR -e CPACK_PACKAGE_VERSION_P | grep -o "[[:digit:]]*" | paste -sd'.')"
+   _ver="$(cat avidemux_core/cmake/avidemuxVersion.cmake | grep -m3 -e CPACK_PACKAGE_VERSION_MAJOR -e CPACK_PACKAGE_VERSION_MINOR -e CPACK_PACKAGE_VERSION_P | grep -o "[[:digit:]]*" | paste -sd'.')"
 -  echo -e "${_ver}.$(date -u +%g%m%d).$(git rev-parse --short HEAD | head -c 11)"
 +  printf '%s.r%s.g%s' "${_ver}" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
  }
  
  prepare() {
-@@ -128,34 +125,35 @@ build() {
+@@ -134,6 +134,7 @@ build() {
    cmake --build build_core_plugins
    DESTDIR="${srcdir}/fakeroot" cmake --install build_core_plugins
  
--  msg2 "Build Qt5 GUI"
--  cmake -B build_qt5 -S avidemux/avidemux/qt4 \
--    -DCMAKE_BUILD_TYPE=Release \
--    -DCMAKE_INSTALL_PREFIX=/usr \
--    -DOpenGL_GL_PREFERENCE=GLVND \
--    -DENABLE_QT5=ON \
--    -DFAKEROOT="${srcdir}/fakeroot"
--
--  cmake --build build_qt5
--  DESTDIR="${srcdir}/fakeroot" cmake --install build_qt5
--
--  msg2 "Build Qt5 GUI Plugins"
--  cmake -B build_qt5_plugins -S avidemux/avidemux_plugins \
--    -DCMAKE_BUILD_TYPE=Release \
--    -DCMAKE_INSTALL_PREFIX=/usr \
--    -DOpenGL_GL_PREFERENCE=GLVND \
--    -DENABLE_QT5=ON \
--    -DPLUGIN_UI=QT4 \
--    -DUSE_EXTERNAL_LIBA52=ON \
--    -DUSE_EXTERNAL_LIBASS=ON \
--    -DUSE_EXTERNAL_LIBMAD=ON \
--    -DUSE_EXTERNAL_MP4V2=ON \
--    -DFAKEROOT="${srcdir}/fakeroot"
--
--  cmake --build build_qt5_plugins
--  DESTDIR="${srcdir}/fakeroot" cmake --install build_qt5_plugins
-+  #msg2 "Build Qt5 GUI"
-+  #cmake -B build_qt5 -S avidemux/avidemux/qt4 \
-+  #  -DCMAKE_BUILD_TYPE=Release \
-+  #  -DCMAKE_INSTALL_PREFIX=/usr \
-+  #  -DOpenGL_GL_PREFERENCE=GLVND \
-+  #  -DENABLE_QT5=ON \
-+  #  -DFAKEROOT="${srcdir}/fakeroot"
-+
-+  #cmake --build build_qt5
-+  #DESTDIR="${srcdir}/fakeroot" cmake --install build_qt5
-+
-+  #msg2 "Build Qt5 GUI Plugins"
-+  #cmake -B build_qt5_plugins -S avidemux/avidemux_plugins \
-+  #  -DCMAKE_BUILD_TYPE=Release \
-+  #  -DCMAKE_INSTALL_PREFIX=/usr \
-+  #  -DOpenGL_GL_PREFERENCE=GLVND \
-+  #  -DENABLE_QT5=ON \
-+  #  -DPLUGIN_UI=QT4 \
-+  #  -DUSE_EXTERNAL_LIBA52=ON \
-+  #  -DUSE_EXTERNAL_LIBASS=ON \
-+  #  -DUSE_EXTERNAL_LIBMAD=ON \
-+  #  -DUSE_EXTERNAL_MP4V2=ON \
-+  #  -DFAKEROOT="${srcdir}/fakeroot"
-+
-+  #cmake --build build_qt5_plugins
-+  #DESTDIR="${srcdir}/fakeroot" cmake --install build_qt5_plugins
++  if false; then
+   msg2 "Build Qt5 GUI"
+   cmake -B build_qt5 -S avidemux/avidemux/qt4 \
+     -DCMAKE_BUILD_TYPE=Release \
+@@ -161,8 +162,10 @@ build() {
+ 
+   cmake --build build_qt5_plugins
+   DESTDIR="${srcdir}/fakeroot" cmake --install build_qt5_plugins
++  fi
  
    msg2 "Build Qt6 GUI"
 +  PATH="/usr/lib/qt6/bin:$PATH" \
    CXXFLAGS+=" -fPIC" \
    cmake -B build_qt6 -S avidemux/avidemux/qt4 \
      -DCMAKE_BUILD_TYPE=Release \
-@@ -168,6 +166,7 @@ build() {
+@@ -176,6 +179,7 @@ build() {
    DESTDIR="${srcdir}/fakeroot" cmake --install build_qt6
  
    msg2 "Build Qt6 GUI Plugins"
@@ -130,46 +92,257 @@ index 70b40ca..368999b 100644
    CXXFLAGS+=" -fPIC" \
    cmake -B build_qt6_plugins -S avidemux/avidemux_plugins \
      -DCMAKE_BUILD_TYPE=Release \
-@@ -228,14 +227,12 @@ package_avidemux-core-git() {
+@@ -238,8 +242,8 @@ package_avidemux-core-git() {
      'a52dec' # 'liba52.so'
      'alsa-lib' 'libasound.so'
      'aom' 'libaom.so'
 -    'aften' # 'libaften.so'
 -    'dcaenc' # 'libdcaenc.so'
++#   'aften' # 'libaften.so'
++#   'dcaenc' # 'libdcaenc.so'
      'faac' 'libfaac.so'
      'faad2' 'libfaad.so'
      'gcc-libs' # 'libgcc_s.so' 'libstdc++.so'
-     'glibc' # 'libc.so' 'libm.so'
-     'fribidi'
--    'jack2' 'libjack.so'
-+    'jack' 'libjack.so'
-     'lame' 'libmp3lame.so'
-     'libass' 'libass.so'
-     'libfdk-aac' 'libfdk-aac.so'
-@@ -286,7 +283,7 @@ package_avidemux-core-git() {
+@@ -283,30 +287,30 @@ package_avidemux-core-git() {
+     'libADM6avutil.so'
+     'libADM6postproc.so'
+     'libADM6swscale.so'
+-    'libADM_audioParser6.so'
+-    'libADM_core6.so'
+-    'libADM_coreAudio6.so'
+-    'libADM_coreAudioDevice6.so'
+-    'libADM_coreAudioEncoder6.so'
+-    'libADM_coreAudioFilterAPI6.so'
+-    'libADM_coreDemuxer6.so'
+-    'libADM_coreDemuxerMpeg6.so'
+-    'libADM_coreImage6.so'
+-    'libADM_coreImageLoader6.so'
+-    'libADM_coreJobs.so'
+-    'libADM_coreLibVA6.so'
+-    'libADM_coreLibVAEnc6.so'
+-    'libADM_coreMuxer6.so'
+-    'libADM_coreScript.so'
+-    'libADM_coreSocket6.so'
+-    'libADM_coreSqlLight3.so'
+-    'libADM_coreSubtitles6.so'
+-    'libADM_coreUI6.so'
+-    'libADM_coreUtils6.so'
+-    'libADM_coreVDPAU6.so'
+-    'libADM_coreVideoCodec6.so'
+-    'libADM_coreVideoEncoder6.so'
+-    'libADM_coreVideoFilter6.so'
++#   'libADM_audioParser6.so'
++#   'libADM_core6.so'
++#   'libADM_coreAudio6.so'
++#   'libADM_coreAudioDevice6.so'
++#   'libADM_coreAudioEncoder6.so'
++#   'libADM_coreAudioFilterAPI6.so'
++#   'libADM_coreDemuxer6.so'
++#   'libADM_coreDemuxerMpeg6.so'
++#   'libADM_coreImage6.so'
++#   'libADM_coreImageLoader6.so'
++#   'libADM_coreJobs.so'
++#   'libADM_coreLibVA6.so'
++#   'libADM_coreLibVAEnc6.so'
++#   'libADM_coreMuxer6.so'
++#   'libADM_coreScript.so'
++#   'libADM_coreSocket6.so'
++#   'libADM_coreSqlLight3.so'
++#   'libADM_coreSubtitles6.so'
++#   'libADM_coreUI6.so'
++#   'libADM_coreUtils6.so'
++#   'libADM_coreVDPAU6.so'
++#   'libADM_coreVideoCodec6.so'
++#   'libADM_coreVideoEncoder6.so'
++#   'libADM_coreVideoFilter6.so'
+   )
+   conflicts=('avidemux-core')
+ 
+@@ -326,30 +330,30 @@ package_avidemux-core-git() {
  package_avidemux-qt5-git() {
    pkgdesc="Qt5 GUI for Avidemux. (GIT version)"
    depends=(
 -    "avidemux-core-git=${pkgver}"
 +    "avidemux-core-git=${pkgver}-${pkgrel}"
+     'libADM6avcodec.so'
+     'libADM6avutil.so'
+-    'libADM_audioParser6.so'
+-    'libADM_core6.so'
+-    'libADM_coreImage6.so'
+-    'libADM_coreImageLoader6.so'
+-    'libADM_coreAudio6.so'
+-    'libADM_coreAudioDevice6.so'
+-    'libADM_coreAudioEncoder6.so'
+-    'libADM_coreAudioFilterAPI6.so'
+-    'libADM_coreVideoCodec6.so'
+-    'libADM_coreVideoEncoder6.so'
+-    'libADM_coreVideoFilter6.so'
+-    'libADM_coreVDPAU6.so'
+-    'libADM_coreLibVA6.so'
+-    'libADM_coreLibVAEnc6.so'
+-    'libADM_coreDemuxer6.so'
+-    'libADM_coreMuxer6.so'
+-    'libADM_coreUI6.so'
+-    'libADM_coreUtils6.so'
+-    'libADM_coreSocket6.so'
+-    'libADM_coreScript.so'
+-    'libADM_coreJobs.so'
++#   'libADM_audioParser6.so'
++#   'libADM_core6.so'
++#   'libADM_coreImage6.so'
++#   'libADM_coreImageLoader6.so'
++#   'libADM_coreAudio6.so'
++#   'libADM_coreAudioDevice6.so'
++#   'libADM_coreAudioEncoder6.so'
++#   'libADM_coreAudioFilterAPI6.so'
++#   'libADM_coreVideoCodec6.so'
++#   'libADM_coreVideoEncoder6.so'
++#   'libADM_coreVideoFilter6.so'
++#   'libADM_coreVDPAU6.so'
++#   'libADM_coreLibVA6.so'
++#   'libADM_coreLibVAEnc6.so'
++#   'libADM_coreDemuxer6.so'
++#   'libADM_coreMuxer6.so'
++#   'libADM_coreUI6.so'
++#   'libADM_coreUtils6.so'
++#   'libADM_coreSocket6.so'
++#   'libADM_coreScript.so'
++#   'libADM_coreJobs.so'
      'gcc-libs' # 'libgcc_s.so' 'libstdc++.so'
      'glibc' # 'libc.so' 'libm.so'
      'glu' # 'libGLU.so'
-@@ -326,7 +323,7 @@ package_avidemux-qt5-git() {
+@@ -364,9 +368,9 @@ package_avidemux-qt5-git() {
+   )
+   provides=(
+     'avidemux-qt5'
+-    'libADM_UIQT56.so'
+-    'libADM_openGLQT56.so'
+-    'libADM_render6_QT5.so'
++#   'libADM_UIQT56.so'
++#   'libADM_openGLQT56.so'
++#   'libADM_render6_QT5.so'
+   )
+   conflicts=(
+     'avidemux-qt5'
+@@ -394,30 +398,30 @@ package_avidemux-qt5-git() {
  package_avidemux-qt6-git() {
    pkgdesc="Qt6 GUI for Avidemux. (GIT version)"
    depends=(
 -    "avidemux-core-git=${pkgver}"
 +    "avidemux-core-git=${pkgver}-${pkgrel}"
+     'libADM6avcodec.so'
+     'libADM6avutil.so'
+-    'libADM_audioParser6.so'
+-    'libADM_core6.so'
+-    'libADM_coreImage6.so'
+-    'libADM_coreImageLoader6.so'
+-    'libADM_coreAudio6.so'
+-    'libADM_coreAudioFilterAPI6.so'
+-    'libADM_coreAudioDevice6.so'
+-    'libADM_coreAudioEncoder6.so'
+-    'libADM_coreVideoCodec6.so'
+-    'libADM_coreVideoEncoder6.so'
+-    'libADM_coreVideoFilter6.so'
+-    'libADM_coreVDPAU6.so'
+-    'libADM_coreLibVA6.so'
+-    'libADM_coreLibVAEnc6.so'
+-    'libADM_coreDemuxer6.so'
+-    'libADM_coreMuxer6.so'
+-    'libADM_coreUI6.so'
+-    'libADM_coreUtils6.so'
+-    'libADM_coreSocket6.so'
+-    'libADM_coreScript.so'
+-    'libADM_coreJobs.so'
++#   'libADM_audioParser6.so'
++#   'libADM_core6.so'
++#   'libADM_coreImage6.so'
++#   'libADM_coreImageLoader6.so'
++#   'libADM_coreAudio6.so'
++#   'libADM_coreAudioFilterAPI6.so'
++#   'libADM_coreAudioDevice6.so'
++#   'libADM_coreAudioEncoder6.so'
++#   'libADM_coreVideoCodec6.so'
++#   'libADM_coreVideoEncoder6.so'
++#   'libADM_coreVideoFilter6.so'
++#   'libADM_coreVDPAU6.so'
++#   'libADM_coreLibVA6.so'
++#   'libADM_coreLibVAEnc6.so'
++#   'libADM_coreDemuxer6.so'
++#   'libADM_coreMuxer6.so'
++#   'libADM_coreUI6.so'
++#   'libADM_coreUtils6.so'
++#   'libADM_coreSocket6.so'
++#   'libADM_coreScript.so'
++#   'libADM_coreJobs.so'
      'gcc-libs' # 'libgcc_s.so' 'libstdc++.so'
      'glibc' # 'libc.so' 'libm.so'
      'glu' # 'libGLU.so'
-@@ -368,7 +365,7 @@ package_avidemux-qt6-git() {
+@@ -432,9 +436,9 @@ package_avidemux-qt6-git() {
+   )
+   provides=(
+     'avidemux-qt6'
+-    'libADM_UIQT66.so'
+-    'libADM_openGLQT66.so'
+-    'libADM_render6_QT6.so'
++#   'libADM_UIQT66.so'
++#   'libADM_openGLQT66.so'
++#   'libADM_render6_QT6.so'
+   )
+   conflicts=(
+     'avidemux-qt6'
+@@ -464,34 +468,34 @@ package_avidemux-qt6-git() {
  package_avidemux-cli-git() {
    pkgdesc="CLI frontend for Avidemux. (GIT version)"
    depends=(
 -    "avidemux-core-git=${pkgver}"
 +    "avidemux-core-git=${pkgver}-${pkgrel}"
+     'libADM6avcodec.so'
+     'libADM6avutil.so'
+-    'libADM_audioParser6.so'
+-    'libADM_core6.so'
+-    'libADM_coreImage6.so'
+-    'libADM_coreImageLoader6.so'
+-    'libADM_coreAudio6.so'
+-    'libADM_coreAudioFilterAPI6.so'
+-    'libADM_coreAudioDevice6.so'
+-    'libADM_coreAudioEncoder6.so'
+-    'libADM_coreVideoCodec6.so'
+-    'libADM_coreVideoEncoder6.so'
+-    'libADM_coreVideoFilter6.so'
+-    'libADM_coreDemuxer6.so'
+-    'libADM_coreMuxer6.so'
+-    'libADM_coreUI6.so'
+-    'libADM_coreUtils6.so'
+-    'libADM_coreSocket6.so'
+-    'libADM_coreScript.so'
+-    'libADM_coreJobs.so'
++#   'libADM_audioParser6.so'
++#   'libADM_core6.so'
++#   'libADM_coreImage6.so'
++#   'libADM_coreImageLoader6.so'
++#   'libADM_coreAudio6.so'
++#   'libADM_coreAudioFilterAPI6.so'
++#   'libADM_coreAudioDevice6.so'
++#   'libADM_coreAudioEncoder6.so'
++#   'libADM_coreVideoCodec6.so'
++#   'libADM_coreVideoEncoder6.so'
++#   'libADM_coreVideoFilter6.so'
++#   'libADM_coreDemuxer6.so'
++#   'libADM_coreMuxer6.so'
++#   'libADM_coreUI6.so'
++#   'libADM_coreUtils6.so'
++#   'libADM_coreSocket6.so'
++#   'libADM_coreScript.so'
++#   'libADM_coreJobs.so'
      'gcc-libs' # 'libgcc_s.so' 'libstdc++.so'
      'glibc' # 'libc.so' 'libm.so'
      )
+   provides=(
+     'avidemux-cli'
+-    'libADM_UI_Cli6.so'
+-    'libADM_render6_cli.so'
++#   'libADM_UI_Cli6.so'
++#   'libADM_render6_cli.so'
+   )
+   conflicts=('avidemux-cli')
+ 

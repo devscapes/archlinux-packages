@@ -1,0 +1,154 @@
+# Maintainer: Kevin Stolp <kevinstolp@gmail.com>
+# Contributor: Eli Schwartz <eschwartz@archlinux.org>
+# Contributor: Iacopo Isimbaldi <isiachi@rhye.it>
+
+pkgbase=openzfs
+pkgname=(
+    zfs-utils
+    zfs-dkms
+)
+pkgver=2.3.3
+pkgrel=2
+arch=(
+    aarch64
+    i686
+    x86_64
+)
+url='https://zfsonlinux.org/'
+license=(CDDL-1.0)
+source=(
+    "https://github.com/openzfs/zfs/releases/download/zfs-${pkgver}/zfs-${pkgver}.tar.gz"{,.asc}
+    'Linux-6.16-remove-writepage-and-readahead_page.patch::https://github.com/openzfs/zfs/commit/46a407510054da0d0e4bd34b95fe59aded9fefab.patch'
+    '0001-only-build-the-module-in-dkms.conf.patch'
+    'zfs-node-permission.conf'
+    'zfs.initcpio.install'
+    'zfs.initcpio.hook'
+    'zfs.initcpio.zfsencryptssh.install'
+)
+sha384sums=('68ca51ea55fe8bfa7b65bc1c1969cbcbd188856293c1475b63ba4b2fd8ac94d03c3de9504c5ed00769f0cac1472bf184'
+            'SKIP'
+            'ab5d4d93e8fc60f4c5d52f1494c5c4cac70a9c773a6781a8a67ca46d160b852c86b712397360b0e8c117e09a8d30b99d'
+            '6a330067f03cbbf217e94645d06943d7ceec5a87119e92bb86f1d61bcb6700a6e0bbef1074cb9b9a259d1f778453a6ab'
+            'f39c2f56bc75630864b3a1e7e96132e8cf249e5df69ee615863b5714a3b6d8b33f6a9f8fc3a86c04ca3dd43b654c7be7'
+            'eeaef685616b6c90ea21a0a5c3d9b78cd83f0a357c07c0d5f2db975b20b6b734268d9995e98f289774e6a80875b8e059'
+            'bfeb425966dbdc2c74677293dc03977e63c839a1d5bff53f8599fdfbcb1fc0d2a8ff5e4ce103cb4667367bcb37189edb'
+            'cca2d637985b6bf055919573ba5621df11a241075e72a0c9520914894f1ddd705f2dfdaac4654e91f8972c5a559d8a5e')
+b2sums=('4861ddfc91b941448d13d43bb2a023273917064b29880f87d91dbe6424b3f1fc7b0409e13a514d5b3f18f70a383c5d1c462ec5d7b8a7c82b2b076ecd363cecdd'
+        'SKIP'
+        'f1a456dd792e6ef4d93e304d797ec3f936bcc900c7d970b4c1e0182ccaa063f16850d0ace0932fed57dd878d4c229778da819e2e8527286b543e207d050c4f6e'
+        '58dc2494e71b50833d44c126b72acad52e9817626542afbc245b7ba82009e8c8252ebde6023592aac42d9942207e7655c0a421da9067fbdd619746ebc372d791'
+        '7eb3408b1354a4dd504000739101afc7ec0aed1afcdfa029552bf6989e9a8cd4a95b3d3563b3fb7902afa30a80fb01a3f5a2d5af82f9c734c48b5cc23aac25ca'
+        'cb774227f157573f960bdb345e5b014c043a573c987d37a1db027b852d77a5eda1ee699612e1d8f4a2770897624889f1a3808116a171cc4c796a95e3caa43012'
+        '779c864611249c3f21d1864508d60cfe5e0f5541d74fb3093c6bdfa56be2c76f386ac1690d363beaee491c5132f5f6dbc01553aa408cda579ebca74b0e0fd1d0'
+        'fcd871d72c62a7c99d6cf29cb40a4751bfc08238ff39e8c9440d119754e92ded4705414710db86e99d044011f3524e54c778bda94696dde2c06b3289da6628d0')
+validpgpkeys=(
+    '4F3BA9AB6D1F8D683DC2DFB56AD860EED4598027'  # Tony Hutter (GPG key for signing ZFS releases) <hutter2@llnl.gov>
+    'C33DF142657ED1F7C328A2960AB9E991C6AF658B'  # Brian Behlendorf <behlendorf1@llnl.gov>
+)
+
+prepare() {
+    cd zfs-${pkgver}
+
+    # Linux 6.16: compat
+    patch -p 1 --no-backup-if-mismatch <../Linux-6.16-remove-writepage-and-readahead_page.patch
+    sed '/^Linux-Maximum/s/6.15/6.16/' -i META
+
+    # Patch dkms.mkconf so dkms.conf only builds those on module folder
+    patch -p 1 --no-backup-if-mismatch <../0001-only-build-the-module-in-dkms.conf.patch
+
+    # pyzfs is not built, but build system tries to check for python anyway
+    ln -s -f /bin/true python3-fake
+
+    # Reconfigure for zfs-utils build
+    autoreconf -f -i
+}
+
+build() {
+    # Disable tree vectorization. Related issues:
+    # https://github.com/openzfs/zfs/issues/13605
+    # https://github.com/openzfs/zfs/issues/13620
+    export CFLAGS="${CFLAGS} -fno-tree-vectorize"
+    export CXXFLAGS="${CXXFLAGS} -fno-tree-vectorize"
+
+    cd zfs-${pkgver}
+
+    ./configure --prefix=/usr \
+                --sysconfdir=/etc \
+                --sbindir=/usr/bin \
+                --with-mounthelperdir=/usr/bin \
+                --with-udevdir=/usr/lib/udev \
+                --libexecdir=/usr/lib \
+                --localstatedir=/var \
+                --without-libunwind \
+                --with-python="$PWD/python3-fake" \
+                --enable-pyzfs=no \
+                --enable-systemd \
+                --with-config=user
+    make
+}
+
+package_zfs-utils() {
+    pkgdesc='Userspace utilities for the Zettabyte File System'
+    optdepends=('python: for arcstat/arc_summary/dbufstat')
+    backup=(
+        etc/default/zfs
+        etc/zfs/zed.d/zed.rc
+    )
+
+    cd zfs-${pkgver}
+
+    DESTDIR="${pkgdir}" make install
+    install -D -m 644 contrib/bash_completion.d/zfs \
+        "${pkgdir}/usr/share/bash-completion/completions/zfs"
+
+    # Fix for permissions being overwritten on /dev/zfs. Related issues:
+    # https://github.com/openzfs/zfs/issues/15146
+    # https://github.com/systemd/systemd/issues/28653
+    install -D -m 644 ../zfs-node-permission.conf \
+        "${pkgdir}/usr/lib/tmpfiles.d/zfs-node-permission.conf"
+
+    # Remove uneeded files
+    rm -r "${pkgdir}/etc/init.d"
+    rm -r "${pkgdir}/etc/sudoers.d"  # ???
+    rm -r "${pkgdir}/usr/lib/modules-load.d"
+    rm -r "${pkgdir}/usr/share/initramfs-tools"
+    rm -r "${pkgdir}/usr/share/zfs"/*.sh
+    rm -r "${pkgdir}/usr/share/zfs/"{runfiles,test-runner,zfs-tests}
+
+    install -D -m 644 ../zfs.initcpio.hook "${pkgdir}/usr/lib/initcpio/hooks/zfs"
+    install -D -m 644 ../zfs.initcpio.install "${pkgdir}/usr/lib/initcpio/install/zfs"
+    install -D -m 644 ../zfs.initcpio.zfsencryptssh.install "${pkgdir}/usr/lib/initcpio/install/zfsencryptssh"
+}
+
+package_zfs-dkms() {
+    pkgdesc='Kernel modules for the Zettabyte File System'
+    arch=(any)
+    depends=(
+        "zfs-utils=${pkgver}"
+        dkms
+    )
+
+    cd zfs-${pkgver}
+
+    # Clean from zfs-utils build artifacts
+    make distclean
+
+    # Remove unneeded sections from module build and regenerate
+    sed -r '/AC_CONFIG_FILES/,/]\)/{
+/AC_CONFIG_FILES/n
+/]\)/n
+/^\s*(module\/.*|zfs.release|Makefile)/!d
+}' -i configure.ac
+    autoreconf -f -i
+
+    # Generate necessary files for module build
+    ./scripts/dkms.mkconf -n zfs -v ${pkgver} -f dkms.conf
+    ./scripts/make_gitrev.sh include/zfs_gitrev.h
+
+    dkmsdir="${pkgdir}/usr/src/zfs-${pkgver}"
+    install -d "${dkmsdir}/"{config,scripts}
+    cp -a -v -t "${dkmsdir}" configure dkms.conf Makefile.in \
+        META zfs_config.h.in zfs.release.in include/ module/
+    cp -v -t "${dkmsdir}/config" config/compile config/config.* config/missing config/*sh
+    cp -v scripts/dkms.postbuild "${dkmsdir}/scripts/"
+}

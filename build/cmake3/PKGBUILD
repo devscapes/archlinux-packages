@@ -4,7 +4,7 @@
 # Contributor: Pierre Schmitz <pierre@archlinux.de>
 
 pkgname=cmake3
-pkgver=3.31.7
+pkgver=3.31.8
 pkgrel=1
 pkgdesc='A cross-platform open-source make system (release 3.x)'
 arch=(x86_64)
@@ -40,8 +40,8 @@ optdepends=(
 provides=("cmake=${pkgver}")
 conflicts=(cmake)
 source=(git+https://gitlab.kitware.com/cmake/cmake.git#tag=v$pkgver?signed)
-sha384sums=('7d6b01c48a04c7ea8a113baf41b1a8f13e3bde31803bbcd70093015ab8dfaad3967907be052f9a47a0693ae6b948719e')
-b2sums=('8de810c796c3233cc1e5a9c933e5ec4b09cc3a0a5feaa6da7cfd1cefe3da78882c7ce31623f4182e3652a4abd805d613286039d9371330e455c8ff6cf3216c01')
+sha384sums=('4eccc1fa7ae8368449f5d157504ad12d77b2a2a160ee89ca0eee9de7b671ca3acb4ac6dffa7dcf2362e84b421f63b897')
+b2sums=('e409f2f53d9a0cd951855950e387361acd274959966585975f0864e4e9b50f3d933b47319cef944d654ce0092316a310e5ca54a229cfbf97f68c740df206024a')
 validpgpkeys=(CBA23971357C2E6590D9EFD3EC8FEF3A7BFB4EDA) # Brad King <brad.king@kitware.com>
 
 build() {

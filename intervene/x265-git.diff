@@ -1,41 +1,50 @@
 diff --git a/PKGBUILD b/PKGBUILD
-index f417b48..b16b2ce 100644
+index 14d0150..67aaa39 100644
 --- a/PKGBUILD
 +++ b/PKGBUILD
-@@ -1,17 +1,22 @@
+@@ -1,7 +1,10 @@
  # Maintainer : Daniel Bermond <dbermond@archlinux.org>
  
 +# Set this variable to true or pass with makepkg to build with LLVM.
 +: ${_llvm_build:=false}
 +
  pkgname=x265-git
--pkgver=3.5.r103.g34532bda1
-+pkgver=3.5.r159.g7f67d23c1
+-pkgver=4.1.r189.gcd4f0d6e9
++pkgver=4.1.r191.g8f11c33ac
  pkgrel=1
  pkgdesc='Open source H.265/HEVC video encoder (git version)'
  arch=('x86_64')
- url='https://bitbucket.org/multicoreware/x265_git'
--license=('GPL')
--depends=('gcc-libs')
--makedepends=('git' 'cmake' 'nasm')
-+license=('GPL-2.0-or-later')
-+depends=('gcc-libs' 'glibc')
-+makedepends=('git' 'cmake' 'nasm' 'ninja')
-+${_llvm_build} && makedepends+=('llvm18-opt')
+@@ -13,9 +16,12 @@ depends=(
+ makedepends=(
+     'cmake'
+     'git'
+-    'nasm')
++    'nasm'
++    'ninja')
++${_llvm_build} && makedepends+=(clang lld llvm)
  provides=('x265' 'libx265.so')
  conflicts=('x265')
--source=('git+https://bitbucket.org/multicoreware/x265_git.git')
 +options=('!lto') # don't include our lto flags
-+source=('git+https://bitbucket.org/multicoreware/x265_git')
- sha256sums=('SKIP')
- 
- pkgver() {
-@@ -19,8 +24,42 @@ pkgver() {
+ source=('git+https://bitbucket.org/multicoreware/x265_git.git'
+         '010-x265-gcc15-fix.patch')
+ sha256sums=('SKIP'
+@@ -30,9 +36,10 @@ pkgver() {
  }
  
  build() {
 +    local extra_flags
-+    local cpu_simd_flags=(
+     local -a common_opts_all=(
+         '-Sx265_git/source'
+-        '-GUnix Makefiles'
++        '-GNinja'
+         '-DCMAKE_ASM_NASM_FLAGS:STRING=-w-macro-params-legacy'
+         '-DCMAKE_INSTALL_PREFIX:PATH=/usr'
+         '-DENABLE_HDR10_PLUS:BOOL=ON'
+@@ -43,12 +50,44 @@ build() {
+         '-DENABLE_SHARED:BOOL=OFF'
+         '-DEXPORT_C_API:BOOL=OFF'
+         '-DHIGH_BIT_DEPTH:BOOL=ON')
++    local -a cpu_simd_flags=(
 +        # Disable MMX and 3DNow
 +        '-mno-mmx' '-mno-3dnow' '-mno-3dnowa'
 +        # Disable SSE3+ iterations only
@@ -50,8 +59,8 @@ index f417b48..b16b2ce 100644
 +
 +    if ${_llvm_build}; then
 +        # Set path to our custom LLVM build set in dependencies
-+        export PATH=/opt/llvm18/bin:$PATH
-+        export LD_LIBRARY_PATH=/opt/llvm18/lib
++        #export PATH=/opt/llvm19/bin:$PATH
++        #export LD_LIBRARY_PATH=/opt/llvm19/lib
 +        export CXX=clang++
 +
 +        # Clang optimizes code with SSE2 instructions
@@ -67,41 +76,19 @@ index f417b48..b16b2ce 100644
 +
 +    # Add LTO and CPU capabilities flags before proceeding
 +    export CXXFLAGS+=" -mtune=native ${extra_flags[@]} ${cpu_simd_flags[@]}"
-+
-     cmake -S x265_git/source -B build-12 \
--        -G 'Unix Makefiles' \
-+        -G Ninja \
-         -DCMAKE_INSTALL_PREFIX='/usr' \
-         -DHIGH_BIT_DEPTH='ON' \
-         -DMAIN12='ON' \
-@@ -29,10 +68,10 @@ build() {
-         -DENABLE_SHARED='OFF' \
-         -DCMAKE_ASM_NASM_FLAGS='-w-macro-params-legacy' \
-         -Wno-dev
+     
+     cmake -B build-12 "${common_opts_10_12[@]}" -DMAIN12:BOOL='ON'
 -    cmake --build build-12
 +    ninja -C build-12
      
-     cmake -S x265_git/source -B build-10 \
--        -G 'Unix Makefiles' \
-+        -G Ninja \
-         -DCMAKE_INSTALL_PREFIX='/usr' \
-         -DHIGH_BIT_DEPTH='ON' \
-         -DEXPORT_C_API='OFF' \
-@@ -40,10 +79,10 @@ build() {
-         -DENABLE_SHARED='OFF' \
-         -DCMAKE_ASM_NASM_FLAGS='-w-macro-params-legacy' \
-         -Wno-dev
+     cmake -B build-10 "${common_opts_10_12[@]}"
 -    cmake --build build-10
 +    ninja -C build-10
      
-     cmake -S x265_git/source -B build \
--        -G 'Unix Makefiles' \
-+        -G Ninja \
-         -DCMAKE_INSTALL_PREFIX:PATH='/usr' \
-         -DENABLE_SHARED='ON' \
-         -DENABLE_HDR10_PLUS='ON' \
-@@ -55,9 +94,9 @@ build() {
-         -Wno-dev
+     cmake -B build \
+         "${common_opts_all[@]}" \
+@@ -59,9 +98,9 @@ build() {
+         -DLINKED_12BIT:BOOL='ON'
      ln -s ../build-10/libx265.a build/libx265_main10.a
      ln -s ../build-12/libx265.a build/libx265_main12.a
 -    cmake --build build
