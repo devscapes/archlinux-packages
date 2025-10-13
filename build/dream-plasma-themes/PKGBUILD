@@ -1,0 +1,124 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+
+pkgbase=dream-plasma-themes
+pkgname=(
+    gtk-theme-dream-dark
+    konsole-colorscheme-dream
+    kvantum-theme-dream-dark
+    plasma6-themes-dream
+    sddm-theme-dream
+)
+pkgver=1.7_20251008
+pkgrel=2
+pkgdesc='Dream themes for Plasma desktop'
+arch=(any)
+url='https://github.com/L4ki/Dream-Plasma-Themes'
+license=(GPL-3.0-only)
+options=(!strip !emptydirs)
+_commit=635f3651eb72a154c69dbe9e87137ad35c5329ef
+source=("${pkgbase}-${pkgver}.tar.gz::${url}/archive/${_commit}.tar.gz")
+noextract=("${pkgbase}-${pkgver}.tar.gz")
+sha384sums=('f61897ede07eb71dfb4c08b611c2ab8c337f2045cdd0671cba3733297bc080e7230c7f3eb912e3bdb114d828c4f26584')
+b2sums=('f0adbd6c7ab131350f54ccecb7ab16dcaa252d4bab91c9be532c68f3e1e89defaf968d2007867ddcf2182f0362354e0a36b5568eacd6b29d2447cda46f6a54a8')
+
+prepare() {
+    mkdir "${pkgbase}-${pkgver}"
+    tar xf "${pkgbase}-${pkgver}.tar.gz" -C "${pkgbase}-${pkgver}" --strip-components 1
+    cd "${srcdir}/${pkgbase}-${pkgver}"
+
+    # Get rid of any empty text files if any
+    find . -name 'Text File.txt' -delete
+}
+
+package_gtk-theme-dream-dark() {
+    pkgdesc+=' - GTK+ dark themes'
+    depends=(gtk{3,4})
+    optdepends=(
+        'gtk-engine-murrine: for using GTK2 theme'
+        'xcursor-dmz: default cursor theme when using on GTK+ desktop'
+    )
+
+    pushd "${pkgbase}-${pkgver}/Dream GTK Themes"
+    install -d "${pkgdir}/usr/share/themes"
+    cp -r -v --no-preserve=all -t "${pkgdir}/usr/share/themes" Dream-{Lime-Green,Violet}-Dark-GTK
+    popd
+}
+
+package_konsole-colorscheme-dream() {
+    pkgdesc+=' - Konsole color schemes'
+    depends=(konsole)
+
+    pushd "${pkgbase}-${pkgver}"
+    install -d "${pkgdir}/usr/share"
+    cp -r -v --no-preserve=all "Dream Konsole Color Schemes" "${pkgdir}/usr/share/konsole"
+    popd
+}
+
+package_kvantum-theme-dream-dark() {
+    pkgdesc+=' - Kvantum dark themes'
+    depends=(kvantum)
+
+    pushd "${pkgbase}-${pkgver}/Dream Kvantum Themes"
+    install -d "${pkgdir}/usr/share/Kvantum"
+    cp -r -v --no-preserve=all -t "${pkgdir}/usr/share/Kvantum" \
+        Dream-{Lime-Green,Violet}-Dark-Kvantum
+    popd
+}
+
+package_plasma6-themes-dream() {
+    depends=(
+        kwin
+        plasma-desktop
+    )
+    optdepends=(
+        'gtk-theme-dream-dark: for matching GTK+ themes (Dark only)'
+        'konsole-colorscheme-dream: for matching Konsole color schemes (Dark/Light)'
+        'kvantum-theme-dream-dark: for matching Kvantum themes (Dark only)'
+        'sddm-theme-dream: for matching SDDM themes (Dark/Light)'
+        'slot-symbolic-icon-theme: for matching icon themes (Dark/Light)'
+    )
+
+    cd "${pkgbase}-${pkgver}"
+
+    pushd 'Dream Window Decorations'
+    install -d "${pkgdir}/usr/share/aurorae/themes"
+    cp -r -v --no-preserve=all -t "${pkgdir}/usr/share/aurorae/themes" \
+        Dream-{Blur,Shadow}-Color-Dark-Aurorae-6 Dream-Color-{Dark,Light}-Aurorae-6
+    popd
+
+    #install -d "${pkgdir}/usr/share/color-schemes"
+    cp -r -v --no-preserve=all 'Dream Color Schemes' "${pkgdir}/usr/share/color-schemes"
+
+    pushd 'Dream Plasma Themes'
+    install -d "${pkgdir}/usr/share/plasma/desktoptheme"
+    cp -r -v --no-preserve=all Dream-Color-Plasma "${pkgdir}/usr/share/plasma/desktoptheme"
+    rm -f "${pkgdir}/usr/share/plasma/desktoptheme/Dream-Color-Plasma/metadata.desktop"
+    popd
+
+    pushd 'Dream Global Themes'
+    install -d "${pkgdir}/usr/share/plasma/look-and-feel"
+    cp -r -v --no-preserve=all -t "${pkgdir}/usr/share/plasma/look-and-feel" \
+        Dream-{Dark,Light}-Color-Global-6
+    popd
+
+    pushd 'Dream Wallpapers'
+    install -d "${pkgdir}/usr/share/wallpapers/Dream-Wallpapers"
+    find . -type f \! -iname '* With Plasma Logo*' | while IFS= read _wall; do
+        cp -v --no-preserve=all "${_wall}" \
+            "${pkgdir}/usr/share/wallpapers/Dream-Wallpapers/$(basename "${_wall//-/ }")"
+    done
+    popd
+}
+
+package_sddm-theme-dream() {
+    pkgdesc+=' - SDDM themes'
+    depends=(sddm)
+
+    pushd "${pkgbase}-${pkgver}/Dream SDDM Login Themes"
+    install -d "${pkgdir}/usr/share/sddm/themes"
+    cp -r -v --no-preserve=all Dream-Dark-SDDM-6 "${pkgdir}/usr/share/sddm/themes"
+    # Needs to be copied under correct name as defined in metadata.desktop
+    cp -r -v --no-preserve=all Dream-Light--SDDM-6 \
+        "${pkgdir}/usr/share/sddm/themes/Dream-Light-SDDM-6"
+    popd
+}

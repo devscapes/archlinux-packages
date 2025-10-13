@@ -3,10 +3,10 @@
 # Contributor: Andrea Scarpino <andrea@archlinux.org>
 # Contributor: Pierre Schmitz <pierre@archlinux.de>
 
-pkgname=cmake3
-pkgver=3.31.8
+pkgname=cmake-legacy
+pkgver=3.31.9
 pkgrel=1
-pkgdesc='A cross-platform open-source make system (release 3.x)'
+pkgdesc='A cross-platform open-source make system (legacy release)'
 arch=(x86_64)
 url='https://www.cmake.org/'
 license=(BSD-3-Clause)
@@ -38,10 +38,11 @@ optdepends=(
     'qt6-base: cmake-gui'
 )
 provides=("cmake=${pkgver}")
-conflicts=(cmake)
+replaces=(cmake3)
+conflicts=(cmake "${replaces[@]}")
 source=(git+https://gitlab.kitware.com/cmake/cmake.git#tag=v$pkgver?signed)
-sha384sums=('4eccc1fa7ae8368449f5d157504ad12d77b2a2a160ee89ca0eee9de7b671ca3acb4ac6dffa7dcf2362e84b421f63b897')
-b2sums=('e409f2f53d9a0cd951855950e387361acd274959966585975f0864e4e9b50f3d933b47319cef944d654ce0092316a310e5ca54a229cfbf97f68c740df206024a')
+sha384sums=('e0486a3f74d15260d641202ad960df1904146c4ecaf89ec838fdaed6683762eb299e90caa2ec6d5cf5dc4893cfe4e855')
+b2sums=('ee247dbf507f79306668ac354e55159575a22e1d82a5ee837c274d5a323f8ed6934c9355489e82e58e1c5a0b9f0b30690e6901eda4f6b9a382794668b2d56de7')
 validpgpkeys=(CBA23971357C2E6590D9EFD3EC8FEF3A7BFB4EDA) # Brad King <brad.king@kitware.com>
 
 build() {

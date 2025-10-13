@@ -3,15 +3,22 @@
 pkgbase=slot-plasma-themes
 pkgname=(
     gtk-theme-slot-dark
+    gtk-theme-slot-spectrum-dark
     kvantum-theme-slot-dark
-    plasma5-themes-slot-dark  # keep packaging for time being
+    kvantum-theme-slot-spectrum-dark
+    metacity-theme-slot-spectrum-dark
     plasma6-themes-slot-dark
+    plasma6-themes-slot-gradient-dark
+    plasma6-themes-slot-spectrum
     sddm-theme-slot
     slot-icon-theme
-    slot-icon-theme-extra  # split up extra variants
+    slot-icon-theme-extra              # any other variants not specified below
+    slot-gradient-icon-theme
+    slot-spectrum-icon-theme
+    slot-symbolic-icon-theme           # optional for dream-plasma-themes
 )
-pkgver=4.3_20250820
-pkgrel=1
+pkgver=5.0_20251009
+pkgrel=2
 epoch=1
 pkgdesc='Slot themes for Plasma desktop'
 arch=(any)
@@ -23,11 +30,11 @@ makedepends=(
     symlinks
 )
 options=(!strip !emptydirs)
-_commit=9532e97e3a4bfb4324d7e2a802bc78524edbcaec
+_commit=c55b3b3c33421dd2f9aefa3b84531666511adebe
 source=("${pkgbase}-${pkgver}.tar.gz::${url}/archive/${_commit}.tar.gz")
 noextract=("${pkgbase}-${pkgver}.tar.gz")
-sha384sums=('2359d48e14c41d4c86b0668a18ad2e74baf7ae66ffa380fe8a8ab3322247768d31dfef0322649d3130760c8cb642e7c9')
-b2sums=('b705346696089e0ddcf6cdd5f92e7d2d6f7b6abab568eb81f2912839050e8200fd9587e38a6c4625605a0f68d70ead32337068891e1dda25a51aa23a29cb66f1')
+sha384sums=('e3a35143cf4bee2fb4dd5db4898c8d7164b3a0c30081fbc85a78660bd297da71f0b9bfbfd544bc66af947a7a32b913e0')
+b2sums=('a31724a62fd8eb47b26b61a7fec967529fabf100f28bcbd89e23f7d4ed1ef4b6cc4862032d9a2fc799c350aaafae065b80780b5b7d5eb4cd6665a9647f410a46')
 
 _install_icons() {
     local _base _iconsdir _path _theme
@@ -38,32 +45,20 @@ _install_icons() {
     install -d "${_iconsdir}"
     echo "Installing ${_theme} theme..."
     cp -r -v --no-preserve=all "${_base:-${_theme}}" "${_iconsdir}/${_theme}"
-    if [[ -n ${_base} ]]; then
-        find "${_theme}" -mindepth 1 -maxdepth 1 -type d | while IFS= read -r _path; do
-            cp -f -r -v --no-preserve=all "${_path}" "${_iconsdir}/${_theme}/"
-        done
-        sed "s/${_base}/${_theme}/g" -i "${_iconsdir}/${_theme}/index.theme"
-    fi
+    [[ -n ${_base} ]] && cp -f -r -v --no-preserve=all "${_theme}/"* "${_iconsdir}/${_theme}/"
     rdfind -checksum sha512 -makesymlinks true -makeresultsfile false "${_iconsdir}/${_theme}"
     symlinks -c -r "${_iconsdir}/${_theme}"
 }
 
 prepare() {
-    mkdir "${pkgbase}-${pkgver}"
-    tar xf "${pkgbase}-${pkgver}.tar.gz" -C "${pkgbase}-${pkgver}" --strip-components 1
+    mkdir ${pkgbase}-${pkgver}
+    tar xf ${pkgbase}-${pkgver}.tar.gz -C ${pkgbase}-${pkgver} --strip-components 1
     cd "${srcdir}/${pkgbase}-${pkgver}"
 
     # Remove junk files
     find . \( -name 32.files -o -name 48.files -o -name 'Text File.txt' -o -name icon-theme.cache \
         -o -name make-symlinks.sh \) -delete
     rm -f 'Slot Plasma Themes/Slot-Dark-Plasma/'{AUTHORS,LICENSE}
-
-    cd "${srcdir}/${pkgbase}-${pkgver}/Slot Global Themes"
-
-    # Use correct window decoration theme for Gradient-Dark theme
-    sed 's/Gradient-Color-Dark-Aurorae/Slot-Dark-Aurorae-5/' \
-        -i Slot-Gradient-Dark-Global-5/contents/defaults
-    sed 's/Gradient-Color/Slot/' -i Slot-Gradient-Dark-Global-6/contents/defaults
 
     cd "${srcdir}/${pkgbase}-${pkgver}/Slot Icons Themes"
 
@@ -80,12 +75,25 @@ prepare() {
     mkdir Slot-Blue-Light-Icons/places
     mv -t Slot-Blue-Light-Icons/places Slot-Blue-Light-Icons/{32,64}
     mv Slot-Light-Icons/*.svg Slot-Light-Icons/mimetypes/64
+
+    # Fix fallback icons for some themes
+    sed 's/breeze,/breeze-dark,/' -i Slot-{Blue,Multicolor,Symbolic}-Dark-Icons/index.theme
+
+    # Breeze Dark implies Breeze for its fallback, no need to specify again
+    sed 's/breeze,//' -i Slot-{,Gradient-}Dark-Icons/index.theme
+
+    # Why would light variant want Adwaita fallback when dark isn't?
+    sed 's/Adwaita,//' -i Slot-Light-Icons/index.theme
 }
 
 package_gtk-theme-slot-dark() {
-    pkgdesc+=' - GTK+ themes'
+    pkgdesc+=' - GTK+ dark theme'
     depends=(gtk{3,4})
-    optdepends=('gtk-engine-murrine: for using GTK2 theme')
+    optdepends=(
+        'breeze-icons: default cursor theme when using on GTK+ desktop'
+        'gtk-engine-murrine: for using GTK2 theme'
+        'xcursor-breeze: default cursor theme when using on GTK+ desktop'
+    )
 
     pushd "${pkgbase}-${pkgver}/Slot GTK Themes"
     install -d "${pkgdir}/usr/share/themes"
@@ -93,8 +101,24 @@ package_gtk-theme-slot-dark() {
     popd
 }
 
+package_gtk-theme-slot-spectrum-dark() {
+    pkgdesc+=' - Spectrum GTK+ dark theme'
+    depends=(gtk{3,4})
+    optdepends=(
+        'gtk-engine-murrine: for using GTK2 theme'
+        'xcursor-dmz: default cursor theme when using on GTK+ desktop'
+    )
+
+    pushd "${pkgbase}-${pkgver}/Slot GTK Themes"
+    install -d "${pkgdir}/usr/share/themes"
+    cp -r -v --no-preserve=all Slot-Spectrum-Dark-GTK "${pkgdir}/usr/share/themes"
+    # Split metacity theme to a separate package that will depend on this split package
+    rm -r "${pkgdir}/usr/share/themes/Slot-Spectrum-Dark-GTK/metacity-1"
+    popd
+}
+
 package_kvantum-theme-slot-dark() {
-    pkgdesc+=' - Kvantum theme'
+    pkgdesc+=' - Kvantum dark theme'
     depends=(kvantum)
 
     pushd "${pkgbase}-${pkgver}/Slot Kvantum Themes"
@@ -103,55 +127,42 @@ package_kvantum-theme-slot-dark() {
     popd
 }
 
-package_plasma5-themes-slot-dark() {
-    pkgdesc+=' - for KDE Plasma 5'
-    optdepends=(
-        'gtk-theme-slot-dark: for matching GTK+ theme'
-        'kvantum-theme-slot-dark: for matching Kvantum theme'
-        'sddm-theme-slot: for matching SDDM theme'
-        'slot-icon-theme: for matching icon theme'
+package_kvantum-theme-slot-spectrum-dark() {
+    pkgdesc+=' - Spectrum Kvantum dark theme'
+    depends=(kvantum)
+
+    pushd "${pkgbase}-${pkgver}/Slot Kvantum Themes"
+    install -d "${pkgdir}/usr/share/Kvantum"
+    cp -r -v --no-preserve=all Spectrum-Dark-Kvantum "${pkgdir}/usr/share/Kvantum"
+    popd
+}
+
+package_metacity-theme-slot-spectrum-dark() {
+    pkgdesc+=' - Spectrum GNOME Flashback dark theme'
+    depends=(
+        gtk-theme-slot-spectrum-dark
+        metacity
     )
-    # Conflict with plasma6-themes due to shared components
-    conflicts=(plasma6-themes-slot-dark)
 
-    cd "${pkgbase}-${pkgver}"
-
-    pushd 'Slot Window Decorations'
-    install -d "${pkgdir}/usr/share/aurorae/themes"
-    cp -r -v --no-preserve=all -t "${pkgdir}/usr/share/aurorae/themes" Slot-{Blur-,}Dark-Aurorae-5
+    pushd "${pkgbase}-${pkgver}/Slot GTK Themes"
+    install -d "${pkgdir}/usr/share/themes/Slot-Spectrum-Dark-GTK"
+    cp -r -v --no-preserve=all Slot-Spectrum-Dark-GTK/metacity-1 \
+        "${pkgdir}/usr/share/themes/Slot-Spectrum-Dark-GTK"
     popd
-
-    pushd 'Slot Color Schemes'
-    install -d "${pkgdir}/usr/share/color-schemes"
-    cp -r -v --no-preserve=all SlotDarkColorscheme.colors "${pkgdir}/usr/share/color-schemes"
-    popd
-
-    pushd 'Slot Plasma Themes'
-    install -d "${pkgdir}/usr/share/plasma/desktoptheme"
-    cp -r -v --no-preserve=all Slot-Dark-Plasma "${pkgdir}/usr/share/plasma/desktoptheme"
-    rm -f "${pkgdir}/usr/share/plasma/desktoptheme/Slot-Dark-Plasma/metadata.json"
-    popd
-
-    pushd 'Slot Global Themes'
-    install -d "${pkgdir}/usr/share/plasma/look-and-feel"
-    cp -r -v --no-preserve=all -t "${pkgdir}/usr/share/plasma/look-and-feel" \
-        Slot-{,Gradient-}Dark-Global-5
-    popd
-
-    install -d "${pkgdir}/usr/share/wallpapers"
-    cp -r -v --no-preserve=all 'Slot Wallpapers' "${pkgdir}/usr/share/wallpapers/Slot-Wallpapers"
 }
 
 package_plasma6-themes-slot-dark() {
-    pkgdesc+=' - for KDE Plasma 6'
+    pkgdesc+=' - dark theme'
+    depends=(
+        kwin
+        plasma-desktop
+    )
     optdepends=(
         'gtk-theme-slot-dark: for matching GTK+ theme'
         'kvantum-theme-slot-dark: for matching Kvantum theme'
         'sddm-theme-slot: for matching SDDM theme'
         'slot-icon-theme: for matching icon theme'
     )
-    # Conflict with plasma5-themes due to shared components
-    conflicts=(plasma5-themes-slot-dark)
 
     cd "${pkgbase}-${pkgver}"
 
@@ -173,12 +184,57 @@ package_plasma6-themes-slot-dark() {
 
     pushd 'Slot Global Themes'
     install -d "${pkgdir}/usr/share/plasma/look-and-feel"
-    cp -r -v --no-preserve=all -t "${pkgdir}/usr/share/plasma/look-and-feel" \
-        Slot-{,Gradient-}Dark-Global-6
+    cp -r -v --no-preserve=all Slot-Dark-Global-6 "${pkgdir}/usr/share/plasma/look-and-feel"
     popd
 
-    install -d "${pkgdir}/usr/share/wallpapers"
-    cp -r -v --no-preserve=all "Slot Wallpapers" "${pkgdir}/usr/share/wallpapers/Slot-Wallpapers"
+    install -D -m 644 'Slot Wallpapers/Slot Wallpaper Without Plasma Logo.jpg' \
+        "${pkgdir}/usr/share/wallpapers/Slot-Wallpapers/Slot Wallpaper.jpg"
+}
+
+package_plasma6-themes-slot-gradient-dark() {
+    pkgdesc+=' - Gradient dark theme'
+    depends=(
+        plasma6-themes-slot-dark
+        ars-wallpapers
+        plasma6-aurorae-theme-gradient-dark
+    )
+    optdepends=(
+        'gtk-theme-slot-dark: for matching GTK+ theme'
+        'kvantum-theme-slot-dark: for matching Kvantum theme'
+        'sddm-theme-slot: for matching SDDM theme'
+        'slot-gradient-icon-theme: for matching icon theme'
+    )
+
+    pushd "${pkgbase}-${pkgver}/Slot Global Themes"
+    install -d "${pkgdir}/usr/share/plasma/look-and-feel"
+    cp -r -v --no-preserve=all Slot-Gradient-Dark-Global-6 \
+        "${pkgdir}/usr/share/plasma/look-and-feel"
+    popd
+}
+
+package_plasma6-themes-slot-spectrum() {
+    pkgdesc+=' - Spectrum themes'
+    depends=(plasma6-themes-dream)  # for aurorae, desktoptheme, and wallpapers
+    optdepends=(
+        'gtk-theme-slot-spectrum-dark: for matching GTK+ theme (Dark only)'
+        'kvantum-theme-slot-spectrum-dark: for matching Kvantum theme (Dark only)'
+        'sddm-theme-slot: for matching SDDM theme (shared)'
+        'slot-spectrum-icon-theme: for matching icon theme (Dark/Light)'
+    )
+
+    cd "${pkgbase}-${pkgver}"
+
+    pushd 'Slot Color Schemes'
+    install -d "${pkgdir}/usr/share/color-schemes"
+    cp -r -v --no-preserve=all -t "${pkgdir}/usr/share/color-schemes" \
+        Spectrum{Dark,Light}Color.colors
+    popd
+
+    pushd 'Slot Global Themes'
+    install -d "${pkgdir}/usr/share/plasma/look-and-feel"
+    cp -r -v --no-preserve=all -t "${pkgdir}/usr/share/plasma/look-and-feel" \
+        Slot-Spectrum-{Dark,Light}-Global-6
+    popd
 }
 
 package_sddm-theme-slot() {
@@ -201,27 +257,62 @@ package_slot-icon-theme() {
 
     pushd "${pkgbase}-${pkgver}/Slot Icons Themes"
     _install_icons Slot-Dark-Icons
-    _install_icons Slot-Gradient-Dark-Icons
+    _install_icons Slot-Light-Icons
     popd
 }
 
 package_slot-icon-theme-extra() {
-    pkgdesc+=' - extra icon themes'
+    pkgdesc+=' - extra icon themes (Blue, Color, Multicolor)'
+    depends=(
+        adwaita-icon-theme  # for Color variants
+        breeze-icons
+    )
+
+    pushd "${pkgbase}-${pkgver}/Slot Icons Themes"
+    _install_icons Slot-Blue-Dark-Icons Slot-Dark-Icons
+    _install_icons Slot-Color-Dark-Icons Slot-Dark-Icons
+    _install_icons Slot-Multicolor-Dark-Icons Slot-Dark-Icons
+    _install_icons Slot-Blue-Light-Icons Slot-Light-Icons
+    _install_icons Slot-Color-Light-Icons Slot-Light-Icons
+    _install_icons Slot-Multicolor-Light-Icons Slot-Light-Icons
+    popd
+}
+
+package_slot-gradient-icon-theme() {
+    pkgdesc+=' - Gradient icon themes'
+    depends=(
+        adwaita-icon-theme
+        breeze-icons
+    )
+
+    pushd "${pkgbase}-${pkgver}/Slot Icons Themes"
+    _install_icons Slot-Gradient-Dark-Icons
+    _install_icons Slot-Gradient-Light-Icons Slot-Light-Icons
+    popd
+}
+
+package_slot-spectrum-icon-theme() {
+    pkgdesc+=' - Spectrum icon themes'
+    depends=(
+        adwaita-icon-theme
+        breeze-icons
+    )
+
+    pushd "${pkgbase}-${pkgver}/Slot Icons Themes"
+    _install_icons Slot-Spectrum-Dark-Icons Slot-Dark-Icons
+    _install_icons Slot-Spectrum-Light-Icons Slot-Light-Icons
+    popd
+}
+
+package_slot-symbolic-icon-theme() {
+    pkgdesc+=' - Symbolic icon themes'
     depends=(
         breeze-icons
         hicolor-icon-theme
     )
 
     pushd "${pkgbase}-${pkgver}/Slot Icons Themes"
-    _install_icons Slot-Light-Icons
-    _install_icons Slot-Blue-Dark-Icons Slot-Dark-Icons
-    _install_icons Slot-Color-Dark-Icons Slot-Dark-Icons
-    _install_icons Slot-Multicolor-Dark-Icons Slot-Dark-Icons
     _install_icons Slot-Symbolic-Dark-Icons Slot-Dark-Icons
-    _install_icons Slot-Blue-Light-Icons Slot-Light-Icons
-    _install_icons Slot-Color-Light-Icons Slot-Light-Icons
-    _install_icons Slot-Gradient-Light-Icons Slot-Light-Icons
-    _install_icons Slot-Multicolor-Light-Icons Slot-Light-Icons
     _install_icons Slot-Symbolic-Light-Icons Slot-Light-Icons
     popd
 }

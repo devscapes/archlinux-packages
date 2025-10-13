@@ -1,0 +1,31 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+
+# Depending on circumstances, it may be converted to a base shipping all other parts of the theme
+_pkgbase=gradient-plasma-themes
+pkgname=plasma6-aurorae-theme-gradient-dark
+pkgver=5.7_20241027
+pkgrel=1
+pkgdesc='Gradient themes for Plasma desktop - Aurorae themes'
+arch=(any)
+url='https://github.com/L4ki/Gradient-Plasma-Themes'
+license=(GPL-3.0-only)
+options=(!strip !emptydirs)
+_commit=ab9244774b12a8c7bab04d6c3a5a71ffae45f786
+source=("${_pkgbase}-${pkgver}.tar.gz::${url}/archive/${_commit}.tar.gz")
+noextract=("${_pkgbase}-${pkgver}.tar.gz")
+sha384sums=('15ba20899921e1dace34cdc87d636891f5308228d278649d3312e287995e1cee9c2ea430d28266a5f743b791f6a98c01')
+b2sums=('c451b0ff897db4d3754a95d1a0fa41ea0edb9224c2c9b7a1d5cdf941aa01534539a5eff19ef123949901a1b8d42eb8a5a6a02924988d35e2b6465401763e4ef8')
+
+prepare() {
+    mkdir ${pkgname}-${pkgver}
+    tar xf ${_pkgbase}-${pkgver}.tar.gz -C ${pkgname}-${pkgver} --strip-components 2 --wildcards \
+        '*/Gradient Window Decorations/*-Aurorae-6'
+}
+
+package() {
+    depends=(kwin)
+
+    install -d "${pkgdir}/usr/share/aurorae/themes"
+    cp -r -v --no-preserve=all -t "${pkgdir}/usr/share/aurorae/themes" \
+        ${pkgname}-${pkgver}/Gradient-{Blur,Color}-Dark-Aurorae-6
+}

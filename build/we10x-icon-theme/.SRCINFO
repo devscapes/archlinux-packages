@@ -1,15 +1,16 @@
 pkgbase = we10x-icon-theme
 	pkgdesc = A colorful design icon theme for Linux desktop
-	pkgver = 20250810
+	pkgver = 20250827
 	pkgrel = 1
 	url = https://store.kde.org/p/1366371
 	arch = any
 	groups = we10xos-theme
 	license = GPL-3.0-only
 	makedepends = git
+	noextract = we10x-icon-theme-20250827.tar.gz
 	options = !strip
-	source = we10x-icon-theme-698545387d335ee348d7836baae52ce5669231f2.tar.gz::https://github.com/yeyushengfan258/We10X-icon-theme/archive/698545387d335ee348d7836baae52ce5669231f2.tar.gz
-	sha384sums = 1dad2d8a43732f3309a0d25ac19e8697bd013a903e4c87094b84884eba9350cba3835aaa4ea2efda7365834d03dcabc9
-	b2sums = c5f613a47780b1eccec860e59370191395d09dc3b92778e2fc217876bd1159ebb214bea9e0e5ac412f6b09add97cc972f56bbfa98445f12b615f3fc361cd2ff0
+	source = we10x-icon-theme-20250827.tar.gz::https://github.com/yeyushengfan258/We10X-icon-theme/archive/46487020da48ff8da702a2597b7b76143cffd9b0.tar.gz
+	sha384sums = 718517ce2732ff5af5fa56b86a44eb056c7666fdcbe6d53e8a8fe5a8707a7f27f21403176032aeba17457201d53c03e2
+	b2sums = b9f0b5ee81ce42b4a414a7de88d5438485aef449024003117a97b188cdac3e289e677625201f1efbb8d9a4792eecb6f76452e433cdc9a09b455347d26326aff5
 
 pkgname = we10x-icon-theme

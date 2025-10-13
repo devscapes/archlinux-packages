@@ -4,7 +4,7 @@
 
 pkgname=all-repository-fonts
 pkgver=20250821
-pkgrel=2
+pkgrel=3
 pkgdesc='Meta package for all fonts in the official repositories'
 arch=(any)
 depends=(
@@ -120,7 +120,6 @@ depends=(
     ttf-montserrat
     ttf-nunito
     ttf-opensans
-    ttf-overpass
     ttf-sarasa-gothic
     ttf-tibetan-machine
     ttf-vlgothic

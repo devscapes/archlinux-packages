@@ -1,6 +1,6 @@
-pkgbase = cmake3
-	pkgdesc = A cross-platform open-source make system (release 3.x)
-	pkgver = 3.31.8
+pkgbase = cmake-legacy
+	pkgdesc = A cross-platform open-source make system (legacy release)
+	pkgver = 3.31.9
 	pkgrel = 1
 	url = https://www.cmake.org/
 	arch = x86_64
@@ -33,11 +33,13 @@ pkgbase = cmake3
 	optdepends = make: for unix Makefile generator
 	optdepends = ninja: for ninja generator
 	optdepends = qt6-base: cmake-gui
-	provides = cmake=3.31.8
+	provides = cmake=3.31.9
 	conflicts = cmake
-	source = git+https://gitlab.kitware.com/cmake/cmake.git#tag=v3.31.8?signed
+	conflicts = cmake3
+	replaces = cmake3
+	source = git+https://gitlab.kitware.com/cmake/cmake.git#tag=v3.31.9?signed
 	validpgpkeys = CBA23971357C2E6590D9EFD3EC8FEF3A7BFB4EDA
-	sha384sums = 4eccc1fa7ae8368449f5d157504ad12d77b2a2a160ee89ca0eee9de7b671ca3acb4ac6dffa7dcf2362e84b421f63b897
-	b2sums = e409f2f53d9a0cd951855950e387361acd274959966585975f0864e4e9b50f3d933b47319cef944d654ce0092316a310e5ca54a229cfbf97f68c740df206024a
+	sha384sums = e0486a3f74d15260d641202ad960df1904146c4ecaf89ec838fdaed6683762eb299e90caa2ec6d5cf5dc4893cfe4e855
+	b2sums = ee247dbf507f79306668ac354e55159575a22e1d82a5ee837c274d5a323f8ed6934c9355489e82e58e1c5a0b9f0b30690e6901eda4f6b9a382794668b2d56de7
 
-pkgname = cmake3
+pkgname = cmake-legacy

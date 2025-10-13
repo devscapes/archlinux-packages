@@ -1,0 +1,41 @@
+pkgbase = dream-plasma-themes
+	pkgdesc = Dream themes for Plasma desktop
+	pkgver = 1.7_20251008
+	pkgrel = 2
+	url = https://github.com/L4ki/Dream-Plasma-Themes
+	arch = any
+	license = GPL-3.0-only
+	noextract = dream-plasma-themes-1.7_20251008.tar.gz
+	options = !strip
+	options = !emptydirs
+	source = dream-plasma-themes-1.7_20251008.tar.gz::https://github.com/L4ki/Dream-Plasma-Themes/archive/635f3651eb72a154c69dbe9e87137ad35c5329ef.tar.gz
+	sha384sums = f61897ede07eb71dfb4c08b611c2ab8c337f2045cdd0671cba3733297bc080e7230c7f3eb912e3bdb114d828c4f26584
+	b2sums = f0adbd6c7ab131350f54ccecb7ab16dcaa252d4bab91c9be532c68f3e1e89defaf968d2007867ddcf2182f0362354e0a36b5568eacd6b29d2447cda46f6a54a8
+
+pkgname = gtk-theme-dream-dark
+	pkgdesc = Dream themes for Plasma desktop - GTK+ dark themes
+	depends = gtk3
+	depends = gtk4
+	optdepends = gtk-engine-murrine: for using GTK2 theme
+	optdepends = xcursor-dmz: default cursor theme when using on GTK+ desktop
+
+pkgname = konsole-colorscheme-dream
+	pkgdesc = Dream themes for Plasma desktop - Konsole color schemes
+	depends = konsole
+
+pkgname = kvantum-theme-dream-dark
+	pkgdesc = Dream themes for Plasma desktop - Kvantum dark themes
+	depends = kvantum
+
+pkgname = plasma6-themes-dream
+	depends = kwin
+	depends = plasma-desktop
+	optdepends = gtk-theme-dream-dark: for matching GTK+ themes (Dark only)
+	optdepends = konsole-colorscheme-dream: for matching Konsole color schemes (Dark/Light)
+	optdepends = kvantum-theme-dream-dark: for matching Kvantum themes (Dark only)
+	optdepends = sddm-theme-dream: for matching SDDM themes (Dark/Light)
+	optdepends = slot-symbolic-icon-theme: for matching icon themes (Dark/Light)
+
+pkgname = sddm-theme-dream
+	pkgdesc = Dream themes for Plasma desktop - SDDM themes
+	depends = sddm

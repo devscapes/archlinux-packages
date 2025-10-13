@@ -10,8 +10,8 @@
 # Contributor: Alexander De Sousa <archaur.xandy21@spamgourmet.com>
 
 pkgname=ttf-google-fonts-git
-pkgver=r7433.g1dc77bd6e
-pkgrel=2
+pkgver=r11676.g11ca86e3b
+pkgrel=1
 pkgdesc='TrueType fonts from the Google Fonts project (git version)'
 arch=('any')
 url='https://fonts.google.com'
@@ -25,33 +25,37 @@ license=(
 )
 # pull these fonts from [extra], and exclude from this package
 depends=(
-    'adobe-source-code-pro-fonts'
-    'adobe-source-sans-fonts'
-    'adobe-source-serif-fonts'
-    'cantarell-fonts'
     'inter-font'
     'noto-fonts'
+    'noto-fonts-emoji'
     'noto-fonts-extra'
     'ttf-anonymous-pro'
+    'ttf-atkinson-hyperlegible'
     'ttf-caladea'
     'ttf-carlito'
+  # 'ttf-cascadia-code'
+    'ttf-charis-sil'
     'ttf-cormorant'
-    'ttf-crimson-pro'
+  # 'ttf-crimson-pro'
     'ttf-crimson-pro-variable'
     'ttf-croscore'
-    'ttf-fira-code'
+  # 'ttf-fira-code'
     'ttf-fira-mono'
     'ttf-fira-sans'
     'ttf-gentium-plus'
     'ttf-ibm-plex'
-    'ttf-inconsolata'
-    'ttf-jetbrains-mono'
+  # 'ttf-inconsolata'
+  # 'ttf-jetbrains-mono'
     'ttf-lato'
-    'ttf-montserrat'
-    'ttf-opensans'
-    'ttf-overpass'
-    'ttf-roboto'
-    'ttf-roboto-mono'
+    'ttf-libertinus'
+  # 'ttf-mona-sans'
+  # 'ttf-montserrat'
+  # 'ttf-nunito'
+  # 'ttf-opensans'
+  # 'ttf-overpass'
+  # 'ttf-roboto'
+  # 'ttf-roboto-mono'
+    'ttf-scheherazade-new'
     'ttf-ubuntu-font-family'
 )
 makedepends=(
@@ -88,6 +92,7 @@ gfonts_pkgs=(
 )
 conflicts=("${gfonts_pkgs[@]}")
 provides=("${gfonts_pkgs[@]}")
+options=(!strip)
 source=(git+https://github.com/google/fonts.git)
 sha256sums=('SKIP')
 
@@ -98,48 +103,27 @@ pkgver() {
 }
 
 prepare() {
-  local variable_fonts_only=(
-    inconsolata
-    montserrat
-    roboto
-  )
+  cd fonts
 
   # NOTE: Adobe Blank is not meant to be installed.
   # See: https://github.com/google/fonts/issues/2106#issuecomment-520067314
-  rm --recursive "${srcdir}/fonts/ofl/adobeblank"
+  rm -r ofl/adobeblank
 
-  cd fonts/ofl
-  local files
-  # NOTE: These are the font families that already exist in [extra]
-  ## Noto font families
-  files=($(find -maxdepth 1 -iname 'noto*'))
-  for i in "${files[@]}"; do
-    [[ ${i} =~ thailooped ]] && continue
-    rm -r "${i}"
-  done
+  # Skip installing NotoColorEmojiCompatTest, as it is meant to test browser compatibility
+  rm -r ofl/notocoloremojicompattest
 
-  ## IBM Plex font families
-  find -maxdepth 1 -iname 'ibmplex*' -exec rm -r {} \;
-
-  ## Ubuntu font family
-  rm -r "${srcdir}/fonts/ufl"
-
-  ## Fonts where only static variants are packaged in [extra]
-  for font_family in "${variable_fonts_only[@]}"; do
-    find -maxdepth 1 -name "${font_family}" -exec rm -r {}/static \; 2>/dev/null
-  done
+  # "To delist"
+  rm -r ofl/notosansnko_todelist
 }
 
 package() {
   # NOTE: These are the font families that already exist in [extra]
   declare -A omitted_font_families=(
     [anonymous-pro]=1
-    [arimo]=1
+    [atkinson-hyperlegible]=1
     [caladea]=1
-    [cantarell]=1
     [carlito]=1
-    [cormorant-garamond]=1
-    [cormorant-infant]=1
+    [charis-sil]=1
     [cormorant-sc]=1
     [cormorant-unicase]=1
     [cormorant-upright]=1
@@ -150,22 +134,257 @@ package() {
     [fira-sans-condensed]=1
     [gentium-book-plus]=1
     [gentium-plus]=1
+    [ibm-plex-mono]=1
+    [ibm-plex-sans-arabic]=1
+    [ibm-plex-sans-condensed]=1
+    [ibm-plex-sans-devanagari]=1
+    [ibm-plex-sans-hebrew]=1
+    [ibm-plex-sans-jp]=1
+    [ibm-plex-sans-kr]=1
+    [ibm-plex-sans-thai]=1
+    [ibm-plex-sans-thai-looped]=1
+    [ibm-plex-serif]=1
+    [inter]=1
     [lato]=1
-    [montserrat-alternates]=1
-    [roboto-mono]=1
-    [source-code-pro]=1
-    [source-sans-3]=1
-    [source-serif-4]=1
+    [libertinus-keyboard]=1
+    [libertinus-math]=1
+    [libertinus-mono]=1
+    [libertinus-sans]=1
+    [libertinus-serif]=1
+    [libertinus-serif-display]=1
+    [noto-color-emoji]=1
+    [noto-music]=1
+    [noto-sans-anatolian-hieroglyphs]=1
+    [noto-sans-avestan]=1
+    [noto-sans-batak]=1
+    [noto-sans-bhaiksuki]=1
+    [noto-sans-brahmi]=1
+    [noto-sans-buginese]=1
+    [noto-sans-buhid]=1
+    [noto-sans-carian]=1
+    [noto-sans-caucasian-albanian]=1
+    [noto-sans-chakma]=1
+    [noto-sans-chorasmian]=1
+    [noto-sans-coptic]=1
+    [noto-sans-cuneiform]=1
+    [noto-sans-cypriot]=1
+    [noto-sans-cypro-minoan]=1
+    [noto-sans-deseret]=1
+    [noto-sans-devanagari-ui]=1
+    [noto-sans-duployan]=1
+    [noto-sans-egyptian-hieroglyphs]=1
+    [noto-sans-elbasan]=1
+    [noto-sans-elymaic]=1
+    [noto-sans-glagolitic]=1
+    [noto-sans-gothic]=1
+    [noto-sans-grantha]=1
+    [noto-sans-gujarati-ui]=1
+    [noto-sans-hanunoo]=1
+    [noto-sans-hatran]=1
+    [noto-sans-imperial-aramaic]=1
+    [noto-sans-indic-siyaq-numbers]=1
+    [noto-sans-inscriptional-pahlavi]=1
+    [noto-sans-inscriptional-parthian]=1
+    [noto-sans-kaithi]=1
+    [noto-sans-kharoshthi]=1
+    [noto-sans-khojki]=1
+    [noto-sans-khudawadi]=1
+    [noto-sans-lepcha]=1
+    [noto-sans-limbu]=1
+    [noto-sans-linear-a]=1
+    [noto-sans-linear-b]=1
+    [noto-sans-lycian]=1
+    [noto-sans-lydian]=1
+    [noto-sans-mahajani]=1
+    [noto-sans-mandaic]=1
+    [noto-sans-manichaean]=1
+    [noto-sans-marchen]=1
+    [noto-sans-masaram-gondi]=1
+    [noto-sans-math]=1
+    [noto-sans-mayan-numerals]=1
+    [noto-sans-mende-kikakui]=1
+    [noto-sans-meroitic]=1
+    [noto-sans-miao]=1
+    [noto-sans-modi]=1
+    [noto-sans-mongolian]=1
+    [noto-sans-mro]=1
+    [noto-sans-multani]=1
+    [noto-sans-nabataean]=1
+    [noto-sans-nandinagari]=1
+    [noto-sans-newa]=1
+    [noto-sans-nko]=1
+    [noto-sans-nushu]=1
+    [noto-sans-ogam]=1
+    [noto-sans-old-hungarian]=1
+    [noto-sans-old-italic]=1
+    [noto-sans-old-north-arabian]=1
+    [noto-sans-old-permic]=1
+    [noto-sans-old-persian]=1
+    [noto-sans-old-sogdian]=1
+    [noto-sans-old-south-arabian]=1
+    [noto-sans-old-turkic]=1
+    [noto-sans-osage]=1
+    [noto-sans-osmanya]=1
+    [noto-sans-pahawh-hmong]=1
+    [noto-sans-palmyrene]=1
+    [noto-sans-pau-cin-hau]=1
+    [noto-sans-phags-pa]=1
+    [noto-sans-phoenician]=1
+    [noto-sans-psalter-pahlavi]=1
+    [noto-sans-rejang]=1
+    [noto-sans-runic]=1
+    [noto-sans-samaritan]=1
+    [noto-sans-saurashtra]=1
+    [noto-sans-sharada]=1
+    [noto-sans-shavian]=1
+    [noto-sans-siddham]=1
+    [noto-sans-sign-writing]=1
+    [noto-sans-sogdian]=1
+    [noto-sans-soyombo]=1
+    [noto-sans-sunuwar]=1
+    [noto-sans-syloti-nagri]=1
+    [noto-sans-symbols-2]=1
+    [noto-sans-tagalog]=1
+    [noto-sans-tagbanwa]=1
+    [noto-sans-tai-le]=1
+    [noto-sans-tai-viet]=1
+    [noto-sans-takri]=1
+    [noto-sans-tamil-supplement]=1
+    [noto-sans-tifinagh]=1
+    [noto-sans-tirhuta]=1
+    [noto-sans-ugaritic]=1
+    [noto-sans-vai]=1
+    [noto-sans-wancho]=1
+    [noto-sans-yi]=1
+    [noto-sans-zanabazar-square]=1
+    [noto-serif-ahom]=1
+    [noto-serif-balinese]=1
+    [noto-serif-dives-akuru]=1
+    [noto-serif-dogra]=1
+    [noto-serif-grantha]=1
+    [noto-serif-khitan-small-script]=1
+    [noto-serif-makasar]=1
+    [noto-serif-myanmar]=1
+    [noto-serif-old-uyghur]=1
+    [noto-serif-ottoman-siyaq]=1
+    [noto-serif-tangut]=1
+    [noto-znamenny-musical-notation]=1
+    [scheherazade-new]=1
     [tinos]=1
-    # do not omit the following fonts due to being provided as variable-only
-    # but they are added to package dependencies to allow co-existence with static version
+    [ubuntu]=1
+    [ubuntu-condensed]=1
+    [ubuntu-mono]=1
+    # do not omit the following fonts due to allow co-existence of fonts provided as variable-only
+    # with static versions on official repositories or vice versa
+    # [arimo]=1
+    # [cascadia-code]=1
+    # [noto-sans]=1
     # [cormorant]=1
+    # [cormorant-garamond]=1
+    # [cormorant-infant]=1
     # [fira-code]=1
-    # [inter]=1
+    # [ibm-plex-sans]=1
+    # [inconsolata]=1
     # [jetbrains-mono]=1
+    # [mona-sans]=1
     # [montserrat]=1
+    # [noto-kufi-arabic]=1
+    # [noto-naskh-arabic]=1
+    # [noto-naskh-arabic-ui]=1
+    # [noto-nastaliq-urdu]=1
+    # [noto-rashi-hebrew]=1
+    # [noto-sans]=1
+    # [noto-sans-adlam]=1
+    # [noto-sans-adlam-unjoined]=1
+    # [noto-sans-arabic]=1
+    # [noto-sans-arabic-ui]=1
+    # [noto-sans-armenian]=1
+    # [noto-sans-balinese]=1
+    # [noto-sans-bamum]=1
+    # [noto-sans-bassavah]=1
+    # [noto-sans-bengali]=1
+    # [noto-sans-bengali-ui]=1
+    # [noto-sans-canadian-aboriginal]=1
+    # [noto-sans-cham]=1
+    # [noto-sans-cherokee]=1
+    # [noto-sans-devanagari]=1
+    # [noto-sans-ethiopic]=1
+    # [noto-sans-georgian]=1
+    # [noto-sans-gujarati]=1
+    # [noto-sans-gunjala-gondi]=1
+    # [noto-sans-gurmukhi]=1
+    # [noto-sans-gurmukhi-ui]=1
+    # [noto-sans-hanifi-rohingya]=1
+    # [noto-sans-hebrew]=1
+    # [noto-sans-javanese]=1
+    # [noto-sans-kannada]=1
+    # [noto-sans-kannada-ui]=1
+    # [noto-sans-kawi]=1
+    # [noto-sans-kayah-li]=1
+    # [noto-sans-khmer]=1
+    # [noto-sans-lao]=1
+    # [noto-sans-lao-looped]=1
+    # [noto-sans-lisu]=1
+    # [noto-sans-malayalam]=1
+    # [noto-sans-malayalam-ui]=1
+    # [noto-sans-medefaidrin]=1
+    # [noto-sans-meetei-mayek]=1
+    # [noto-sans-mono]=1
+    # [noto-sans-myanmar]=1
+    # [noto-sans-nagmundari]=1
+    # [noto-sans-new-tai-lue]=1
+    # [noto-sans-nko-unjoined]=1
+    # [noto-sans-ol-chiki]=1
+    # [noto-sans-oriya]=1
+    # [noto-sans-sinhala]=1
+    # [noto-sans-sinhala-ui]=1
+    # [noto-sans-sora-sompeng]=1
+    # [noto-sans-sundanese]=1
+    # [noto-sans-symbols]=1
+    # [noto-sans-syriac]=1
+    # [noto-sans-syriac-eastern]=1
+    # [noto-sans-taitham]=1
+    # [noto-sans-tamil]=1
+    # [noto-sans-tamil-ui]=1
+    # [noto-sans-tangsa]=1
+    # [noto-sans-telugu]=1
+    # [noto-sans-telugu-ui]=1
+    # [noto-sans-thaana]=1
+    # [noto-sans-thai]=1
+    # [noto-sans-thai-looped]=1
+    # [noto-sans-vithkuqi]=1
+    # [noto-serif]=1
+    # [noto-serif-armenian]=1
+    # [noto-serif-bengali]=1
+    # [noto-serif-devanagari]=1
+    # [noto-serif-display]=1
+    # [noto-serif-ethiopic]=1
+    # [noto-serif-georgian]=1
+    # [noto-serif-gujarati]=1
+    # [noto-serif-gurmukhi]=1
+    # [noto-serif-hebrew]=1
+    # [noto-serif-kannada]=1
+    # [noto-serif-khmer]=1
+    # [noto-serif-khojki]=1
+    # [noto-serif-lao]=1
+    # [noto-serif-malayalam]=1
+    # [noto-serif-np-hmong]=1
+    # [noto-serif-oriya]=1
+    # [noto-serif-sinhala]=1
+    # [noto-serif-tamil]=1
+    # [noto-serif-telugu]=1
+    # [noto-serif-thai]=1
+    # [noto-serif-tibetan]=1
+    # [noto-serif-toto]=1
+    # [noto-serif-vithkuqi]=1
+    # [noto-serif-yezidi]=1
+    # [noto-traditional-nushu]=1
+    # [nunito]=1
     # [open-sans]=1
     # [overpass]=1
+    # [roboto]=1
+    # [roboto-condensed]=1
+    # [roboto-mono]=1
   )
 
 

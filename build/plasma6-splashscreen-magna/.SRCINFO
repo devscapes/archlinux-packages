@@ -1,0 +1,16 @@
+pkgbase = plasma6-splashscreen-magna
+	pkgdesc = Magna themes for Plasma desktop - splash screen
+	pkgver = 2.4_20240312
+	pkgrel = 1
+	url = https://github.com/L4ki/Magna-Plasma-Themes
+	arch = any
+	license = GPL-3.0-only
+	noextract = magna-plasma-themes-2.4_20240312.tar.gz
+	options = !strip
+	options = !emptydirs
+	source = magna-plasma-themes-2.4_20240312.tar.gz::https://github.com/L4ki/Magna-Plasma-Themes/archive/3fd3766170f437aa6f3c1d2ccaf18aa6ffda1e6a.tar.gz
+	sha384sums = 702efcdd1a34327c93542c2d07dd9dee18df6e282f107d35b4b180d5930e6745994cfb48b96f282daf41d0255706f409
+	b2sums = 7d2961f6862d25686b6fa3916e4a125c2ce3603e3b79b9630767ea699ccb199b2d916fc5d7aeb8432e5a8cae29fbcec4c9285445abb64668eead3afef19034c0
+
+pkgname = plasma6-splashscreen-magna
+	depends = plasma-desktop

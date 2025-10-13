@@ -3,7 +3,7 @@
 
 pkgname=mtkclient-git
 _pkgname=${pkgname%-git}
-pkgver=2.0.1.r114.g3093e65
+pkgver=2.0.1.r124.g399b3a1
 pkgrel=1
 pkgdesc='Unofficial MTK reverse engineering and flash tool'
 arch=(any)
@@ -15,7 +15,6 @@ depends=(
     python
     python-colorama
     python-fusepy
-    python-mock
     python-pycryptodome
     python-pycryptodomex
     python-pyserial

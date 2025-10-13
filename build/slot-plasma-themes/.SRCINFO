@@ -1,45 +1,74 @@
 pkgbase = slot-plasma-themes
 	pkgdesc = Slot themes for Plasma desktop
-	pkgver = 4.3_20250820
-	pkgrel = 1
+	pkgver = 5.0_20251009
+	pkgrel = 2
 	epoch = 1
 	url = https://github.com/L4ki/Slot-Plasma-Themes
 	arch = any
 	license = GPL-3.0-only
 	makedepends = rdfind
 	makedepends = symlinks
-	noextract = slot-plasma-themes-4.3_20250820.tar.gz
+	noextract = slot-plasma-themes-5.0_20251009.tar.gz
 	options = !strip
 	options = !emptydirs
-	source = slot-plasma-themes-4.3_20250820.tar.gz::https://github.com/L4ki/Slot-Plasma-Themes/archive/9532e97e3a4bfb4324d7e2a802bc78524edbcaec.tar.gz
-	sha384sums = 2359d48e14c41d4c86b0668a18ad2e74baf7ae66ffa380fe8a8ab3322247768d31dfef0322649d3130760c8cb642e7c9
-	b2sums = b705346696089e0ddcf6cdd5f92e7d2d6f7b6abab568eb81f2912839050e8200fd9587e38a6c4625605a0f68d70ead32337068891e1dda25a51aa23a29cb66f1
+	source = slot-plasma-themes-5.0_20251009.tar.gz::https://github.com/L4ki/Slot-Plasma-Themes/archive/c55b3b3c33421dd2f9aefa3b84531666511adebe.tar.gz
+	sha384sums = e3a35143cf4bee2fb4dd5db4898c8d7164b3a0c30081fbc85a78660bd297da71f0b9bfbfd544bc66af947a7a32b913e0
+	b2sums = a31724a62fd8eb47b26b61a7fec967529fabf100f28bcbd89e23f7d4ed1ef4b6cc4862032d9a2fc799c350aaafae065b80780b5b7d5eb4cd6665a9647f410a46
 
 pkgname = gtk-theme-slot-dark
-	pkgdesc = Slot themes for Plasma desktop - GTK+ themes
+	pkgdesc = Slot themes for Plasma desktop - GTK+ dark theme
+	depends = gtk3
+	depends = gtk4
+	optdepends = breeze-icons: default cursor theme when using on GTK+ desktop
+	optdepends = gtk-engine-murrine: for using GTK2 theme
+	optdepends = xcursor-breeze: default cursor theme when using on GTK+ desktop
+
+pkgname = gtk-theme-slot-spectrum-dark
+	pkgdesc = Slot themes for Plasma desktop - Spectrum GTK+ dark theme
 	depends = gtk3
 	depends = gtk4
 	optdepends = gtk-engine-murrine: for using GTK2 theme
+	optdepends = xcursor-dmz: default cursor theme when using on GTK+ desktop
 
 pkgname = kvantum-theme-slot-dark
-	pkgdesc = Slot themes for Plasma desktop - Kvantum theme
+	pkgdesc = Slot themes for Plasma desktop - Kvantum dark theme
 	depends = kvantum
 
-pkgname = plasma5-themes-slot-dark
-	pkgdesc = Slot themes for Plasma desktop - for KDE Plasma 5
-	optdepends = gtk-theme-slot-dark: for matching GTK+ theme
-	optdepends = kvantum-theme-slot-dark: for matching Kvantum theme
-	optdepends = sddm-theme-slot: for matching SDDM theme
-	optdepends = slot-icon-theme: for matching icon theme
-	conflicts = plasma6-themes-slot-dark
+pkgname = kvantum-theme-slot-spectrum-dark
+	pkgdesc = Slot themes for Plasma desktop - Spectrum Kvantum dark theme
+	depends = kvantum
+
+pkgname = metacity-theme-slot-spectrum-dark
+	pkgdesc = Slot themes for Plasma desktop - Spectrum GNOME Flashback dark theme
+	depends = gtk-theme-slot-spectrum-dark
+	depends = metacity
 
 pkgname = plasma6-themes-slot-dark
-	pkgdesc = Slot themes for Plasma desktop - for KDE Plasma 6
+	pkgdesc = Slot themes for Plasma desktop - dark theme
+	depends = kwin
+	depends = plasma-desktop
 	optdepends = gtk-theme-slot-dark: for matching GTK+ theme
 	optdepends = kvantum-theme-slot-dark: for matching Kvantum theme
 	optdepends = sddm-theme-slot: for matching SDDM theme
 	optdepends = slot-icon-theme: for matching icon theme
-	conflicts = plasma5-themes-slot-dark
+
+pkgname = plasma6-themes-slot-gradient-dark
+	pkgdesc = Slot themes for Plasma desktop - Gradient dark theme
+	depends = plasma6-themes-slot-dark
+	depends = ars-wallpapers
+	depends = plasma6-aurorae-theme-gradient-dark
+	optdepends = gtk-theme-slot-dark: for matching GTK+ theme
+	optdepends = kvantum-theme-slot-dark: for matching Kvantum theme
+	optdepends = sddm-theme-slot: for matching SDDM theme
+	optdepends = slot-gradient-icon-theme: for matching icon theme
+
+pkgname = plasma6-themes-slot-spectrum
+	pkgdesc = Slot themes for Plasma desktop - Spectrum themes
+	depends = plasma6-themes-dream
+	optdepends = gtk-theme-slot-spectrum-dark: for matching GTK+ theme (Dark only)
+	optdepends = kvantum-theme-slot-spectrum-dark: for matching Kvantum theme (Dark only)
+	optdepends = sddm-theme-slot: for matching SDDM theme (shared)
+	optdepends = slot-spectrum-icon-theme: for matching icon theme (Dark/Light)
 
 pkgname = sddm-theme-slot
 	pkgdesc = Slot themes for Plasma desktop - SDDM theme
@@ -52,6 +81,21 @@ pkgname = slot-icon-theme
 	optdepends = slot-icon-theme-extra: additional icon theme variants
 
 pkgname = slot-icon-theme-extra
-	pkgdesc = Slot themes for Plasma desktop - extra icon themes
+	pkgdesc = Slot themes for Plasma desktop - extra icon themes (Blue, Color, Multicolor)
+	depends = adwaita-icon-theme
+	depends = breeze-icons
+
+pkgname = slot-gradient-icon-theme
+	pkgdesc = Slot themes for Plasma desktop - Gradient icon themes
+	depends = adwaita-icon-theme
+	depends = breeze-icons
+
+pkgname = slot-spectrum-icon-theme
+	pkgdesc = Slot themes for Plasma desktop - Spectrum icon themes
+	depends = adwaita-icon-theme
+	depends = breeze-icons
+
+pkgname = slot-symbolic-icon-theme
+	pkgdesc = Slot themes for Plasma desktop - Symbolic icon themes
 	depends = breeze-icons
 	depends = hicolor-icon-theme

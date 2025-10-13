@@ -1,0 +1,33 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+
+_pkgbase=ars-plasma-themes  # incomplete source will prevent conversion to full package
+pkgname=ars-wallpapers
+pkgver=1.0_20240821
+pkgrel=1
+pkgdesc='Ars themes for Plasma desktop - wallpapers'
+arch=(any)
+url='https://github.com/L4ki/Ars-Plasma-Themes'
+license=(GPL-3.0-only)
+options=(!strip !emptydirs)
+_commit=0a63071cb3bc88597465dfaa96e8ef8728504b51
+source=("${_pkgbase}-${pkgver}.tar.gz::${url}/archive/${_commit}.tar.gz")
+noextract=("${_pkgbase}-${pkgver}.tar.gz")
+sha384sums=('f0c655dadbb3c2a53cf41a6f755c100ec7786fc837029a414b09e766bd0bea0757485c1a21bc5996336eb17c5f77a799')
+b2sums=('8470d4096d7ff63e4929c60e531a26311f14f5b9fc8a09f9aabc34c7618c84ee7fa843c9ca274094b6759a687969b3ea825722d8cca78c6490ddd666cd89060e')
+
+prepare() {
+    mkdir ${pkgname}-${pkgver}
+    tar xf ${_pkgbase}-${pkgver}.tar.gz -C ${pkgname}-${pkgver} --strip-components 3 --wildcards \
+        '*/Ars Wallpapers/*/* Without Logo*'
+    cd ${pkgname}-${pkgver}
+    for _wall in ./*.png; do
+        local _newname=$(echo "${_wall}" | sed 's/ Without Logo//;s/-/ /g')
+        mv "${_wall}" "${_newname}"
+    done
+}
+
+package() {
+    install -d "${pkgdir}/usr/share/wallpapers/Ars-Wallpapers"
+    cp -v --no-preserve=all ${pkgname}-${pkgver}/*.png \
+        "${pkgdir}/usr/share/wallpapers/Ars-Wallpapers"
+}

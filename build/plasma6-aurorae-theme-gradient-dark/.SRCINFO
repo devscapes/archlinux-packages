@@ -1,0 +1,16 @@
+pkgbase = plasma6-aurorae-theme-gradient-dark
+	pkgdesc = Gradient themes for Plasma desktop - Aurorae themes
+	pkgver = 5.7_20241027
+	pkgrel = 1
+	url = https://github.com/L4ki/Gradient-Plasma-Themes
+	arch = any
+	license = GPL-3.0-only
+	noextract = gradient-plasma-themes-5.7_20241027.tar.gz
+	options = !strip
+	options = !emptydirs
+	source = gradient-plasma-themes-5.7_20241027.tar.gz::https://github.com/L4ki/Gradient-Plasma-Themes/archive/ab9244774b12a8c7bab04d6c3a5a71ffae45f786.tar.gz
+	sha384sums = 15ba20899921e1dace34cdc87d636891f5308228d278649d3312e287995e1cee9c2ea430d28266a5f743b791f6a98c01
+	b2sums = c451b0ff897db4d3754a95d1a0fa41ea0edb9224c2c9b7a1d5cdf941aa01534539a5eff19ef123949901a1b8d42eb8a5a6a02924988d35e2b6465401763e4ef8
+
+pkgname = plasma6-aurorae-theme-gradient-dark
+	depends = kwin

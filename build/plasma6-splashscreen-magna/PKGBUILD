@@ -1,0 +1,31 @@
+# Maintainer: Albert I <kras@raphielgang.org>
+
+# Depending on circumstances, it may be converted to a base shipping all other parts of the theme
+_pkgbase=magna-plasma-themes
+pkgname=plasma6-splashscreen-magna
+pkgver=2.4_20240312
+pkgrel=1
+pkgdesc='Magna themes for Plasma desktop - splash screen'
+arch=(any)
+url='https://github.com/L4ki/Magna-Plasma-Themes'
+license=(GPL-3.0-only)
+options=(!strip !emptydirs)
+_commit=3fd3766170f437aa6f3c1d2ccaf18aa6ffda1e6a
+source=("${_pkgbase}-${pkgver}.tar.gz::${url}/archive/${_commit}.tar.gz")
+noextract=("${_pkgbase}-${pkgver}.tar.gz")
+sha384sums=('702efcdd1a34327c93542c2d07dd9dee18df6e282f107d35b4b180d5930e6745994cfb48b96f282daf41d0255706f409')
+b2sums=('7d2961f6862d25686b6fa3916e4a125c2ce3603e3b79b9630767ea699ccb199b2d916fc5d7aeb8432e5a8cae29fbcec4c9285445abb64668eead3afef19034c0')
+
+prepare() {
+    mkdir ${pkgname}-${pkgver}
+    tar xf ${_pkgbase}-${pkgver}.tar.gz -C ${pkgname}-${pkgver} --strip-components 2 --wildcards \
+        '*/Magna-Splahscreen/Magna-Splash-6'  # root directory is sic
+}
+
+package() {
+    depends=(plasma-desktop)
+
+    install -d "${pkgdir}/usr/share/plasma/look-and-feel"
+    cp -r -v --no-preserve=all ${pkgname}-${pkgver}/Magna-Splash-6 \
+        "${pkgdir}/usr/share/plasma/look-and-feel"
+}
