@@ -1,0 +1,21 @@
+pkgbase = crystal-dock
+	pkgdesc = A cool dock (desktop panel) for Linux desktop
+	pkgver = 2.14+really2.15rc5
+	pkgrel = 1
+	url = https://github.com/dangvd/crystal-dock
+	arch = x86_64
+	license = GPL-3.0-or-later
+	makedepends = extra-cmake-modules
+	makedepends = git
+	makedepends = vulkan-headers
+	depends = gcc-libs
+	depends = glibc
+	depends = layer-shell-qt
+	depends = qt6-base
+	depends = wayland
+	depends = libwayland-client.so
+	source = git+https://github.com/dangvd/crystal-dock.git#commit=586497cffcbd5d81a1045191fc09df5c069215cc
+	sha384sums = e904d4729d1683fc37f57bd73be2ddafa85c503117626933253589fc658d6d1339ad4bc01610a696b8dc131be19c2208
+	b2sums = 3a1c49848a3266d9f2dac16a397750e13c03afbd3cdf9ef413f3940c0e9675528f0e56db5ccc6384d2f3e3f854fe59b43467a05aa4bcca828cdd868664d86f1e
+
+pkgname = crystal-dock
