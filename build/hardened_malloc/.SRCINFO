@@ -1,6 +1,6 @@
 pkgbase = hardened_malloc
 	pkgdesc = Hardened allocator designed for modern systems
-	pkgver = 13.r11.g33ed302
+	pkgver = 14.r0.g3bee8d3
 	pkgrel = 1
 	url = https://github.com/GrapheneOS/hardened_malloc
 	arch = aarch64
@@ -11,11 +11,11 @@ pkgbase = hardened_malloc
 	depends = gcc-libs
 	depends = glibc
 	optdepends = openssh: mprotect PROT_READ|PROT_WRITE syscalls in seccomp-bpf filter
-	provides = libhardened_malloc=13
-	provides = libhardened_malloc-light=13
-	provides = libhardened_malloc-desktop=13
-	source = hardened_malloc::git+https://github.com/GrapheneOS/hardened_malloc.git#commit=33ed3027aba12f75e513bf736656f7a7f092651d
-	sha384sums = cc5053a7d4db3b81b646ad7fe17afa69a2a4ef809ab52b77e8970d65245a96198b257ca667f406ccaa73affae8f389c0
-	b2sums = cb35b5ad15fbfd7580e46d3cbff7543ab9fbef8f3216fba2e6403d84720650c64c33fdf7036ae6f59dd2f962b13c68837f5a637c1fdbdba73e8229b8fb57faec
+	provides = libhardened_malloc=14
+	provides = libhardened_malloc-light=14
+	provides = libhardened_malloc-desktop=14
+	source = hardened_malloc::git+https://github.com/GrapheneOS/hardened_malloc.git#commit=3bee8d3e0e4fd82b684521891373f40ab4982a5a
+	sha384sums = f807ae0c3b796ec992e22127d16ec129ae1490821d5e1f53b0770373d90c559fca429375284c92660f969de8ce115998
+	b2sums = d1aa7114bdeccd5180bceac0d7964c2f324d63df4535c6c1f80ce276f8d25498663909f446b80d155d7d4971ef21795a6fd3dac4d2c687b5bd2f78938e0b0ece
 
 pkgname = hardened_malloc

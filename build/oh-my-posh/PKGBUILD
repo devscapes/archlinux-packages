@@ -2,7 +2,7 @@
 # Contributor: Jan0660 <jan0660@tutanota.com>
 
 pkgname=oh-my-posh
-pkgver=27.1.2
+pkgver=29.7.0
 pkgrel=1
 pkgdesc='A prompt theme engine for any shell'
 arch=(
@@ -22,20 +22,21 @@ makedepends=(
     go
 )
 source=("${pkgname}::git+https://github.com/JanDeDobbeleer/oh-my-posh.git#tag=v${pkgver}")
-sha384sums=('82e33119570fd2a8324de361f2d7a2a933dcd8e2a21f4ca12c2e59cc2635c1eed211af2ec6a6503306b003750110977d')
-b2sums=('3571c6cce440485066a4f209d39855d3c2556fe1ba16c97e158a98756d6e4dd3aeac7f434c1d0564c134194c971fe7247affd37aed7307efe710fd3c70ca52c9')
+sha384sums=('748a955160d9f70cb36c6efcb0d276e469f2485685a331afb467547a81f73464e2fccc5fabb803b05c2fa767f9da86a1')
+b2sums=('584ed8279149d89d5eb7cd309a8d4e99e91a78af43cf8f3a14e1176bb2f614f43197bb284ef6a791fa7ec28719b1c5a42a94022259afa510c2b880f7dce32812')
+
+_gourl=github.com/jandedobbeleer/${pkgname}/src/build
 
 prepare() {
     cd ${pkgname}/src
     GOFLAGS='-mod=readonly' go mod vendor -v
 
-    # Go builder isn't happy with date string we need to pass; this helps with reproducibility
-    export SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)
-    local _date=$(date -u -d "@${SOURCE_DATE_EPOCH}" +'%Y-%m-%d %H:%M:%S.%N %z %Z')
-    sed -e '/import "time"/d' \
-        -e "/Date/s/= .*$/= \"${_date}\"/" \
-        -e "/Version/s/= .*$/= \"${pkgver}\"/" \
-        -i build/version.go
+    # Helps with build reproducibility
+    SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)
+    export SOURCE_DATE_EPOCH
+
+    # Hardcode build version to $pkgver
+    sed "/Version/s/= .*$/= \"${pkgver}\"/" -i build/version.go
 }
 
 build() {
@@ -43,10 +44,12 @@ build() {
     export CGO_CFLAGS="${CFLAGS}"
     export CGO_CXXFLAGS="${CXXFLAGS}"
     export CGO_LDFLAGS="${LDFLAGS}"
-    export GOFLAGS='-buildmode=pie -trimpath -mod=vendor -modcacherw -ldflags=-linkmode=external'
+    export GOFLAGS='-buildmode=pie -trimpath -mod=vendor -modcacherw'
+
 
     cd ${pkgname}/src
-    go build -v -o ${pkgname} .
+    _godate=$(date -u -d "@${SOURCE_DATE_EPOCH}" +"%Y-%m-%dT%H:%M:%SZ")
+    go build -v -o ${pkgname} -ldflags="-X ${_gourl}.Date=${_godate} -linkmode=external" .
 }
 
 package() {

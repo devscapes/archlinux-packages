@@ -1,13 +1,13 @@
 # Maintainer: Albert I <kras@raphielgang.org>
 # Contributor: Ben Westover <kwestover.kw@gmail.com>
 
-pkgname=mtkclient-git
+pkgname=mtkclient2.0-git
 _pkgname=${pkgname%-git}
-pkgver=2.1.3.r13.ge347162
+pkgver=2.0.2.r781.g3c7651d
 pkgrel=1
-pkgdesc='Unofficial MTK reverse engineering and flash tool (git version)'
+pkgdesc='Unofficial MTK reverse engineering and flash tool (git 2.0.x version)'
 arch=(any)
-url='https://github.com/bkerler/mtkclient'
+url='https://github.com/R0rt1z2/mtkclient'
 license=(GPL-3.0-only)
 depends=(
     android-udev
@@ -44,7 +44,11 @@ b2sums=('SKIP'
         '6e09943419d9ca7a1da5f4043b8a170a52955343061080c44808ae8e125e26341abbf40007eae8fc2573413232d046efbee4f1206942abd8b516b17b507e38b0')
 
 pkgver() {
-    git -C ${_pkgname} describe --long --tags | sed 's/v//;s/\([^-]*-g\)/r\1/;s/-/./g;s/.freeze//'
+    cd ${_pkgname}
+    printf '%s.r%s.g%s' \
+        "$(grep -o -w '[0-9]\.[0-9]\.[0-9]' pyproject.toml)" \
+        "$(git rev-list --count HEAD)" \
+        "$(git rev-parse --short HEAD)"
 }
 
 prepare() {
@@ -54,7 +58,7 @@ prepare() {
     sed '/^"LICENSE"/d;/^"README.md"/d' -i pyproject.toml
 
     # Replace plugdev with uaccess and adbusers like upstream android-udev
-    patch -p 1 <../udev.patch
+    patch -d mtkclient -p 1 <../udev.patch
 
     # Don't include Windows DLLs in package
     sed '/Windows/d' -i pyproject.toml
@@ -74,10 +78,13 @@ package() {
     # Extract created wheel package
     python -m installer -d "${pkgdir}" dist/*.whl
 
-    # Install additional udev rules
-    install -D -t "${pkgdir}/usr/lib/udev/rules.d" -m644 Setup/Linux/5{1-edl,2-mtk}.rules
+    # Move additional udev rules to correct place and fix permissions
+    install -d "${pkgdir}/usr/lib/udev/rules.d"
+    mv "${pkgdir}/usr/lib/python${_pyver}/site-packages/mtkclient/Setup/Linux/51-edl.rules" \
+        "${pkgdir}/usr/lib/udev/rules.d/52-mtk-edl.rules"
+    chmod -x "${pkgdir}/usr/lib/udev/rules.d/52-mtk-edl.rules"
 
     # Remove unwanted files
-    rm -f -r "${pkgdir}/usr/lib/python${_pyver}/site-packages/mtkclient/"{Windows,icon.ico}
+    rm -f -r "${pkgdir}/usr/lib/python${_pyver}/site-packages/mtkclient/"{Setup,Windows,icon.ico}
     find "${pkgdir}" -iname '*.sh' -delete
 }

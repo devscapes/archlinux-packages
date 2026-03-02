@@ -3,7 +3,7 @@
 source PKGBUILD
 
 pkgdesc="${pkgdesc% (no active development)}"
-pkgrel=1       # reset pkgrel
+pkgrel=2       # reset pkgrel
 license=(ISC)  # SPDX
 # Remove unnecessary version requirements
 for _dep in "${depends[@]}"; do

@@ -4,7 +4,7 @@
 # Contributor: Pierre Schmitz <pierre@archlinux.de>
 
 pkgname=cmake-legacy
-pkgver=3.31.9
+pkgver=3.31.11
 pkgrel=1
 pkgdesc='A cross-platform open-source make system (legacy release)'
 arch=(x86_64)
@@ -41,8 +41,8 @@ provides=("cmake=${pkgver}")
 replaces=(cmake3)
 conflicts=(cmake "${replaces[@]}")
 source=(git+https://gitlab.kitware.com/cmake/cmake.git#tag=v$pkgver?signed)
-sha384sums=('e0486a3f74d15260d641202ad960df1904146c4ecaf89ec838fdaed6683762eb299e90caa2ec6d5cf5dc4893cfe4e855')
-b2sums=('ee247dbf507f79306668ac354e55159575a22e1d82a5ee837c274d5a323f8ed6934c9355489e82e58e1c5a0b9f0b30690e6901eda4f6b9a382794668b2d56de7')
+sha384sums=('43cbd029a6027a60c5393230e3f878ffcba8c85db3fbb7fe0d395786c93bc1c69d0b00d110b1430d5393045f7488c166')
+b2sums=('da53accd97506af5f79746623406656ff80907ccac2e58f239fbb5abefa3f3d826a6cb67d87060716008a6de3e92bcb280fbb42ca05e23c115e073b2b8579e42')
 validpgpkeys=(CBA23971357C2E6590D9EFD3EC8FEF3A7BFB4EDA) # Brad King <brad.king@kitware.com>
 
 build() {
