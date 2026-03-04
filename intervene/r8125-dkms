@@ -29,11 +29,10 @@ pkgdesc='A kernel module for Realtek 8125 network cards'
 url='https://www.realtek.com/Download/List?cate_id=584'
 license=(GPL-2.0-or-later)
 depends+=(linux-firmware-realtek)
-source[0]="file://${_pkgname}-${pkgver}.tar.bz2"
+#source[0]="file://${_pkgname}-${pkgver}.tar.bz2"
 source+=("${_pkgname}-linux-firmware.patch")
-sha256sums=('5434b26500538a62541c55cd09eea099177f59bd9cc48d16969089a9bcdbbd41'
-            '6a100f817126d4ae1c8887f094b137aff8c9c58be12c5b3440243762202235f3'
-            '5fc861a12e41893aeba65a583f49d7584ea2f7f734c616fde15350046cb0630e')
+sha256sums[1]='6a100f817126d4ae1c8887f094b137aff8c9c58be12c5b3440243762202235f3'
+sha256sums+=('5fc861a12e41893aeba65a583f49d7584ea2f7f734c616fde15350046cb0630e')
 
 # Seems like these are no longer set even on Arch -dkms packages
 unset optdepends

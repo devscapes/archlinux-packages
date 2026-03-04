@@ -1,8 +1,8 @@
 # Maintainer: SoftExpert <softexpert at gmail dot com>
 
 pkgname=crystal-dock
-pkgver=2.14+really2.15rc5
-#pkgver=2.14
+#pkgver=2.14+really2.15rc5
+pkgver=2.16
 pkgrel=1
 pkgdesc='A cool dock (desktop panel) for Linux desktop'
 arch=(x86_64)
@@ -20,19 +20,18 @@ makedepends=(
     git
     vulkan-headers
 )
-_commit=586497cffcbd5d81a1045191fc09df5c069215cc  # Sets version to 2.15 RC5
+_commit=7a34e96f3a0abb55bc842a266bd152f59bcdee14  # Sets version to 2.16
 source=("git+${url}.git#commit=${_commit}")
-sha384sums=('e904d4729d1683fc37f57bd73be2ddafa85c503117626933253589fc658d6d1339ad4bc01610a696b8dc131be19c2208')
-b2sums=('3a1c49848a3266d9f2dac16a397750e13c03afbd3cdf9ef413f3940c0e9675528f0e56db5ccc6384d2f3e3f854fe59b43467a05aa4bcca828cdd868664d86f1e')
-
-prepare() {
-    # Qt 6.10 no longer implicitly imports private modules
-    sed '/find_package[(]Qt6/s/Gui /Gui GuiPrivate /' -i ${pkgname}/src/CMakeLists.txt
-}
+sha384sums=('d6b488328cef4c738f6a3918773fb2a3ace147670c06eed87aaba8ca0fb4296e1648d75d31d630f1f2630995d44a65e0')
+b2sums=('4ccddbfcef5d2a136c34523ce55b66c3f348510bbb2f587d21363a1b9205054d467ec9e076342a3bd39f9626d0384ed118452d81456bb1eb8d77a148f14de0d6')
 
 build() {
     cmake -B build -S ${pkgname}/src -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
     cmake --build build
+}
+
+check() {
+    ctest --test-dir build
 }
 
 package() {

@@ -1,0 +1,15 @@
+# Upstream: https://aur.archlinux.org/ntfsprogs-plus.git
+
+source <(sed 's/\(\${srcdir}\/\${pkgname}\)/\1-\${pkgver}/;/install \-/d' PKGBUILD)
+
+pkgdesc='NTFS filesystem userspace utilities'
+depends+=(glibc util-linux-libs libuuid.so)  # namcap
+provides=(ntfsprogs)
+conflicts=(ntfsprogs)
+source[0]="${pkgname}-${pkgver}.tar.gz::https://github.com/${_repo}/archive/refs/tags/${pkgver}.tar.gz"
+sha256sums[0]='3e3d9d2f3620cdebb128fb8dbc116f2c2a035f18000e3f01af204694ef8c7778'
+
+prepare() {
+    cd "${pkgname}-${pkgver}"
+    ./autogen.sh
+}
